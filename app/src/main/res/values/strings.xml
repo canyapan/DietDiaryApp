@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Diet Diary</string>
+    <string name="provider_permission_read_label" translatable="false">read my diet diary shared content</string>
+    <string name="provider_permission_read_description" translatable="false">Allows application to read the shared content created by the user.</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_save">Save</string>
+    <string name="action_share">Share</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_calendar_today">Today</string>
+    <string name="action_done">Done</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="activity_settings_title">Settings</string>
+    <string name="activity_create_event_title">New Record</string>
+    <string name="activity_edit_event_title">Edit Record</string>
+    <string name="activity_create_edit_description_hint">Description</string>
+    <string name="activity_backup_restore_title">Backup/Restore</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_backup_restore">Backup/Restore</string>
+    <string name="nav_settings">Settings</string>
+    <string name="nav_donate">Donate</string>
+    <string name="nav_about">About</string>
+    <string name="backup">Backup</string>
+    <string name="restore">Restore</string>
+    <string name="export_from">From</string>
+    <string name="export_to">To</string>
+    <string name="export_type">Type</string>
+    <string name="export_destination">Destination</string>
+    <string name="export_progress_title">Exporting&#8230;</string>
+    <string name="export_sd_card_unavailable">SD Card unavailable.</string>
+    <string name="export_temp_file_creation_error">Cannot create temporary file.</string>
+    <string name="export_file_creation_error">Cannot create export file.</string>
+    <string name="export_unimplemented_destination">Selected destination is not implemented, yet.</string>
+    <string name="export_csv_io_exception">IO error occurred while exporting to CSV.</string>
+    <string name="export_csv_sql_exception">DB error occurred while exporting to CSV.</string>
+    <string name="export_csv_exception">Unidentified error occurred while exporting to CSV.</string>
+    <string name="export_external_successful">CSV file %1$s created.</string>
+    <string name="export_share_successful">CSV file shared.</string>
+    <string name="export_no_permission">Please give permission to write files.</string>
+    <string name="import_progress_title">Importing&#8230;</string>
+    <string name="import_file_selector">Files</string>
+    <string name="import_note"><b>Note:</b> Locate your backup files in <i>/sdcard/</i> \nor <i>/sdcard/DietDiaryApp/</i></string>
+    <string name="import_no_permission">Please give permission to read files.</string>
+    <string name="import_no_external_storage">Please plug in your external storage.</string>
+    <string name="import_csv_io_exception">IO error occurred while importing from CSV.</string>
+    <string name="import_csv_sql_exception">DB error occurred while importing from CSV.</string>
+    <string name="import_csv_exception">Unidentified error occurred while importing from CSV.</string>
+    <string name="import_csv_corrupted">CSV corrupted.</string>
+    <string name="import_csv_already_existing_records">CSV includes already existing records.</string>
+    <string name="import_file_not_exists">Selected file does not exist!</string>
+    <string name="import_file_not_readable">Selected file is not readable!</string>
+    <string name="import_file_empty">Selected file is empty!</string>
+    <string name="import_file_not_csv">Selected file is not a CSV file!</string>
+    <string name="import_successful">CSV file %1$s imported.</string>
+    <string name="import_spinner_hint">Select file to import</string>
+    <string name="content_description_icon">Icon</string>
+    <string name="snack_bar_dismiss">Dismiss</string>
+    <string name="snack_bar_undo">Undo</string>
+    <string name="snack_bar_deleted">Deleted</string>
+    <string name="daily_notification_title">Diet Diary Daily Remainder</string>
+    <string name="daily_notification_message">You haven\'t added any entries on your diary, today.</string>
+    <string name="about" translatable="false">Copyright \u00a9 2016, Can Yapan</string>
+
+    <string-array name="csv_headers" translatable="false">
+        <item>ID</item>
+        <item>Date</item>
+        <item>Time</item>
+        <item>Type</item>
+        <item>Title</item>
+        <item>Description</item>
+    </string-array>
+
+    <array name="spinner_event_types_res" translatable="false">
+        <item>@drawable/food</item>
+        <item>@drawable/drink</item>
+        <item>@drawable/medication</item>
+        <item>@drawable/supplement</item>
+        <item>@drawable/exercise</item>
+        <item>@drawable/other</item>
+    </array>
+
+    <string-array name="spinner_event_types">
+        <item>Food</item>
+        <item>Drink</item>
+        <item>Medication</item>
+        <item>Supplements</item>
+        <item>Exercise</item>
+        <item>Other</item>
+    </string-array>
+
+    <string-array name="spinner_event_food_types">
+        <item>Food</item>
+        <item>Breakfast</item>
+        <item>Lunch</item>
+        <item>Dinner</item>
+        <item>Snack</item>
+        <item>Junk</item>
+    </string-array>
+
+    <string-array name="spinner_event_drink_types">
+        <item>Drink</item>
+        <item>Coffee</item>
+        <item>Tea</item>
+        <item>Alcohol</item>
+        <item>Water</item>
+        <item>Energy Drink</item>
+        <item>Fruit Juice</item>
+    </string-array>
+
+    <string-array name="spinner_file_types" translatable="false">
+        <item>CSV</item>
+    </string-array>
+
+    <!-- Strings related to Settings -->
+    <!-- Example General settings -->
+    <string name="pref_header_general">General</string>
+
+    <string name="pref_title_clock_mode">Clock Mode</string>
+    <string-array name="pref_list_clock_mode_messages">
+        <item>System Default</item>
+        <item>24 Hour</item>
+        <item>AM/PM</item>
+    </string-array>
+    <string-array name="pref_list_clock_mode_values" translatable="false">
+        <item>-1</item>
+        <item>1</item>
+        <item>0</item>
+    </string-array>
+
+    <!-- Settings for Notifications -->
+    <string name="pref_header_notifications">Notifications</string>
+    <string name="pref_title_notifications_active">Active</string>
+    <string name="pref_title_daily_remainder">Daily remind me if I don\'t add any entries</string>
+    <string name="pref_title_daily_remainder_time">Remind me at</string>
+
+    <!-- Strings for Crash Reporter -->
+    <string name="crash_toast_text">Ooooops ! I crashed, but a report has been sent to my developer to help fix the issue !</string>
+    <string name="crash_dialog_title">My Diet Diary has crashed</string>
+    <string name="crash_dialog_text">An unexpected error occurred forcing the
+    application to stop. Please help us fix this by sending us error data,
+    all you have to do is click OK.</string>
+    <string name="crash_dialog_comment_prompt">You might add your comments about the problem below:</string>
+    <string name="crash_dialog_ok_toast">Thank you !</string>
+
+</resources>

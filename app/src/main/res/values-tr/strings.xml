@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Diyet Günlüğü</string>
+    <string name="navigation_drawer_close">Navigasyon panelini kapat</string>
+    <string name="navigation_drawer_open">Navigasyon panelini aç</string>
+    <string name="action_cancel">İptal</string>
+    <string name="action_done">Son</string>
+    <string name="action_save">Kaydet</string>
+    <string name="action_share">Paylaş</string>
+    <string name="action_delete">Sil</string>
+    <string name="nav_home">Ana Sayfa</string>
+    <string name="nav_backup_restore">Yedekle/Geri Yükle</string>
+    <string name="nav_settings">Ayarlar</string>
+    <string name="nav_donate">Bağış</string>
+    <string name="nav_about">Hakkında</string>
+    <string name="backup">Yedekle</string>
+    <string name="restore">Geri Yükle</string>
+    <string name="action_calendar_today">Bugün</string>
+    <string name="activity_create_edit_description_hint">Açıklama</string>
+    <string name="activity_create_event_title">Kayıt Ekle</string>
+    <string name="activity_edit_event_title">Kayıt Düzenle</string>
+    <string name="activity_backup_restore_title">Yedekle/Geri Yükle</string>
+    <string name="activity_settings_title">Ayarlar</string>
+    <string name="content_description_icon">İkon</string>
+    <string name="export_csv_exception">CSV dışa aktarılırken bilinmeyen bir hata oluştu.</string>
+    <string name="export_csv_io_exception">CSV dışa aktarılırken IO hatası oluştu.</string>
+    <string name="export_csv_sql_exception">CSV dışa aktarılırken DB hatası oluştu.</string>
+    <string name="export_destination">Hedef</string>
+    <string name="export_external_successful">%1$s CSV dosyası oluşturuldu.</string>
+    <string name="export_file_creation_error">Dışa aktarım dosyası oluşturulamadı.</string>
+    <string name="export_from">Başlangıç</string>
+    <string name="export_no_permission">Lütfen dosya yazma için izin verin.</string>
+    <string name="export_progress_title">Dışa aktarılıyor…</string>
+    <string name="export_sd_card_unavailable">SD Kart hazır değil.</string>
+    <string name="export_share_successful">CSV dosyası paylaşıldı.</string>
+    <string name="export_temp_file_creation_error">Geçici dosya oluşturulamadı.</string>
+    <string name="export_to">Bitiş</string>
+    <string name="export_type">Tür</string>
+    <string name="export_unimplemented_destination">Seçili hedef henüz desteklenmiyor.</string>
+    <string name="import_csv_already_existing_records">CSV zaten kayıtlı veriler içeriyor.</string>
+    <string name="import_csv_corrupted">CSV bozulmuş.</string>
+    <string name="import_csv_exception">CSV içe aktarılırken bilinmeyen bir hata oluştu.</string>
+    <string name="import_csv_io_exception">CSV içe aktarılırken IO hatası oluştu.</string>
+    <string name="import_csv_sql_exception">CSV içe aktarılırken DB hatası oluştu.</string>
+    <string name="import_file_empty">Seçili dosya boş!</string>
+    <string name="import_file_not_csv">Seçili dosya bir CSV dosyası değil!</string>
+    <string name="import_file_not_exists">Seçili dosya dizinde bulunamadı!</string>
+    <string name="import_file_not_readable">Seçili dosya okunabilir değil!</string>
+    <string name="import_file_selector">Dosyalar</string>
+    <string name="import_no_external_storage">Lütfen harici depolama birimini bağlayın.</string>
+    <string name="import_no_permission">Lütfen dosya okuma için izin verin.</string>
+    <string name="import_note"><b>Not:</b> Yedek dosyalarınızı <i>/sdcard/</i> \nveya<i>/sdcard/DietDiaryApp/</i> dizinine ekleyin.</string>
+    <string name="import_progress_title">İçe aktarılıyor…</string>
+    <string name="import_spinner_hint">Dosya seçin</string>
+    <string name="import_successful">%1$s dosyası içe aktarıldı.</string>
+    <string name="snack_bar_undo">Geri</string>
+    <string name="snack_bar_dismiss">Kapat</string>
+    <string name="snack_bar_deleted">Silindi</string>
+    <string name="daily_notification_title">Diet Diary Günlük Hatırlatıcı</string>
+    <string name="daily_notification_message">Bugün hiçbir kayıt girmediniz.</string>
+    <string-array name="spinner_event_food_types">
+        <item>Yemek</item>
+        <item>Kahvaltı</item>
+        <item>Öğle yemeği</item>
+        <item>Akşam yemeği</item>
+        <item>Ara öğün</item>
+        <item>Abur cubur</item>
+    </string-array>
+    <string-array name="spinner_event_types">
+        <item>Yemek</item>
+        <item>İçecek</item>
+        <item>İlaç</item>
+        <item>Besin takviyesi</item>
+        <item>Egzersiz</item>
+        <item>Diğer</item>
+    </string-array>
+    <string-array name="spinner_event_drink_types">
+        <item>İçecek</item>
+        <item>Kahve</item>
+        <item>Çay</item>
+        <item>Alkol</item>
+        <item>Su</item>
+        <item>Enerji İçeceği</item>
+        <item>Meyve Suyu</item>
+    </string-array>
+    <string name="pref_header_general">Genel</string>
+    <string name="pref_header_notifications">Bildirimler</string>
+    <string name="pref_title_notifications_active">Aktif</string>
+    <string name="pref_title_daily_remainder">Eğer hiçbirşey yazmadıysam günlük hatırlat.</string>
+    <string name="pref_title_daily_remainder_time">Şu saatte hatırlat</string>
+    <string name="pref_title_clock_mode">Saat Modu</string>
+    <string-array name="pref_list_clock_mode_messages">
+        <item>Sistem Varsayılanı</item>
+        <item>24 Saat</item>
+        <item>AM/PM</item>
+    </string-array>
+    <string name="crash_dialog_comment_prompt">Sorun ile alakalı görüşlerinizi aşağıda paylaşabilirsiniz:</string>
+    <string name="crash_dialog_ok_toast">Teşekkürler !</string>
+    <string name="crash_dialog_text">Beklenmeyen bir hata uygulamayı kapanmaya zorladı.
+    Lütfen hata verisini göndererek sorunu düzeltmemize yardım edin.
+    Tek yapmanız gereken \'Tamam\'a tıklamak.</string>
+    <string name="crash_dialog_title">My Diet Diary çöktü</string>
+    <string name="crash_toast_text">Tühhh! çöktüm, ama geliştiricime bu sorunu çözmesi için gerekli rapor gönderildi !</string>
+</resources>

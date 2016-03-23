@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="com.canyapan.dietdiaryapp.MainActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay"/>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <FrameLayout
+        android:id="@+id/frame_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <!--<include layout="@layout/content_main"/>-->
+    </FrameLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:onClick="onFabClicked"
+        android:tint="@android:color/white"
+        app:srcCompat="@drawable/add"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabFood"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="@dimen/fab2_margin"
+        android:layout_marginEnd="@dimen/fab_margin"
+        android:layout_marginRight="@dimen/fab_margin"
+        android:clickable="false"
+        android:onClick="onFabEventClicked"
+        android:tag="0"
+        android:tint="@android:color/white"
+        android:visibility="invisible"
+        app:srcCompat="@drawable/food"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabDrink"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="@dimen/fab2_middle_margin"
+        android:layout_marginEnd="@dimen/fab2_middle_margin"
+        android:layout_marginRight="@dimen/fab2_middle_margin"
+        android:clickable="false"
+        android:onClick="onFabEventClicked"
+        android:tag="1"
+        android:tint="@android:color/white"
+        android:visibility="invisible"
+        app:srcCompat="@drawable/drink"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabMore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="@dimen/fab_margin"
+        android:layout_marginEnd="@dimen/fab2_margin"
+        android:layout_marginRight="@dimen/fab2_margin"
+        android:clickable="false"
+        android:onClick="onFabEventClicked"
+        android:tag="5"
+        android:tint="@android:color/white"
+        android:visibility="invisible"
+        app:srcCompat="@drawable/dots_horizontal"/>
+
+</android.support.design.widget.CoordinatorLayout>

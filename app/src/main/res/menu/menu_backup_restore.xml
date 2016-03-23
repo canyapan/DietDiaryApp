@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.canyapan.dietdiaryapp.BackupRestoreActivity"
+    >
+</menu>

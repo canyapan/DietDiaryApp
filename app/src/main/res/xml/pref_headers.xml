@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preference-headers xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <header android:fragment="com.canyapan.dietdiaryapp.SettingsActivity$GeneralPreferenceFragment"
+            android:icon="@drawable/info"
+            android:title="@string/pref_header_general"
+        />
+
+    <header android:fragment="com.canyapan.dietdiaryapp.SettingsActivity$NotificationPreferenceFragment"
+            android:icon="@drawable/notifications"
+            android:title="@string/pref_header_notifications"
+        />
+
+</preference-headers>

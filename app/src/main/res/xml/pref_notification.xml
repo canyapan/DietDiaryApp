@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="notifications_active"
+        android:title="@string/pref_title_notifications_active"
+        />
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:dependency="notifications_active"
+        android:key="notifications_daily_remainder"
+        android:title="@string/pref_title_daily_remainder"
+        />
+
+    <com.canyapan.dietdiaryapp.preference.TimePreference
+        android:defaultValue="19:00"
+        android:dependency="notifications_daily_remainder"
+        android:key="notifications_daily_remainder_time"
+        android:title="@string/pref_title_daily_remainder_time"
+        />
+
+</PreferenceScreen>

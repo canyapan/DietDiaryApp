@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ListPreference
+        android:defaultValue="-1"
+        android:entries="@array/pref_list_clock_mode_messages"
+        android:entryValues="@array/pref_list_clock_mode_values"
+        android:key="general_clock_mode"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="@string/pref_title_clock_mode"
+        />
+
+</PreferenceScreen>
