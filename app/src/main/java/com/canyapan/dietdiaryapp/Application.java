@@ -7,11 +7,11 @@ import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
 
 @ReportsCrashes(
-        formUri = "http://services.canyapan.com/acra-diet-diary-app/_design/acra-storage/_update/report",
+        formUri = "https://canyapan.cloudant.com/acra-dietdiaryapp/_design/acra-storage/_update/report",
         reportType = org.acra.sender.HttpSender.Type.JSON,
         httpMethod = org.acra.sender.HttpSender.Method.PUT,
-        formUriBasicAuthLogin = "reporter",
-        formUriBasicAuthPassword = "cLo9y}3sWUP%G75rzeR%dUSr6j*gkWJB",
+        formUriBasicAuthLogin = "nalectencepardeepecespoi",
+        formUriBasicAuthPassword = "1b0c9e74e65df6c86ef473d13052ff26bf9539a5",
         mode = ReportingInteractionMode.DIALOG,
         resToastText = R.string.crash_toast_text, // optional, displayed as soon as the crash occurs, before collecting data which can take a few seconds
         resDialogText = R.string.crash_dialog_text,
