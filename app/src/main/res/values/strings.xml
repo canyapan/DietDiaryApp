@@ -61,7 +61,9 @@
     <string name="snack_bar_deleted">Deleted</string>
     <string name="daily_notification_title">Diet Diary Daily Remainder</string>
     <string name="daily_notification_message">You haven\'t added any entries on your diary, today.</string>
-    <string name="about" translatable="false">Copyright \u00a9 2016, Can Yapan</string>
+    <string name="about_copyright" translatable="false">Copyright \u00a9 2016, Can Yapan</string>
+    <string name="about_license" translatable="false">Licensed under the Apache License, Version 2.0</string>
+    <string name="about_github" translatable="false">https://github.com/canyapan/DietDiaryApp</string>
 
     <string-array name="csv_headers" translatable="false">
         <item>ID</item>
