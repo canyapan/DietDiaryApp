@@ -13,8 +13,8 @@
     <string name="action_done">Done</string>
     <string name="action_cancel">Cancel</string>
     <string name="activity_settings_title">Settings</string>
-    <string name="activity_create_event_title">New Record</string>
-    <string name="activity_edit_event_title">Edit Record</string>
+    <string name="activity_create_event_title">New Event</string>
+    <string name="activity_edit_event_title">Edit Event</string>
     <string name="activity_create_edit_description_hint">Description</string>
     <string name="activity_backup_restore_title">Backup/Restore</string>
     <string name="nav_home">Home</string>

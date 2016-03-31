@@ -17,8 +17,8 @@
     <string name="restore">Geri Yükle</string>
     <string name="action_calendar_today">Bugün</string>
     <string name="activity_create_edit_description_hint">Açıklama</string>
-    <string name="activity_create_event_title">Kayıt Ekle</string>
-    <string name="activity_edit_event_title">Kayıt Düzenle</string>
+    <string name="activity_create_event_title">Olay Ekle</string>
+    <string name="activity_edit_event_title">Olay Düzenle</string>
     <string name="activity_backup_restore_title">Yedekle/Geri Yükle</string>
     <string name="activity_settings_title">Ayarlar</string>
     <string name="content_description_icon">İkon</string>
