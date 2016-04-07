@@ -108,7 +108,9 @@ public class CreateEditEventActivity extends AppCompatActivity {
                 mEvent.setTime(new LocalTime());
                 break;
             case RUN_EDIT:
-                actionBar.setTitle(getString(R.string.activity_edit_event_title));
+                if (null != actionBar) {
+                    actionBar.setTitle(getString(R.string.activity_edit_event_title));
+                }
                 etDescription.setText(mEvent.getDescription());
                 if (mOrgDate == null) {
                     mOrgDate = mEvent.getDate();
