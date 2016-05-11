@@ -33,7 +33,8 @@ public class SpinnerArrayAdapter extends ArrayAdapter<SpinnerItem> {
         }
 
         for (int i = offset; i < arrTexts.length; i++) {
-            add(new SpinnerItem(arrTexts[i], null != arrIcons ? arrIcons.getResourceId(i, 0) : 0));
+            //noinspection ResourceType
+            add(new SpinnerItem(arrTexts[i], ((null != arrIcons) ? arrIcons.getResourceId(i, 0) : 0)));
         }
 
         if (null != arrIcons) {

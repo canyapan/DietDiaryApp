@@ -6,10 +6,14 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.ShareCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -18,12 +22,14 @@ import android.widget.TextView;
 import com.canyapan.dietdiaryapp.CreateEditEventActivity;
 import com.canyapan.dietdiaryapp.MainActivity;
 import com.canyapan.dietdiaryapp.R;
+import com.canyapan.dietdiaryapp.db.DatabaseHelper;
 import com.canyapan.dietdiaryapp.db.EventHelper;
 import com.canyapan.dietdiaryapp.helpers.DateTimeHelper;
 import com.canyapan.dietdiaryapp.models.Event;
 import com.example.android.supportv7.widget.decorator.DividerItemDecoration;
 
 import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -49,6 +55,7 @@ public class DayFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
 
         if (null != savedInstanceState) {
             mDate = (LocalDate) savedInstanceState.getSerializable(KEY_DATE_SERIALIZABLE);
@@ -84,6 +91,60 @@ public class DayFragment extends Fragment {
         } else if (null != mSavedList) {
             outState.putParcelableArrayList(KEY_DATA_SET_PARCELABLE, mSavedList);
         }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_day_fragment, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_share:
+                StringBuilder sb = new StringBuilder(getString(R.string.app_name));
+                sb.append(" - ").append(mDate.toString(DateTimeFormat.longDate())).append('\n');
+
+                for (Event e : mAdapter.getDataSet()) {
+                    sb.append(getEventText(e));
+                    sb.append('\n');
+                }
+
+                ShareCompat.IntentBuilder builder = ShareCompat.IntentBuilder.from(getActivity())
+                        .setType("text/plain")
+                        .setText(sb.toString());
+
+                builder.startChooser();
+
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private String getEventText(final Event event) {
+        StringBuilder sb = new StringBuilder();
+        String[] types = getResources().getStringArray(R.array.spinner_event_types);
+        String[] foodTypes = getResources().getStringArray(R.array.spinner_event_food_types);
+        String[] drinkTypes = getResources().getStringArray(R.array.spinner_event_drink_types);
+
+        switch (event.getType()) {
+            case Event.TYPE_FOOD:
+                sb.append(foodTypes[event.getSubType()]);
+                break;
+            case Event.TYPE_DRINK:
+                sb.append(drinkTypes[event.getSubType()]);
+                break;
+            default:
+                sb.append(types[event.getType()]);
+                break;
+        }
+
+        sb.append(" (").append(event.getTime().toString(DatabaseHelper.DB_TIME_FORMATTER)).append("): ");
+        sb.append(event.getDescription());
+
+        return sb.toString();
     }
 
     @Nullable
