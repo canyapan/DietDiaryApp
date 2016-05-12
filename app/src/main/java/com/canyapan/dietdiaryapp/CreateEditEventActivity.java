@@ -50,6 +50,7 @@ public class CreateEditEventActivity extends AppCompatActivity {
     private Event mEvent;
     private LocalDate mOrgDate;
 
+    private ActionBar mActionBar;
     private TextView tvDatePicker, tvTimePicker;
     private Spinner spTypes;
     private EditText etDescription;
@@ -65,9 +66,9 @@ public class CreateEditEventActivity extends AppCompatActivity {
         if (null != toolbar) {
             setSupportActionBar(toolbar);
         }
-        ActionBar actionBar = getSupportActionBar();
-        if (null != actionBar) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
+        mActionBar = getSupportActionBar();
+        if (null != mActionBar) {
+            mActionBar.setDisplayHomeAsUpEnabled(true);
         }
 
         if (savedInstanceState != null) {
@@ -107,8 +108,8 @@ public class CreateEditEventActivity extends AppCompatActivity {
                 mEvent.setTime(new LocalTime());
             }
         } else { // EDIT
-            if (null != actionBar) {
-                actionBar.setTitle(getString(R.string.activity_edit_event_title));
+            if (null != mActionBar) {
+                mActionBar.setTitle(getString(R.string.activity_edit_event_title));
             }
             etDescription.setText(mEvent.getDescription());
             if (null == mOrgDate) {
@@ -243,6 +244,10 @@ public class CreateEditEventActivity extends AppCompatActivity {
                     tvDatePicker.setText(DateTimeHelper.convertLocalDateToString(mEvent.getDate()));
                     miCopy.setVisible(false);
                     miDelete.setVisible(false);
+
+                    if (null != mActionBar) {
+                        mActionBar.setTitle(getString(R.string.activity_create_event_title));
+                    }
 
                     return true;
             }
