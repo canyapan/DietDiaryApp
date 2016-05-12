@@ -9,6 +9,7 @@
     <string name="action_save">Save</string>
     <string name="action_share">Share</string>
     <string name="action_delete">Delete</string>
+    <string name="action_copy">Copy</string>
     <string name="action_calendar_today">Today</string>
     <string name="action_done">Done</string>
     <string name="action_cancel">Cancel</string>

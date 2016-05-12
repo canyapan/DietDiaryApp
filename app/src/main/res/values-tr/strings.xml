@@ -8,6 +8,7 @@
     <string name="action_save">Kaydet</string>
     <string name="action_share">Paylaş</string>
     <string name="action_delete">Sil</string>
+    <string name="action_copy">Kopyala</string>
     <string name="nav_home">Ana Sayfa</string>
     <string name="nav_backup_restore">Yedekle/Geri Yükle</string>
     <string name="nav_settings">Ayarlar</string>

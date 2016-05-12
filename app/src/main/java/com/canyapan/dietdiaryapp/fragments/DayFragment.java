@@ -295,7 +295,6 @@ public class DayFragment extends Fragment {
             Event event = mList.get(position);
             Intent intent = new Intent(view.getContext(), CreateEditEventActivity.class)
                     .putExtra(CreateEditEventActivity.KEY_EVENT_PARCELABLE, event)
-                    .putExtra(CreateEditEventActivity.KEY_RUN_INT, CreateEditEventActivity.RUN_EDIT)
                     .putExtra(CreateEditEventActivity.KEY_POSITION_INT, position);
 
             ((MainActivity) view.getContext()).startActivityForResult(intent, CreateEditEventActivity.REQUEST_CREATE_EDIT);

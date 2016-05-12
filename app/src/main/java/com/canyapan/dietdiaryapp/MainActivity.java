@@ -246,7 +246,6 @@ public class MainActivity extends AppCompatActivity implements
         event.setType(Integer.parseInt(view.getTag().toString()));
 
         Intent intent = new Intent(MainActivity.this, CreateEditEventActivity.class)
-                .putExtra(CreateEditEventActivity.KEY_RUN_INT, CreateEditEventActivity.RUN_CREATE)
                 .putExtra(CreateEditEventActivity.KEY_EVENT_PARCELABLE, event);
 
         startActivityForResult(intent, CreateEditEventActivity.REQUEST_CREATE_EDIT);
