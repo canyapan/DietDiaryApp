@@ -309,6 +309,5 @@ public class MainActivity extends AppCompatActivity implements
         mSelectedDate = newDate;
         mActionBar.setTitle(newDate.toString(DATE_FORMATTER));
     }
-
     //endregion
 }

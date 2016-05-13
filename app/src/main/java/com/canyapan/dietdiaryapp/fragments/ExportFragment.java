@@ -391,7 +391,7 @@ public class ExportFragment extends Fragment implements View.OnClickListener {
                     String[] foodTypes = engResources.getStringArray(R.array.spinner_event_food_types);
                     String[] drinkTypes = engResources.getStringArray(R.array.spinner_event_drink_types);
 
-                    String title;
+                    String subType;
                     int current = 0;
                     int percent = 0, percent_;
                     do {
@@ -405,13 +405,13 @@ public class ExportFragment extends Fragment implements View.OnClickListener {
 
                         switch (model.getType()) {
                             case Event.TYPE_FOOD:
-                                title = foodTypes[model.getSubType()];
+                                subType = foodTypes[model.getSubType()];
                                 break;
                             case Event.TYPE_DRINK:
-                                title = drinkTypes[model.getSubType()];
+                                subType = drinkTypes[model.getSubType()];
                                 break;
                             default:
-                                title = "";
+                                subType = "";
                         }
 
                         csvWriter.writeNext(new String[]{
@@ -419,7 +419,7 @@ public class ExportFragment extends Fragment implements View.OnClickListener {
                                 model.getDate().toString(DatabaseHelper.DB_DATE_FORMATTER),
                                 model.getTime().toString(DatabaseHelper.DB_TIME_FORMATTER),
                                 types[model.getType()],
-                                title,
+                                subType,
                                 model.getDescription()
                         });
 
