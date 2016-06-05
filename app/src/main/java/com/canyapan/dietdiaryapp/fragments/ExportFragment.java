@@ -147,7 +147,7 @@ public class ExportFragment extends Fragment implements View.OnClickListener {
                 }
 
                 try {
-                    mAsyncTask = (ExportAsyncTask) new CsvExporter(this, ExportAsyncTask.TO_EXTERNAL).execute();
+                    mAsyncTask = (ExportAsyncTask) new ExportCSV(this, ExportAsyncTask.TO_EXTERNAL).execute();
                 } catch (ExportException e) {
                     Log.e(TAG, "Save to external storage unsuccessful.", e);
                 }
@@ -155,7 +155,7 @@ public class ExportFragment extends Fragment implements View.OnClickListener {
                 return true;
             case R.id.action_share:
                 try {
-                    mAsyncTask = (ExportAsyncTask) new CsvExporter(this, ExportAsyncTask.TO_SHARE).execute();
+                    mAsyncTask = (ExportAsyncTask) new ExportCSV(this, ExportAsyncTask.TO_SHARE).execute();
                 } catch (ExportException e) {
                     Log.e(TAG, "Share unsuccessful.", e);
                 }
@@ -263,7 +263,7 @@ public class ExportFragment extends Fragment implements View.OnClickListener {
         if (requestCode == REQUEST_EXTERNAL_STORAGE
                 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             try {
-                mAsyncTask = (ExportAsyncTask) new CsvExporter(this, ExportAsyncTask.TO_EXTERNAL).execute();
+                mAsyncTask = (ExportAsyncTask) new ExportCSV(this, ExportAsyncTask.TO_EXTERNAL).execute();
             } catch (ExportException e) {
                 Log.e(TAG, "Save to external storage unsuccessful.", e);
             }

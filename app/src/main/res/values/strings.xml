@@ -37,7 +37,7 @@
     <string name="export_csv_io_exception">IO error occurred while exporting to CSV.</string>
     <string name="export_csv_sql_exception">DB error occurred while exporting to CSV.</string>
     <string name="export_csv_exception">Unidentified error occurred while exporting to CSV.</string>
-    <string name="export_external_successful">CSV file %1$s created.</string>
+    <string name="export_external_successful">%1$s created</string>
     <string name="export_share_successful">CSV file shared.</string>
     <string name="export_no_permission">Please give permission to write files.</string>
     <string name="import_progress_title">Importing&#8230;</string>

@@ -20,7 +20,6 @@ import com.canyapan.dietdiaryapp.db.DatabaseHelper;
 import com.canyapan.dietdiaryapp.db.EventHelper;
 import com.canyapan.dietdiaryapp.helpers.ResourcesHelper;
 import com.canyapan.dietdiaryapp.models.Event;
-import com.opencsv.CSVWriter;
 
 import org.joda.time.LocalDate;
 
@@ -88,17 +87,14 @@ abstract class ExportAsyncTask extends AsyncTask<Void, Integer, Boolean> {
     protected Boolean doInBackground(Void... params) {
         SQLiteDatabase db = null;
         Cursor cursor = null;
-        CSVWriter csvWriter = null;
+
         try {
             Resources engResources = ResourcesHelper.getEngResources(exportFragment.getContext());
 
             final OutputStreamWriter os = new OutputStreamWriter(new FileOutputStream(mFile, false), "UTF-8");
             os.write('\uFEFF'); // Unicode character, U+FEFF BYTE ORDER MARK (BOM) | https://en.wikipedia.org/wiki/Byte_order_mark
+            start(os, engResources);
             publishProgress(1);
-
-            csvWriter = new CSVWriter(os);
-
-            csvWriter.writeNext(engResources.getStringArray(R.array.csv_headers));
 
             db = exportFragment.mDatabaseHelper.getReadableDatabase();
             cursor = db.query(DatabaseHelper.DBT_EVENT, EventHelper.getDatabaseColumns(),
@@ -110,14 +106,9 @@ abstract class ExportAsyncTask extends AsyncTask<Void, Integer, Boolean> {
 
             Event model;
             if (cursor.moveToFirst()) {
-                int count = cursor.getCount();
-                Log.d(ExportFragment.TAG, MessageFormat.format("There are {0,number,integer} records exporting.", count));
+                final int count = cursor.getCount();
+                Log.d(ExportFragment.TAG, MessageFormat.format("Exporting {0,number,integer} records.", count));
 
-                String[] types = engResources.getStringArray(R.array.spinner_event_types);
-                String[] foodTypes = engResources.getStringArray(R.array.spinner_event_food_types);
-                String[] drinkTypes = engResources.getStringArray(R.array.spinner_event_drink_types);
-
-                String subType;
                 int current = 0;
                 int percent = 0, percent_;
                 do {
@@ -129,26 +120,7 @@ abstract class ExportAsyncTask extends AsyncTask<Void, Integer, Boolean> {
                         publishProgress(percent + 5);
                     }
 
-                    switch (model.getType()) {
-                        case Event.TYPE_FOOD:
-                            subType = foodTypes[model.getSubType()];
-                            break;
-                        case Event.TYPE_DRINK:
-                            subType = drinkTypes[model.getSubType()];
-                            break;
-                        default:
-                            subType = "";
-                    }
-
-                    csvWriter.writeNext(new String[]{
-                            Long.toString(model.getID()),
-                            model.getDate().toString(DatabaseHelper.DB_DATE_FORMATTER),
-                            model.getTime().toString(DatabaseHelper.DB_TIME_FORMATTER),
-                            types[model.getType()],
-                            subType,
-                            model.getDescription()
-                    });
-
+                    write(model);
                 } while (cursor.moveToNext());
             }
 
@@ -164,12 +136,7 @@ abstract class ExportAsyncTask extends AsyncTask<Void, Integer, Boolean> {
             Log.e(ExportFragment.TAG, "Content cannot be prepared.", e);
             mErrorString = exportFragment.getString(R.string.export_csv_exception);
         } finally {
-            if (null != csvWriter) {
-                try {
-                    csvWriter.close();
-                } catch (IOException ignore) {
-                }
-            }
+            end();
 
             if (null != cursor) {
                 cursor.close();
@@ -219,4 +186,10 @@ abstract class ExportAsyncTask extends AsyncTask<Void, Integer, Boolean> {
             }
         }
     }
+
+    protected abstract void start(OutputStreamWriter outputStream, Resources resources);
+
+    protected abstract void write(Event event);
+
+    protected abstract void end();
 }
