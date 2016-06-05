@@ -38,6 +38,7 @@ public class DayFragment extends Fragment {
     private static final String TAG = "DayFragment";
     private static final String KEY_DATE_SERIALIZABLE = "DATE";
     private static final String KEY_DATA_SET_PARCELABLE = "DATA SET";
+    private static final String KEY_RELOAD_BOOLEAN = "RELOAD";
 
     private LocalDate mDate;
     private EventModelAdapter mAdapter;
@@ -152,11 +153,15 @@ public class DayFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView " + mDate);
 
-        mAdapter = new EventModelAdapter(mSavedList, DateTimeHelper.is24HourMode(getContext()));
+        mAdapter = new EventModelAdapter(DateTimeHelper.is24HourMode(getContext()));
 
         if (null == mSavedList) {
             new LoadDateAsyncTask().execute(mDate);
+        } else if (getArguments().getBoolean(KEY_RELOAD_BOOLEAN)) {
+            new LoadDateAsyncTask().execute(mDate);
+            getArguments().remove(KEY_RELOAD_BOOLEAN);
         } else {
+            mAdapter.setDataSet(mSavedList);
             mSavedList = null;
         }
 
@@ -168,15 +173,23 @@ public class DayFragment extends Fragment {
     }
 
     public void addNewEvent(Event newEvent) {
-        mAdapter.addNewEvent(newEvent);
+        if (null != mAdapter) {
+            mAdapter.addNewEvent(newEvent);
+        } else {
+            getArguments().putBoolean(KEY_RELOAD_BOOLEAN, true);
+        }
     }
 
     public void updateAnEventAt(Event updatedEvent, int position) {
-        mAdapter.updateAnEventAt(updatedEvent, position);
+        if (null != mAdapter) {
+            mAdapter.updateAnEventAt(updatedEvent, position);
+        }
     }
 
     public void deleteAnEventAt(Event deletedEvent, int position) {
-        mAdapter.deleteAnEventAt(deletedEvent, position);
+        if (null != mAdapter) {
+            mAdapter.deleteAnEventAt(deletedEvent, position);
+        }
     }
 
     interface OnItemClickListener {
@@ -212,10 +225,6 @@ public class DayFragment extends Fragment {
                 list = EventHelper.getEventByDate(getContext(), date);
             } catch (SQLiteException e) {
                 Log.e(TAG, "Content cannot be prepared probably a DB issue.", e);
-            } finally {
-                if (null == list) {
-                    list = new ArrayList<>(0);
-                }
             }
 
             return list;
@@ -228,9 +237,9 @@ public class DayFragment extends Fragment {
         private boolean mIs24HourFormat;
         private ArrayList<Event> mList;
 
-        public EventModelAdapter(final ArrayList<Event> list, final boolean is24HourFormat) {
-            mList = list;
+        public EventModelAdapter(final boolean is24HourFormat) {
             mIs24HourFormat = is24HourFormat;
+            mList = null;
         }
 
         @Override
