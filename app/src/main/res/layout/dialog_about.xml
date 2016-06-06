@@ -37,6 +37,15 @@
             android:layout_height="wrap_content"
             android:text="@string/app_name"
             android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/appVersion"
+            style="@style/Base.TextAppearance.AppCompat.Large"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/default_gap"
+            android:layout_marginStart="@dimen/default_gap"
+            android:textStyle="bold"/>
     </LinearLayout>
 
     <TextView

@@ -33,8 +33,9 @@ import org.joda.time.LocalTime;
 import java.text.MessageFormat;
 
 public class CreateEditEventActivity extends AppCompatActivity {
+    private static final String TAG = "CreateEditEventActivity";
+
     public static final String KEY_EVENT_PARCELABLE = "EVENT";
-    public static final String KEY_RUN_INT = "RUN";
     public static final String KEY_POSITION_INT = "POSITION";
     public static final String KEY_ORG_DATE_SERIALIZABLE = "ORG_DATE";
     public static final int RESULT_ERROR = -2;
@@ -44,16 +45,17 @@ public class CreateEditEventActivity extends AppCompatActivity {
     public static final int RESULT_UPDATED = 2;
     public static final int RESULT_DELETED = 3;
     public static final int REQUEST_CREATE_EDIT = 1;
-    public static final int RUN_CREATE = 0;
-    public static final int RUN_EDIT = 1;
-    private static final String TAG = "CreateEditEventActivity";
-    private int mRun, mPosition;
+
+    private int mPosition;
     private Event mEvent;
     private LocalDate mOrgDate;
 
+    private ActionBar mActionBar;
     private TextView tvDatePicker, tvTimePicker;
     private Spinner spTypes;
     private EditText etDescription;
+
+    private MenuItem miDelete, miCopy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,19 +66,17 @@ public class CreateEditEventActivity extends AppCompatActivity {
         if (null != toolbar) {
             setSupportActionBar(toolbar);
         }
-        ActionBar actionBar = getSupportActionBar();
-        if (null != actionBar) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
+        mActionBar = getSupportActionBar();
+        if (null != mActionBar) {
+            mActionBar.setDisplayHomeAsUpEnabled(true);
         }
 
         if (savedInstanceState != null) {
             mEvent = savedInstanceState.getParcelable(KEY_EVENT_PARCELABLE);
-            mRun = savedInstanceState.getInt(KEY_RUN_INT);
             mPosition = savedInstanceState.getInt(KEY_POSITION_INT, -1);
             mOrgDate = (LocalDate) savedInstanceState.getSerializable(KEY_ORG_DATE_SERIALIZABLE);
         } else {
             mEvent = getIntent().getParcelableExtra(KEY_EVENT_PARCELABLE);
-            mRun = getIntent().getIntExtra(KEY_RUN_INT, 0);
             mPosition = getIntent().getIntExtra(KEY_POSITION_INT, -1);
             mOrgDate = null;
         }
@@ -103,19 +103,18 @@ public class CreateEditEventActivity extends AppCompatActivity {
                 break;
         }
 
-        switch (mRun) {
-            case RUN_CREATE:
+        if (mEvent.getID() == -1) { // CREATE
+            if (null == mEvent.getTime()) {
                 mEvent.setTime(new LocalTime());
-                break;
-            case RUN_EDIT:
-                if (null != actionBar) {
-                    actionBar.setTitle(getString(R.string.activity_edit_event_title));
-                }
-                etDescription.setText(mEvent.getDescription());
-                if (mOrgDate == null) {
-                    mOrgDate = mEvent.getDate();
-                }
-                break;
+            }
+        } else { // EDIT
+            if (null != mActionBar) {
+                mActionBar.setTitle(getString(R.string.activity_edit_event_title));
+            }
+            etDescription.setText(mEvent.getDescription());
+            if (null == mOrgDate) {
+                mOrgDate = mEvent.getDate();
+            }
         }
 
         tvDatePicker.setText(DateTimeHelper.convertLocalDateToString(mEvent.getDate()));
@@ -150,7 +149,6 @@ public class CreateEditEventActivity extends AppCompatActivity {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelable(KEY_EVENT_PARCELABLE, mEvent);
-        outState.putInt(KEY_RUN_INT, mRun);
         outState.putInt(KEY_POSITION_INT, mPosition);
         outState.putSerializable(KEY_ORG_DATE_SERIALIZABLE, mOrgDate);
     }
@@ -159,9 +157,14 @@ public class CreateEditEventActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_create_edit_event_activity, menu);
 
-        if (mRun == RUN_EDIT) {
-            MenuItem deleteItem = menu.findItem(R.id.action_delete);
-            deleteItem.setVisible(true);
+        if (mPosition >= 0) { // EDIT
+            miDelete = menu.findItem(R.id.action_delete);
+            miDelete.setVisible(true);
+
+            miCopy = menu.findItem(R.id.action_copy);
+            miCopy.setVisible(true);
+        } else {
+            miDelete = miCopy = null;
         }
 
         return true;
@@ -231,6 +234,21 @@ public class CreateEditEventActivity extends AppCompatActivity {
                     }
 
                     CreateEditEventActivity.this.finish();
+                    return true;
+                case R.id.action_copy:
+                    mOrgDate = null;
+                    mPosition = -1;
+                    mEvent.setID(-1);
+                    mEvent.setDate(new LocalDate());
+
+                    tvDatePicker.setText(DateTimeHelper.convertLocalDateToString(mEvent.getDate()));
+                    miCopy.setVisible(false);
+                    miDelete.setVisible(false);
+
+                    if (null != mActionBar) {
+                        mActionBar.setTitle(getString(R.string.activity_create_event_title));
+                    }
+
                     return true;
             }
         } catch (SQLiteException e) {

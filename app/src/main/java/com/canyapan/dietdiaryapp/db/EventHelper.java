@@ -130,7 +130,7 @@ public class EventHelper {
         DatabaseHelper databaseHelper = new DatabaseHelper(context);
 
         try {
-            SQLiteDatabase db = databaseHelper.getWritableDatabase();
+            SQLiteDatabase db = databaseHelper.getReadableDatabase();
             return getEventByID(db, id);
         } finally {
             databaseHelper.close();
@@ -164,7 +164,7 @@ public class EventHelper {
         DatabaseHelper databaseHelper = new DatabaseHelper(context);
 
         try {
-            SQLiteDatabase db = databaseHelper.getWritableDatabase();
+            SQLiteDatabase db = databaseHelper.getReadableDatabase();
             return getEventByDate(db, date);
         } finally {
             databaseHelper.close();
@@ -208,7 +208,7 @@ public class EventHelper {
         DatabaseHelper databaseHelper = new DatabaseHelper(context);
 
         try {
-            SQLiteDatabase db = databaseHelper.getWritableDatabase();
+            SQLiteDatabase db = databaseHelper.getReadableDatabase();
             return getEventByDateRange(db, startDate, endDate);
         } finally {
             databaseHelper.close();
@@ -255,7 +255,7 @@ public class EventHelper {
         DatabaseHelper databaseHelper = new DatabaseHelper(context);
 
         try {
-            SQLiteDatabase db = databaseHelper.getWritableDatabase();
+            SQLiteDatabase db = databaseHelper.getReadableDatabase();
             return hasEventToday(db);
         } finally {
             databaseHelper.close();

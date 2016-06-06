@@ -8,6 +8,7 @@
     <string name="action_save">Kaydet</string>
     <string name="action_share">Paylaş</string>
     <string name="action_delete">Sil</string>
+    <string name="action_copy">Kopyala</string>
     <string name="nav_home">Ana Sayfa</string>
     <string name="nav_backup_restore">Yedekle/Geri Yükle</string>
     <string name="nav_settings">Ayarlar</string>
@@ -26,7 +27,7 @@
     <string name="export_csv_io_exception">CSV dışa aktarılırken IO hatası oluştu.</string>
     <string name="export_csv_sql_exception">CSV dışa aktarılırken DB hatası oluştu.</string>
     <string name="export_destination">Hedef</string>
-    <string name="export_external_successful">%1$s CSV dosyası oluşturuldu.</string>
+    <string name="export_external_successful">%1$s oluşturuldu.</string>
     <string name="export_file_creation_error">Dışa aktarım dosyası oluşturulamadı.</string>
     <string name="export_from">Başlangıç</string>
     <string name="export_no_permission">Lütfen dosya yazma için izin verin.</string>

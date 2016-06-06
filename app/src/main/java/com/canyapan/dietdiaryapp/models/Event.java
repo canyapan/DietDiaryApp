@@ -32,6 +32,7 @@ public class Event implements Parcelable {
     private String mDescription;
 
     public Event() {
+        setID(-1);
     }
 
     public Event(long id, LocalDate date, LocalTime time, int type, int subType, String description) {

@@ -6,10 +6,14 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.ShareCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -18,12 +22,14 @@ import android.widget.TextView;
 import com.canyapan.dietdiaryapp.CreateEditEventActivity;
 import com.canyapan.dietdiaryapp.MainActivity;
 import com.canyapan.dietdiaryapp.R;
+import com.canyapan.dietdiaryapp.db.DatabaseHelper;
 import com.canyapan.dietdiaryapp.db.EventHelper;
 import com.canyapan.dietdiaryapp.helpers.DateTimeHelper;
 import com.canyapan.dietdiaryapp.models.Event;
 import com.example.android.supportv7.widget.decorator.DividerItemDecoration;
 
 import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -32,6 +38,7 @@ public class DayFragment extends Fragment {
     private static final String TAG = "DayFragment";
     private static final String KEY_DATE_SERIALIZABLE = "DATE";
     private static final String KEY_DATA_SET_PARCELABLE = "DATA SET";
+    private static final String KEY_RELOAD_BOOLEAN = "RELOAD";
 
     private LocalDate mDate;
     private EventModelAdapter mAdapter;
@@ -49,6 +56,7 @@ public class DayFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
 
         if (null != savedInstanceState) {
             mDate = (LocalDate) savedInstanceState.getSerializable(KEY_DATE_SERIALIZABLE);
@@ -86,16 +94,74 @@ public class DayFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_day_fragment, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_share:
+                StringBuilder sb = new StringBuilder(getString(R.string.app_name));
+                sb.append(" - ").append(mDate.toString(DateTimeFormat.longDate())).append('\n');
+
+                for (Event e : mAdapter.getDataSet()) {
+                    sb.append(getEventText(e));
+                    sb.append('\n');
+                }
+
+                ShareCompat.IntentBuilder builder = ShareCompat.IntentBuilder.from(getActivity())
+                        .setType("text/plain")
+                        .setText(sb.toString());
+
+                builder.startChooser();
+
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private String getEventText(final Event event) {
+        StringBuilder sb = new StringBuilder();
+        String[] types = getResources().getStringArray(R.array.spinner_event_types);
+        String[] foodTypes = getResources().getStringArray(R.array.spinner_event_food_types);
+        String[] drinkTypes = getResources().getStringArray(R.array.spinner_event_drink_types);
+
+        switch (event.getType()) {
+            case Event.TYPE_FOOD:
+                sb.append(foodTypes[event.getSubType()]);
+                break;
+            case Event.TYPE_DRINK:
+                sb.append(drinkTypes[event.getSubType()]);
+                break;
+            default:
+                sb.append(types[event.getType()]);
+                break;
+        }
+
+        sb.append(" (").append(event.getTime().toString(DatabaseHelper.DB_TIME_FORMATTER)).append("): ");
+        sb.append(event.getDescription());
+
+        return sb.toString();
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView " + mDate);
 
-        mAdapter = new EventModelAdapter(mSavedList, DateTimeHelper.is24HourMode(getContext()));
+        mAdapter = new EventModelAdapter(DateTimeHelper.is24HourMode(getContext()));
 
         if (null == mSavedList) {
             new LoadDateAsyncTask().execute(mDate);
+        } else if (getArguments().getBoolean(KEY_RELOAD_BOOLEAN)) {
+            new LoadDateAsyncTask().execute(mDate);
+            getArguments().remove(KEY_RELOAD_BOOLEAN);
         } else {
+            mAdapter.setDataSet(mSavedList);
             mSavedList = null;
         }
 
@@ -107,15 +173,23 @@ public class DayFragment extends Fragment {
     }
 
     public void addNewEvent(Event newEvent) {
-        mAdapter.addNewEvent(newEvent);
+        if (null != mAdapter) {
+            mAdapter.addNewEvent(newEvent);
+        } else {
+            getArguments().putBoolean(KEY_RELOAD_BOOLEAN, true);
+        }
     }
 
     public void updateAnEventAt(Event updatedEvent, int position) {
-        mAdapter.updateAnEventAt(updatedEvent, position);
+        if (null != mAdapter) {
+            mAdapter.updateAnEventAt(updatedEvent, position);
+        }
     }
 
     public void deleteAnEventAt(Event deletedEvent, int position) {
-        mAdapter.deleteAnEventAt(deletedEvent, position);
+        if (null != mAdapter) {
+            mAdapter.deleteAnEventAt(deletedEvent, position);
+        }
     }
 
     interface OnItemClickListener {
@@ -151,10 +225,6 @@ public class DayFragment extends Fragment {
                 list = EventHelper.getEventByDate(getContext(), date);
             } catch (SQLiteException e) {
                 Log.e(TAG, "Content cannot be prepared probably a DB issue.", e);
-            } finally {
-                if (null == list) {
-                    list = new ArrayList<>(0);
-                }
             }
 
             return list;
@@ -167,9 +237,9 @@ public class DayFragment extends Fragment {
         private boolean mIs24HourFormat;
         private ArrayList<Event> mList;
 
-        public EventModelAdapter(final ArrayList<Event> list, final boolean is24HourFormat) {
-            mList = list;
+        public EventModelAdapter(final boolean is24HourFormat) {
             mIs24HourFormat = is24HourFormat;
+            mList = null;
         }
 
         @Override
@@ -234,7 +304,6 @@ public class DayFragment extends Fragment {
             Event event = mList.get(position);
             Intent intent = new Intent(view.getContext(), CreateEditEventActivity.class)
                     .putExtra(CreateEditEventActivity.KEY_EVENT_PARCELABLE, event)
-                    .putExtra(CreateEditEventActivity.KEY_RUN_INT, CreateEditEventActivity.RUN_EDIT)
                     .putExtra(CreateEditEventActivity.KEY_POSITION_INT, position);
 
             ((MainActivity) view.getContext()).startActivityForResult(intent, CreateEditEventActivity.REQUEST_CREATE_EDIT);
