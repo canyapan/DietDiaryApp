@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.canyapan.dietdiaryapp.CreateEditEventActivity;
 import com.canyapan.dietdiaryapp.MainActivity;
@@ -104,20 +105,26 @@ public class DayFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_share:
-                StringBuilder sb = new StringBuilder(getString(R.string.app_name));
-                sb.append(" - ").append(mDate.toString(DateTimeFormat.longDate())).append('\n');
+                if (null != mAdapter) {
+                    if (0 == mAdapter.getItemCount()) {
+                        Toast.makeText(getContext(), R.string.day_fragment_nothing_to_share, Toast.LENGTH_SHORT).show();
+                        return true;
+                    }
 
-                for (Event e : mAdapter.getDataSet()) {
-                    sb.append(getEventText(e));
-                    sb.append('\n');
+                    StringBuilder sb = new StringBuilder(getString(R.string.app_name));
+                    sb.append(" - ").append(mDate.toString(DateTimeFormat.longDate())).append('\n');
+
+                    for (Event e : mAdapter.getDataSet()) {
+                        sb.append(getEventText(e));
+                        sb.append('\n');
+                    }
+
+                    ShareCompat.IntentBuilder builder = ShareCompat.IntentBuilder.from(getActivity())
+                            .setType("text/plain")
+                            .setText(sb.toString());
+
+                    builder.startChooser();
                 }
-
-                ShareCompat.IntentBuilder builder = ShareCompat.IntentBuilder.from(getActivity())
-                        .setType("text/plain")
-                        .setText(sb.toString());
-
-                builder.startChooser();
-
                 return true;
         }
 
