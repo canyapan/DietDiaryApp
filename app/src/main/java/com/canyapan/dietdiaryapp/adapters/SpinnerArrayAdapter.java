@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.canyapan.dietdiaryapp.R;
@@ -72,23 +74,28 @@ public class SpinnerArrayAdapter extends ArrayAdapter<SpinnerItem> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        final TextView view;
+        final LinearLayout layout;
+
         if (convertView == null) {
-            view = (TextView) mInflater.inflate(mLayoutResource, parent, false);
+            layout = (LinearLayout) mInflater.inflate(mLayoutResource, parent, false);
         } else {
-            view = (TextView) convertView;
+            layout = (LinearLayout) convertView;
         }
 
-        SpinnerItem item = getItem(position);
+        final ImageView imageView = (ImageView) layout.findViewById(R.id.ivIcon);
+        final TextView textView = (TextView) layout.findViewById(R.id.tvText);
+
+        final SpinnerItem item = getItem(position);
+
+        imageView.setImageResource(item.getDrawable());
+
         if (item.isHint()) { // Load the hint
-            view.setText("");
-            view.setHint(item.getText());
-            view.setCompoundDrawablesWithIntrinsicBounds(item.getDrawable(), 0, 0, 0);
+            textView.setText("");
+            textView.setHint(item.getText());
         } else {
-            view.setText(item.getText());
-            view.setCompoundDrawablesWithIntrinsicBounds(item.getDrawable(), 0, 0, 0);
+            textView.setText(item.getText());
         }
 
-        return view;
+        return layout;
     }
 }

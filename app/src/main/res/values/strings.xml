@@ -18,6 +18,7 @@
     <string name="activity_edit_event_title">Edit Event</string>
     <string name="activity_create_edit_description_hint">Description</string>
     <string name="activity_backup_restore_title">Backup/Restore</string>
+    <string name="day_fragment_nothing_to_share">There is no record to share.</string>
     <string name="nav_home">Home</string>
     <string name="nav_backup_restore">Backup/Restore</string>
     <string name="nav_settings">Settings</string>

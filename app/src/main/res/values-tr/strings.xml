@@ -22,6 +22,7 @@
     <string name="activity_edit_event_title">Olay Düzenle</string>
     <string name="activity_backup_restore_title">Yedekle/Geri Yükle</string>
     <string name="activity_settings_title">Ayarlar</string>
+    <string name="day_fragment_nothing_to_share">Paylaşılacak kayıt yok.</string>
     <string name="content_description_icon">İkon</string>
     <string name="export_csv_exception">CSV dışa aktarılırken bilinmeyen bir hata oluştu.</string>
     <string name="export_csv_io_exception">CSV dışa aktarılırken IO hatası oluştu.</string>
