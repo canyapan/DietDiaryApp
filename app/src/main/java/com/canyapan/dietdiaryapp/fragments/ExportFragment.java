@@ -30,6 +30,7 @@ import android.widget.Toast;
 import com.canyapan.dietdiaryapp.R;
 import com.canyapan.dietdiaryapp.db.DatabaseHelper;
 import com.canyapan.dietdiaryapp.helpers.DateTimeHelper;
+import com.canyapan.dietdiaryapp.helpers.ResourcesHelper;
 
 import org.joda.time.LocalDate;
 
@@ -83,14 +84,9 @@ public class ExportFragment extends Fragment implements View.OnClickListener {
         tvToDatePicker = (TextView) mGridLayout.findViewById(R.id.tvToDatePicker);
         spFormats = (Spinner) mGridLayout.findViewById(R.id.spFormats);
 
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            ((TextView) mGridLayout.findViewById(R.id.tvFrom))
-                    .setCompoundDrawablesWithIntrinsicBounds(R.drawable.calendar_today, 0, 0, 0);
-            ((TextView) mGridLayout.findViewById(R.id.tvTo))
-                    .setCompoundDrawablesWithIntrinsicBounds(R.drawable.calendar, 0, 0, 0);
-            ((TextView) mGridLayout.findViewById(R.id.tvType))
-                    .setCompoundDrawablesWithIntrinsicBounds(R.drawable.file, 0, 0, 0);
-        }
+        ResourcesHelper.setLeftCompoundDrawable(mGridLayout, R.id.tvFrom, R.drawable.calendar_today);
+        ResourcesHelper.setLeftCompoundDrawable(mGridLayout, R.id.tvTo, R.drawable.calendar);
+        ResourcesHelper.setLeftCompoundDrawable(mGridLayout, R.id.tvType, R.drawable.file);
 
         tvFromDatePicker.setOnClickListener(this);
         tvToDatePicker.setOnClickListener(this);
