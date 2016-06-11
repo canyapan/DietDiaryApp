@@ -1,6 +1,7 @@
 package com.canyapan.dietdiaryapp;
 
 import android.annotation.TargetApi;
+import android.app.backup.BackupManager;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Build;
@@ -74,6 +75,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                     }
                 }
             }
+
+            BackupManager backupManager = new BackupManager(preference.getContext());
+            backupManager.dataChanged();
 
             return true;
         }

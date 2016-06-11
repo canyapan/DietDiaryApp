@@ -2,6 +2,7 @@ package com.canyapan.dietdiaryapp;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.app.backup.BackupManager;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -202,17 +203,23 @@ public class CreateEditEventActivity extends AppCompatActivity {
                     }
                     mEvent.setDescription(etDescription.getText().toString());
 
+                    BackupManager backupManager = new BackupManager(this);
+
                     if (mPosition >= 0) { // UPDATE
                         if (EventHelper.update(db, mEvent)) {
                             setResult(RESULT_UPDATED, intent);
+
+                            backupManager.dataChanged();
                         } else {
-                            Log.e(TAG, "Update operation returned false.");
+                            Log.e(TAG, "Update operation failed.");
                             setResult(RESULT_FAILED, intent);
                         }
                     } else { // INSERT
                         if (EventHelper.insert(db, mEvent)) {
                             Log.d(TAG, MessageFormat.format("A new record inserted to the database with id {0,number,integer}.", mEvent.getID()));
                             setResult(RESULT_INSERTED, intent);
+
+                            backupManager.dataChanged();
                         } else {
                             Log.e(TAG, "Insert operation failed.");
                             setResult(RESULT_FAILED, intent);
