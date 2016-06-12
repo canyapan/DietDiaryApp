@@ -3,7 +3,7 @@
     package="com.canyapan.dietdiaryapp"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- To send crash reports -->
+    <!-- To send crash reports and backup to google cloud -->
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <!-- To import/export -->
