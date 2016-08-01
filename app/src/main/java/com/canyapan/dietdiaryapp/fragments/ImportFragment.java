@@ -108,7 +108,7 @@ public class ImportFragment extends Fragment {
         super.onSaveInstanceState(outState);
 
         if (spFiles.getSelectedItemPosition() > 0) {
-            outState.putSerializable(KEY_SELECTED_FILE_SERIALIZABLE, mFiles[spFiles.getSelectedItemPosition()]);
+            outState.putSerializable(KEY_SELECTED_FILE_SERIALIZABLE, mFiles[spFiles.getSelectedItemPosition() - 1]);
         }
     }
 
