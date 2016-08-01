@@ -108,7 +108,7 @@ public class ImportFragment extends Fragment {
         super.onSaveInstanceState(outState);
 
         if (spFiles.getSelectedItemPosition() > 0) {
-            outState.putSerializable(KEY_SELECTED_FILE_SERIALIZABLE, mFiles[spFiles.getSelectedItemPosition()]);
+            outState.putSerializable(KEY_SELECTED_FILE_SERIALIZABLE, mFiles[spFiles.getSelectedItemPosition() - 1]);
         }
     }
 
@@ -129,6 +129,11 @@ public class ImportFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_save:
+                if (mFiles.length == 0 || mFiles.length < spFiles.getSelectedItemPosition())  {
+                    // Fail safety.
+                    return true;
+                }
+
                 if (spFiles.getSelectedItemPosition() == 0) {
                     // Skip the select helper.
                     return true;

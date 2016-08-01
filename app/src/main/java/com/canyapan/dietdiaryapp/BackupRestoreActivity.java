@@ -1,6 +1,7 @@
 package com.canyapan.dietdiaryapp;
 
 import android.app.Activity;
+import android.app.backup.BackupManager;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -97,6 +98,9 @@ public class BackupRestoreActivity extends AppCompatActivity
     @Override
     public void onImportComplete(Uri uri, LocalDate startDate, LocalDate endDate) {
         setResult(Activity.RESULT_FIRST_USER);
+
+        BackupManager backupManager = new BackupManager(this);
+        backupManager.dataChanged();
     }
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
