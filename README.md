@@ -13,7 +13,14 @@ DietDiaryApp can be downloaded from following sources:
 You might also be interested in becoming a [beta tester](https://play.google.com/apps/testing/com.canyapan.dietdiaryapp)
 
 
-### Contributing and Translations
+### Translations <a href="https://hosted.weblate.org/engage/diet-diary/?utm_source=widget"><img src="https://hosted.weblate.org/widgets/diet-diary/-/svg-badge.svg" alt="Translation status" /></a>
+
+Please help me to translate DietDiaryApp into your language. Contribute here: [Weblate](https://hosted.weblate.org/projects/diet-diary/strings/)
+
+Many thanks to Weblate for providing their translation service for free.
+
+
+### Contributing
 
 Please fork this repository and contribute back using [pull requests](https://github.com/canyapan/DietDiaryApp/pulls).
 
