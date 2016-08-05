@@ -6,3 +6,6 @@ android:
     - extra-android-m2repository
 
 jdk: oraclejdk7
+
+before_install:
+  - chmod +x gradlew
