@@ -1,4 +1,5 @@
 ## DietDiaryApp
+[![Build Status](https://travis-ci.org/canyapan/DietDiaryApp.svg?branch=master)](https://travis-ci.org/canyapan/DietDiaryApp) [![Translation Status](https://hosted.weblate.org/widgets/diet-diary/-/svg-badge.svg)](https://hosted.weblate.org/engage/diet-diary/?utm_source=widget)
 
 Android application to keep your daily diet.
 
@@ -13,7 +14,7 @@ DietDiaryApp can be downloaded from following sources:
 You might also be interested in becoming a [beta tester](https://play.google.com/apps/testing/com.canyapan.dietdiaryapp)
 
 
-### Translations <a href="https://hosted.weblate.org/engage/diet-diary/?utm_source=widget"><img src="https://hosted.weblate.org/widgets/diet-diary/-/svg-badge.svg" alt="Translation status" /></a>
+### Translations
 
 Please help me to translate DietDiaryApp into your language. Contribute here: [Weblate](https://hosted.weblate.org/projects/diet-diary/strings/)
 
