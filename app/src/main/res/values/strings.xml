@@ -127,8 +127,8 @@
     <string name="spinner_event_drink_types_tea">Tea</string>
     <string name="spinner_event_drink_types_alcohol">Alcohol</string>
     <string name="spinner_event_drink_types_water">Water</string>
-    <string name="spinner_event_drink_types_energy_drink">Energy drink</string>
-    <string name="spinner_event_drink_types_fruit_juice">Fruit juice</string>
+    <string name="spinner_event_drink_types_energy_drink">Energy Drink</string>
+    <string name="spinner_event_drink_types_fruit_juice">Fruit Juice</string>
 
     <string-array name="spinner_file_types" translatable="false">
         <item>CSV</item>

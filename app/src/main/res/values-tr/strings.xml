@@ -64,22 +64,22 @@
     <string name="spinner_event_types_food">Yemek</string>
     <string name="spinner_event_types_drink">İçecek</string>
     <string name="spinner_event_types_medication">İlaç</string>
-    <string name="spinner_event_types_supplements">Besin takviyesi</string>
+    <string name="spinner_event_types_supplements">Besin Takviyesi</string>
     <string name="spinner_event_types_exercise">Egzersiz</string>
     <string name="spinner_event_types_other">Diğer</string>
 
     <string name="spinner_event_food_types_breakfast">Kahvaltı</string>
-    <string name="spinner_event_food_types_lunch">Öğle yemeği</string>
-    <string name="spinner_event_food_types_dinner">Akşam yemeği</string>
-    <string name="spinner_event_food_types_snack">Ara öğün</string>
-    <string name="spinner_event_food_types_junk">Abur cubur</string>
+    <string name="spinner_event_food_types_lunch">Öğle Yemeği</string>
+    <string name="spinner_event_food_types_dinner">Akşam Yemeği</string>
+    <string name="spinner_event_food_types_snack">Ara Öğün</string>
+    <string name="spinner_event_food_types_junk">Abur Cubur</string>
 
     <string name="spinner_event_drink_types_coffee">Kahve</string>
     <string name="spinner_event_drink_types_tea">Çay</string>
     <string name="spinner_event_drink_types_alcohol">Alkol</string>
     <string name="spinner_event_drink_types_water">Su</string>
-    <string name="spinner_event_drink_types_energy_drink">Enerji içeceği</string>
-    <string name="spinner_event_drink_types_fruit_juice">Meyve suyu</string>
+    <string name="spinner_event_drink_types_energy_drink">Enerji İçeceği</string>
+    <string name="spinner_event_drink_types_fruit_juice">Meyve Suyu</string>
 
     <string name="pref_header_general">Genel</string>
     <string name="pref_header_notifications">Bildirimler</string>
