@@ -3,6 +3,8 @@ package com.canyapan.dietdiaryapp.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -231,8 +233,15 @@ public class CalendarFragment extends Fragment implements ViewPager.OnPageChange
             return COUNT;
         }
 
-        public DayFragment getFragment(ViewGroup container, LocalDate date) {
-            return (DayFragment) instantiateItem(container, getPositionForDate(date));
+        @Nullable
+        public DayFragment getFragment(@NonNull ViewGroup container, @NonNull LocalDate date) {
+            final int position = getPositionForDate(date);
+
+            if (position < 0 || position >= getCount()) {
+                return null;
+            }
+
+            return (DayFragment) instantiateItem(container, position);
         }
 
         public LocalDate getDateForPosition(int position) {

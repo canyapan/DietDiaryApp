@@ -39,6 +39,7 @@ public class CreateEditEventActivity extends AppCompatActivity {
     public static final String KEY_EVENT_PARCELABLE = "EVENT";
     public static final String KEY_POSITION_INT = "POSITION";
     public static final String KEY_ORG_DATE_SERIALIZABLE = "ORG_DATE";
+    public static final String KEY_EXCEPTION_SERIALIZABLE = "EXCEPTION";
     public static final int RESULT_ERROR = -2;
     public static final int RESULT_FAILED = -1;
     public static final int RESULT_CANCELLED = 0;
@@ -173,15 +174,15 @@ public class CreateEditEventActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent = new Intent();
+        intent.putExtra(KEY_EVENT_PARCELABLE, mEvent);
+        intent.putExtra(KEY_POSITION_INT, mPosition);
+        intent.putExtra(KEY_ORG_DATE_SERIALIZABLE, mOrgDate);
+
         SQLiteDatabase db = null;
         try {
             final DatabaseHelper dbHelper = new DatabaseHelper(CreateEditEventActivity.this);
             db = dbHelper.getWritableDatabase();
-
-            Intent intent = new Intent();
-            intent.putExtra(KEY_EVENT_PARCELABLE, mEvent);
-            intent.putExtra(KEY_POSITION_INT, mPosition);
-            intent.putExtra(KEY_ORG_DATE_SERIALIZABLE, mOrgDate);
 
             switch (item.getItemId()) {
                 case android.R.id.home:
@@ -261,11 +262,13 @@ public class CreateEditEventActivity extends AppCompatActivity {
         } catch (SQLiteException e) {
             Log.e(TAG, "Content cannot be prepared probably a DB issue.", e);
 
-            setResult(RESULT_ERROR);
+            intent.putExtra(KEY_EXCEPTION_SERIALIZABLE, e);
+            setResult(RESULT_ERROR, intent);
         } catch (Exception e) {
             Log.e(TAG, "Content cannot be prepared.", e);
 
-            setResult(RESULT_ERROR);
+            intent.putExtra(KEY_EXCEPTION_SERIALIZABLE, e);
+            setResult(RESULT_ERROR, intent);
         } finally {
             if (null != db && db.isOpen()) {
                 db.close();
