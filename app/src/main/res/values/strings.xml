@@ -85,33 +85,50 @@
         <item>@drawable/other</item>
     </array>
 
-    <string-array name="spinner_event_types">
-        <item>Food</item>
-        <item>Drink</item>
-        <item>Medication</item>
-        <item>Supplements</item>
-        <item>Exercise</item>
-        <item>Other</item>
+    <string-array name="spinner_event_types" translatable="false">
+        <item>@string/spinner_event_types_food</item>
+        <item>@string/spinner_event_types_drink</item>
+        <item>@string/spinner_event_types_medication</item>
+        <item>@string/spinner_event_types_supplements</item>
+        <item>@string/spinner_event_types_exercise</item>
+        <item>@string/spinner_event_types_other</item>
     </string-array>
+    <string name="spinner_event_types_food">Food</string>
+    <string name="spinner_event_types_drink">Drink</string>
+    <string name="spinner_event_types_medication">Medication</string>
+    <string name="spinner_event_types_supplements">Supplements</string>
+    <string name="spinner_event_types_exercise">Exercise</string>
+    <string name="spinner_event_types_other">Other</string>
 
-    <string-array name="spinner_event_food_types">
-        <item>Food</item>
-        <item>Breakfast</item>
-        <item>Lunch</item>
-        <item>Dinner</item>
-        <item>Snack</item>
-        <item>Junk</item>
+    <string-array name="spinner_event_food_types" translatable="false">
+        <item>@string/spinner_event_types_food</item>
+        <item>@string/spinner_event_food_types_breakfast</item>
+        <item>@string/spinner_event_food_types_lunch</item>
+        <item>@string/spinner_event_food_types_dinner</item>
+        <item>@string/spinner_event_food_types_snack</item>
+        <item>@string/spinner_event_food_types_junk</item>
     </string-array>
+    <string name="spinner_event_food_types_breakfast">Breakfast</string>
+    <string name="spinner_event_food_types_lunch">Lunch</string>
+    <string name="spinner_event_food_types_dinner">Dinner</string>
+    <string name="spinner_event_food_types_snack">Snack</string>
+    <string name="spinner_event_food_types_junk">Junk</string>
 
-    <string-array name="spinner_event_drink_types">
-        <item>Drink</item>
-        <item>Coffee</item>
-        <item>Tea</item>
-        <item>Alcohol</item>
-        <item>Water</item>
-        <item>Energy Drink</item>
-        <item>Fruit Juice</item>
+    <string-array name="spinner_event_drink_types" translatable="false">
+        <item>@string/spinner_event_types_drink</item>
+        <item>@string/spinner_event_drink_types_coffee</item>
+        <item>@string/spinner_event_drink_types_tea</item>
+        <item>@string/spinner_event_drink_types_alcohol</item>
+        <item>@string/spinner_event_drink_types_water</item>
+        <item>@string/spinner_event_drink_types_energy_drink</item>
+        <item>@string/spinner_event_drink_types_fruit_juice</item>
     </string-array>
+    <string name="spinner_event_drink_types_coffee">Coffee</string>
+    <string name="spinner_event_drink_types_tea">Tea</string>
+    <string name="spinner_event_drink_types_alcohol">Alcohol</string>
+    <string name="spinner_event_drink_types_water">Water</string>
+    <string name="spinner_event_drink_types_energy_drink">Energy drink</string>
+    <string name="spinner_event_drink_types_fruit_juice">Fruit juice</string>
 
     <string-array name="spinner_file_types" translatable="false">
         <item>CSV</item>
@@ -122,16 +139,19 @@
     <string name="pref_header_general">General</string>
 
     <string name="pref_title_clock_mode">Clock Mode</string>
-    <string-array name="pref_list_clock_mode_messages">
-        <item>System Default</item>
-        <item>24 Hour</item>
-        <item>AM/PM</item>
+    <string-array name="pref_list_clock_mode_messages" translatable="false">
+        <item>@string/pref_list_clock_mode_messages_default</item>
+        <item>@string/pref_list_clock_mode_messages_24h</item>
+        <item>@string/pref_list_clock_mode_messages_ampm</item>
     </string-array>
     <string-array name="pref_list_clock_mode_values" translatable="false">
         <item>-1</item>
         <item>1</item>
         <item>0</item>
     </string-array>
+    <string name="pref_list_clock_mode_messages_default">System Default</string>
+    <string name="pref_list_clock_mode_messages_24h">24 Hour</string>
+    <string name="pref_list_clock_mode_messages_ampm">AM/PM</string>
 
     <!-- Settings for Notifications -->
     <string name="pref_header_notifications">Notifications</string>

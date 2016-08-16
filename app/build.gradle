@@ -8,8 +8,8 @@ android {
         applicationId "com.canyapan.dietdiaryapp"
         minSdkVersion 15
         targetSdkVersion 24
-        versionCode 20
-        versionName "0.2.0"
+        versionCode 21
+        versionName "0.2.1 dev"
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
@@ -36,7 +36,7 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:24.1.1'
     compile 'com.android.support:support-v13:24.1.1'
     compile 'net.danlew:android.joda:2.9.3.1'
-    compile 'com.google.android.gms:play-services-appindexing:9.2.1'
+    compile 'com.google.android.gms:play-services-appindexing:9.4.0'
     compile 'com.opencsv:opencsv:3.7'
     compile 'commons-io:commons-io:2.5'
 }

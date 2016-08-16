@@ -2,8 +2,8 @@ package com.canyapan.dietdiaryapp.fragments;
 
 import android.content.Intent;
 import android.database.sqlite.SQLiteException;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ShareCompat;
@@ -163,11 +163,13 @@ public class DayFragment extends Fragment {
         mAdapter = new EventModelAdapter(DateTimeHelper.is24HourMode(getContext()));
 
         if (null == mSavedList) {
-            new LoadDateAsyncTask().execute(mDate);
-        } else if (getArguments().getBoolean(KEY_RELOAD_BOOLEAN)) {
-            new LoadDateAsyncTask().execute(mDate);
-            getArguments().remove(KEY_RELOAD_BOOLEAN);
+            mAdapter.setDataSet(loadItems(mDate));
         } else {
+            if (getArguments().getBoolean(KEY_RELOAD_BOOLEAN)) {
+                mSavedList = loadItems(mDate);
+                getArguments().remove(KEY_RELOAD_BOOLEAN);
+            }
+
             mAdapter.setDataSet(mSavedList);
             mSavedList = null;
         }
@@ -177,6 +179,17 @@ public class DayFragment extends Fragment {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(inflater.getContext()));
         mRecyclerView.setAdapter(mAdapter);
         return mRecyclerView;
+    }
+
+    private ArrayList<Event> loadItems(@NonNull LocalDate date) {
+        ArrayList<Event> list = null;
+        try {
+            list = EventHelper.getEventByDate(getContext(), date);
+        } catch (SQLiteException e) {
+            Log.e(TAG, "Content cannot be prepared probably a DB issue.", e);
+        }
+
+        return list;
     }
 
     public void addNewEvent(Event newEvent) {
@@ -201,41 +214,6 @@ public class DayFragment extends Fragment {
 
     interface OnItemClickListener {
         void onClick(View view, int position);
-    }
-
-    private class LoadDateAsyncTask extends AsyncTask<LocalDate, Integer, ArrayList<Event>> {
-        protected void onPreExecute() {
-            mAdapter.setDataSet(null);
-        }
-
-        @Override
-        protected ArrayList<Event> doInBackground(LocalDate... params) {
-            return loadItems(params[0]);
-        }
-
-        @Override
-        protected void onPostExecute(ArrayList<Event> result) {
-            if (null != result) {
-                mAdapter.setDataSet(result);
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            mAdapter.setDataSet(null);
-            super.onCancelled();
-        }
-
-        private ArrayList<Event> loadItems(LocalDate date) {
-            ArrayList<Event> list = null;
-            try {
-                list = EventHelper.getEventByDate(getContext(), date);
-            } catch (SQLiteException e) {
-                Log.e(TAG, "Content cannot be prepared probably a DB issue.", e);
-            }
-
-            return list;
-        }
     }
 
     class EventModelAdapter extends RecyclerView.Adapter<EventModelAdapter.ViewHolder>

@@ -32,7 +32,7 @@
     <string name="export_file_creation_error">Dışa aktarım dosyası oluşturulamadı.</string>
     <string name="export_from">Başlangıç</string>
     <string name="export_no_permission">Lütfen dosya yazma için izin verin.</string>
-    <string name="export_progress_title">Dışa aktarılıyor…</string>
+    <string name="export_progress_title">Dışa aktarılıyor&#8230;</string>
     <string name="export_sd_card_unavailable">SD Kart hazır değil.</string>
     <string name="export_share_successful">CSV dosyası paylaşıldı.</string>
     <string name="export_temp_file_creation_error">Geçici dosya oluşturulamadı.</string>
@@ -52,7 +52,7 @@
     <string name="import_no_external_storage">Lütfen harici depolama birimini bağlayın.</string>
     <string name="import_no_permission">Lütfen dosya okuma için izin verin.</string>
     <string name="import_note"><b>Not:</b> Yedek dosyalarınızı <i>/sdcard/</i> \nveya<i>/sdcard/DietDiaryApp/</i> dizinine ekleyin.</string>
-    <string name="import_progress_title">İçe aktarılıyor…</string>
+    <string name="import_progress_title">İçe aktarılıyor&#8230;</string>
     <string name="import_spinner_hint">Dosya seçin</string>
     <string name="import_successful">%1$s dosyası içe aktarıldı.</string>
     <string name="snack_bar_undo">Geri</string>
@@ -60,42 +60,37 @@
     <string name="snack_bar_deleted">Silindi</string>
     <string name="daily_notification_title">Diet Diary Günlük Hatırlatıcı</string>
     <string name="daily_notification_message">Bugün hiçbir kayıt girmediniz.</string>
-    <string-array name="spinner_event_food_types">
-        <item>Yemek</item>
-        <item>Kahvaltı</item>
-        <item>Öğle yemeği</item>
-        <item>Akşam yemeği</item>
-        <item>Ara öğün</item>
-        <item>Abur cubur</item>
-    </string-array>
-    <string-array name="spinner_event_types">
-        <item>Yemek</item>
-        <item>İçecek</item>
-        <item>İlaç</item>
-        <item>Besin takviyesi</item>
-        <item>Egzersiz</item>
-        <item>Diğer</item>
-    </string-array>
-    <string-array name="spinner_event_drink_types">
-        <item>İçecek</item>
-        <item>Kahve</item>
-        <item>Çay</item>
-        <item>Alkol</item>
-        <item>Su</item>
-        <item>Enerji İçeceği</item>
-        <item>Meyve Suyu</item>
-    </string-array>
+
+    <string name="spinner_event_types_food">Yemek</string>
+    <string name="spinner_event_types_drink">İçecek</string>
+    <string name="spinner_event_types_medication">İlaç</string>
+    <string name="spinner_event_types_supplements">Besin takviyesi</string>
+    <string name="spinner_event_types_exercise">Egzersiz</string>
+    <string name="spinner_event_types_other">Diğer</string>
+
+    <string name="spinner_event_food_types_breakfast">Kahvaltı</string>
+    <string name="spinner_event_food_types_lunch">Öğle yemeği</string>
+    <string name="spinner_event_food_types_dinner">Akşam yemeği</string>
+    <string name="spinner_event_food_types_snack">Ara öğün</string>
+    <string name="spinner_event_food_types_junk">Abur cubur</string>
+
+    <string name="spinner_event_drink_types_coffee">Kahve</string>
+    <string name="spinner_event_drink_types_tea">Çay</string>
+    <string name="spinner_event_drink_types_alcohol">Alkol</string>
+    <string name="spinner_event_drink_types_water">Su</string>
+    <string name="spinner_event_drink_types_energy_drink">Enerji içeceği</string>
+    <string name="spinner_event_drink_types_fruit_juice">Meyve suyu</string>
+
     <string name="pref_header_general">Genel</string>
     <string name="pref_header_notifications">Bildirimler</string>
     <string name="pref_title_notifications_active">Aktif</string>
     <string name="pref_title_daily_remainder">Eğer hiçbirşey yazmadıysam günlük hatırlat.</string>
     <string name="pref_title_daily_remainder_time">Şu saatte hatırlat</string>
     <string name="pref_title_clock_mode">Saat Modu</string>
-    <string-array name="pref_list_clock_mode_messages">
-        <item>Sistem Varsayılanı</item>
-        <item>24 Saat</item>
-        <item>AM/PM</item>
-    </string-array>
+    <string name="pref_list_clock_mode_messages_default">Sistem Varsayılanı</string>
+    <string name="pref_list_clock_mode_messages_24h">24 Saat</string>
+    <string name="pref_list_clock_mode_messages_ampm">AM/PM</string>
+
     <string name="crash_dialog_comment_prompt">Sorun ile alakalı görüşlerinizi aşağıda paylaşabilirsiniz:</string>
     <string name="crash_dialog_ok_toast">Teşekkürler !</string>
     <string name="crash_dialog_text">Beklenmeyen bir hata uygulamayı kapanmaya zorladı.
