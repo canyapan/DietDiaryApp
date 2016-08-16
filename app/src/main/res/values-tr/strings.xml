@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <resources>
     <string name="app_name">Diyet Günlüğü</string>
     <string name="navigation_drawer_close">Navigasyon panelini kapat</string>
@@ -28,11 +28,11 @@
     <string name="export_csv_io_exception">CSV dışa aktarılırken IO hatası oluştu.</string>
     <string name="export_csv_sql_exception">CSV dışa aktarılırken DB hatası oluştu.</string>
     <string name="export_destination">Hedef</string>
-    <string name="export_external_successful">%1$s oluşturuldu.</string>
+    <string name="export_external_successful">%1$s oluşturuldu</string>
     <string name="export_file_creation_error">Dışa aktarım dosyası oluşturulamadı.</string>
     <string name="export_from">Başlangıç</string>
     <string name="export_no_permission">Lütfen dosya yazma için izin verin.</string>
-    <string name="export_progress_title">Dışa aktarılıyor&#8230;</string>
+    <string name="export_progress_title">Dışa aktarılıyor…</string>
     <string name="export_sd_card_unavailable">SD Kart hazır değil.</string>
     <string name="export_share_successful">CSV dosyası paylaşıldı.</string>
     <string name="export_temp_file_creation_error">Geçici dosya oluşturulamadı.</string>
@@ -51,8 +51,9 @@
     <string name="import_file_selector">Dosyalar</string>
     <string name="import_no_external_storage">Lütfen harici depolama birimini bağlayın.</string>
     <string name="import_no_permission">Lütfen dosya okuma için izin verin.</string>
-    <string name="import_note"><b>Not:</b> Yedek dosyalarınızı <i>/sdcard/</i> \nveya<i>/sdcard/DietDiaryApp/</i> dizinine ekleyin.</string>
-    <string name="import_progress_title">İçe aktarılıyor&#8230;</string>
+    <string name="import_note"><b>Not:</b> Yedek dosyalarınızı <i>/sdcard/</i>
+veya <i>/sdcard/DietDiaryApp/</i> dizinine ekleyin</string>
+    <string name="import_progress_title">İçe aktarılıyor…</string>
     <string name="import_spinner_hint">Dosya seçin</string>
     <string name="import_successful">%1$s dosyası içe aktarıldı.</string>
     <string name="snack_bar_undo">Geri</string>
@@ -84,7 +85,7 @@
     <string name="pref_header_general">Genel</string>
     <string name="pref_header_notifications">Bildirimler</string>
     <string name="pref_title_notifications_active">Aktif</string>
-    <string name="pref_title_daily_remainder">Eğer hiçbirşey yazmadıysam günlük hatırlat.</string>
+    <string name="pref_title_daily_remainder">Eğer hiçbirşey yazmadıysam günlük hatırlat</string>
     <string name="pref_title_daily_remainder_time">Şu saatte hatırlat</string>
     <string name="pref_title_clock_mode">Saat Modu</string>
     <string name="pref_list_clock_mode_messages_default">Sistem Varsayılanı</string>
