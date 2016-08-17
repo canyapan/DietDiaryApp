@@ -41,7 +41,7 @@
     <string name="export_no_permission">ファイルの書き込みアクセス許可を付与してください。</string>
     <string name="import_progress_title">インポートしています&#8230;</string>
     <string name="import_file_selector">ファイル</string>
-    <string name="import_note"><b>注意:</b> バックアップファイルの保存場所は <i>/sdcard/</i>\nまたは<i> /sdcard/DietDiaryApp/</i></string>
+    <string name="import_note"><b>注意:</b> バックアップファイルの保存場所は <i>/sdcard/</i>\nまたは <i>/sdcard/DietDiaryApp/</i></string>
     <string name="import_no_permission">ファイルの読み取りアクセス許可を付与してください。</string>
     <string name="import_no_external_storage">外部ストレージを差し込んでください。</string>
     <string name="import_csv_io_exception">CSV からのインポート中に I/O エラーが発生しました。</string>
