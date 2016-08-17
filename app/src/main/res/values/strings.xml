@@ -43,7 +43,7 @@
     <string name="export_no_permission">Please give permission to write files.</string>
     <string name="import_progress_title">Importing&#8230;</string>
     <string name="import_file_selector">Files</string>
-    <string name="import_note"><b>Note:</b> Locate your backup files in <i>/sdcard/</i> \nor <i>/sdcard/DietDiaryApp/</i></string>
+    <string name="import_note"><b>Note:</b> Locate your backup files in <i>/sdcard/</i>\nor <i>/sdcard/DietDiaryApp/</i></string>
     <string name="import_no_permission">Please give permission to read files.</string>
     <string name="import_no_external_storage">Please plug in your external storage.</string>
     <string name="import_csv_io_exception">IO error occurred while importing from CSV.</string>
