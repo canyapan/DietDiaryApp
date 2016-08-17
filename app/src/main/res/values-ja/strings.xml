@@ -91,7 +91,7 @@
     <string name="spinner_event_food_types_junk">ジャンク</string>
 
     <string name="spinner_event_drink_types_coffee">コーヒー</string>
-    <string name="spinner_event_drink_types_tea">紅茶</string>
+    <string name="spinner_event_drink_types_tea">お茶／紅茶</string>
     <string name="spinner_event_drink_types_alcohol">アルコール</string>
     <string name="spinner_event_drink_types_water">水</string>
     <string name="spinner_event_drink_types_energy_drink">エナジードリンク</string>
