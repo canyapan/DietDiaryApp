@@ -77,4 +77,28 @@
     <string name="crash_dialog_comment_prompt">以下に、問題についてのコメントを追加できます。</string>
     <string name="crash_dialog_ok_toast">ありがとうございます!</string>
 
-</resources>
+<string name="spinner_event_types_food">食品</string>
+    <string name="spinner_event_types_drink">飲み物</string>
+    <string name="spinner_event_types_medication">薬</string>
+    <string name="spinner_event_types_supplements">サプリメント</string>
+    <string name="spinner_event_types_exercise">運動</string>
+    <string name="spinner_event_types_other">その他</string>
+
+    <string name="spinner_event_food_types_breakfast">朝食</string>
+    <string name="spinner_event_food_types_lunch">昼食</string>
+    <string name="spinner_event_food_types_dinner">夕食</string>
+    <string name="spinner_event_food_types_snack">スナック</string>
+    <string name="spinner_event_food_types_junk">ジャンク</string>
+
+    <string name="spinner_event_drink_types_coffee">コーヒー</string>
+    <string name="spinner_event_drink_types_tea">紅茶</string>
+    <string name="spinner_event_drink_types_alcohol">アルコール</string>
+    <string name="spinner_event_drink_types_water">水</string>
+    <string name="spinner_event_drink_types_energy_drink">エナジードリンク</string>
+    <string name="spinner_event_drink_types_fruit_juice">フルーツ ジュース</string>
+
+    <string name="pref_list_clock_mode_messages_default">システムのデフォルト</string>
+    <string name="pref_list_clock_mode_messages_24h">24 時間</string>
+    <string name="pref_list_clock_mode_messages_ampm">AM/PM</string>
+
+    </resources>
