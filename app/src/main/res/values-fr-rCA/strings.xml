@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Diet Diary</string>
+
     <string name="navigation_drawer_open">Ouvrir le tiroir de navigation</string>
     <string name="navigation_drawer_close">Fermer le tiroir de navigation</string>
 
@@ -69,9 +70,9 @@
     <string name="spinner_event_types_exercise">Exercice</string>
     <string name="spinner_event_types_other">Autre</string>
 
-    <string name="spinner_event_food_types_breakfast">Petit déjeuner</string>
-    <string name="spinner_event_food_types_lunch">Déjeuner</string>
-    <string name="spinner_event_food_types_dinner">Dîner</string>
+    <string name="spinner_event_food_types_breakfast">Déjeuner</string>
+    <string name="spinner_event_food_types_lunch">Dîner</string>
+    <string name="spinner_event_food_types_dinner">Souper</string>
     <string name="spinner_event_food_types_snack">Snack</string>
     <string name="spinner_event_food_types_junk">Malbouffe</string>
 
@@ -85,8 +86,6 @@
     <!-- Strings related to Settings -->
     <!-- Example General settings -->
     <string name="pref_header_general">Général</string>
-
-    <string name="pref_title_clock_mode">Mode horloge</string>
 
     <string name="pref_list_clock_mode_messages_default">Défaut système</string>
     <string name="pref_list_clock_mode_messages_24h">24 Heures</string>
