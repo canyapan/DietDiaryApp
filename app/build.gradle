@@ -8,8 +8,8 @@ android {
         applicationId "com.canyapan.dietdiaryapp"
         minSdkVersion 15
         targetSdkVersion 24
-        versionCode 21
-        versionName "0.2.1"
+        versionCode 22
+        versionName "0.2.2"
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
