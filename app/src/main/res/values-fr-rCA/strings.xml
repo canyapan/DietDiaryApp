@@ -29,7 +29,7 @@
     <string name="export_to">Vers</string>
     <string name="export_type">Type</string>
     <string name="export_destination">Destination</string>
-    <string name="export_progress_title">Export en cours…</string>
+    <string name="export_progress_title">Export en cours&#8230;</string>
     <string name="export_sd_card_unavailable">Carte SD non disponible.</string>
     <string name="export_temp_file_creation_error">Impossible de créer le fichier temporaire.</string>
     <string name="export_file_creation_error">Impossible de créer le fichier d\'export.</string>
@@ -40,7 +40,7 @@
     <string name="export_external_successful">%1$s créés</string>
     <string name="export_share_successful">Fichier CSV partagé.</string>
     <string name="export_no_permission">Merci d\'accorder la permission pour écrire des fichiers.</string>
-    <string name="import_progress_title">Import en cours…</string>
+    <string name="import_progress_title">Import en cours&#8230;</string>
     <string name="import_file_selector">Fichiers</string>
     <string name="import_note"><b>Note:</b> Retrouver vos fichiers exportés dans <i>/sdcard/</i>\nou <i>/sdcard/DietDiaryApp/</i></string>
     <string name="import_no_permission">Merci d\'accorder la permission pour lire des fichiers.</string>
@@ -100,9 +100,7 @@
     <!-- Strings for Crash Reporter -->
     <string name="crash_toast_text">Oups, me suis vautrée, mais un rapport d\'erreur a été envoyé à mon développeur !</string>
     <string name="crash_dialog_title">My Diet Diary est écrasé</string>
-    <string name="crash_dialog_text">Une erreur inattendue s\'est produite, 
-forçant l\'application à se fermer. Merci de nous aider à régler le problème en nous envoyant un rapport d\'erreur,
-vous n\'avez qu\'à appuyer sur OK.</string>
+    <string name="crash_dialog_text">Une erreur inattendue s\'est produite, forçant l\'application à se fermer. Merci de nous aider à régler le problème en nous envoyant un rapport d\'erreur, vous n\'avez qu\'à appuyer sur OK.</string>
     <string name="crash_dialog_comment_prompt">Merci d\'ajouter votre commentaire sur le problème :</string>
     <string name="crash_dialog_ok_toast">Merci !</string>
 

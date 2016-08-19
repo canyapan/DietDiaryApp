@@ -71,9 +71,7 @@
 
     <string name="crash_toast_text">申し訳ありません。クラッシュしました。問題を修正するために開発者にレポートを送信しました!</string>
     <string name="crash_dialog_title">ダイエットダイアリーがクラッシュしました</string>
-    <string name="crash_dialog_text">アプリケーションを強制的に停止する、予期しないエラーが発生しました。
-エラー データを送信して、この問題の解決を手伝ってください。
-あなたは OK をクリックするだけです。</string>
+    <string name="crash_dialog_text">アプリケーションを強制的に停止する、予期しないエラーが発生しました。エラー データを送信して、この問題の解決を手伝ってください。あなたは OK をクリックするだけです。</string>
     <string name="crash_dialog_comment_prompt">以下に、問題についてのコメントを追加できます。</string>
     <string name="crash_dialog_ok_toast">ありがとうございます!</string>
 
