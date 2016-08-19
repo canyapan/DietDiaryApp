@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <resources>
     <string name="app_name">Diet Diary</string>
     <string name="navigation_drawer_open">Ouvrir le tiroir de navigation</string>
@@ -16,7 +16,7 @@
     <string name="activity_edit_event_title">Modifier événement</string>
     <string name="activity_create_edit_description_hint">Description</string>
     <string name="activity_backup_restore_title">Sauvegarde / Restauration</string>
-    <string name="day_fragment_nothing_to_share">Pas d\'entrées à partager</string>
+    <string name="day_fragment_nothing_to_share">Pas d\'entrées à partager.</string>
     <string name="nav_home">Accueil</string>
     <string name="nav_backup_restore">Sauvegarde/Restauration</string>
     <string name="nav_settings">Réglages</string>
@@ -28,31 +28,31 @@
     <string name="export_to">Vers</string>
     <string name="export_type">Type</string>
     <string name="export_destination">Destination</string>
-    <string name="export_progress_title">Export en cours&#8230;</string>
-    <string name="export_sd_card_unavailable">Carte SD non disponible</string>
-    <string name="export_temp_file_creation_error">Impossible de créer le fichier temporaire</string>
-    <string name="export_file_creation_error">Impossible de créer le fichier d\'export</string>
-    <string name="export_unimplemented_destination">Destination choisie pas encore implémentée</string>
-    <string name="export_csv_io_exception">Problème d\'IO pedant l\'export</string>
-    <string name="export_csv_sql_exception">Erreur de base de données durant l\'export CSV</string>
-    <string name="export_csv_exception">Problème non identifié durant l\'export CSV</string>
+    <string name="export_progress_title">Export en cours…</string>
+    <string name="export_sd_card_unavailable">Carte SD non disponible.</string>
+    <string name="export_temp_file_creation_error">Impossible de créer le fichier temporaire.</string>
+    <string name="export_file_creation_error">Impossible de créer le fichier d\'export.</string>
+    <string name="export_unimplemented_destination">Destination choisie pas encore implémentée.</string>
+    <string name="export_csv_io_exception">Problème d\'IO pedant l\'export.</string>
+    <string name="export_csv_sql_exception">Erreur de base de données durant l\'export CSV.</string>
+    <string name="export_csv_exception">Problème non identifié durant l\'export CSV.</string>
     <string name="export_external_successful">%1$s créés</string>
-    <string name="export_share_successful">Fichier CSV partagé</string>
-    <string name="export_no_permission">Merci d\'accorder la permission pour écrire des fichiers</string>
-    <string name="import_progress_title">Import en cours&#8230;</string>
+    <string name="export_share_successful">Fichier CSV partagé.</string>
+    <string name="export_no_permission">Merci d\'accorder la permission pour écrire des fichiers.</string>
+    <string name="import_progress_title">Import en cours…</string>
     <string name="import_file_selector">Fichiers</string>
     <string name="import_note"><b>Note:</b> Retrouver vos fichiers exportés dans <i>/sdcard/</i>\nou <i>/sdcard/DietDiaryApp/</i></string>
     <string name="import_no_permission">Merci d\'accorder la permission pour lire des fichiers.</string>
-    <string name="import_no_external_storage">Merci de connecter le support externe</string>
-    <string name="import_csv_io_exception">Problème d\'IO pedant l\'import CSV</string>
-    <string name="import_csv_sql_exception">Erreur de base de données durant l\'import CSV</string>
-    <string name="import_csv_exception">Problème non identifié durant l\'import CSV</string>
+    <string name="import_no_external_storage">Merci de connecter le support externe.</string>
+    <string name="import_csv_io_exception">Problème d\'IO pedant l\'import CSV.</string>
+    <string name="import_csv_sql_exception">Erreur de base de données durant l\'import CSV.</string>
+    <string name="import_csv_exception">Problème non identifié durant l\'import CSV.</string>
     <string name="import_csv_corrupted">CSV corrompu.</string>
-    <string name="import_csv_already_existing_records">Le fichier CSV inclut déjà ces entrées</string>
+    <string name="import_csv_already_existing_records">Le fichier CSV inclut déjà ces entrées.</string>
     <string name="import_file_not_exists">Le fichier choisi n\'existe pas !</string>
     <string name="import_file_not_readable">Le fichier choisi n\'est pas lisible !</string>
     <string name="import_file_empty">Le fichier choisi est vide !</string>
-    <string name="import_file_not_csv">Le fichier choisi n\'est pas un fichier CSV</string>
+    <string name="import_file_not_csv">Le fichier choisi n\'est pas un fichier CSV !</string>
     <string name="import_successful">Fichier CSV %1$s importé.</string>
     <string name="import_spinner_hint">Choisir le fichier à importer</string>
     <string name="content_description_icon">Icone</string>
@@ -60,7 +60,7 @@
     <string name="snack_bar_undo">Annuler</string>
     <string name="snack_bar_deleted">Supprimé</string>
     <string name="daily_notification_title">Diet Diary Rappel Quotidien</string>
-    <string name="daily_notification_message">Vous n\'avez pas ajouté d\'entrées aujourd\'hui !</string>
+    <string name="daily_notification_message">Vous n\'avez pas ajouté d\'entrées aujourd\'hui.</string>
 
     <string name="spinner_event_types_food">Nourriture</string>
     <string name="spinner_event_types_drink">Boisson</string>
@@ -72,7 +72,7 @@
     <string name="spinner_event_food_types_breakfast">Petit déjeuner</string>
     <string name="spinner_event_food_types_lunch">Déjeuner</string>
     <string name="spinner_event_food_types_dinner">Dîner</string>
-    <string name="spinner_event_food_types_snack">Snack</string>
+    <string name="spinner_event_food_types_snack">Casse-croûte</string>
     <string name="spinner_event_food_types_junk">Malbouffe</string>
 
     <string name="spinner_event_drink_types_coffee">Café</string>
@@ -99,9 +99,11 @@
     <string name="pref_title_daily_remainder_time">Rappelle moi à</string>
 
     <!-- Strings for Crash Reporter -->
-    <string name="crash_toast_text">Oups, me suis vautrée, mais un rapport d\'erreur a été envoyé à mon développeur</string>
-    <string name="crash_dialog_title">My Diet Diary has crashed</string>
-    <string name="crash_dialog_text">Une erreur inattendue s\'est produite, forçant l\'application à se fermer. Merci de nous aider à régler le problème en nous envoyant un rapport d\'erreur - vous n\'avez qu\'à appuyer sur OK</string>
+    <string name="crash_toast_text">Oups, me suis vautrée, mais un rapport d\'erreur a été envoyé à mon développeur !</string>
+    <string name="crash_dialog_title">My Diet Diary est écrasé</string>
+    <string name="crash_dialog_text">Une erreur inattendue s\'est produite, 
+forçant l\'application à se fermer. Merci de nous aider à régler le problème en nous envoyant un rapport d\'erreur,
+vous n\'avez qu\'à appuyer sur OK.</string>
     <string name="crash_dialog_comment_prompt">Merci d\'ajouter votre commentaire sur le problème :</string>
     <string name="crash_dialog_ok_toast">Merci !</string>
 
