@@ -1,2 +1,24 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<?xml version='1.0' encoding='UTF-8'?>
+<resources><string name="app_name">Дневник Диеты</string>
+    <string name="action_save">Сохранить</string>
+    <string name="action_share">Поделиться</string>
+    <string name="action_delete">Удалить</string>
+    <string name="action_copy">Копировать</string>
+    <string name="action_calendar_today">Сегодня</string>
+    <string name="action_done">Готово</string>
+    <string name="action_cancel">Отмена</string>
+    <string name="activity_settings_title">Настройки</string>
+    <string name="activity_create_edit_description_hint">Описание</string>
+    <string name="nav_home">Дом</string>
+    <string name="nav_settings">Настройки</string>
+    <string name="nav_donate">Пожертвовать</string>
+    <string name="nav_about">О Нас</string>
+    <string name="backup"/>
+    <string name="restore"/>
+    <string name="export_from">От</string>
+    <string name="export_to">До</string>
+    <string name="export_destination">Пункт назначения</string>
+    <string name="export_temp_file_creation_error">Невозможно создать временный файл.</string>
+    <string name="crash_dialog_ok_toast">Спасибо!</string>
+
+</resources>
