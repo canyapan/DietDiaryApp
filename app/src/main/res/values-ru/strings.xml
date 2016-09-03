@@ -21,4 +21,37 @@
     <string name="export_temp_file_creation_error">Невозможно создать временный файл.</string>
     <string name="crash_dialog_ok_toast">Спасибо!</string>
 
-</resources>
+<string name="pref_list_clock_mode_messages_ampm">AM/PM</string>
+
+    <string name="pref_list_clock_mode_messages_24h">24 часа</string>
+    <string name="spinner_event_drink_types_fruit_juice">Фруктовый сок</string>
+
+    <string name="spinner_event_drink_types_tea">Чай</string>
+    <string name="spinner_event_drink_types_alcohol">Алкогольный напиток</string>
+    <string name="spinner_event_drink_types_water">Вода</string>
+    <string name="spinner_event_drink_types_energy_drink">Энергетический напиток</string>
+    <string name="spinner_event_drink_types_coffee">Кофе</string>
+    <string name="spinner_event_types_exercise">Упражнение</string>
+    <string name="spinner_event_types_other">Другое</string>
+
+    <string name="spinner_event_food_types_breakfast">Завтак</string>
+    <string name="spinner_event_food_types_lunch">Ланч</string>
+    <string name="spinner_event_food_types_dinner">Ужин</string>
+    <string name="spinner_event_food_types_snack">Перекус</string>
+    <string name="spinner_event_food_types_junk">Нездоровая пища</string>
+
+    <string name="spinner_event_types_food">Еда</string>
+    <string name="spinner_event_types_drink">Напиток</string>
+    <string name="snack_bar_deleted">Удалить</string>
+    <string name="spinner_event_types_supplements">Добавки</string>
+    <string name="spinner_event_types_medication">Препараты</string>
+    <string name="import_file_selector">Файлы</string>
+    <string name="import_file_not_exists">Выбранный файл не существует!</string>
+    <string name="import_file_not_readable">Выбранный файл нечитабельный!</string>
+    <string name="import_file_empty">Выбранный файл пуст!</string>
+    <string name="pref_title_clock_mode">Режим часов</string>
+    <string name="pref_list_clock_mode_messages_default">Системные настройки по умолчанию</string>
+    <string name="pref_header_notifications">Уведомления</string>
+    <string name="pref_title_daily_remainder_time">Напомнить мне в</string>
+
+    </resources>
