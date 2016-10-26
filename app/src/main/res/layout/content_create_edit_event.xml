@@ -100,12 +100,14 @@
             android:padding="4dp"
             app:srcCompat="@drawable/subject"/>
 
-        <EditText
+        <AutoCompleteTextView
             android:id="@+id/etDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:completionThreshold="3"
             android:gravity="top|start"
             android:hint="@string/activity_create_edit_description_hint"
+            android:inputType="textMultiLine"
             android:maxLength="1000"
             android:minLines="3"/>
     </LinearLayout>

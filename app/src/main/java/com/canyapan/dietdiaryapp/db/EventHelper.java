@@ -46,7 +46,8 @@ public class EventHelper {
         return getContentValues(event, false);
     }
 
-    public static ContentValues getContentValues(@NonNull final Event event, final boolean includeID) {
+    public static ContentValues getContentValues(@NonNull final Event event,
+                                                 final boolean includeID) {
         final ContentValues values = new ContentValues(includeID ? 6 : 5);
 
         if (includeID) {
@@ -63,7 +64,8 @@ public class EventHelper {
     }
 
     public static boolean insert(@NonNull final Context context,
-                                 @NonNull final Event event) throws SQLiteException {
+                                 @NonNull final Event event)
+            throws SQLiteException {
         DatabaseHelper databaseHelper = new DatabaseHelper(context);
 
         try {
@@ -75,7 +77,8 @@ public class EventHelper {
     }
 
     public static boolean insert(@NonNull final SQLiteDatabase writableDatabase,
-                                 @NonNull final Event event) throws SQLiteException {
+                                 @NonNull final Event event)
+            throws SQLiteException {
         long id = writableDatabase.insert(DatabaseHelper.DBT_EVENT, DatabaseHelper.DBC_EVENT_DESC,
                 EventHelper.getContentValues(event, event.getID() > 0));
 
@@ -88,7 +91,8 @@ public class EventHelper {
     }
 
     public static boolean update(@NonNull final Context context,
-                                 @NonNull final Event event) throws SQLiteException {
+                                 @NonNull final Event event)
+            throws SQLiteException {
         DatabaseHelper databaseHelper = new DatabaseHelper(context);
 
         try {
@@ -99,14 +103,16 @@ public class EventHelper {
         }
     }
 
-    public static boolean update(@NonNull final SQLiteDatabase writableDatabase, @NonNull final Event event) {
+    public static boolean update(@NonNull final SQLiteDatabase writableDatabase,
+                                 @NonNull final Event event) {
         return writableDatabase.update(DatabaseHelper.DBT_EVENT, EventHelper.getContentValues(event),
                 DatabaseHelper.DBC_EVENT_ROW_ID + " == ?",
                 new String[]{Long.toString(event.getID())}) > 0;
     }
 
     public static boolean delete(@NonNull final Context context,
-                                 @NonNull final Event event) throws SQLiteException {
+                                 @NonNull final Event event)
+            throws SQLiteException {
         DatabaseHelper databaseHelper = new DatabaseHelper(context);
 
         try {
@@ -118,7 +124,8 @@ public class EventHelper {
     }
 
     public static boolean delete(@NonNull final SQLiteDatabase writableDatabase,
-                                 @NonNull final Event event) throws SQLiteException {
+                                 @NonNull final Event event)
+            throws SQLiteException {
         return writableDatabase.delete(DatabaseHelper.DBT_EVENT,
                 DatabaseHelper.DBC_EVENT_ROW_ID + " == ?",
                 new String[]{Long.toString(event.getID())}) > 0;
@@ -139,7 +146,8 @@ public class EventHelper {
 
     @Nullable
     public static Event getEventByID(@NonNull final SQLiteDatabase readableDatabase,
-                                     final long id) throws SQLiteException {
+                                     final long id)
+            throws SQLiteException {
         Cursor cursor = null;
         try {
             cursor = readableDatabase.query(DatabaseHelper.DBT_EVENT, getDatabaseColumns(),
@@ -173,7 +181,8 @@ public class EventHelper {
 
     @Nullable
     public static ArrayList<Event> getEventByDate(@NonNull final SQLiteDatabase readableDatabase,
-                                                  @NonNull final LocalDate date) throws SQLiteException {
+                                                  @NonNull final LocalDate date)
+            throws SQLiteException {
         Cursor cursor = null;
         try {
             cursor = readableDatabase.query(DatabaseHelper.DBT_EVENT, EventHelper.getDatabaseColumns(),
@@ -255,14 +264,15 @@ public class EventHelper {
         DatabaseHelper databaseHelper = new DatabaseHelper(context);
 
         try {
-            SQLiteDatabase db = databaseHelper.getReadableDatabase();
+            final SQLiteDatabase db = databaseHelper.getReadableDatabase();
             return hasEventToday(db);
         } finally {
             databaseHelper.close();
         }
     }
 
-    public static int hasEventToday(@NonNull final SQLiteDatabase readableDatabase) throws SQLiteException {
+    public static int hasEventToday(@NonNull final SQLiteDatabase readableDatabase)
+            throws SQLiteException {
         Cursor cursor = null;
         try {
             cursor = readableDatabase.query(DatabaseHelper.DBT_EVENT, new String[]{"COUNT(*)",},
@@ -279,5 +289,28 @@ public class EventHelper {
         }
 
         return 0;
+    }
+
+    @Nullable
+    public static Cursor getCursorOfDescriptionsByPartial(@NonNull final Context context,
+                                                          @NonNull final String partialDescription)
+            throws SQLiteException {
+        LocalDate aMonthBefore = LocalDate.now().minusMonths(1);
+
+        final DatabaseHelper dbHelper = new DatabaseHelper(context);
+        final SQLiteDatabase readableDatabase = dbHelper.getReadableDatabase();
+
+        return readableDatabase.query(DatabaseHelper.DBT_EVENT,
+                new String[]{
+                        DatabaseHelper.DBC_EVENT_ROW_ID + " _id",
+                        DatabaseHelper.DBC_EVENT_DATE,
+                        DatabaseHelper.DBC_EVENT_TIME,
+                        DatabaseHelper.DBC_EVENT_TYPE,
+                        DatabaseHelper.DBC_EVENT_SUBTYPE,
+                        DatabaseHelper.DBC_EVENT_DESC
+                },
+                DatabaseHelper.DBC_EVENT_DATE + " >= ? AND " + DatabaseHelper.DBC_EVENT_DESC + " LIKE ? COLLATE NOCASE",
+                new String[]{aMonthBefore.toString(DatabaseHelper.DB_DATE_FORMATTER), partialDescription + "%"},
+                null, null, DatabaseHelper.DBC_EVENT_DATE + "," + DatabaseHelper.DBC_EVENT_TIME + "," + DatabaseHelper.DBC_EVENT_ROW_ID);
     }
 }
