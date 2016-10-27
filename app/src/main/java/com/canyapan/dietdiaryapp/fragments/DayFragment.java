@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ShareCompat;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -27,7 +28,6 @@ import com.canyapan.dietdiaryapp.db.DatabaseHelper;
 import com.canyapan.dietdiaryapp.db.EventHelper;
 import com.canyapan.dietdiaryapp.helpers.DateTimeHelper;
 import com.canyapan.dietdiaryapp.models.Event;
-import com.example.android.supportv7.widget.decorator.DividerItemDecoration;
 
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
@@ -175,7 +175,7 @@ public class DayFragment extends Fragment {
         }
 
         RecyclerView mRecyclerView = (RecyclerView) inflater.inflate(R.layout.fragment_day_recyclerview, container, false);
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(inflater.getContext(), DividerItemDecoration.VERTICAL_LIST));
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(inflater.getContext(), DividerItemDecoration.VERTICAL));
         mRecyclerView.setLayoutManager(new LinearLayoutManager(inflater.getContext()));
         mRecyclerView.setAdapter(mAdapter);
         return mRecyclerView;
