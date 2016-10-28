@@ -9,7 +9,8 @@ android:
     - platform-tools
     - extra-google-m2repository
     - extra-android-m2repository
-    - sys-img-armeabi-v7a-android-25
+#    - sys-img-armeabi-v7a-android-25
+    - sys-img-armeabi-v7a-addon-google_apis-google-25
 
 before_install:
   - chmod +x gradlew
