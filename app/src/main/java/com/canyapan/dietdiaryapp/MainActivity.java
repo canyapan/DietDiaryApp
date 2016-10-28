@@ -107,6 +107,8 @@ public class MainActivity extends AppCompatActivity implements
             mFab2Shown = false;
         }
 
+        setTheme(R.style.AppTheme_NoActionBar);
+
         setContentView(R.layout.activity_main);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

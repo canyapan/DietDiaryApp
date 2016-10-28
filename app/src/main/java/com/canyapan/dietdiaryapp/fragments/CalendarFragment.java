@@ -154,7 +154,11 @@ public class CalendarFragment extends Fragment implements ViewPager.OnPageChange
         initViewPagerAdapter(date);
     }
 
-    public void handleCreateEditEvent(int code, Intent data) {
+    public void handleCreateEditEvent(final int code, final Intent data) {
+        if (null == data) {
+            return;
+        }
+
         final Event event = data.getParcelableExtra(CreateEditEventActivity.KEY_EVENT_PARCELABLE);
         final LocalDate orgDate = (LocalDate) data.getSerializableExtra(CreateEditEventActivity.KEY_ORG_DATE_SERIALIZABLE);
         final int position = data.getIntExtra(CreateEditEventActivity.KEY_POSITION_INT, -1);

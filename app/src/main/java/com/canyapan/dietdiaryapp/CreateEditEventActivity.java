@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.app.backup.BackupManager;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
@@ -15,9 +16,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
-import android.widget.EditText;
+import android.widget.FilterQueryProvider;
 import android.widget.ImageView;
+import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -55,7 +58,7 @@ public class CreateEditEventActivity extends AppCompatActivity {
     private ActionBar mActionBar;
     private TextView tvDatePicker, tvTimePicker;
     private Spinner spTypes;
-    private EditText etDescription;
+    private AutoCompleteTextView actvDescription;
 
     private MenuItem miDelete, miCopy;
 
@@ -86,7 +89,7 @@ public class CreateEditEventActivity extends AppCompatActivity {
         spTypes = (Spinner) findViewById(R.id.spTypes);
         tvDatePicker = (TextView) findViewById(R.id.tvDatePicker);
         tvTimePicker = (TextView) findViewById(R.id.tvTimePicker);
-        etDescription = (EditText) findViewById(R.id.etDescription);
+        actvDescription = (AutoCompleteTextView) findViewById(R.id.etDescription);
 
         switch (mEvent.getType()) {
             case Event.TYPE_FOOD:
@@ -113,7 +116,7 @@ public class CreateEditEventActivity extends AppCompatActivity {
             if (null != mActionBar) {
                 mActionBar.setTitle(getString(R.string.activity_edit_event_title));
             }
-            etDescription.setText(mEvent.getDescription());
+            actvDescription.setText(mEvent.getDescription());
             if (null == mOrgDate) {
                 mOrgDate = mEvent.getDate();
             }
@@ -121,6 +124,32 @@ public class CreateEditEventActivity extends AppCompatActivity {
 
         tvDatePicker.setText(DateTimeHelper.convertLocalDateToString(mEvent.getDate()));
         tvTimePicker.setText(DateTimeHelper.convertLocalTimeToString(this, mEvent.getTime()));
+
+        SimpleCursorAdapter adapter = new SimpleCursorAdapter(this,
+                android.R.layout.simple_dropdown_item_1line, null,
+                new String[]{"Description"},
+                new int[]{android.R.id.text1},
+                0);
+
+        adapter.setCursorToStringConverter(new SimpleCursorAdapter.CursorToStringConverter() {
+            @Override
+            public CharSequence convertToString(Cursor cursor) {
+                final int colIndex = cursor.getColumnIndexOrThrow("Description");
+                return cursor.getString(colIndex);
+            }
+        });
+        adapter.setFilterQueryProvider(new FilterQueryProvider() {
+            @Override
+            public Cursor runQuery(CharSequence description) {
+                if (null != description) {
+                    return EventHelper.getCursorOfDescriptionsByPartial(CreateEditEventActivity.this, description.toString());
+                }
+
+                return null;
+            }
+        });
+
+        actvDescription.setAdapter(adapter);
     }
 
     private void setSpinnerContents(Spinner spinner, @ArrayRes int spinnerContents, int selectedIndex) {
@@ -202,7 +231,7 @@ public class CreateEditEventActivity extends AppCompatActivity {
                                     ((SpinnerArrayAdapter) spTypes.getAdapter()).getOffset());
                             break;
                     }
-                    mEvent.setDescription(etDescription.getText().toString());
+                    mEvent.setDescription(actvDescription.getText().toString());
 
                     BackupManager backupManager = new BackupManager(this);
 
