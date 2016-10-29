@@ -311,6 +311,7 @@ public class EventHelper {
                 },
                 DatabaseHelper.DBC_EVENT_DATE + " >= ? AND " + DatabaseHelper.DBC_EVENT_DESC + " LIKE ? COLLATE NOCASE",
                 new String[]{aMonthBefore.toString(DatabaseHelper.DB_DATE_FORMATTER), partialDescription + "%"},
-                null, null, DatabaseHelper.DBC_EVENT_DATE + "," + DatabaseHelper.DBC_EVENT_TIME + "," + DatabaseHelper.DBC_EVENT_ROW_ID);
+                DatabaseHelper.DBC_EVENT_DESC + " COLLATE NOCASE", null,
+                DatabaseHelper.DBC_EVENT_DATE + " DESC," + DatabaseHelper.DBC_EVENT_TIME + "," + DatabaseHelper.DBC_EVENT_ROW_ID);
     }
 }
