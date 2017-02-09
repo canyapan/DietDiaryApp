@@ -5,11 +5,11 @@ import android.support.annotation.StringRes;
 
 class ExportException extends Exception {
 
-    public ExportException(String message) {
+    ExportException(String message) {
         super(message);
     }
 
-    public ExportException(Context context, @StringRes int message) {
+    ExportException(Context context, @StringRes int message) {
         this(context.getString(message));
     }
 }

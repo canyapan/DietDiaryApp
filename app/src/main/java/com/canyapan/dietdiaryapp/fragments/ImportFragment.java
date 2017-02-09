@@ -54,14 +54,16 @@ import java.util.HashMap;
 public class ImportFragment extends Fragment {
     public static final String TAG = "ImportFragment";
     private static final String KEY_SELECTED_FILE_SERIALIZABLE = "FILE";
+    private static final String KEY_FILES_SERIALIZABLE = "FILES";
     private static final int REQUEST_EXTERNAL_STORAGE = 20;
 
     private OnFragmentInteractionListener mListener;
 
     private LinearLayout mLinearLayout;
     private Spinner spFiles;
-    private File mSelectedFile = null;
+
     private File[] mFiles = null;
+    private File mSelectedFile = null;
 
     private DatabaseHelper mDatabaseHelper;
     private ProgressDialog mProgressDialog;
@@ -87,6 +89,7 @@ public class ImportFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         if (savedInstanceState != null) {
+            mFiles = (File[]) savedInstanceState.getSerializable(KEY_FILES_SERIALIZABLE);
             mSelectedFile = (File) savedInstanceState.getSerializable(KEY_SELECTED_FILE_SERIALIZABLE);
         }
 
@@ -108,6 +111,7 @@ public class ImportFragment extends Fragment {
         super.onSaveInstanceState(outState);
 
         if (spFiles.getSelectedItemPosition() > 0) {
+            outState.putSerializable(KEY_FILES_SERIALIZABLE, mFiles);
             outState.putSerializable(KEY_SELECTED_FILE_SERIALIZABLE, mFiles[spFiles.getSelectedItemPosition() - 1]);
         }
     }
@@ -129,7 +133,7 @@ public class ImportFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_save:
-                if (mFiles.length == 0 || mFiles.length < spFiles.getSelectedItemPosition())  {
+                if (null == mFiles || mFiles.length == 0 || mFiles.length < spFiles.getSelectedItemPosition())  {
                     // Fail safety.
                     return true;
                 }
@@ -485,20 +489,21 @@ public class ImportFragment extends Fragment {
     }
 
     class ImportException extends Exception {
-        public ImportException(String message) {
+        ImportException(String message) {
             super(message);
         }
 
-        public ImportException(String message, Throwable cause) {
+        ImportException(String message, Throwable cause) {
             super(message, cause);
         }
 
-        public ImportException(@StringRes int message) {
+        ImportException(@StringRes int message) {
             this(getString(message));
         }
 
-        public ImportException(@StringRes int message, Throwable cause) {
+        ImportException(@StringRes int message, Throwable cause) {
             this(getString(message), cause);
         }
     }
+
 }
