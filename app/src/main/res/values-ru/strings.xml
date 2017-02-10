@@ -79,8 +79,7 @@
     <string name="daily_notification_message">Вы не сделали ни одной записи сегодня.</string>
     <string name="pref_header_general">Общие</string>
 
-    <string name="pref_title_notifications_active">Вкл</string>
+    <string name="pref_title_notifications_active">Вкл.</string>
     <string name="pref_title_daily_remainder">Включить ежедневное напоминание в случае отсутствия записей</string>
     <string name="crash_toast_text">Ай-ай-ай! Приложение остановилось, но мои разработчики получат отчёт, и исправят ошибку!</string>
-    <string name="export_external_successful">%1$s созданный</string>
     </resources>
