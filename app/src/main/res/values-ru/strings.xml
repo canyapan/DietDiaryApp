@@ -1,2 +1,86 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+    <string name="app_name">Дневник Диеты</string>
+    <string name="action_save">Сохранить</string>
+    <string name="action_share">Поделиться</string>
+    <string name="action_delete">Удалить</string>
+    <string name="action_copy">Копировать</string>
+    <string name="action_calendar_today">Сегодня</string>
+    <string name="action_done">Готово</string>
+    <string name="action_cancel">Отмена</string>
+    <string name="activity_settings_title">Настройки</string>
+    <string name="activity_create_edit_description_hint">Описание</string>
+    <string name="nav_home">В начало</string>
+    <string name="nav_settings">Настройки</string>
+    <string name="nav_donate">Пожертвовать</string>
+    <string name="nav_about">О Нас</string>
+    <string name="backup">Резервное копирование</string>
+    <string name="restore">Восстановление</string>
+    <string name="export_from">От</string>
+    <string name="export_to">Кому</string>
+    <string name="export_destination">Пункт назначения</string>
+    <string name="export_temp_file_creation_error">Невозможно создать временный файл.</string>
+    <string name="crash_dialog_ok_toast">Спасибо!</string>
+
+    <string name="pref_list_clock_mode_messages_ampm">AM/PM</string>
+
+    <string name="pref_list_clock_mode_messages_24h">24 часа</string>
+    <string name="spinner_event_drink_types_fruit_juice">Сок</string>
+
+    <string name="spinner_event_drink_types_tea">Чай</string>
+    <string name="spinner_event_drink_types_alcohol">Алкоголь</string>
+    <string name="spinner_event_drink_types_water">Вода</string>
+    <string name="spinner_event_drink_types_energy_drink">Энергетический напиток</string>
+    <string name="spinner_event_drink_types_coffee">Кофе</string>
+    <string name="spinner_event_types_exercise">Упражнение</string>
+    <string name="spinner_event_types_other">Другое</string>
+
+    <string name="spinner_event_food_types_breakfast">Завтак</string>
+    <string name="spinner_event_food_types_lunch">Обед</string>
+    <string name="spinner_event_food_types_dinner">Ужин</string>
+    <string name="spinner_event_food_types_snack">Перекус</string>
+    <string name="spinner_event_food_types_junk">Нездоровая пища</string>
+
+    <string name="spinner_event_types_food">Еда</string>
+    <string name="spinner_event_types_drink">Напиток</string>
+    <string name="snack_bar_deleted">Удалить</string>
+    <string name="spinner_event_types_supplements">Пищевые добавки</string>
+    <string name="spinner_event_types_medication">Лекарство</string>
+    <string name="import_file_selector">Файлы</string>
+    <string name="import_file_not_exists">Выбранный файл не существует!</string>
+    <string name="import_file_not_readable">Выбранный файл нечитабельный!</string>
+    <string name="import_file_empty">Выбранный файл пуст!</string>
+    <string name="pref_title_clock_mode">Режим часов</string>
+    <string name="pref_list_clock_mode_messages_default">Системные настройки по умолчанию</string>
+    <string name="pref_header_notifications">Уведомления</string>
+    <string name="pref_title_daily_remainder_time">Напомнить мне в</string>
+
+    <string name="navigation_drawer_open">Показать панель навигации</string>
+    <string name="navigation_drawer_close">Скрыть панель навигации</string>
+
+    <string name="activity_create_event_title">Новая запись</string>
+    <string name="activity_edit_event_title">Редактировать запись</string>
+    <string name="activity_backup_restore_title">Резервное копирование/восстановление</string>
+    <string name="day_fragment_nothing_to_share">Нет записей для пересылки.</string>
+    <string name="nav_backup_restore">Резервное копирование/восстановление</string>
+    <string name="export_type">Формат</string>
+    <string name="export_progress_title">Отправка&#8230;</string>
+    <string name="export_sd_card_unavailable">Карта памяти недоступна.</string>
+    <string name="export_file_creation_error">Невозможно создать экспортный файл.</string>
+    <string name="export_csv_exception">Неизвестная ошибка в процессе экспорта в CSV.</string>
+    <string name="export_share_successful">CSV файл отправлен.</string>
+    <string name="import_progress_title">Получение&#8230;</string>
+    <string name="import_no_permission">Откройте доступ для чтения файлов.</string>
+    <string name="import_no_external_storage">Вставьте внешний носитель.</string>
+    <string name="import_file_not_csv">Выбранный файл не является файлом CSV!</string>
+    <string name="import_spinner_hint">Выберите файл</string>
+    <string name="content_description_icon">Иконка</string>
+    <string name="snack_bar_undo">Отмена</string>
+    <string name="daily_notification_message">Вы не сделали ни одной записи сегодня.</string>
+    <string name="pref_header_general">Общие</string>
+
+    <string name="pref_title_notifications_active">Вкл</string>
+    <string name="pref_title_daily_remainder">Включить ежедневное напоминание в случае отсутствия записей</string>
+    <string name="crash_toast_text">Ай-ай-ай! Приложение остановилось, но мои разработчики получат отчёт, и исправят ошибку!</string>
+    <string name="export_external_successful">%1$s созданный</string>
+    </resources>

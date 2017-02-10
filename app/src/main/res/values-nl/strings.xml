@@ -1,0 +1,102 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+    <string name="app_name">Dieetdagboek</string>
+    <string name="navigation_drawer_open">Navigatiepaneel openen</string>
+    <string name="navigation_drawer_close">Navigatiepaneel sluiten</string>
+
+    <string name="action_save">Opslaan</string>
+    <string name="action_share">Delen</string>
+    <string name="action_delete">Verwijderen</string>
+    <string name="action_copy">Kopiëren</string>
+    <string name="action_calendar_today">Vandaag</string>
+    <string name="action_done">Afronden</string>
+    <string name="action_cancel">Annuleren</string>
+    <string name="activity_settings_title">Instellingen</string>
+    <string name="activity_create_event_title">Nieuwe gebeurtenis</string>
+    <string name="activity_edit_event_title">Gebeurtenis bewerken</string>
+    <string name="activity_create_edit_description_hint">Omschrijving</string>
+    <string name="activity_backup_restore_title">Back-uppen/Herstellen</string>
+    <string name="day_fragment_nothing_to_share">Er is niks om te delen.</string>
+    <string name="nav_home">Start</string>
+    <string name="nav_backup_restore">Back-uppen/Herstellen</string>
+    <string name="nav_settings">Instellingen</string>
+    <string name="nav_donate">Doneren</string>
+    <string name="nav_about">Over</string>
+    <string name="backup">Back-uppen</string>
+    <string name="restore">Herstellen</string>
+    <string name="export_from">Van</string>
+    <string name="export_to">Naar</string>
+    <string name="export_type">Type</string>
+    <string name="export_destination">Bestemming</string>
+    <string name="export_progress_title">Bezig met exporteren&#8230;</string>
+    <string name="export_sd_card_unavailable">De SD-kaart is niet beschikbaar.</string>
+    <string name="export_temp_file_creation_error">Het creëren van een tijdelijk bestand is mislukt.</string>
+    <string name="export_file_creation_error">Het creëren van het exportbestand is mislukt.</string>
+    <string name="export_unimplemented_destination">De geselecteerde bestemming is nog niet geïmplementeerd.</string>
+    <string name="export_csv_io_exception">Er is een in-/uitvoerfout opgetreden tijdens het exporteren naar CSV.</string>
+    <string name="export_csv_sql_exception">Er is een database-fout opgetreden tijdens het exporteren naar CSV.</string>
+    <string name="export_csv_exception">Er is een onbekende fout opgetreden tijdens het exporteren naar CSV.</string>
+    <string name="export_external_successful">%1$s is gecreëerd</string>
+    <string name="export_share_successful">Het CSV-bestand is gedeeld.</string>
+    <string name="export_no_permission">Geef toestemming om bestanden te kunnen schrijven.</string>
+    <string name="import_progress_title">Bezig met importeren&#8230;</string>
+    <string name="import_file_selector">Bestanden</string>
+    <string name="import_note"><b>Let op:</b> Uw back-upbestanden staan in <i>/sdcard/</i>\nof <i>/sdcard/DietDiaryApp/</i></string>
+    <string name="import_no_permission">Geef toestemming om bestanden te mogen lezen.</string>
+    <string name="import_no_external_storage">Koppel uw externe opslag aan.</string>
+    <string name="import_csv_io_exception">Er is een in-/uitvoerfout opgetreden tijdens het importeren uit CSV.</string>
+    <string name="import_csv_sql_exception">Er is een databasefout opgetreden tijdens importeren uit CSV.</string>
+    <string name="import_csv_exception">Er is een onbekende fout opgetreden tijdens het importeren uit CSV.</string>
+    <string name="import_csv_corrupted">Het CSV-bestand is corrupt.</string>
+    <string name="import_csv_already_existing_records">Het CSV-bestand bevat reeds bestaande invoeren.</string>
+    <string name="import_file_not_exists">Het geselecteerde bestand bestaat niet!</string>
+    <string name="import_file_not_readable">Het geselecteerde bestand is onleesbaar!</string>
+    <string name="import_file_empty">Het geselecteerde bestand is leeg!</string>
+    <string name="import_file_not_csv">Het geselecteerde bestand is geen CSV-bestand!</string>
+    <string name="import_successful">Het CSV-bestand, %1$s, is geïmporteerd.</string>
+    <string name="import_spinner_hint">Selecteer het te importeren bestand</string>
+    <string name="content_description_icon">Pictogram</string>
+    <string name="snack_bar_dismiss">Verwerpen</string>
+    <string name="snack_bar_undo">Ongedaan maken</string>
+    <string name="snack_bar_deleted">Verwijderd</string>
+    <string name="daily_notification_title">Dieetdagboek - Dagelijkse herinnering</string>
+    <string name="daily_notification_message">U heeft vandaag niks toegevoegd aan uw dagboek.</string>
+    <string name="spinner_event_types_food">Eten</string>
+    <string name="spinner_event_types_drink">Drinken</string>
+    <string name="spinner_event_types_medication">Medicatie</string>
+    <string name="spinner_event_types_supplements">Supplementen</string>
+    <string name="spinner_event_types_exercise">Oefeningen</string>
+    <string name="spinner_event_types_other">Overig</string>
+
+    <string name="spinner_event_food_types_breakfast">Ontbijt</string>
+    <string name="spinner_event_food_types_lunch">Lunch</string>
+    <string name="spinner_event_food_types_dinner">Avondeten</string>
+    <string name="spinner_event_food_types_snack">Snack</string>
+    <string name="spinner_event_food_types_junk">Troep</string>
+
+    <string name="spinner_event_drink_types_coffee">Koffie</string>
+    <string name="spinner_event_drink_types_tea">Thee</string>
+    <string name="spinner_event_drink_types_alcohol">Alcohol</string>
+    <string name="spinner_event_drink_types_water">Water</string>
+    <string name="spinner_event_drink_types_energy_drink">Energiedrank</string>
+    <string name="spinner_event_drink_types_fruit_juice">Vruchtensap</string>
+
+    <string name="pref_header_general">Algemeen</string>
+
+    <string name="pref_title_clock_mode">Klokmodus</string>
+    <string name="pref_list_clock_mode_messages_default">Systeemstandaard</string>
+    <string name="pref_list_clock_mode_messages_24h">24 uur</string>
+    <string name="pref_list_clock_mode_messages_ampm">AM/PM</string>
+
+    <string name="pref_header_notifications">Meldingen</string>
+    <string name="pref_title_notifications_active">Actief</string>
+    <string name="pref_title_daily_remainder">Herinner me dagelijks als ik niks heb ingevoerd</string>
+    <string name="pref_title_daily_remainder_time">Herinner me op</string>
+
+    <string name="crash_toast_text">Ooooops ! Ik ben gecrasht ! Er is een foutrapportage opgestuurd naar mijn ontwikkelaar zodat dit probleem kan worden opgelost !</string>
+    <string name="crash_dialog_title">Mijn Dieetdagboek is gecrasht</string>
+    <string name="crash_dialog_text">Er is een onbekend fout opgetreden waardoor de applicatie geforceerd is gestopt. Help ons het probleem op te lossen door de foutrapportage op te sturen; u hoeft alleen maar te drukken op Oké.</string>
+    <string name="crash_dialog_comment_prompt">Als u wilt, dan kunt u hieronder uw reactie schrijven over het probleem:</string>
+    <string name="crash_dialog_ok_toast">Bedankt !</string>
+
+</resources>
