@@ -1,5 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<resources><string name="app_name">Dieetdagboek</string>
+<resources>
+    <string name="app_name">Dieetdagboek</string>
     <string name="navigation_drawer_open">Navigatiepaneel openen</string>
     <string name="navigation_drawer_close">Navigatiepaneel sluiten</string>
 
@@ -27,7 +28,7 @@
     <string name="export_to">Naar</string>
     <string name="export_type">Type</string>
     <string name="export_destination">Bestemming</string>
-    <string name="export_progress_title">Bezig met exporteren…</string>
+    <string name="export_progress_title">Bezig met exporteren&#8230;</string>
     <string name="export_sd_card_unavailable">De SD-kaart is niet beschikbaar.</string>
     <string name="export_temp_file_creation_error">Het creëren van een tijdelijk bestand is mislukt.</string>
     <string name="export_file_creation_error">Het creëren van het exportbestand is mislukt.</string>
@@ -38,10 +39,9 @@
     <string name="export_external_successful">%1$s is gecreëerd</string>
     <string name="export_share_successful">Het CSV-bestand is gedeeld.</string>
     <string name="export_no_permission">Geef toestemming om bestanden te kunnen schrijven.</string>
-    <string name="import_progress_title">Bezig met importeren…</string>
+    <string name="import_progress_title">Bezig met importeren&#8230;</string>
     <string name="import_file_selector">Bestanden</string>
-    <string name="import_note"><b>Let op:</b> Uw back-upbestanden staan in <i>/sdcard/</i>
-of <i>/sdcard/DietDiaryApp/</i></string>
+    <string name="import_note"><b>Let op:</b> Uw back-upbestanden staan in <i>/sdcard/</i>\nof <i>/sdcard/DietDiaryApp/</i></string>
     <string name="import_no_permission">Geef toestemming om bestanden te mogen lezen.</string>
     <string name="import_no_external_storage">Koppel uw externe opslag aan.</string>
     <string name="import_csv_io_exception">Er is een in-/uitvoerfout opgetreden tijdens het importeren uit CSV.</string>

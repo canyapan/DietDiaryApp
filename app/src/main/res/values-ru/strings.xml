@@ -1,5 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<resources><string name="app_name">Дневник Диеты</string>
+<resources>
+    <string name="app_name">Дневник Диеты</string>
     <string name="action_save">Сохранить</string>
     <string name="action_share">Поделиться</string>
     <string name="action_delete">Удалить</string>
@@ -21,7 +22,7 @@
     <string name="export_temp_file_creation_error">Невозможно создать временный файл.</string>
     <string name="crash_dialog_ok_toast">Спасибо!</string>
 
-<string name="pref_list_clock_mode_messages_ampm">AM/PM</string>
+    <string name="pref_list_clock_mode_messages_ampm">AM/PM</string>
 
     <string name="pref_list_clock_mode_messages_24h">24 часа</string>
     <string name="spinner_event_drink_types_fruit_juice">Сок</string>
@@ -63,12 +64,12 @@
     <string name="day_fragment_nothing_to_share">Нет записей для пересылки.</string>
     <string name="nav_backup_restore">Резервное копирование/восстановление</string>
     <string name="export_type">Формат</string>
-    <string name="export_progress_title">Отправка…</string>
+    <string name="export_progress_title">Отправка&#8230;</string>
     <string name="export_sd_card_unavailable">Карта памяти недоступна.</string>
     <string name="export_file_creation_error">Невозможно создать экспортный файл.</string>
     <string name="export_csv_exception">Неизвестная ошибка в процессе экспорта в CSV.</string>
     <string name="export_share_successful">CSV файл отправлен.</string>
-    <string name="import_progress_title">Получение…</string>
+    <string name="import_progress_title">Получение&#8230;</string>
     <string name="import_no_permission">Откройте доступ для чтения файлов.</string>
     <string name="import_no_external_storage">Вставьте внешний носитель.</string>
     <string name="import_file_not_csv">Выбранный файл не является файлом CSV!</string>
