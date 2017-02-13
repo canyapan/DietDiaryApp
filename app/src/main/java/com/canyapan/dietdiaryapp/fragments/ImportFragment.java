@@ -53,17 +53,16 @@ import java.util.HashMap;
 
 public class ImportFragment extends Fragment {
     public static final String TAG = "ImportFragment";
-    private static final String KEY_SELECTED_FILE_SERIALIZABLE = "FILE";
-    private static final String KEY_FILES_SERIALIZABLE = "FILES";
+    private static final String KEY_SELECTED_FILE_INDEX_INT = "SELECTED FILE";
+    private static final String KEY_FILES_PARCELABLE = "FILES";
     private static final int REQUEST_EXTERNAL_STORAGE = 20;
 
     private OnFragmentInteractionListener mListener;
 
     private LinearLayout mLinearLayout;
-    private Spinner spFiles;
+    private Spinner mSpinner;
 
-    private File[] mFiles = null;
-    private File mSelectedFile = null;
+    private ArrayList<SpinnerItem> mSpinnerItems = null;
 
     private DatabaseHelper mDatabaseHelper;
     private ProgressDialog mProgressDialog;
@@ -88,15 +87,21 @@ public class ImportFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        if (savedInstanceState != null) {
-            mFiles = (File[]) savedInstanceState.getSerializable(KEY_FILES_SERIALIZABLE);
-            mSelectedFile = (File) savedInstanceState.getSerializable(KEY_SELECTED_FILE_SERIALIZABLE);
-        }
-
         mLinearLayout = (LinearLayout) inflater.inflate(R.layout.fragment_import_linearlayout, container, false);
 
-        spFiles = (Spinner) mLinearLayout.findViewById(R.id.spFiles);
-        loadFiles();
+        mSpinner = (Spinner) mLinearLayout.findViewById(R.id.spFiles);
+
+        if (savedInstanceState != null) {
+            mSpinnerItems = savedInstanceState.getParcelableArrayList(KEY_FILES_PARCELABLE);
+            int selectedIndex = savedInstanceState.getInt(KEY_SELECTED_FILE_INDEX_INT);
+
+            mSpinner.setAdapter(new SpinnerArrayAdapter(getContext(), mSpinnerItems));
+            mSpinner.setSelection(selectedIndex);
+        }
+
+        if (null == mSpinnerItems) {
+            loadSpinnerItems();
+        }
 
         if (null != mAsyncTask) {
             // To start progress dialog again.
@@ -110,10 +115,8 @@ public class ImportFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        if (spFiles.getSelectedItemPosition() > 0) {
-            outState.putSerializable(KEY_FILES_SERIALIZABLE, mFiles);
-            outState.putSerializable(KEY_SELECTED_FILE_SERIALIZABLE, mFiles[spFiles.getSelectedItemPosition() - 1]);
-        }
+        outState.putParcelableArrayList(KEY_FILES_PARCELABLE, mSpinnerItems);
+        outState.putInt(KEY_SELECTED_FILE_INDEX_INT, mSpinner.getSelectedItemPosition());
     }
 
     @Override
@@ -133,18 +136,18 @@ public class ImportFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_save:
-                if (null == mFiles || mFiles.length == 0 || mFiles.length < spFiles.getSelectedItemPosition())  {
+                if (null == mSpinnerItems || mSpinnerItems.size() == 1) {
                     // Fail safety.
                     return true;
                 }
 
-                if (spFiles.getSelectedItemPosition() == 0) {
+                if (mSpinner.getSelectedItemPosition() == 0) {
                     // Skip the select helper.
                     return true;
                 }
 
                 try {
-                    mAsyncTask = (ImportAsyncTask) new ImportAsyncTask(mFiles[spFiles.getSelectedItemPosition() - 1]).execute();
+                    mAsyncTask = (ImportAsyncTask) new ImportAsyncTask((File) mSpinnerItems.get(mSpinner.getSelectedItemPosition()).getTag()).execute();
                 } catch (ImportException e) {
                     Log.e(TAG, "Import from external storage unsuccessful.", e);
                 }
@@ -155,7 +158,7 @@ public class ImportFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    private void loadFiles() {
+    private void loadSpinnerItems() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (getActivity().checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
                     != PackageManager.PERMISSION_GRANTED) {
@@ -168,26 +171,17 @@ public class ImportFragment extends Fragment {
             }
         }
 
-        mFiles = getSupportedFiles();
+        Log.d(TAG, "Loading items...");
+        File[] files = getSupportedFiles();
 
-        final ArrayList<SpinnerItem> items = new ArrayList<>(mFiles.length);
-        items.add(new SpinnerItem(getString(R.string.import_spinner_hint), R.drawable.tab_import, true));
-        for (File f : mFiles) {
-            items.add(new SpinnerItem(f.getName(), f.getName().toLowerCase().endsWith(".csv") ?
-                    R.drawable.file_delimited : R.drawable.file));
+        mSpinnerItems = new ArrayList<>(files.length);
+        mSpinnerItems.add(new SpinnerItem(getString(R.string.import_spinner_hint), R.drawable.tab_import, true));
+        for (File f : files) {
+            mSpinnerItems.add(new SpinnerItem(f.getName(), f.getName().toLowerCase().endsWith(".csv") ?
+                    R.drawable.file_delimited : R.drawable.file, false, f));
         }
 
-        SpinnerArrayAdapter adapter = new SpinnerArrayAdapter(getContext(), items);
-
-        spFiles.setAdapter(adapter);
-
-        if (mSelectedFile != null) {
-            int position = Arrays.binarySearch(mFiles, mSelectedFile);
-
-            if (position >= 0) {
-                spFiles.setSelection(position);
-            }
-        }
+        mSpinner.setAdapter(new SpinnerArrayAdapter(getContext(), mSpinnerItems));
     }
 
     private File[] getSupportedFiles() {
@@ -228,7 +222,7 @@ public class ImportFragment extends Fragment {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == REQUEST_EXTERNAL_STORAGE
                 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            loadFiles();
+            loadSpinnerItems();
         } else {
             Toast.makeText(getContext(), R.string.import_no_permission, Toast.LENGTH_LONG).show();
         }

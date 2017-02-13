@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
@@ -97,6 +98,7 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.AppTheme_NoActionBar);
         super.onCreate(savedInstanceState);
 
         if (savedInstanceState != null) {
@@ -106,8 +108,6 @@ public class MainActivity extends AppCompatActivity implements
             mSelectedDate = LocalDate.now();
             mFab2Shown = false;
         }
-
-        setTheme(R.style.AppTheme_NoActionBar);
 
         setContentView(R.layout.activity_main);
 
@@ -278,7 +278,7 @@ public class MainActivity extends AppCompatActivity implements
 
     //region NavigationView.OnNavigationItemSelectedListener methods
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.nav_home:
                 Log.d(TAG, "Home item selected.");
