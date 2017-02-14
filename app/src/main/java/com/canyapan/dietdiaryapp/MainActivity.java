@@ -2,8 +2,12 @@ package com.canyapan.dietdiaryapp;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -13,7 +17,9 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -22,6 +28,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.DatePicker;
 
+import com.canyapan.dietdiaryapp.db.DatabaseHelper;
+import com.canyapan.dietdiaryapp.db.EventHelper;
 import com.canyapan.dietdiaryapp.fragments.CalendarFragment;
 import com.canyapan.dietdiaryapp.models.Event;
 import com.canyapan.dietdiaryapp.receivers.DailyAlarmReceiver;
@@ -29,10 +37,13 @@ import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 
+import org.joda.time.Days;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.DateTimeFormatterBuilder;
+
+import java.util.ArrayList;
 
 /**
  * --- LIST NEXT VERSION
@@ -48,6 +59,12 @@ public class MainActivity extends AppCompatActivity implements
 
     private static final String KEY_DATE_SERIALIZABLE = "DATE";
     private static final String KEY_FAB_SHOWN_BOOLEAN = "FAB";
+    private static final String KEY_SURVEY_DATE_STRING = "SURVEY DATE";
+    private static final String KEY_SURVEY_STATUS_INT = "SURVEY STATUS CODE";
+
+    private static final int FLAG_SURVEY_WAITING = 1;
+    private static final int FLAG_SURVEY_DONE = 2;
+    private static final int FLAG_SURVEY_NEVER_SHOW = 3;
 
     private static final DateTimeFormatter DATE_FORMATTER;
 
@@ -67,6 +84,7 @@ public class MainActivity extends AppCompatActivity implements
     private Animation mFabAnimationRotateFw, mFabAnimationRotateBw;
 
     private DatePickerDialog mDatePickerDialog;
+    private AlertDialog mRateDialog;
 
     private LocalDate mSelectedDate;
     private Boolean mFab2Shown;
@@ -172,6 +190,8 @@ public class MainActivity extends AppCompatActivity implements
         }
 
         DailyAlarmReceiver.register(MainActivity.this);
+
+        checkSurveyStatus();
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -310,6 +330,114 @@ public class MainActivity extends AppCompatActivity implements
         Log.d(TAG, "Move from " + mSelectedDate + " to date " + newDate);
         mSelectedDate = newDate;
         mActionBar.setTitle(newDate.toString(DATE_FORMATTER));
+    }
+    //endregion
+
+    //region Rate App
+    private void checkSurveyStatus() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        int surveyStatus = preferences.getInt(KEY_SURVEY_STATUS_INT, FLAG_SURVEY_WAITING);
+
+        switch (surveyStatus) {
+            case FLAG_SURVEY_DONE:
+            case FLAG_SURVEY_NEVER_SHOW:
+                return;
+        }
+
+        // case FLAG_SURVEY_WAITING:
+        // Check if user has been using the application for 3 days and entered at least 10 events.
+        String date = preferences.getString(KEY_SURVEY_DATE_STRING, null);
+        if (null == date) {
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString(KEY_SURVEY_DATE_STRING, LocalDate.now().toString(DatabaseHelper.DB_DATE_FORMATTER));
+            editor.apply();
+            return;
+        }
+
+        LocalDate startDate = DatabaseHelper.DB_DATE_FORMATTER.parseLocalDate(date);
+        int days = Days.daysBetween(startDate, LocalDate.now()).getDays();
+        if (days >= 3) {
+            ArrayList<Event> events = EventHelper.getEventByDateRange(this, startDate, LocalDate.now());
+
+            if (null != events && events.size() >= 15) {
+                showSurvey();
+            }
+        }
+    }
+
+    private void showSurvey() {
+        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+        mRateDialog = new AlertDialog.Builder(this)
+                .setTitle(R.string.rate_dialog_title)
+                .setMessage(R.string.rate_dialog_text)
+                .setCancelable(true)
+                .setPositiveButton(R.string.rate_dialog_yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putInt(KEY_SURVEY_STATUS_INT, FLAG_SURVEY_DONE);
+                        editor.putString(KEY_SURVEY_DATE_STRING, LocalDate.now().toString(DatabaseHelper.DB_DATE_FORMATTER));
+                        editor.apply();
+
+                        openPlayStore();
+                    }
+                })
+                .setNeutralButton(R.string.rate_dialog_later, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putString(KEY_SURVEY_DATE_STRING, LocalDate.now().toString(DatabaseHelper.DB_DATE_FORMATTER));
+                        editor.apply();
+                    }
+                })
+                .setNegativeButton(R.string.rate_dialog_never, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putInt(KEY_SURVEY_STATUS_INT, FLAG_SURVEY_NEVER_SHOW);
+                        editor.putString(KEY_SURVEY_DATE_STRING, LocalDate.now().toString(DatabaseHelper.DB_DATE_FORMATTER));
+                        editor.apply();
+                    }
+                })
+                .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialog) {
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putString(KEY_SURVEY_DATE_STRING, LocalDate.now().toString(DatabaseHelper.DB_DATE_FORMATTER));
+                        editor.apply();
+                    }
+                })
+                .setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        mRateDialog = null;
+                    }
+                }).show();
+    }
+
+    private void openPlayStore() {
+        Uri uri = Uri.parse("market://details?id=" + getPackageName());
+        Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
+        // To count with Play market backstack, After pressing back button,
+        // to taken back to our application, we need to add following flags to intent.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY |
+                    Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
+                    Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+        } else {
+            //noinspection deprecation
+            goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY |
+                    Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET |
+                    Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+        }
+
+        try {
+            startActivity(goToMarket);
+        } catch (ActivityNotFoundException e) {
+            startActivity(new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("http://play.google.com/store/apps/details?id=" + getPackageName())));
+        }
     }
     //endregion
 }

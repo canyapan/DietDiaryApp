@@ -32,10 +32,16 @@ public class ResourcesHelper {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             config.setLocales(LocaleList.forLanguageTags(Locale.ENGLISH.toLanguageTag()));
         } else {
+            //noinspection deprecation
             config.locale = locale;
         }
 
-        return new Resources(assets, metrics, config);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            return context.createConfigurationContext(config).getResources();
+        } else {
+            //noinspection deprecation
+            return new Resources(assets, metrics, config);
+        }
     }
 
     public static void setLeftCompoundDrawable(@NonNull final View parent, @IdRes final int textView, @DrawableRes final int drawable) {

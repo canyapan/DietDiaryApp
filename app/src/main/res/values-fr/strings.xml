@@ -105,4 +105,11 @@
     <string name="crash_dialog_comment_prompt">Merci d\'ajouter votre commentaire sur le problème :</string>
     <string name="crash_dialog_ok_toast">Merci !</string>
 
+    <!-- Strings for App Rate Dialog -->
+    <string name="rate_dialog_title">Noter cette application</string>
+    <string name="rate_dialog_text">Si vous appréciez cette application, veuillez prendre un moment pour la noter. Cela ne prendra qu\'une minute. Merci de votre participation!</string>
+    <string name="rate_dialog_yes">Évaluer Maintenant</string>
+    <string name="rate_dialog_later">Me Rappeler Plus Tard</string>
+    <string name="rate_dialog_never">Non, Merci</string>
+
 </resources>

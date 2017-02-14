@@ -104,5 +104,6 @@
     <string name="crash_dialog_comment_prompt">Merci d\'ajouter votre commentaire sur le problème :</string>
     <string name="crash_dialog_ok_toast">Merci !</string>
 
-<string name="pref_title_clock_mode">Mode horloge</string>
-    </resources>
+    <string name="pref_title_clock_mode">Mode horloge</string>
+
+</resources>

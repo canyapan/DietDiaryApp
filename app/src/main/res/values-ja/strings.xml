@@ -99,4 +99,11 @@
     <string name="pref_list_clock_mode_messages_24h">24 時間</string>
     <string name="pref_list_clock_mode_messages_ampm">AM/PM</string>
 
+    <!-- Strings for App Rate Dialog -->
+    <string name="rate_dialog_title">アプリをレビューしませんか？</string>
+    <string name="rate_dialog_text">このアプリをお使い頂き大変ありがとうございます。もしよろしければ1分程で済みますので、このアプリの評価をお願いします。ご協力感謝いたします！</string>
+    <string name="rate_dialog_yes">今すぐ評価する</string>
+    <string name="rate_dialog_later">後でする</string>
+    <string name="rate_dialog_never">いえ、結構です</string>
+
 </resources>

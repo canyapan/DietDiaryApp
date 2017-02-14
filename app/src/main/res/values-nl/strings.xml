@@ -99,4 +99,11 @@
     <string name="crash_dialog_comment_prompt">Als u wilt, dan kunt u hieronder uw reactie schrijven over het probleem:</string>
     <string name="crash_dialog_ok_toast">Bedankt !</string>
 
+    <!-- Strings for App Rate Dialog -->
+    <string name="rate_dialog_title">Beoordeel de app</string>
+    <string name="rate_dialog_text">We vinden uw mening belangrijk. Als u tevreden bent over onze app dan stellen wij het op prijs als u dat met andere gebruikers wilt delen. Het beoordelen kost minder dan 1 minuut. Bedankt voor uw ondersteuning!</string>
+    <string name="rate_dialog_yes">Beoordeel It Now</string>
+    <string name="rate_dialog_later">Remind Me Later</string>
+    <string name="rate_dialog_never">Nee, Bedankt</string>
+
 </resources>
