@@ -3,6 +3,7 @@
     <string name="app_name">Diyet Günlüğü</string>
     <string name="navigation_drawer_close">Navigasyon panelini kapat</string>
     <string name="navigation_drawer_open">Navigasyon panelini aç</string>
+
     <string name="action_cancel">İptal</string>
     <string name="action_done">Son</string>
     <string name="action_save">Kaydet</string>
@@ -81,16 +82,21 @@
     <string name="spinner_event_drink_types_energy_drink">Enerji İçeceği</string>
     <string name="spinner_event_drink_types_fruit_juice">Meyve Suyu</string>
 
+    <!-- Strings related to Settings -->
+    <!-- Example General settings -->
     <string name="pref_header_general">Genel</string>
-    <string name="pref_header_notifications">Bildirimler</string>
-    <string name="pref_title_notifications_active">Aktif</string>
-    <string name="pref_title_daily_remainder">Eğer hiçbirşey yazmadıysam günlük hatırlat</string>
-    <string name="pref_title_daily_remainder_time">Şu saatte hatırlat</string>
     <string name="pref_title_clock_mode">Saat Modu</string>
     <string name="pref_list_clock_mode_messages_default">Sistem Varsayılanı</string>
     <string name="pref_list_clock_mode_messages_24h">24 Saat</string>
     <string name="pref_list_clock_mode_messages_ampm">AM/PM</string>
 
+    <!-- Settings for Notifications -->
+    <string name="pref_header_notifications">Bildirimler</string>
+    <string name="pref_title_notifications_active">Aktif</string>
+    <string name="pref_title_daily_remainder">Eğer hiçbirşey yazmadıysam günlük hatırlat</string>
+    <string name="pref_title_daily_remainder_time">Şu saatte hatırlat</string>
+
+    <!-- Strings for Crash Reporter -->
     <string name="crash_dialog_comment_prompt">Sorun ile alakalı görüşlerinizi aşağıda paylaşabilirsiniz:</string>
     <string name="crash_dialog_ok_toast">Teşekkürler !</string>
     <string name="crash_dialog_text">Beklenmeyen bir hata uygulamayı kapanmaya zorladı. Lütfen hata verisini göndererek sorunu düzeltmemize yardım edin. Tek yapmanız gereken \'Tamam\'a tıklamak.</string>
@@ -103,5 +109,4 @@
     <string name="rate_dialog_yes">Puan Ver</string>
     <string name="rate_dialog_later">Daha Sonra Hatırlat</string>
     <string name="rate_dialog_never">Hayır, Teşekkürler</string>
-
 </resources>

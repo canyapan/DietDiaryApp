@@ -1,6 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources>
     <string name="app_name">Дневник Диеты</string>
+    <string name="navigation_drawer_open">Показать панель навигации</string>
+    <string name="navigation_drawer_close">Скрыть панель навигации</string>
+
     <string name="action_save">Сохранить</string>
     <string name="action_share">Поделиться</string>
     <string name="action_delete">Удалить</string>
@@ -20,43 +23,12 @@
     <string name="export_to">Кому</string>
     <string name="export_destination">Пункт назначения</string>
     <string name="export_temp_file_creation_error">Невозможно создать временный файл.</string>
-
-    <string name="pref_list_clock_mode_messages_ampm">AM/PM</string>
-
-    <string name="pref_list_clock_mode_messages_24h">24 часа</string>
-    <string name="spinner_event_drink_types_fruit_juice">Сок</string>
-
-    <string name="spinner_event_drink_types_tea">Чай</string>
-    <string name="spinner_event_drink_types_alcohol">Алкоголь</string>
-    <string name="spinner_event_drink_types_water">Вода</string>
-    <string name="spinner_event_drink_types_energy_drink">Энергетический напиток</string>
-    <string name="spinner_event_drink_types_coffee">Кофе</string>
-    <string name="spinner_event_types_exercise">Упражнение</string>
-    <string name="spinner_event_types_other">Другое</string>
-
-    <string name="spinner_event_food_types_breakfast">Завтак</string>
-    <string name="spinner_event_food_types_lunch">Обед</string>
-    <string name="spinner_event_food_types_dinner">Ужин</string>
-    <string name="spinner_event_food_types_snack">Перекус</string>
-    <string name="spinner_event_food_types_junk">Нездоровая пища</string>
-
-    <string name="spinner_event_types_food">Еда</string>
-    <string name="spinner_event_types_drink">Напиток</string>
-    <string name="snack_bar_deleted">Удалить</string>
-    <string name="spinner_event_types_supplements">Пищевые добавки</string>
-    <string name="spinner_event_types_medication">Лекарство</string>
+    <string name="daily_notification_title">Дневник Диеты Ежедневное Напоминание</string>
+    <string name="daily_notification_message">Вы не сделали ни одной записи сегодня.</string>
     <string name="import_file_selector">Файлы</string>
     <string name="import_file_not_exists">Выбранный файл не существует!</string>
     <string name="import_file_not_readable">Выбранный файл нечитабельный!</string>
     <string name="import_file_empty">Выбранный файл пуст!</string>
-    <string name="pref_title_clock_mode">Режим часов</string>
-    <string name="pref_list_clock_mode_messages_default">Системные настройки по умолчанию</string>
-    <string name="pref_header_notifications">Уведомления</string>
-    <string name="pref_title_daily_remainder_time">Напомнить мне в</string>
-
-    <string name="navigation_drawer_open">Показать панель навигации</string>
-    <string name="navigation_drawer_close">Скрыть панель навигации</string>
-
     <string name="activity_create_event_title">Новая запись</string>
     <string name="activity_edit_event_title">Редактировать запись</string>
     <string name="activity_backup_restore_title">Резервное копирование/восстановление</string>
@@ -76,12 +48,41 @@
     <string name="content_description_icon">Иконка</string>
     <string name="snack_bar_dismiss">Разойдись</string>
     <string name="snack_bar_undo">Отмена</string>
-    <string name="daily_notification_title">Дневник Диеты Ежедневное Напоминание</string>
-    <string name="daily_notification_message">Вы не сделали ни одной записи сегодня.</string>
-    <string name="pref_header_general">Общие</string>
+    <string name="snack_bar_deleted">Удалить</string>
 
+    <string name="spinner_event_types_food">Еда</string>
+    <string name="spinner_event_types_drink">Напиток</string>
+    <string name="spinner_event_types_supplements">Пищевые добавки</string>
+    <string name="spinner_event_types_medication">Лекарство</string>
+    <string name="spinner_event_types_exercise">Упражнение</string>
+    <string name="spinner_event_types_other">Другое</string>
+
+    <string name="spinner_event_drink_types_fruit_juice">Сок</string>
+    <string name="spinner_event_drink_types_tea">Чай</string>
+    <string name="spinner_event_drink_types_alcohol">Алкоголь</string>
+    <string name="spinner_event_drink_types_water">Вода</string>
+    <string name="spinner_event_drink_types_energy_drink">Энергетический напиток</string>
+    <string name="spinner_event_drink_types_coffee">Кофе</string>
+
+    <string name="spinner_event_food_types_breakfast">Завтак</string>
+    <string name="spinner_event_food_types_lunch">Обед</string>
+    <string name="spinner_event_food_types_dinner">Ужин</string>
+    <string name="spinner_event_food_types_snack">Перекус</string>
+    <string name="spinner_event_food_types_junk">Нездоровая пища</string>
+
+    <!-- Strings related to Settings -->
+    <!-- Example General settings -->
+    <string name="pref_header_general">Общие</string>
+    <string name="pref_title_clock_mode">Режим часов</string>
+    <string name="pref_list_clock_mode_messages_default">Системные настройки по умолчанию</string>
+    <string name="pref_list_clock_mode_messages_ampm">AM/PM</string>
+    <string name="pref_list_clock_mode_messages_24h">24 часа</string>
+
+    <!-- Settings for Notifications -->
+    <string name="pref_header_notifications">Уведомления</string>
     <string name="pref_title_notifications_active">Aктивный</string>
     <string name="pref_title_daily_remainder">Включить ежедневное напоминание в случае отсутствия записей</string>
+    <string name="pref_title_daily_remainder_time">Напомнить мне в</string>
 
     <!-- Strings for Crash Reporter -->
     <string name="crash_toast_text">Ай-ай-ай ! Приложение остановилось, но мои разработчики получат отчёт, и исправят ошибку !</string>

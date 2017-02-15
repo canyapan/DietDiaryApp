@@ -61,19 +61,6 @@
     <string name="snack_bar_deleted">削除</string>
     <string name="daily_notification_title">ダイエットダイアリー 毎日のリマインダー</string>
     <string name="daily_notification_message">今日は、ダイアリーにエントリーを追加していません。</string>
-    <string name="pref_header_general">全般</string>
-
-    <string name="pref_title_clock_mode">時計モード</string>
-    <string name="pref_header_notifications">通知</string>
-    <string name="pref_title_notifications_active">有効</string>
-    <string name="pref_title_daily_remainder">エントリーを追加しない場合に、毎日リマインドする</string>
-    <string name="pref_title_daily_remainder_time">リマインド</string>
-
-    <string name="crash_toast_text">申し訳ありません。クラッシュしました。問題を修正するために開発者にレポートを送信しました!</string>
-    <string name="crash_dialog_title">ダイエットダイアリーがクラッシュしました</string>
-    <string name="crash_dialog_text">アプリケーションを強制的に停止する、予期しないエラーが発生しました。エラー データを送信して、この問題の解決を手伝ってください。あなたは OK をクリックするだけです。</string>
-    <string name="crash_dialog_comment_prompt">以下に、問題についてのコメントを追加できます。</string>
-    <string name="crash_dialog_ok_toast">ありがとうございます!</string>
 
     <string name="spinner_event_types_food">食品</string>
     <string name="spinner_event_types_drink">飲み物</string>
@@ -95,9 +82,26 @@
     <string name="spinner_event_drink_types_energy_drink">エナジードリンク</string>
     <string name="spinner_event_drink_types_fruit_juice">フルーツ ジュース</string>
 
+    <!-- Strings related to Settings -->
+    <!-- Example General settings -->
+    <string name="pref_header_general">全般</string>
+    <string name="pref_title_clock_mode">時計モード</string>
     <string name="pref_list_clock_mode_messages_default">システムのデフォルト</string>
     <string name="pref_list_clock_mode_messages_24h">24 時間</string>
     <string name="pref_list_clock_mode_messages_ampm">AM/PM</string>
+
+    <!-- Settings for Notifications -->
+    <string name="pref_header_notifications">通知</string>
+    <string name="pref_title_notifications_active">有効</string>
+    <string name="pref_title_daily_remainder">エントリーを追加しない場合に、毎日リマインドする</string>
+    <string name="pref_title_daily_remainder_time">リマインド</string>
+
+    <!-- Strings for Crash Reporter -->
+    <string name="crash_toast_text">申し訳ありません。クラッシュしました。問題を修正するために開発者にレポートを送信しました!</string>
+    <string name="crash_dialog_title">ダイエットダイアリーがクラッシュしました</string>
+    <string name="crash_dialog_text">アプリケーションを強制的に停止する、予期しないエラーが発生しました。エラー データを送信して、この問題の解決を手伝ってください。あなたは OK をクリックするだけです。</string>
+    <string name="crash_dialog_comment_prompt">以下に、問題についてのコメントを追加できます。</string>
+    <string name="crash_dialog_ok_toast">ありがとうございます!</string>
 
     <!-- Strings for App Rate Dialog -->
     <string name="rate_dialog_title">アプリをレビューしませんか？</string>

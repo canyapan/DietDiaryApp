@@ -87,9 +87,7 @@
     <!-- Strings related to Settings -->
     <!-- Example General settings -->
     <string name="pref_header_general">General</string>
-
     <string name="pref_title_clock_mode">Clock Mode</string>
-
     <string name="pref_list_clock_mode_messages_default">System Default</string>
     <string name="pref_list_clock_mode_messages_24h">24 Hour</string>
     <string name="pref_list_clock_mode_messages_ampm">AM/PM</string>
