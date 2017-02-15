@@ -94,7 +94,7 @@
     <string name="crash_dialog_comment_prompt">Sorun ile alakalı görüşlerinizi aşağıda paylaşabilirsiniz:</string>
     <string name="crash_dialog_ok_toast">Teşekkürler !</string>
     <string name="crash_dialog_text">Beklenmeyen bir hata uygulamayı kapanmaya zorladı. Lütfen hata verisini göndererek sorunu düzeltmemize yardım edin. Tek yapmanız gereken \'Tamam\'a tıklamak.</string>
-    <string name="crash_dialog_title">My Diet Diary çöktü</string>
+    <string name="crash_dialog_title">Diet Diary çöktü</string>
     <string name="crash_toast_text">Tühhh! çöktüm, ama geliştiricime bu sorunu çözmesi için gerekli rapor gönderildi !</string>
 
     <!-- Strings for App Rate Dialog -->

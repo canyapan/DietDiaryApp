@@ -94,7 +94,7 @@
     <string name="pref_title_daily_remainder_time">Herinner me op</string>
 
     <string name="crash_toast_text">Ooooops ! Ik ben gecrasht ! Er is een foutrapportage opgestuurd naar mijn ontwikkelaar zodat dit probleem kan worden opgelost !</string>
-    <string name="crash_dialog_title">Mijn Dieetdagboek is gecrasht</string>
+    <string name="crash_dialog_title">Dieetdagboek is gecrasht</string>
     <string name="crash_dialog_text">Er is een onbekend fout opgetreden waardoor de applicatie geforceerd is gestopt. Help ons het probleem op te lossen door de foutrapportage op te sturen; u hoeft alleen maar te drukken op Oké.</string>
     <string name="crash_dialog_comment_prompt">Als u wilt, dan kunt u hieronder uw reactie schrijven over het probleem:</string>
     <string name="crash_dialog_ok_toast">Bedankt !</string>

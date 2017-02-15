@@ -7,11 +7,11 @@ import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
 
 @ReportsCrashes(
-        formUri = "http://couchdb.canyapan.com/acra-dietdiaryapp/_design/acra-storage/_update/report",
+        formUri = BuildConfig.ACRA_URL,
         reportType = org.acra.sender.HttpSender.Type.JSON,
         httpMethod = org.acra.sender.HttpSender.Method.PUT,
-        formUriBasicAuthLogin = "reporter",
-        formUriBasicAuthPassword = "cLo9y}3sWUP%G75rzeR%dUSr6j*gkWJB",
+        formUriBasicAuthLogin = BuildConfig.ACRA_USERNAME,
+        formUriBasicAuthPassword = BuildConfig.ACRA_PASSWORD,
         mode = ReportingInteractionMode.DIALOG,
         resToastText = R.string.crash_toast_text, // optional, displayed as soon as the crash occurs, before collecting data which can take a few seconds
         resDialogText = R.string.crash_dialog_text,
@@ -28,6 +28,9 @@ public class Application extends android.app.Application {
         super.onCreate();
 
         JodaTimeAndroid.init(this);
-        ACRA.init(this);
+
+        if (BuildConfig.ACRA_ACTIVE) {
+            ACRA.init(this);
+        }
     }
 }

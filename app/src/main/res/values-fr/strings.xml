@@ -100,7 +100,7 @@
 
     <!-- Strings for Crash Reporter -->
     <string name="crash_toast_text">Oups, me suis vautrée, mais un rapport d\'erreur a été envoyé à mon développeur !</string>
-    <string name="crash_dialog_title">My Diet Diary est écrasé</string>
+    <string name="crash_dialog_title">Diet Diary est écrasé</string>
     <string name="crash_dialog_text">Une erreur inattendue s\'est produite, forçant l\'application à se fermer. Merci de nous aider à régler le problème en nous envoyant un rapport d\'erreur, vous n\'avez qu\'à appuyer sur OK.</string>
     <string name="crash_dialog_comment_prompt">Merci d\'ajouter votre commentaire sur le problème :</string>
     <string name="crash_dialog_ok_toast">Merci !</string>

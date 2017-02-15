@@ -20,7 +20,6 @@
     <string name="export_to">Кому</string>
     <string name="export_destination">Пункт назначения</string>
     <string name="export_temp_file_creation_error">Невозможно создать временный файл.</string>
-    <string name="crash_dialog_ok_toast">Спасибо!</string>
 
     <string name="pref_list_clock_mode_messages_ampm">AM/PM</string>
 
@@ -75,13 +74,21 @@
     <string name="import_file_not_csv">Выбранный файл не является файлом CSV!</string>
     <string name="import_spinner_hint">Выберите файл</string>
     <string name="content_description_icon">Иконка</string>
+    <string name="snack_bar_dismiss">Разойдись</string>
     <string name="snack_bar_undo">Отмена</string>
+    <string name="daily_notification_title">Дневник Диеты Ежедневное Напоминание</string>
     <string name="daily_notification_message">Вы не сделали ни одной записи сегодня.</string>
     <string name="pref_header_general">Общие</string>
 
-    <string name="pref_title_notifications_active">Вкл.</string>
+    <string name="pref_title_notifications_active">Aктивный</string>
     <string name="pref_title_daily_remainder">Включить ежедневное напоминание в случае отсутствия записей</string>
-    <string name="crash_toast_text">Ай-ай-ай! Приложение остановилось, но мои разработчики получат отчёт, и исправят ошибку!</string>
+
+    <!-- Strings for Crash Reporter -->
+    <string name="crash_toast_text">Ай-ай-ай ! Приложение остановилось, но мои разработчики получат отчёт, и исправят ошибку !</string>
+    <string name="crash_dialog_title">Дневник Диеты прекратил работу</string>
+    <string name="crash_dialog_text">Неожиданная ошибка прервала работу программы. Пожалуйста, помогите нам исправить это, отослав нам данные об ошибке. Всё, что от вас необходимо - это нажать ОК.</string>
+    <string name="crash_dialog_comment_prompt">Вы можете добавить ниже ваши комментарии о проблеме:</string>
+    <string name="crash_dialog_ok_toast">Cпасибо !</string>
 
     <!-- Strings for App Rate Dialog -->
     <string name="rate_dialog_title">Оцени это приложение</string>

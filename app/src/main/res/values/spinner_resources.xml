@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="spinner_event_types_res" translatable="false">
+        <item>@drawable/food</item>
+        <item>@drawable/drink</item>
+        <item>@drawable/medication</item>
+        <item>@drawable/supplement</item>
+        <item>@drawable/exercise</item>
+        <item>@drawable/other</item>
+    </array>
+
+    <string-array name="spinner_event_types" translatable="false">
+        <item>@string/spinner_event_types_food</item>
+        <item>@string/spinner_event_types_drink</item>
+        <item>@string/spinner_event_types_medication</item>
+        <item>@string/spinner_event_types_supplements</item>
+        <item>@string/spinner_event_types_exercise</item>
+        <item>@string/spinner_event_types_other</item>
+    </string-array>
+
+    <string-array name="spinner_event_food_types" translatable="false">
+        <item>@string/spinner_event_types_food</item>
+        <item>@string/spinner_event_food_types_breakfast</item>
+        <item>@string/spinner_event_food_types_lunch</item>
+        <item>@string/spinner_event_food_types_dinner</item>
+        <item>@string/spinner_event_food_types_snack</item>
+        <item>@string/spinner_event_food_types_junk</item>
+    </string-array>
+
+    <string-array name="spinner_event_drink_types" translatable="false">
+        <item>@string/spinner_event_types_drink</item>
+        <item>@string/spinner_event_drink_types_coffee</item>
+        <item>@string/spinner_event_drink_types_tea</item>
+        <item>@string/spinner_event_drink_types_alcohol</item>
+        <item>@string/spinner_event_drink_types_water</item>
+        <item>@string/spinner_event_drink_types_energy_drink</item>
+        <item>@string/spinner_event_drink_types_fruit_juice</item>
+    </string-array>
+
+    <string-array name="spinner_file_types" translatable="false">
+        <item>CSV</item>
+    </string-array>
+</resources>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="csv_headers" translatable="false">
+        <item>ID</item>
+        <item>Date</item>
+        <item>Time</item>
+        <item>Type</item>
+        <item>Title</item>
+        <item>Description</item>
+    </string-array>
+</resources>

@@ -63,36 +63,7 @@
     <string name="snack_bar_deleted">Deleted</string>
     <string name="daily_notification_title">Diet Diary Daily Remainder</string>
     <string name="daily_notification_message">You haven\'t added any entries on your diary, today.</string>
-    <string name="about_copyright" translatable="false">Copyright \u00a9 2016, Can Yapan</string>
-    <string name="about_license" translatable="false">Licensed under the Apache License, Version 2.0</string>
-    <string name="about_github" translatable="false">https://github.com/canyapan/DietDiaryApp</string>
 
-    <string-array name="csv_headers" translatable="false">
-        <item>ID</item>
-        <item>Date</item>
-        <item>Time</item>
-        <item>Type</item>
-        <item>Title</item>
-        <item>Description</item>
-    </string-array>
-
-    <array name="spinner_event_types_res" translatable="false">
-        <item>@drawable/food</item>
-        <item>@drawable/drink</item>
-        <item>@drawable/medication</item>
-        <item>@drawable/supplement</item>
-        <item>@drawable/exercise</item>
-        <item>@drawable/other</item>
-    </array>
-
-    <string-array name="spinner_event_types" translatable="false">
-        <item>@string/spinner_event_types_food</item>
-        <item>@string/spinner_event_types_drink</item>
-        <item>@string/spinner_event_types_medication</item>
-        <item>@string/spinner_event_types_supplements</item>
-        <item>@string/spinner_event_types_exercise</item>
-        <item>@string/spinner_event_types_other</item>
-    </string-array>
     <string name="spinner_event_types_food">Food</string>
     <string name="spinner_event_types_drink">Drink</string>
     <string name="spinner_event_types_medication">Medication</string>
@@ -100,29 +71,12 @@
     <string name="spinner_event_types_exercise">Exercise</string>
     <string name="spinner_event_types_other">Other</string>
 
-    <string-array name="spinner_event_food_types" translatable="false">
-        <item>@string/spinner_event_types_food</item>
-        <item>@string/spinner_event_food_types_breakfast</item>
-        <item>@string/spinner_event_food_types_lunch</item>
-        <item>@string/spinner_event_food_types_dinner</item>
-        <item>@string/spinner_event_food_types_snack</item>
-        <item>@string/spinner_event_food_types_junk</item>
-    </string-array>
     <string name="spinner_event_food_types_breakfast">Breakfast</string>
     <string name="spinner_event_food_types_lunch">Lunch</string>
     <string name="spinner_event_food_types_dinner">Dinner</string>
     <string name="spinner_event_food_types_snack">Snack</string>
     <string name="spinner_event_food_types_junk">Junk</string>
 
-    <string-array name="spinner_event_drink_types" translatable="false">
-        <item>@string/spinner_event_types_drink</item>
-        <item>@string/spinner_event_drink_types_coffee</item>
-        <item>@string/spinner_event_drink_types_tea</item>
-        <item>@string/spinner_event_drink_types_alcohol</item>
-        <item>@string/spinner_event_drink_types_water</item>
-        <item>@string/spinner_event_drink_types_energy_drink</item>
-        <item>@string/spinner_event_drink_types_fruit_juice</item>
-    </string-array>
     <string name="spinner_event_drink_types_coffee">Coffee</string>
     <string name="spinner_event_drink_types_tea">Tea</string>
     <string name="spinner_event_drink_types_alcohol">Alcohol</string>
@@ -130,25 +84,12 @@
     <string name="spinner_event_drink_types_energy_drink">Energy Drink</string>
     <string name="spinner_event_drink_types_fruit_juice">Fruit Juice</string>
 
-    <string-array name="spinner_file_types" translatable="false">
-        <item>CSV</item>
-    </string-array>
-
     <!-- Strings related to Settings -->
     <!-- Example General settings -->
     <string name="pref_header_general">General</string>
 
     <string name="pref_title_clock_mode">Clock Mode</string>
-    <string-array name="pref_list_clock_mode_messages" translatable="false">
-        <item>@string/pref_list_clock_mode_messages_default</item>
-        <item>@string/pref_list_clock_mode_messages_24h</item>
-        <item>@string/pref_list_clock_mode_messages_ampm</item>
-    </string-array>
-    <string-array name="pref_list_clock_mode_values" translatable="false">
-        <item>-1</item>
-        <item>1</item>
-        <item>0</item>
-    </string-array>
+
     <string name="pref_list_clock_mode_messages_default">System Default</string>
     <string name="pref_list_clock_mode_messages_24h">24 Hour</string>
     <string name="pref_list_clock_mode_messages_ampm">AM/PM</string>
@@ -161,7 +102,7 @@
 
     <!-- Strings for Crash Reporter -->
     <string name="crash_toast_text">Ooooops ! I crashed, but a report has been sent to my developer to help fix the issue !</string>
-    <string name="crash_dialog_title">My Diet Diary has crashed</string>
+    <string name="crash_dialog_title">Diet Diary has crashed</string>
     <string name="crash_dialog_text">An unexpected error occurred forcing the application to stop. Please help us fix this by sending us error data, all you have to do is click OK.</string>
     <string name="crash_dialog_comment_prompt">You might add your comments about the problem below:</string>
     <string name="crash_dialog_ok_toast">Thank you !</string>
@@ -172,5 +113,4 @@
     <string name="rate_dialog_yes">Rate It Now</string>
     <string name="rate_dialog_later">Remind Me Later</string>
     <string name="rate_dialog_never">No, Thanks</string>
-
 </resources>
