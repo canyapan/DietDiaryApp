@@ -59,12 +59,12 @@ public class MainActivity extends AppCompatActivity implements
 
     private static final String KEY_DATE_SERIALIZABLE = "DATE";
     private static final String KEY_FAB_SHOWN_BOOLEAN = "FAB";
-    private static final String KEY_SURVEY_DATE_STRING = "SURVEY DATE";
-    private static final String KEY_SURVEY_STATUS_INT = "SURVEY STATUS CODE";
+    private static final String KEY_APP_RATE_DATE_STRING = "APP RATE DATE";
+    private static final String KEY_APP_RATE_STATUS_INT = "APP RATE STATUS CODE";
 
-    private static final int FLAG_SURVEY_WAITING = 1;
-    private static final int FLAG_SURVEY_DONE = 2;
-    private static final int FLAG_SURVEY_NEVER_SHOW = 3;
+    private static final int FLAG_APP_RATE_STATUS_WAITING = 1;
+    private static final int FLAG_APP_RATE_STATUS_DONE = 2;
+    private static final int FLAG_APP_RATE_STATUS_NEVER_SHOW = 3;
 
     private static final DateTimeFormatter DATE_FORMATTER;
 
@@ -191,8 +191,6 @@ public class MainActivity extends AppCompatActivity implements
 
         DailyAlarmReceiver.register(MainActivity.this);
 
-        checkSurveyStatus();
-
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         mClient = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
@@ -212,6 +210,9 @@ public class MainActivity extends AppCompatActivity implements
         switch (requestCode) {
             case CreateEditEventActivity.REQUEST_CREATE_EDIT:
                 mCalendarFragment.handleCreateEditEvent(resultCode, data);
+
+                // Ask user to rate the app.
+                checkAppRateStatus();
                 break;
             case BackupRestoreActivity.REQUEST_BACKUP_RESTORE:
                 if (resultCode == Activity.RESULT_FIRST_USER) {
@@ -334,22 +335,22 @@ public class MainActivity extends AppCompatActivity implements
     //endregion
 
     //region Rate App
-    private void checkSurveyStatus() {
+    private void checkAppRateStatus() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        int surveyStatus = preferences.getInt(KEY_SURVEY_STATUS_INT, FLAG_SURVEY_WAITING);
+        int surveyStatus = preferences.getInt(KEY_APP_RATE_STATUS_INT, FLAG_APP_RATE_STATUS_WAITING);
 
         switch (surveyStatus) {
-            case FLAG_SURVEY_DONE:
-            case FLAG_SURVEY_NEVER_SHOW:
+            case FLAG_APP_RATE_STATUS_DONE:
+            case FLAG_APP_RATE_STATUS_NEVER_SHOW:
                 return;
         }
 
-        // case FLAG_SURVEY_WAITING:
+        // case FLAG_APP_RATE_STATUS_WAITING:
         // Check if user has been using the application for 3 days and entered at least 10 events.
-        String date = preferences.getString(KEY_SURVEY_DATE_STRING, null);
+        String date = preferences.getString(KEY_APP_RATE_DATE_STRING, null);
         if (null == date) {
             SharedPreferences.Editor editor = preferences.edit();
-            editor.putString(KEY_SURVEY_DATE_STRING, LocalDate.now().toString(DatabaseHelper.DB_DATE_FORMATTER));
+            editor.putString(KEY_APP_RATE_DATE_STRING, LocalDate.now().toString(DatabaseHelper.DB_DATE_FORMATTER));
             editor.apply();
             return;
         }
@@ -360,12 +361,12 @@ public class MainActivity extends AppCompatActivity implements
             ArrayList<Event> events = EventHelper.getEventByDateRange(this, startDate, LocalDate.now());
 
             if (null != events && events.size() >= 15) {
-                showSurvey();
+                showAppRateDialog();
             }
         }
     }
 
-    private void showSurvey() {
+    private void showAppRateDialog() {
         final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
         mRateDialog = new AlertDialog.Builder(this)
@@ -376,8 +377,8 @@ public class MainActivity extends AppCompatActivity implements
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         SharedPreferences.Editor editor = preferences.edit();
-                        editor.putInt(KEY_SURVEY_STATUS_INT, FLAG_SURVEY_DONE);
-                        editor.putString(KEY_SURVEY_DATE_STRING, LocalDate.now().toString(DatabaseHelper.DB_DATE_FORMATTER));
+                        editor.putInt(KEY_APP_RATE_STATUS_INT, FLAG_APP_RATE_STATUS_DONE);
+                        editor.putString(KEY_APP_RATE_DATE_STRING, LocalDate.now().toString(DatabaseHelper.DB_DATE_FORMATTER));
                         editor.apply();
 
                         openPlayStore();
@@ -387,7 +388,7 @@ public class MainActivity extends AppCompatActivity implements
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         SharedPreferences.Editor editor = preferences.edit();
-                        editor.putString(KEY_SURVEY_DATE_STRING, LocalDate.now().toString(DatabaseHelper.DB_DATE_FORMATTER));
+                        editor.putString(KEY_APP_RATE_DATE_STRING, LocalDate.now().toString(DatabaseHelper.DB_DATE_FORMATTER));
                         editor.apply();
                     }
                 })
@@ -395,8 +396,8 @@ public class MainActivity extends AppCompatActivity implements
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         SharedPreferences.Editor editor = preferences.edit();
-                        editor.putInt(KEY_SURVEY_STATUS_INT, FLAG_SURVEY_NEVER_SHOW);
-                        editor.putString(KEY_SURVEY_DATE_STRING, LocalDate.now().toString(DatabaseHelper.DB_DATE_FORMATTER));
+                        editor.putInt(KEY_APP_RATE_STATUS_INT, FLAG_APP_RATE_STATUS_NEVER_SHOW);
+                        editor.putString(KEY_APP_RATE_DATE_STRING, LocalDate.now().toString(DatabaseHelper.DB_DATE_FORMATTER));
                         editor.apply();
                     }
                 })
@@ -404,7 +405,7 @@ public class MainActivity extends AppCompatActivity implements
                     @Override
                     public void onCancel(DialogInterface dialog) {
                         SharedPreferences.Editor editor = preferences.edit();
-                        editor.putString(KEY_SURVEY_DATE_STRING, LocalDate.now().toString(DatabaseHelper.DB_DATE_FORMATTER));
+                        editor.putString(KEY_APP_RATE_DATE_STRING, LocalDate.now().toString(DatabaseHelper.DB_DATE_FORMATTER));
                         editor.apply();
                     }
                 })
