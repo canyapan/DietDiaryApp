@@ -1,2 +1,102 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<?xml version='1.0' encoding='UTF-8'?>
+<resources><string name="action_save">Zapisz</string>
+    <string name="action_share">Udostępnij</string>
+    <string name="action_delete">Usuń</string>
+    <string name="action_copy">Kopiuj</string>
+    <string name="action_calendar_today">Dzisiaj</string>
+    <string name="action_done">Gotowe</string>
+    <string name="action_cancel">Anuluj</string>
+    <string name="activity_settings_title">Ustawienia</string>
+    <string name="activity_create_event_title">Dodaj posiłek</string>
+    <string name="activity_edit_event_title">Edytuj posiłek</string>
+    <string name="activity_create_edit_description_hint">Opis</string>
+    <string name="activity_backup_restore_title">Kopia zapasowa/przywracanie</string>
+    <string name="day_fragment_nothing_to_share">Brak danych</string>
+    <string name="nav_home">Strona główna</string>
+    <string name="nav_backup_restore">Kopia zapasowa/przywracanie</string>
+    <string name="nav_settings">Ustawienia</string>
+    <string name="nav_donate">Wesprzyj</string>
+    <string name="nav_about">Informacje</string>
+    <string name="backup">Kopia zapasowa</string>
+    <string name="restore">Przywracanie</string>
+    <string name="export_from">Od</string>
+    <string name="export_to">Do</string>
+    <string name="export_type">Rodzaj</string>
+    <string name="export_destination">Miejsca przeznaczenia</string>
+    <string name="export_progress_title">Eksportowanie…</string>
+    <string name="export_sd_card_unavailable">\"Karta SD jest niedostępna\"</string>
+    <string name="export_temp_file_creation_error">Nie można utworzyć pliku tymczasowego.</string>
+    <string name="export_file_creation_error">Nie można utworzyć pliku eksportu.</string>
+    <string name="export_unimplemented_destination">Wybrany cel nie został jeszcze zaimplementowany</string>
+    <string name="export_csv_io_exception">Wystąpił błąd we/wy podczas eksportowania do pliku CSV.</string>
+    <string name="export_csv_sql_exception">Podczas wysyłania danych wystąpił błąd</string>
+    <string name="export_csv_exception">Niezidentyfikowany błąd podczas eksportowania do pliku CSV.</string>
+    <string name="export_share_successful">Plik CSV został udostpniony</string>
+    <string name="export_no_permission">Proszę dać uprawnienia do zapisu plików.</string>
+    <string name="import_progress_title">Importowanie…</string>
+    <string name="import_file_selector">Pliki</string>
+    <string name="import_no_permission">Proszę udzielić uprawnienia do odczytu plików.</string>
+    <string name="import_no_external_storage">Proszę podłączyć zewnętrzną pamięć masową.</string>
+    <string name="import_csv_io_exception">Wystąpił błąd we/wy podczas importowania z CSV.</string>
+    <string name="import_csv_sql_exception">Podczas wysyłania danych wystąpił błąd</string>
+    <string name="import_csv_exception">Wystąpił błąd w trakcie kopiowania.</string>
+    <string name="import_csv_corrupted">CSV uszkodzony.</string>
+    <string name="import_csv_already_existing_records">CSV zawiera już istniejące dane</string>
+    <string name="import_file_not_exists">Wybrany plik nie istnieje!</string>
+    <string name="import_file_not_readable">Wybrany plik nie jest czytelny!</string>
+    <string name="import_file_empty">Wybrany plik jest pusty!</string>
+    <string name="import_file_not_csv">Wybrany plik nie jest plikiem CSV!</string>
+    <string name="import_spinner_hint">Wybierz plik do zaimportowania</string>
+    <string name="content_description_icon">Ikona</string>
+    <string name="snack_bar_dismiss">Ukryj</string>
+    <string name="snack_bar_undo">Cofnij</string>
+    <string name="snack_bar_deleted">Usunięte</string>
+    <string name="daily_notification_title">Przypomnienie o wpisaniu posiłku</string>
+    <string name="daily_notification_message">Nie dodano dziś żadnych wpisów.</string>
+
+    <string name="spinner_event_types_food">Jedzenie</string>
+    <string name="spinner_event_types_drink">Napoje</string>
+    <string name="spinner_event_types_medication">Leki</string>
+    <string name="spinner_event_types_supplements">Suplementy</string>
+    <string name="spinner_event_types_exercise">Ćwiczenia</string>
+    <string name="spinner_event_types_other">Inne</string>
+
+    <string name="spinner_event_food_types_breakfast">Śniadanie</string>
+    <string name="spinner_event_food_types_lunch">Obiad</string>
+    <string name="spinner_event_food_types_dinner">Kolacja</string>
+    <string name="spinner_event_food_types_snack">Przekąska</string>
+    <string name="spinner_event_food_types_junk">Śmieciowe jedzenie</string>
+
+    <string name="spinner_event_drink_types_coffee">Kawa</string>
+    <string name="spinner_event_drink_types_tea">Herbata</string>
+    <string name="spinner_event_drink_types_alcohol">Alkohol</string>
+    <string name="spinner_event_drink_types_water">Woda</string>
+    <string name="spinner_event_drink_types_energy_drink">Napój energetyczny</string>
+    <string name="spinner_event_drink_types_fruit_juice">Sok owocowy</string>
+
+    <string name="pref_title_clock_mode">Tryb zegara</string>
+    <string name="pref_list_clock_mode_messages_default">Domyślna systemu</string>
+    <string name="pref_list_clock_mode_messages_24h">24-godzinny</string>
+    <string name="pref_list_clock_mode_messages_ampm">AM/PM</string>
+
+    <string name="pref_header_notifications">Powiadomienia</string>
+    <string name="pref_title_notifications_active">Aktywne</string>
+    <string name="pref_title_daily_remainder">Codzienne przypomnienie, jeśli nie dodano żadnego wpisu</string>
+    <string name="pref_title_daily_remainder_time">Przypomnij mi o</string>
+
+    <string name="crash_toast_text">Ooooops! Wystąpił błąd, ale raport został wysłany do mojego autora żeby naprawił ten problem!</string>
+    <string name="crash_dialog_text">Wystąpił nieoczekiwany błąd, zmuszając aplikacje do zatrzymania. Pomóż nam rozwiązać ten problem, przekaż dane o błedzie, wszystko co musisz zrobić, to kliknąć OK.</string>
+    <string name="crash_dialog_comment_prompt">Poniżej możesz dodać komentarz na temat problemu</string>
+    <string name="crash_dialog_ok_toast">Dziękuję!</string>
+
+    <string name="rate_dialog_title">Oceń tę aplikację</string>
+    <string name="rate_dialog_text">Jeśli korzystanie z tej aplikacji Ci pomaga i ją lubisz, czy możesz ją ocenić? To nie potrwa dłużej niż chwilę. Dziękuję za wsparcie!</string>
+    <string name="rate_dialog_yes">Oceń teraz</string>
+    <string name="rate_dialog_later">Przypomnij mi później</string>
+    <string name="rate_dialog_never">Nie, dziękuję</string>
+<string name="app_name">Dziennik Diety</string>
+    <string name="navigation_drawer_open">Otwórz pasek nawigacji</string>
+    <string name="navigation_drawer_close">Zamknij pasek nawigacji</string>
+
+    <string name="crash_dialog_title">Dziennik Diety uległ awarii</string>
+    </resources>
