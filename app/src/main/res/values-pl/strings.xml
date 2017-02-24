@@ -11,7 +11,7 @@
     <string name="activity_edit_event_title">Edytuj posiłek</string>
     <string name="activity_create_edit_description_hint">Opis</string>
     <string name="activity_backup_restore_title">Kopia zapasowa/przywracanie</string>
-    <string name="day_fragment_nothing_to_share">Nie ma zapisu, aby udostępnić.</string>
+    <string name="day_fragment_nothing_to_share">Brak danych do udostępnienia</string>
     <string name="nav_home">Strona główna</string>
     <string name="nav_backup_restore">Kopia zapasowa/przywracanie</string>
     <string name="nav_settings">Ustawienia</string>
@@ -38,7 +38,7 @@
     <string name="import_no_permission">Proszę udzielić uprawnienia do odczytu plików.</string>
     <string name="import_no_external_storage">Proszę podłączyć zewnętrzną pamięć masową.</string>
     <string name="import_csv_io_exception">Wystąpił błąd we/wy podczas importowania z CSV.</string>
-    <string name="import_csv_sql_exception">DB error occurred while importing from a CSV file.</string>
+    <string name="import_csv_sql_exception">Wystąpił błąd DB podczas importowania z pliku CSV.</string>
     <string name="import_csv_exception">Wystąpił błąd w trakcie kopiowania.</string>
     <string name="import_csv_corrupted">CSV uszkodzony.</string>
     <string name="import_csv_already_existing_records">CSV zawiera już istniejące dane.</string>
@@ -100,8 +100,7 @@
 
     <string name="crash_dialog_title">Dziennik Diety uległ awarii</string>
     <string name="export_external_successful">%1$s utworzony</string>
-    <string name="import_note"><b>Uwaga:</b> Znajdź swoje pliki kopii zapasowych w <i>/sdcard/</i>
-lub <i>/sdcard/DietDiaryApp/</i></string>
+    <string name="import_note"><b>Uwaga:</b> Zlokalizuj pliki kopii zapasowej w <i>/sdcard/</i> lub <i>/sdcard/DietDiaryApp/</i></string>
     <string name="import_successful">Plik CSV %1$s został zaimportowany.</string>
     <string name="pref_header_general">Ogólny</string>
     </resources>
