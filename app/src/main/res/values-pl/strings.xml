@@ -11,7 +11,7 @@
     <string name="activity_edit_event_title">Edytuj posiłek</string>
     <string name="activity_create_edit_description_hint">Opis</string>
     <string name="activity_backup_restore_title">Kopia zapasowa/przywracanie</string>
-    <string name="day_fragment_nothing_to_share">Brak danych do udostępnienia</string>
+    <string name="day_fragment_nothing_to_share">Brak danych do udostępnienia.</string>
     <string name="nav_home">Strona główna</string>
     <string name="nav_backup_restore">Kopia zapasowa/przywracanie</string>
     <string name="nav_settings">Ustawienia</string>
