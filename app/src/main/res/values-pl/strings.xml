@@ -87,7 +87,7 @@
     <string name="crash_toast_text">Ooooops! Wystąpił błąd, ale raport został wysłany do mojego autora żeby naprawił ten problem!</string>
     <string name="crash_dialog_text">Wystąpił nieoczekiwany błąd, zmuszając aplikacje do zatrzymania. Pomóż nam rozwiązać ten problem, przekaż dane o błedzie, wszystko co musisz zrobić, to kliknąć OK.</string>
     <string name="crash_dialog_comment_prompt">Poniżej możesz dodać komentarz na temat problemu:</string>
-    <string name="crash_dialog_ok_toast">Dziękuję!</string>
+    <string name="crash_dialog_ok_toast">Dziękuję !</string>
 
     <string name="rate_dialog_title">Oceń tę aplikację</string>
     <string name="rate_dialog_text">Jeśli korzystanie z tej aplikacji Ci pomaga i ją lubisz, czy możesz ją ocenić? To nie potrwa dłużej niż chwilę. Dziękuję za wsparcie!</string>
