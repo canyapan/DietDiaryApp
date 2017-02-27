@@ -8,8 +8,8 @@ android {
         applicationId "com.canyapan.dietdiaryapp"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 32
-        versionName "0.3.2"
+        versionCode 33
+        versionName "0.3.3"
         vectorDrawables.useSupportLibrary true
 
         buildConfigField "String", "ACRA_URL", '"http://couchdb.canyapan.com/acra-dietdiaryapp/_design/acra-storage/_update/report"'
@@ -21,7 +21,7 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField "boolean", "ACRA_ACTIVE", 'true'
-        }
+
         debug {
             buildConfigField "boolean", "ACRA_ACTIVE", 'false'
         }
