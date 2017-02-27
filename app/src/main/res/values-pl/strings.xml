@@ -1,5 +1,13 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<resources><string name="action_save">Zapisz</string>
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Dziennik Diety</string>
+
+    <string name="content_description_icon">Ikona</string>
+
+    <string name="navigation_drawer_open">Otwórz pasek nawigacji</string>
+    <string name="navigation_drawer_close">Zamknij pasek nawigacji</string>
+
+    <string name="action_save">Zapisz</string>
     <string name="action_share">Udostępnij</string>
     <string name="action_delete">Usuń</string>
     <string name="action_copy">Kopiuj</string>
@@ -23,7 +31,7 @@
     <string name="export_to">Do</string>
     <string name="export_type">Rodzaj</string>
     <string name="export_destination">Miejsca przeznaczenia</string>
-    <string name="export_progress_title">Eksportowanie…</string>
+    <string name="export_progress_title">Eksportowanie&#8230;</string>
     <string name="export_sd_card_unavailable">Karta SD jest niedostępna.</string>
     <string name="export_temp_file_creation_error">Nie można utworzyć pliku tymczasowego.</string>
     <string name="export_file_creation_error">Nie można utworzyć pliku eksportu.</string>
@@ -33,7 +41,8 @@
     <string name="export_csv_exception">Niezidentyfikowany błąd podczas eksportowania do pliku CSV.</string>
     <string name="export_share_successful">Plik CSV został udostpniony.</string>
     <string name="export_no_permission">Proszę dać uprawnienia do zapisu plików.</string>
-    <string name="import_progress_title">Importowanie…</string>
+    <string name="export_external_successful">%1$s utworzony</string>
+    <string name="import_progress_title">Importowanie&#8230;</string>
     <string name="import_file_selector">Pliki</string>
     <string name="import_no_permission">Proszę udzielić uprawnienia do odczytu plików.</string>
     <string name="import_no_external_storage">Proszę podłączyć zewnętrzną pamięć masową.</string>
@@ -47,10 +56,13 @@
     <string name="import_file_empty">Wybrany plik jest pusty!</string>
     <string name="import_file_not_csv">Wybrany plik nie jest plikiem CSV!</string>
     <string name="import_spinner_hint">Wybierz plik do zaimportowania</string>
-    <string name="content_description_icon">Ikona</string>
+    <string name="import_successful">Plik CSV %1$s został zaimportowany.</string>
+    <string name="import_note"><b>Uwaga:</b> Zlokalizuj pliki kopii zapasowej w <i>/sdcard/</i>\nlub <i>/sdcard/DietDiaryApp/</i></string>
+
     <string name="snack_bar_dismiss">Ukryj</string>
     <string name="snack_bar_undo">Cofnij</string>
     <string name="snack_bar_deleted">Usunięte</string>
+
     <string name="daily_notification_title">Przypomnienie o wpisaniu posiłku</string>
     <string name="daily_notification_message">Nie dodano dziś żadnych wpisów.</string>
 
@@ -74,6 +86,7 @@
     <string name="spinner_event_drink_types_energy_drink">Napój energetyczny</string>
     <string name="spinner_event_drink_types_fruit_juice">Sok owocowy</string>
 
+    <string name="pref_header_general">Ogólny</string>
     <string name="pref_title_clock_mode">Tryb zegara</string>
     <string name="pref_list_clock_mode_messages_default">Domyślna systemu</string>
     <string name="pref_list_clock_mode_messages_24h">24-godzinny</string>
@@ -85,6 +98,7 @@
     <string name="pref_title_daily_remainder_time">Przypomnij mi o</string>
 
     <string name="crash_toast_text">Ooooops! Wystąpił błąd, ale raport został wysłany do mojego autora żeby naprawił ten problem!</string>
+    <string name="crash_dialog_title">Dziennik Diety uległ awarii</string>
     <string name="crash_dialog_text">Wystąpił nieoczekiwany błąd, zmuszając aplikacje do zatrzymania. Pomóż nam rozwiązać ten problem, przekaż dane o błedzie, wszystko co musisz zrobić, to kliknąć OK.</string>
     <string name="crash_dialog_comment_prompt">Poniżej możesz dodać komentarz na temat problemu:</string>
     <string name="crash_dialog_ok_toast">Dziękuję !</string>
@@ -94,13 +108,4 @@
     <string name="rate_dialog_yes">Oceń teraz</string>
     <string name="rate_dialog_later">Przypomnij mi później</string>
     <string name="rate_dialog_never">Nie, dziękuję</string>
-<string name="app_name">Dziennik Diety</string>
-    <string name="navigation_drawer_open">Otwórz pasek nawigacji</string>
-    <string name="navigation_drawer_close">Zamknij pasek nawigacji</string>
-
-    <string name="crash_dialog_title">Dziennik Diety uległ awarii</string>
-    <string name="export_external_successful">%1$s utworzony</string>
-    <string name="import_note"><b>Uwaga:</b> Zlokalizuj pliki kopii zapasowej w <i>/sdcard/</i> lub <i>/sdcard/DietDiaryApp/</i></string>
-    <string name="import_successful">Plik CSV %1$s został zaimportowany.</string>
-    <string name="pref_header_general">Ogólny</string>
-    </resources>
+</resources>
