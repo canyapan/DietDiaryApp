@@ -27,7 +27,6 @@
     <string name="export_from">元</string>
     <string name="export_to">先</string>
     <string name="export_type">種類</string>
-    <string name="export_destination">宛先</string>
     <string name="export_progress_title">エクスポートしています&#8230;</string>
     <string name="export_sd_card_unavailable">SD カードが使用できません。</string>
     <string name="export_temp_file_creation_error">一時ファイルを作成できません。</string>

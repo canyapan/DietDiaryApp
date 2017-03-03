@@ -28,7 +28,6 @@
     <string name="export_csv_exception">CSV dışa aktarılırken bilinmeyen bir hata oluştu.</string>
     <string name="export_csv_io_exception">CSV dışa aktarılırken IO hatası oluştu.</string>
     <string name="export_csv_sql_exception">CSV dışa aktarılırken DB hatası oluştu.</string>
-    <string name="export_destination">Hedef</string>
     <string name="export_external_successful">%1$s oluşturuldu</string>
     <string name="export_file_creation_error">Dışa aktarım dosyası oluşturulamadı.</string>
     <string name="export_from">Başlangıç</string>

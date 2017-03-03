@@ -21,7 +21,6 @@
     <string name="restore">Восстановление</string>
     <string name="export_from">От</string>
     <string name="export_to">Кому</string>
-    <string name="export_destination">Пункт назначения</string>
     <string name="export_temp_file_creation_error">Невозможно создать временный файл.</string>
     <string name="daily_notification_title">Дневник Диеты Ежедневное Напоминание</string>
     <string name="daily_notification_message">Вы не сделали ни одной записи сегодня.</string>

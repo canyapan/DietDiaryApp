@@ -27,7 +27,6 @@
     <string name="export_from">De</string>
     <string name="export_to">Vers</string>
     <string name="export_type">Type</string>
-    <string name="export_destination">Destination</string>
     <string name="export_progress_title">Export en cours&#8230;</string>
     <string name="export_sd_card_unavailable">Carte SD non disponible.</string>
     <string name="export_temp_file_creation_error">Impossible de créer le fichier temporaire.</string>

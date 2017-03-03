@@ -27,7 +27,6 @@
     <string name="export_from">Van</string>
     <string name="export_to">Naar</string>
     <string name="export_type">Type</string>
-    <string name="export_destination">Bestemming</string>
     <string name="export_progress_title">Bezig met exporteren&#8230;</string>
     <string name="export_sd_card_unavailable">De SD-kaart is niet beschikbaar.</string>
     <string name="export_temp_file_creation_error">Het creëren van een tijdelijk bestand is mislukt.</string>

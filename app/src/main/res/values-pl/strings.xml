@@ -30,7 +30,6 @@
     <string name="export_from">Od</string>
     <string name="export_to">Do</string>
     <string name="export_type">Rodzaj</string>
-    <string name="export_destination">Miejsca przeznaczenia</string>
     <string name="export_progress_title">Eksportowanie&#8230;</string>
     <string name="export_sd_card_unavailable">Karta SD jest niedostępna.</string>
     <string name="export_temp_file_creation_error">Nie można utworzyć pliku tymczasowego.</string>
