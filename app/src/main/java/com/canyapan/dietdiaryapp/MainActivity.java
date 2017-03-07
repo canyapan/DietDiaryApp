@@ -312,8 +312,9 @@ public class MainActivity extends AppCompatActivity implements
                 startActivity(new Intent(MainActivity.this, SettingsActivity.class));
                 break;
             case R.id.nav_about:
-                new AboutDialog(this).show();
-                break;
+                throw new RuntimeException("This is a crash");
+                //new AboutDialog(this).show();
+                //break;
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

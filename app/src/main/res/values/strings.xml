@@ -164,6 +164,12 @@
     <string name="crash_dialog_comment_prompt">You might add your comments about the problem below:</string>
     <string name="crash_dialog_ok_toast">Thank you !</string>
 
+    <string name="com.crashlytics.CrashSubmissionPromptTitle">Send Crash Report?</string>
+    <string name="com.crashlytics.CrashSubmissionPromptMessage">Looks like we crashed! Please help us fix the problem by sending a crash report.</string>
+    <string name="com.crashlytics.CrashSubmissionSendTitle">Send</string>
+    <string name="com.crashlytics.CrashSubmissionAlwaysSendTitle">Always Send</string>
+    <string name="com.crashlytics.CrashSubmissionCancelTitle">Don\'t Send</string>
+
     <!-- Strings for App Rate Dialog -->
     <string name="rate_dialog_title">Rate this app</string>
     <string name="rate_dialog_text">If you enjoy using this app, would you mind taking a moment to rate it? It won\'t take more than a minute. Thank you for your support!</string>
