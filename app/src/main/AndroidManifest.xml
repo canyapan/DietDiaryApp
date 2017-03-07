@@ -37,6 +37,10 @@
             android:name="com.google.android.backup.api_key"
             android:value="AEdPqrEAAAAIWsNGlzCK9UWb9RJ8ERDWEgSGqnEC_9HBJspCRw"/>
 
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="c6db3fb626ddb34768c40db61b30a4e7c84f029c" />
+
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
@@ -92,12 +96,6 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
-        <activity
-            android:name="org.acra.dialog.CrashReportDialog"
-            android:excludeFromRecents="true"
-            android:finishOnTaskLaunch="true"
-            android:launchMode="singleInstance"
-            android:theme="@android:style/Theme.Dialog"/>
     </application>
 
 </manifest>

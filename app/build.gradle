@@ -1,4 +1,25 @@
+buildscript {
+    repositories {
+        maven { url 'https://maven.fabric.io/public' }
+    }
+
+    dependencies {
+        classpath 'io.fabric.tools:gradle:1.+'
+    }
+}
+
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
+
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
+}
+
+dependencies {
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.6@aar') {
+        transitive = true;
+    }
+}
 
 android {
     compileSdkVersion 25
@@ -8,22 +29,18 @@ android {
         applicationId "com.canyapan.dietdiaryapp"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 33
-        versionName "0.3.3"
+        versionCode 40
+        versionName "0.4.0"
         vectorDrawables.useSupportLibrary true
-
-        buildConfigField "String", "ACRA_URL", '"http://couchdb.canyapan.com/acra-dietdiaryapp/_design/acra-storage/_update/report"'
-        buildConfigField "String", "ACRA_USERNAME", '"reporter"'
-        buildConfigField "String", "ACRA_PASSWORD", '"cLo9y}3sWUP%G75rzeR%dUSr6j*gkWJB"'
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            buildConfigField "boolean", "ACRA_ACTIVE", 'true'
+            buildConfigField "boolean", "CRASHLYTICS_ENABLED", 'true'
         }
         debug {
-            buildConfigField "boolean", "ACRA_ACTIVE", 'false'
+            buildConfigField "boolean", "CRASHLYTICS_ENABLED", 'false'
         }
     }
     lintOptions {
@@ -34,7 +51,6 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
-    compile 'ch.acra:acra:4.9.2'
     compile 'com.android.support:appcompat-v7:25.2.0'
     compile 'com.android.support:design:25.2.0'
     compile 'com.android.support:support-compat:25.2.0'
