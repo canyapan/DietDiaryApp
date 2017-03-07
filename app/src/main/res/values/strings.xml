@@ -157,23 +157,17 @@
     <string name="pref_title_daily_remainder">Daily remind me if I don\'t add any entries</string>
     <string name="pref_title_daily_remainder_time">Remind me at</string>
 
-    <!-- Strings for Crash Reporter -->
-    <string name="crash_toast_text">Ooooops ! I crashed, but a report has been sent to my developer to help fix the issue !</string>
-    <string name="crash_dialog_title">Diet Diary has crashed</string>
-    <string name="crash_dialog_text">An unexpected error occurred forcing the application to stop. Please help us fix this by sending us error data, all you have to do is click OK.</string>
-    <string name="crash_dialog_comment_prompt">You might add your comments about the problem below:</string>
-    <string name="crash_dialog_ok_toast">Thank you !</string>
-
-    <string name="com.crashlytics.CrashSubmissionPromptTitle">Send Crash Report?</string>
-    <string name="com.crashlytics.CrashSubmissionPromptMessage">Looks like we crashed! Please help us fix the problem by sending a crash report.</string>
-    <string name="com.crashlytics.CrashSubmissionSendTitle">Send</string>
-    <string name="com.crashlytics.CrashSubmissionAlwaysSendTitle">Always Send</string>
-    <string name="com.crashlytics.CrashSubmissionCancelTitle">Don\'t Send</string>
-
     <!-- Strings for App Rate Dialog -->
     <string name="rate_dialog_title">Rate this app</string>
     <string name="rate_dialog_text">If you enjoy using this app, would you mind taking a moment to rate it? It won\'t take more than a minute. Thank you for your support!</string>
     <string name="rate_dialog_yes">Rate It Now</string>
     <string name="rate_dialog_later">Remind Me Later</string>
     <string name="rate_dialog_never">No, Thanks</string>
+
+    <!-- Strings for Crash Reporter -->
+    <string name="com.crashlytics.CrashSubmissionPromptTitle">Send Crash Report?</string>
+    <string name="com.crashlytics.CrashSubmissionPromptMessage">Looks like I crashed! Please help us fix the problem by sending a crash report.</string>
+    <string name="com.crashlytics.CrashSubmissionSendTitle">Send</string>
+    <string name="com.crashlytics.CrashSubmissionAlwaysSendTitle">Always Send</string>
+    <string name="com.crashlytics.CrashSubmissionCancelTitle">Don\'t Send</string>
 </resources>

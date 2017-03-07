@@ -108,4 +108,11 @@
     <string name="rate_dialog_yes">Puan Ver</string>
     <string name="rate_dialog_later">Daha Sonra Hatırlat</string>
     <string name="rate_dialog_never">Hayır, Teşekkürler</string>
+
+    <!-- Strings for Crash Reporter -->
+    <string name="com.crashlytics.CrashSubmissionPromptTitle">Hata Raporu Gönder?</string>
+    <string name="com.crashlytics.CrashSubmissionPromptMessage">Görünüşe göre çöktüm! Lütfen hata raporunu göndererek sorunu düzeltmemize yardım edin.</string>
+    <string name="com.crashlytics.CrashSubmissionSendTitle">Gönder</string>
+    <string name="com.crashlytics.CrashSubmissionAlwaysSendTitle">Herzaman Gönder</string>
+    <string name="com.crashlytics.CrashSubmissionCancelTitle">Gönderme</string>
 </resources>
