@@ -1,6 +1,7 @@
 package com.canyapan.dietdiaryapp;
 
 import com.crashlytics.android.Crashlytics;
+
 import io.fabric.sdk.android.Fabric;
 import net.danlew.android.joda.JodaTimeAndroid;
 
@@ -11,10 +12,10 @@ public class Application extends android.app.Application {
     public void onCreate() {
         super.onCreate();
 
-        JodaTimeAndroid.init(this);
-
         if (BuildConfig.CRASHLYTICS_ENABLED) {
             Fabric.with(this, new Crashlytics());
         }
+
+        JodaTimeAndroid.init(this);
     }
 }
