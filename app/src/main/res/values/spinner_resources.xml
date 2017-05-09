@@ -35,6 +35,7 @@
         <item>@string/spinner_event_drink_types_water</item>
         <item>@string/spinner_event_drink_types_energy_drink</item>
         <item>@string/spinner_event_drink_types_fruit_juice</item>
+        <item>@string/spinner_event_drink_types_milk</item>
     </string-array>
 
     <string-array name="spinner_file_types" translatable="false">

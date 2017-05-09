@@ -17,6 +17,7 @@ import org.joda.time.LocalTime;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 
+@SuppressWarnings({"WeakerAccess", "unused"})
 public class EventHelper {
     private static final String TAG = "EventHelper";
 
@@ -42,12 +43,12 @@ public class EventHelper {
         };
     }
 
-    public static ContentValues getContentValues(@NonNull final Event event) {
+    private static ContentValues getContentValues(@NonNull final Event event) {
         return getContentValues(event, false);
     }
 
-    public static ContentValues getContentValues(@NonNull final Event event,
-                                                 final boolean includeID) {
+    private static ContentValues getContentValues(@NonNull final Event event,
+                                                  final boolean includeID) {
         final ContentValues values = new ContentValues(includeID ? 6 : 5);
 
         if (includeID) {

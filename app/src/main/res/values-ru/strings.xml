@@ -62,6 +62,7 @@
     <string name="spinner_event_drink_types_water">Вода</string>
     <string name="spinner_event_drink_types_energy_drink">Энергетический напиток</string>
     <string name="spinner_event_drink_types_coffee">Кофе</string>
+    <string name="spinner_event_drink_types_milk">Молоко</string>
 
     <string name="spinner_event_food_types_breakfast">Завтак</string>
     <string name="spinner_event_food_types_lunch">Обед</string>
@@ -82,13 +83,6 @@
     <string name="pref_title_notifications_active">Aктивный</string>
     <string name="pref_title_daily_remainder">Включить ежедневное напоминание в случае отсутствия записей</string>
     <string name="pref_title_daily_remainder_time">Напомнить мне в</string>
-
-    <!-- Strings for Crash Reporter -->
-    <string name="crash_toast_text">Ай-ай-ай ! Приложение остановилось, но мои разработчики получат отчёт, и исправят ошибку !</string>
-    <string name="crash_dialog_title">Дневник Диеты прекратил работу</string>
-    <string name="crash_dialog_text">Неожиданная ошибка прервала работу программы. Пожалуйста, помогите нам исправить это, отослав нам данные об ошибке. Всё, что от вас необходимо - это нажать ОК.</string>
-    <string name="crash_dialog_comment_prompt">Вы можете добавить ниже ваши комментарии о проблеме:</string>
-    <string name="crash_dialog_ok_toast">Cпасибо !</string>
 
     <!-- Strings for App Rate Dialog -->
     <string name="rate_dialog_title">Оцени это приложение</string>

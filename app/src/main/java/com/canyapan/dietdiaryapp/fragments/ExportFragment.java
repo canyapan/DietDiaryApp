@@ -31,6 +31,7 @@ import com.canyapan.dietdiaryapp.R;
 import com.canyapan.dietdiaryapp.db.DatabaseHelper;
 import com.canyapan.dietdiaryapp.helpers.DateTimeHelper;
 import com.canyapan.dietdiaryapp.helpers.ResourcesHelper;
+import com.crashlytics.android.Crashlytics;
 
 import org.joda.time.LocalDate;
 
@@ -145,6 +146,7 @@ public class ExportFragment extends Fragment implements View.OnClickListener {
                 try {
                     mAsyncTask = (ExportAsyncTask) new ExportCSV(this, ExportAsyncTask.TO_EXTERNAL).execute();
                 } catch (ExportException e) {
+                    Crashlytics.logException(e);
                     Log.e(TAG, "Save to external storage unsuccessful.", e);
                 }
 
@@ -153,6 +155,7 @@ public class ExportFragment extends Fragment implements View.OnClickListener {
                 try {
                     mAsyncTask = (ExportAsyncTask) new ExportCSV(this, ExportAsyncTask.TO_SHARE).execute();
                 } catch (ExportException e) {
+                    Crashlytics.logException(e);
                     Log.e(TAG, "Share unsuccessful.", e);
                 }
 
@@ -238,8 +241,10 @@ public class ExportFragment extends Fragment implements View.OnClickListener {
                 return LocalDate.parse(cursor.getString(0), DatabaseHelper.DB_DATE_FORMATTER);
             }
         } catch (SQLiteException e) {
+            Crashlytics.logException(e);
             Log.e(TAG, "Content cannot be prepared probably a DB issue.", e);
         } catch (Exception e) {
+            Crashlytics.logException(e);
             Log.e(TAG, "Content cannot be prepared.", e);
         } finally {
             if (null != cursor) {
@@ -261,6 +266,7 @@ public class ExportFragment extends Fragment implements View.OnClickListener {
             try {
                 mAsyncTask = (ExportAsyncTask) new ExportCSV(this, ExportAsyncTask.TO_EXTERNAL).execute();
             } catch (ExportException e) {
+                Crashlytics.logException(e);
                 Log.e(TAG, "Save to external storage unsuccessful.", e);
             }
         } else {

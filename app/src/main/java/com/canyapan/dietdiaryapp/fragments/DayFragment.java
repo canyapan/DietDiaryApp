@@ -28,6 +28,7 @@ import com.canyapan.dietdiaryapp.db.DatabaseHelper;
 import com.canyapan.dietdiaryapp.db.EventHelper;
 import com.canyapan.dietdiaryapp.helpers.DateTimeHelper;
 import com.canyapan.dietdiaryapp.models.Event;
+import com.crashlytics.android.Crashlytics;
 
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
@@ -186,6 +187,7 @@ public class DayFragment extends Fragment {
         try {
             list = EventHelper.getEventByDate(getContext(), date);
         } catch (SQLiteException e) {
+            Crashlytics.logException(e);
             Log.e(TAG, "Content cannot be prepared probably a DB issue.", e);
         }
 
@@ -222,7 +224,7 @@ public class DayFragment extends Fragment {
         private boolean mIs24HourFormat;
         private ArrayList<Event> mList;
 
-        public EventModelAdapter(final boolean is24HourFormat) {
+        EventModelAdapter(final boolean is24HourFormat) {
             mIs24HourFormat = is24HourFormat;
             mList = null;
         }
@@ -294,17 +296,17 @@ public class DayFragment extends Fragment {
             ((MainActivity) view.getContext()).startActivityForResult(intent, CreateEditEventActivity.REQUEST_CREATE_EDIT);
         }
 
-        public ArrayList<Event> getDataSet() {
+        ArrayList<Event> getDataSet() {
             return mList;
         }
 
-        public void setDataSet(ArrayList<Event> list) {
+        void setDataSet(ArrayList<Event> list) {
             mList = list;
 
             notifyDataSetChanged();
         }
 
-        public void addNewEvent(Event newEvent) {
+        void addNewEvent(Event newEvent) {
             if (mList == null) {
                 mList = new ArrayList<>(1);
             }
@@ -323,7 +325,7 @@ public class DayFragment extends Fragment {
             Log.d(TAG, MessageFormat.format("A new item added to the position {0}.", position));
         }
 
-        public void updateAnEventAt(Event updatedEvent, int position) {
+        void updateAnEventAt(Event updatedEvent, int position) {
             if (mList.get(position).getID() != updatedEvent.getID()) {
                 Log.d(TAG, MessageFormat.format("Updated item ID {0} does NOT match with the specified position {1}.",
                         updatedEvent.getID(), position));
@@ -355,7 +357,7 @@ public class DayFragment extends Fragment {
             }
         }
 
-        public void deleteAnEventAt(Event deletedEvent, int position) {
+        void deleteAnEventAt(Event deletedEvent, int position) {
             if (mList.get(position).getID() != deletedEvent.getID()) {
                 Log.d(TAG, MessageFormat.format("Deleted item ID {0} does NOT match with the specified position {1}.",
                         deletedEvent.getID(), position));
@@ -368,7 +370,7 @@ public class DayFragment extends Fragment {
             Log.d(TAG, MessageFormat.format("Removed an item at the position {0}.", position));
         }
 
-        public void refreshIfTimeFormatChanged(boolean is24HourFormat) {
+        void refreshIfTimeFormatChanged(boolean is24HourFormat) {
             if (is24HourFormat != mIs24HourFormat) {
                 mIs24HourFormat = is24HourFormat;
                 notifyDataSetChanged();
@@ -377,12 +379,12 @@ public class DayFragment extends Fragment {
 
         class ViewHolder extends RecyclerView.ViewHolder
                 implements View.OnClickListener {
-            public final TextView tvTitle, tvDescription, tvTime;
-            public final ImageView ivIcon;
+            final TextView tvTitle, tvDescription, tvTime;
+            final ImageView ivIcon;
 
             private final OnItemClickListener mClickListener;
 
-            public ViewHolder(EventModelAdapter adapter, View itemView) {
+            ViewHolder(EventModelAdapter adapter, View itemView) {
                 super(itemView);
 
                 tvTitle = (TextView) itemView.findViewById(R.id.tvTitle);

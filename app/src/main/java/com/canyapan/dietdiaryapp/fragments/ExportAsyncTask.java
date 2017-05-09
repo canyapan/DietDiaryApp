@@ -20,6 +20,7 @@ import com.canyapan.dietdiaryapp.db.DatabaseHelper;
 import com.canyapan.dietdiaryapp.db.EventHelper;
 import com.canyapan.dietdiaryapp.helpers.ResourcesHelper;
 import com.canyapan.dietdiaryapp.models.Event;
+import com.crashlytics.android.Crashlytics;
 
 import org.joda.time.LocalDate;
 
@@ -31,10 +32,10 @@ import java.text.MessageFormat;
 import java.util.concurrent.atomic.AtomicInteger;
 
 abstract class ExportAsyncTask extends AsyncTask<Void, Integer, Boolean> {
-    public static final int TO_EXTERNAL = 0;
-    public static final int TO_SHARE = 1;
+    static final int TO_EXTERNAL = 0;
+    static final int TO_SHARE = 1;
 
-    protected ExportFragment exportFragment;
+    private ExportFragment exportFragment;
     private final File mFile;
     private final int mDestination;
     private final AtomicInteger mProgress = new AtomicInteger(0);
@@ -127,12 +128,15 @@ abstract class ExportAsyncTask extends AsyncTask<Void, Integer, Boolean> {
             publishProgress(100);
             return true;
         } catch (IOException e) {
+            Crashlytics.logException(e);
             Log.e(ExportFragment.TAG, "Content cannot be prepared probably a IO issue.", e);
             mErrorString = exportFragment.getString(R.string.export_csv_io_exception);
         } catch (SQLiteException e) {
+            Crashlytics.logException(e);
             Log.e(ExportFragment.TAG, "Content cannot be prepared probably a DB issue.", e);
             mErrorString = exportFragment.getString(R.string.export_csv_sql_exception);
         } catch (Exception e) {
+            Crashlytics.logException(e);
             Log.e(ExportFragment.TAG, "Content cannot be prepared.", e);
             mErrorString = exportFragment.getString(R.string.export_csv_exception);
         } finally {

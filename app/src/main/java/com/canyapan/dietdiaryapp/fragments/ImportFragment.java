@@ -34,6 +34,7 @@ import com.canyapan.dietdiaryapp.adapters.SpinnerArrayAdapter;
 import com.canyapan.dietdiaryapp.adapters.SpinnerItem;
 import com.canyapan.dietdiaryapp.db.DatabaseHelper;
 import com.canyapan.dietdiaryapp.helpers.ResourcesHelper;
+import com.crashlytics.android.Crashlytics;
 import com.opencsv.CSVReader;
 
 import org.apache.commons.io.input.BOMInputStream;
@@ -149,6 +150,7 @@ public class ImportFragment extends Fragment {
                 try {
                     mAsyncTask = (ImportAsyncTask) new ImportAsyncTask((File) mSpinnerItems.get(mSpinner.getSelectedItemPosition()).getTag()).execute();
                 } catch (ImportException e) {
+                    Crashlytics.logException(e);
                     Log.e(TAG, "Import from external storage unsuccessful.", e);
                 }
 
@@ -346,14 +348,18 @@ public class ImportFragment extends Fragment {
                 db.setTransactionSuccessful();
                 return true;
             } catch (ImportException e) {
+                Crashlytics.logException(e);
                 mErrorString = e.getMessage();
             } catch (IOException e) {
+                Crashlytics.logException(e);
                 Log.e(TAG, "Content cannot be imported. Probably a IO issue.", e);
                 mErrorString = getString(R.string.import_csv_io_exception);
             } catch (SQLiteException e) {
+                Crashlytics.logException(e);
                 Log.e(TAG, "Content cannot be imported. Probably a DB issue.", e);
                 mErrorString = getString(R.string.import_csv_sql_exception);
             } catch (Exception e) {
+                Crashlytics.logException(e);
                 Log.e(TAG, "Content cannot be imported.", e);
                 mErrorString = getString(R.string.import_csv_exception);
             } finally {
@@ -482,7 +488,7 @@ public class ImportFragment extends Fragment {
         }
     }
 
-    class ImportException extends Exception {
+    private class ImportException extends Exception {
         ImportException(String message) {
             super(message);
         }

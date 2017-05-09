@@ -71,6 +71,7 @@
     <string name="spinner_event_types_supplements">Suplementy</string>
     <string name="spinner_event_types_exercise">Ćwiczenia</string>
     <string name="spinner_event_types_other">Inne</string>
+    <string name="spinner_event_drink_types_milk">Mleko</string>
 
     <string name="spinner_event_food_types_breakfast">Śniadanie</string>
     <string name="spinner_event_food_types_lunch">Obiad</string>
@@ -95,12 +96,6 @@
     <string name="pref_title_notifications_active">Aktywne</string>
     <string name="pref_title_daily_remainder">Codzienne przypomnienie, jeśli nie dodano żadnego wpisu</string>
     <string name="pref_title_daily_remainder_time">Przypomnij mi o</string>
-
-    <string name="crash_toast_text">Ooooops! Wystąpił błąd, ale raport został wysłany do mojego autora żeby naprawił ten problem!</string>
-    <string name="crash_dialog_title">Dziennik Diety uległ awarii</string>
-    <string name="crash_dialog_text">Wystąpił nieoczekiwany błąd, zmuszając aplikacje do zatrzymania. Pomóż nam rozwiązać ten problem, przekaż dane o błedzie, wszystko co musisz zrobić, to kliknąć OK.</string>
-    <string name="crash_dialog_comment_prompt">Poniżej możesz dodać komentarz na temat problemu:</string>
-    <string name="crash_dialog_ok_toast">Dziękuję !</string>
 
     <string name="rate_dialog_title">Oceń tę aplikację</string>
     <string name="rate_dialog_text">Jeśli korzystanie z tej aplikacji Ci pomaga i ją lubisz, czy możesz ją ocenić? To nie potrwa dłużej niż chwilę. Dziękuję za wsparcie!</string>
