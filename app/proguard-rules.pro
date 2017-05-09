@@ -22,6 +22,7 @@
 -keep public class * extends java.lang.Exception
 
 -keep class com.crashlytics.** { *; }
+-keep class org.joda.time.** { *; }
 
 -dontwarn com.crashlytics.**
 -dontwarn java.beans.**

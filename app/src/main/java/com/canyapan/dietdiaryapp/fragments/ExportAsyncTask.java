@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
@@ -54,7 +55,10 @@ abstract class ExportAsyncTask extends AsyncTask<Void, Integer, Boolean> {
                             Environment.getExternalStorageDirectory(),
                             Application.APP_DIR);
                     //noinspection ResultOfMethodCallIgnored
-                    dir.mkdirs();
+
+                    if (dir.mkdirs()) {
+                        MediaScannerConnection.scanFile(exportFragment.getContext(), new String[]{dir.getPath()}, null, null);
+                    }
 
                     mFile = new File(dir, fileName);
                 } else {
@@ -186,6 +190,10 @@ abstract class ExportAsyncTask extends AsyncTask<Void, Integer, Boolean> {
 
                 exportFragment.mListener.onShared(Uri.fromFile(mFile), exportFragment.mFromDate, exportFragment.mToDate);
             } else {
+                // initiate media scan and put the new things into the path array to
+                // make the scanner aware of the location and the files
+                MediaScannerConnection.scanFile(exportFragment.getContext(), new String[]{mFile.getPath()}, null, null);
+
                 exportFragment.mListener.onExported(Uri.fromFile(mFile), exportFragment.mFromDate, exportFragment.mToDate);
             }
         }
