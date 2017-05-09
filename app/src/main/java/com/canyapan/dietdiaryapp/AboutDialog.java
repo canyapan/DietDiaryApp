@@ -8,8 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-public class AboutDialog extends AlertDialog {
-    protected AboutDialog(Context context) {
+class AboutDialog extends AlertDialog {
+    AboutDialog(Context context) {
         super(context);
 
         final LayoutInflater inflater = LayoutInflater.from(context);

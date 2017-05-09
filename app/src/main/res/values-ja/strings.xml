@@ -80,6 +80,7 @@
     <string name="spinner_event_drink_types_water">水</string>
     <string name="spinner_event_drink_types_energy_drink">エナジードリンク</string>
     <string name="spinner_event_drink_types_fruit_juice">フルーツ ジュース</string>
+    <string name="spinner_event_drink_types_milk">牛乳</string>
 
     <!-- Strings related to Settings -->
     <!-- Example General settings -->
@@ -94,13 +95,6 @@
     <string name="pref_title_notifications_active">有効</string>
     <string name="pref_title_daily_remainder">エントリーを追加しない場合に、毎日リマインドする</string>
     <string name="pref_title_daily_remainder_time">リマインド</string>
-
-    <!-- Strings for Crash Reporter -->
-    <string name="crash_toast_text">申し訳ありません。クラッシュしました。問題を修正するために開発者にレポートを送信しました!</string>
-    <string name="crash_dialog_title">ダイエットダイアリーがクラッシュしました</string>
-    <string name="crash_dialog_text">アプリケーションを強制的に停止する、予期しないエラーが発生しました。エラー データを送信して、この問題の解決を手伝ってください。あなたは OK をクリックするだけです。</string>
-    <string name="crash_dialog_comment_prompt">以下に、問題についてのコメントを追加できます。</string>
-    <string name="crash_dialog_ok_toast">ありがとうございます!</string>
 
     <!-- Strings for App Rate Dialog -->
     <string name="rate_dialog_title">アプリをレビューしませんか？</string>

@@ -19,7 +19,7 @@ class ExportCSV extends ExportAsyncTask {
             foodTypes = null,
             drinkTypes = null;
 
-    public ExportCSV(ExportFragment exportFragment, int destination) throws ExportException {
+    ExportCSV(ExportFragment exportFragment, int destination) throws ExportException {
         super(exportFragment, destination);
     }
 

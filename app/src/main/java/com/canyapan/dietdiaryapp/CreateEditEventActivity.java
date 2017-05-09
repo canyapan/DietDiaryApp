@@ -30,6 +30,7 @@ import com.canyapan.dietdiaryapp.db.DatabaseHelper;
 import com.canyapan.dietdiaryapp.db.EventHelper;
 import com.canyapan.dietdiaryapp.helpers.DateTimeHelper;
 import com.canyapan.dietdiaryapp.models.Event;
+import com.crashlytics.android.Crashlytics;
 
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
@@ -289,11 +290,13 @@ public class CreateEditEventActivity extends AppCompatActivity {
                     return true;
             }
         } catch (SQLiteException e) {
+            Crashlytics.logException(e);
             Log.e(TAG, "Content cannot be prepared probably a DB issue.", e);
 
             intent.putExtra(KEY_EXCEPTION_SERIALIZABLE, e);
             setResult(RESULT_ERROR, intent);
         } catch (Exception e) {
+            Crashlytics.logException(e);
             Log.e(TAG, "Content cannot be prepared.", e);
 
             intent.putExtra(KEY_EXCEPTION_SERIALIZABLE, e);

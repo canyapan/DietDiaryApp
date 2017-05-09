@@ -79,6 +79,7 @@
     <string name="spinner_event_drink_types_water">Water</string>
     <string name="spinner_event_drink_types_energy_drink">Energiedrank</string>
     <string name="spinner_event_drink_types_fruit_juice">Vruchtensap</string>
+    <string name="spinner_event_drink_types_milk">Melk</string>
 
     <!-- Strings related to Settings -->
     <!-- Example General settings -->
@@ -94,13 +95,6 @@
     <string name="pref_title_notifications_active">Actief</string>
     <string name="pref_title_daily_remainder">Herinner me dagelijks als ik niks heb ingevoerd</string>
     <string name="pref_title_daily_remainder_time">Herinner me op</string>
-
-    <!-- Strings for Crash Reporter -->
-    <string name="crash_toast_text">Ooooops ! Ik ben gecrasht ! Er is een foutrapportage opgestuurd naar mijn ontwikkelaar zodat dit probleem kan worden opgelost !</string>
-    <string name="crash_dialog_title">Dieetdagboek is gecrasht</string>
-    <string name="crash_dialog_text">Er is een onbekend fout opgetreden waardoor de applicatie geforceerd is gestopt. Help ons het probleem op te lossen door de foutrapportage op te sturen; u hoeft alleen maar te drukken op Oké.</string>
-    <string name="crash_dialog_comment_prompt">Als u wilt, dan kunt u hieronder uw reactie schrijven over het probleem:</string>
-    <string name="crash_dialog_ok_toast">Bedankt !</string>
 
     <!-- Strings for App Rate Dialog -->
     <string name="rate_dialog_title">Beoordeel de app</string>

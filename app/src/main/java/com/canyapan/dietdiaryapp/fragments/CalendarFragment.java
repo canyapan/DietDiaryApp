@@ -214,12 +214,12 @@ public class CalendarFragment extends Fragment implements ViewPager.OnPageChange
         void onDateChanged(LocalDate newDate);
     }
 
-    class CalendarPagerAdapter extends FragmentStatePagerAdapter {
+    private class CalendarPagerAdapter extends FragmentStatePagerAdapter {
         private static final String TAG = "CalendarPagerAdapter";
         private static final int COUNT = 998; // %3 gives 1
         private final LocalDate mZeroDate;
 
-        public CalendarPagerAdapter(FragmentManager fm, LocalDate date) {
+        CalendarPagerAdapter(FragmentManager fm, LocalDate date) {
             super(fm);
             mZeroDate = date;
         }
@@ -238,7 +238,7 @@ public class CalendarFragment extends Fragment implements ViewPager.OnPageChange
         }
 
         @Nullable
-        public DayFragment getFragment(@NonNull ViewGroup container, @NonNull LocalDate date) {
+        DayFragment getFragment(@NonNull ViewGroup container, @NonNull LocalDate date) {
             final int position = getPositionForDate(date);
 
             if (position < 0 || position >= getCount()) {
@@ -248,16 +248,16 @@ public class CalendarFragment extends Fragment implements ViewPager.OnPageChange
             return (DayFragment) instantiateItem(container, position);
         }
 
-        public LocalDate getDateForPosition(int position) {
+        LocalDate getDateForPosition(int position) {
             return mZeroDate.plusDays(position - getMiddlePosition());
         }
 
-        public int getPositionForDate(LocalDate date) {
+        int getPositionForDate(LocalDate date) {
             final int days = Days.daysBetween(mZeroDate, date).getDays();
             return getMiddlePosition() + days;
         }
 
-        public int getMiddlePosition() {
+        int getMiddlePosition() {
             return COUNT / 2;
         }
     }

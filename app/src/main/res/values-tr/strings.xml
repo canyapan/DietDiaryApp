@@ -80,6 +80,7 @@
     <string name="spinner_event_drink_types_water">Su</string>
     <string name="spinner_event_drink_types_energy_drink">Enerji İçeceği</string>
     <string name="spinner_event_drink_types_fruit_juice">Meyve Suyu</string>
+    <string name="spinner_event_drink_types_milk">Süt</string>
 
     <!-- Strings related to Settings -->
     <!-- Example General settings -->
@@ -95,24 +96,10 @@
     <string name="pref_title_daily_remainder">Eğer hiçbirşey yazmadıysam günlük hatırlat</string>
     <string name="pref_title_daily_remainder_time">Şu saatte hatırlat</string>
 
-    <!-- Strings for Crash Reporter -->
-    <string name="crash_dialog_comment_prompt">Sorun ile alakalı görüşlerinizi aşağıda paylaşabilirsiniz:</string>
-    <string name="crash_dialog_ok_toast">Teşekkürler !</string>
-    <string name="crash_dialog_text">Beklenmeyen bir hata uygulamayı kapanmaya zorladı. Lütfen hata verisini göndererek sorunu düzeltmemize yardım edin. Tek yapmanız gereken \'Tamam\'a tıklamak.</string>
-    <string name="crash_dialog_title">Diet Diary çöktü</string>
-    <string name="crash_toast_text">Tühhh! çöktüm, ama geliştiricime bu sorunu çözmesi için gerekli rapor gönderildi !</string>
-
     <!-- Strings for App Rate Dialog -->
     <string name="rate_dialog_title">Bu uygulamaya puan verin</string>
     <string name="rate_dialog_text">Eğer bu uygulamayı beğendiyseniz, lütfen birkaç dakikanızı ayırarak puan verir miydiniz? Bir dakikadan fazla sürmeyecek. Desteğiniz için teşekkür ederiz!</string>
     <string name="rate_dialog_yes">Puan Ver</string>
     <string name="rate_dialog_later">Daha Sonra Hatırlat</string>
     <string name="rate_dialog_never">Hayır, Teşekkürler</string>
-
-    <!-- Strings for Crash Reporter -->
-    <string name="com.crashlytics.CrashSubmissionPromptTitle">Hata Raporu Gönder?</string>
-    <string name="com.crashlytics.CrashSubmissionPromptMessage">Görünüşe göre çöktüm! Lütfen hata raporunu göndererek sorunu düzeltmemize yardım edin.</string>
-    <string name="com.crashlytics.CrashSubmissionSendTitle">Gönder</string>
-    <string name="com.crashlytics.CrashSubmissionAlwaysSendTitle">Herzaman Gönder</string>
-    <string name="com.crashlytics.CrashSubmissionCancelTitle">Gönderme</string>
 </resources>
