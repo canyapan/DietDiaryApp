@@ -87,6 +87,14 @@ public class CreateEditEventActivity extends AppCompatActivity {
             mOrgDate = null;
         }
 
+        // Somehow, intent returns a null event.
+        // https://fabric.io/mobile-team114/android/apps/com.canyapan.dietdiaryapp/issues/5913a32fbe077a4dcc8ea229
+        if (null == mEvent) {
+            mEvent = new Event();
+            mEvent.setType(Event.TYPE_FOOD);
+            mEvent.setDate(LocalDate.now());
+        }
+
         spTypes = (Spinner) findViewById(R.id.spTypes);
         tvDatePicker = (TextView) findViewById(R.id.tvDatePicker);
         tvTimePicker = (TextView) findViewById(R.id.tvTimePicker);
