@@ -137,7 +137,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     db.update(DBT_EVENT, values, DBC_EVENT_TYPE + " == ?", new String[]{Integer.toString(-1),});
                     db.setTransactionSuccessful();
                 } catch (SQLException e) {
-                    Log.e(TAG, "An exception occurred while database updating from 2 to 3.", e);
+                    Log.e(TAG, "An exception occurred while database updating from 2 to 4.", e);
                     throw e;
                 } finally {
                     if (db.inTransaction()) {

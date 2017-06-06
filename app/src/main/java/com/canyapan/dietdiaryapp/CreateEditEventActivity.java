@@ -29,6 +29,7 @@ import com.canyapan.dietdiaryapp.adapters.SpinnerArrayAdapter;
 import com.canyapan.dietdiaryapp.db.DatabaseHelper;
 import com.canyapan.dietdiaryapp.db.EventHelper;
 import com.canyapan.dietdiaryapp.helpers.DateTimeHelper;
+import com.canyapan.dietdiaryapp.helpers.FixedDatePickerDialog;
 import com.canyapan.dietdiaryapp.models.Event;
 import com.crashlytics.android.Crashlytics;
 
@@ -319,7 +320,7 @@ public class CreateEditEventActivity extends AppCompatActivity {
     }
 
     public void onDatePickerButtonClicked(View view) {
-        DatePickerDialog datePicker = new DatePickerDialog(CreateEditEventActivity.this,
+        DatePickerDialog datePicker = new FixedDatePickerDialog(CreateEditEventActivity.this,
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {

@@ -31,11 +31,9 @@ import android.widget.DatePicker;
 import com.canyapan.dietdiaryapp.db.DatabaseHelper;
 import com.canyapan.dietdiaryapp.db.EventHelper;
 import com.canyapan.dietdiaryapp.fragments.CalendarFragment;
+import com.canyapan.dietdiaryapp.helpers.FixedDatePickerDialog;
 import com.canyapan.dietdiaryapp.models.Event;
 import com.canyapan.dietdiaryapp.receivers.DailyAlarmReceiver;
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.common.api.GoogleApiClient;
 
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
@@ -90,31 +88,6 @@ public class MainActivity extends AppCompatActivity implements
 
     private LocalDate mSelectedDate;
     private Boolean mFab2Shown;
-
-    private GoogleApiClient mClient;
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        mClient.connect();
-        Action viewAction = Action.newAction(Action.TYPE_VIEW, "Main Page",
-                Uri.parse("android-app://com.canyapan.dietdiaryapp/android/dietdiaryapp")
-        );
-
-        AppIndex.AppIndexApi.start(mClient, viewAction);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        Action viewAction = Action.newAction(Action.TYPE_VIEW, "Main Page",
-                Uri.parse("android-app://com.canyapan.dietdiaryapp/android/dietdiaryapp")
-        );
-        AppIndex.AppIndexApi.end(mClient, viewAction);
-        mClient.disconnect();
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -192,10 +165,6 @@ public class MainActivity extends AppCompatActivity implements
         }
 
         DailyAlarmReceiver.register(MainActivity.this);
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        mClient = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     @Override
@@ -280,7 +249,7 @@ public class MainActivity extends AppCompatActivity implements
     //region Date Picker Dialog
     private void showDatePickerDialog() {
         if (null == mDatePickerDialog) {
-            mDatePickerDialog = new DatePickerDialog(MainActivity.this,
+            mDatePickerDialog = new FixedDatePickerDialog(MainActivity.this,
                     new DatePickerDialog.OnDateSetListener() {
                         @Override
                         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {

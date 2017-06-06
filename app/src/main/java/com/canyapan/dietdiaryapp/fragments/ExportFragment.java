@@ -30,6 +30,7 @@ import android.widget.Toast;
 import com.canyapan.dietdiaryapp.R;
 import com.canyapan.dietdiaryapp.db.DatabaseHelper;
 import com.canyapan.dietdiaryapp.helpers.DateTimeHelper;
+import com.canyapan.dietdiaryapp.helpers.FixedDatePickerDialog;
 import com.canyapan.dietdiaryapp.helpers.ResourcesHelper;
 import com.crashlytics.android.Crashlytics;
 
@@ -193,7 +194,7 @@ public class ExportFragment extends Fragment implements View.OnClickListener {
             return;
         }
 
-        DatePickerDialog datePicker = new DatePickerDialog(getContext(),
+        DatePickerDialog datePicker = new FixedDatePickerDialog(getContext(),
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
