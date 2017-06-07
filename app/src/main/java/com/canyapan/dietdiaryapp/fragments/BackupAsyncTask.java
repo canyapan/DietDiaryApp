@@ -32,21 +32,21 @@ import java.io.OutputStreamWriter;
 import java.text.MessageFormat;
 import java.util.concurrent.atomic.AtomicInteger;
 
-abstract class ExportAsyncTask extends AsyncTask<Void, Integer, Boolean> {
+abstract class BackupAsyncTask extends AsyncTask<Void, Integer, Boolean> {
     static final int TO_EXTERNAL = 0;
     static final int TO_SHARE = 1;
 
-    private ExportFragment exportFragment;
+    private BackupFragment backupFragment;
     private final File mFile;
     private final int mDestination;
     private final AtomicInteger mProgress = new AtomicInteger(0);
     private String mErrorString = null;
 
-    ExportAsyncTask(ExportFragment exportFragment, int destination) throws ExportException {
-        this.exportFragment = exportFragment;
+    BackupAsyncTask(BackupFragment backupFragment, int destination) throws BackupException {
+        this.backupFragment = backupFragment;
         mDestination = destination;
 
-        String fileName = getFileName(exportFragment.getString(R.string.app_name), exportFragment.mFromDate, exportFragment.mToDate);
+        String fileName = getFileName(backupFragment.getString(R.string.app_name), backupFragment.mFromDate, backupFragment.mToDate);
 
         switch (destination) {
             case TO_EXTERNAL:
@@ -57,35 +57,33 @@ abstract class ExportAsyncTask extends AsyncTask<Void, Integer, Boolean> {
                     //noinspection ResultOfMethodCallIgnored
 
                     if (dir.mkdirs()) {
-                        MediaScannerConnection.scanFile(exportFragment.getContext(), new String[]{dir.getPath()}, null, null);
+                        MediaScannerConnection.scanFile(backupFragment.getContext(), new String[]{dir.getPath()}, null, null);
                     }
 
                     mFile = new File(dir, fileName);
                 } else {
-                    Log.e(ExportFragment.TAG, "SD Card unavailable.");
-                    throw new ExportException(exportFragment.getContext(), R.string.export_sd_card_unavailable);
+                    Log.e(BackupFragment.TAG, "SD Card unavailable.");
+                    throw new BackupException(backupFragment.getContext(), R.string.backup_sd_card_unavailable);
                 }
                 break;
             case TO_SHARE:
-                mFile = new File(exportFragment.getContext().getCacheDir(), fileName);
+                mFile = new File(backupFragment.getContext().getCacheDir(), fileName);
                 break;
             default:
-                throw new ExportException(exportFragment.getContext(), R.string.export_unimplemented_destination);
+                throw new BackupException(backupFragment.getContext(), R.string.backup_unimplemented_destination);
         }
     }
 
-    protected abstract String getFileName(String prepend, LocalDate startDate, LocalDate endDate);
-
     protected void onPreExecute() {
         // Heads up: This method is also used onCreateView to recreate progress dialog on configuration change.
-        exportFragment.mProgressDialog = new ProgressDialog(exportFragment.getContext());
-        exportFragment.mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        exportFragment.mProgressDialog.setTitle(R.string.export_progress_title);
-        exportFragment.mProgressDialog.setIndeterminate(false);
-        exportFragment.mProgressDialog.setCancelable(false);
-        exportFragment.mProgressDialog.setMax(100);
-        exportFragment.mProgressDialog.show();
-        exportFragment.mProgressDialog.setProgress(mProgress.get());
+        backupFragment.mProgressDialog = new ProgressDialog(backupFragment.getContext());
+        backupFragment.mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        backupFragment.mProgressDialog.setTitle(R.string.backup_progress_title);
+        backupFragment.mProgressDialog.setIndeterminate(false);
+        backupFragment.mProgressDialog.setCancelable(false);
+        backupFragment.mProgressDialog.setMax(100);
+        backupFragment.mProgressDialog.show();
+        backupFragment.mProgressDialog.setProgress(mProgress.get());
     }
 
     @Override
@@ -94,17 +92,17 @@ abstract class ExportAsyncTask extends AsyncTask<Void, Integer, Boolean> {
         Cursor cursor = null;
 
         try {
-            Resources engResources = ResourcesHelper.getEngResources(exportFragment.getContext());
+            Resources engResources = ResourcesHelper.getEngResources(backupFragment.getContext());
 
             final OutputStreamWriter os = new OutputStreamWriter(new FileOutputStream(mFile, false), "UTF-8");
             os.write('\uFEFF'); // Unicode character, U+FEFF BYTE ORDER MARK (BOM) | https://en.wikipedia.org/wiki/Byte_order_mark
             start(os, engResources);
             publishProgress(1);
 
-            db = exportFragment.mDatabaseHelper.getReadableDatabase();
+            db = backupFragment.mDatabaseHelper.getReadableDatabase();
             cursor = db.query(DatabaseHelper.DBT_EVENT, EventHelper.getDatabaseColumns(),
                     DatabaseHelper.DBC_EVENT_DATE + " >= ? AND " + DatabaseHelper.DBC_EVENT_DATE + " <= ?",
-                    new String[]{exportFragment.mFromDate.toString(DatabaseHelper.DB_DATE_FORMATTER), exportFragment.mToDate.toString(DatabaseHelper.DB_DATE_FORMATTER)},
+                    new String[]{backupFragment.mFromDate.toString(DatabaseHelper.DB_DATE_FORMATTER), backupFragment.mToDate.toString(DatabaseHelper.DB_DATE_FORMATTER)},
                     null, null, DatabaseHelper.DBC_EVENT_DATE + "," + DatabaseHelper.DBC_EVENT_TIME + "," + DatabaseHelper.DBC_EVENT_ROW_ID);
 
             publishProgress(5);
@@ -112,7 +110,7 @@ abstract class ExportAsyncTask extends AsyncTask<Void, Integer, Boolean> {
             Event model;
             if (cursor.moveToFirst()) {
                 final int count = cursor.getCount();
-                Log.d(ExportFragment.TAG, MessageFormat.format("Exporting {0,number,integer} records.", count));
+                Log.d(BackupFragment.TAG, MessageFormat.format("Exporting {0,number,integer} records.", count));
 
                 int current = 0;
                 int percent = 0, percent_;
@@ -133,18 +131,21 @@ abstract class ExportAsyncTask extends AsyncTask<Void, Integer, Boolean> {
             return true;
         } catch (IOException e) {
             Crashlytics.logException(e);
-            Log.e(ExportFragment.TAG, "Content cannot be prepared probably a IO issue.", e);
-            mErrorString = exportFragment.getString(R.string.export_csv_io_exception);
+            Log.e(BackupFragment.TAG, "Content cannot be prepared probably a IO issue.", e);
+            mErrorString = backupFragment.getString(R.string.backup_io_exception);
         } catch (SQLiteException e) {
             Crashlytics.logException(e);
-            Log.e(ExportFragment.TAG, "Content cannot be prepared probably a DB issue.", e);
-            mErrorString = exportFragment.getString(R.string.export_csv_sql_exception);
+            Log.e(BackupFragment.TAG, "Content cannot be prepared probably a DB issue.", e);
+            mErrorString = backupFragment.getString(R.string.backup_sql_exception);
         } catch (Exception e) {
             Crashlytics.logException(e);
-            Log.e(ExportFragment.TAG, "Content cannot be prepared.", e);
-            mErrorString = exportFragment.getString(R.string.export_csv_exception);
+            Log.e(BackupFragment.TAG, "Content cannot be prepared.", e);
+            mErrorString = backupFragment.getString(R.string.backup_exception);
         } finally {
-            end();
+            try {
+                end();
+            } catch (IOException ignore) {
+            }
 
             if (null != cursor) {
                 cursor.close();
@@ -162,25 +163,25 @@ abstract class ExportAsyncTask extends AsyncTask<Void, Integer, Boolean> {
     protected void onProgressUpdate(Integer... values) {
         if (values.length > 0 && values[0] != null) {
             mProgress.set(values[0]);
-            exportFragment.mProgressDialog.setProgress(values[0]);
+            backupFragment.mProgressDialog.setProgress(values[0]);
         }
     }
 
     @Override
     protected void onPostExecute(Boolean result) {
-        exportFragment.mAsyncTask = null;
+        backupFragment.mAsyncTask = null;
 
-        if (exportFragment.mProgressDialog.isShowing()) {
-            exportFragment.mProgressDialog.dismiss();
+        if (backupFragment.mProgressDialog.isShowing()) {
+            backupFragment.mProgressDialog.dismiss();
         }
 
         if (null == result || result.equals(false)) {
-            Snackbar.make(exportFragment.mGridLayout, mErrorString, Snackbar.LENGTH_INDEFINITE).show();
+            Snackbar.make(backupFragment.mGridLayout, mErrorString, Snackbar.LENGTH_INDEFINITE).show();
         } else if (result.equals(true)) {
-            Snackbar.make(exportFragment.mGridLayout, exportFragment.getString(R.string.export_external_successful, mFile.getName()), Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(backupFragment.mGridLayout, backupFragment.getString(R.string.backup_external_successful, mFile.getName()), Snackbar.LENGTH_SHORT).show();
 
             if (mDestination == TO_SHARE) {
-                ShareCompat.IntentBuilder builder = ShareCompat.IntentBuilder.from(exportFragment.getActivity())
+                ShareCompat.IntentBuilder builder = ShareCompat.IntentBuilder.from(backupFragment.getActivity())
                         .setType(SharingSupportProvider.MIME_TYPE_CSV)
                         .setStream(Uri.parse(SharingSupportProvider.CONTENT_URI_PREFIX + mFile.getName()));
 
@@ -188,20 +189,22 @@ abstract class ExportAsyncTask extends AsyncTask<Void, Integer, Boolean> {
 
                 builder.startChooser();
 
-                exportFragment.mListener.onShared(Uri.fromFile(mFile), exportFragment.mFromDate, exportFragment.mToDate);
+                backupFragment.mListener.onShared(Uri.fromFile(mFile), backupFragment.mFromDate, backupFragment.mToDate);
             } else {
                 // initiate media scan and put the new things into the path array to
                 // make the scanner aware of the location and the files
-                MediaScannerConnection.scanFile(exportFragment.getContext(), new String[]{mFile.getPath()}, null, null);
+                MediaScannerConnection.scanFile(backupFragment.getContext(), new String[]{mFile.getPath()}, null, null);
 
-                exportFragment.mListener.onExported(Uri.fromFile(mFile), exportFragment.mFromDate, exportFragment.mToDate);
+                backupFragment.mListener.onExported(Uri.fromFile(mFile), backupFragment.mFromDate, backupFragment.mToDate);
             }
         }
     }
 
-    protected abstract void start(OutputStreamWriter outputStream, Resources resources);
+    protected abstract String getFileName(String prepend, LocalDate startDate, LocalDate endDate);
 
-    protected abstract void write(Event event);
+    protected abstract void start(OutputStreamWriter outputStream, Resources resources) throws IOException;
 
-    protected abstract void end();
+    protected abstract void write(Event event) throws IOException;
+
+    protected abstract void end() throws IOException;
 }

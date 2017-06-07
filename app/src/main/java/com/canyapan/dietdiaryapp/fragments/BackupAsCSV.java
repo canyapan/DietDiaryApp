@@ -13,14 +13,14 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.text.MessageFormat;
 
-class ExportCSV extends ExportAsyncTask {
+class BackupAsCSV extends BackupAsyncTask {
     private CSVWriter csvWriter = null;
     private String[] types = null,
             foodTypes = null,
             drinkTypes = null;
 
-    ExportCSV(ExportFragment exportFragment, int destination) throws ExportException {
-        super(exportFragment, destination);
+    BackupAsCSV(BackupFragment backupFragment, int destination) throws BackupException {
+        super(backupFragment, destination);
     }
 
     @Override

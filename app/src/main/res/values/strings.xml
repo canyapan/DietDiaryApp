@@ -52,33 +52,33 @@
     <!--Will be shown on the backup/restore screen as tab. Text indicates to restore part of the functionality. Should be translated as short as possible.-->
     <string name="restore">Restore</string>
     <!--Will be shown on the backup/restore screen's backup tab. Text indicates a start date for exporting data.-->
-    <string name="export_from">From</string>
+    <string name="backup_from">From</string>
     <!--Will be shown on the backup/restore screen's backup tab. Text indicates an end date for exporting data.-->
-    <string name="export_to">To</string>
+    <string name="backup_to">To</string>
     <!--Will be shown on the backup/restore screen's backup tab. Text indicates to select a file format of exporting data.-->
-    <string name="export_type">Type</string>
+    <string name="backup_type">Type</string>
     <!--Will be shown under the progress bar while exporting data. Text indicates to export operation is currently working.-->
-    <string name="export_progress_title">Exporting&#8230;</string>
+    <string name="backup_progress_title">Exporting&#8230;</string>
     <!--Will be shown under the progress bar while exporting data. Text indicates an exportable SD card is not plugged into user's device.-->
-    <string name="export_sd_card_unavailable">SD Card unavailable.</string>
+    <string name="backup_sd_card_unavailable">SD Card unavailable.</string>
     <!--Will be shown under the progress bar while exporting data. Text indicates a temporary file was not be able to created.-->
-    <string name="export_temp_file_creation_error">Cannot create temporary file.</string>
+    <string name="backup_temp_file_creation_error">Cannot create temporary file.</string>
     <!--Will be shown under the progress bar while exporting data. Text indicates a file was not be able to created.-->
-    <string name="export_file_creation_error">Cannot create export file.</string>
+    <string name="backup_file_creation_error">Cannot create export file.</string>
     <!--Will be shown under the progress bar while exporting data. Text indicates an unimplemented export destination has been selected.-->
-    <string name="export_unimplemented_destination">Selected destination is not implemented, yet.</string>
+    <string name="backup_unimplemented_destination">Selected destination is not implemented, yet.</string>
     <!--Will be shown under the progress bar while exporting data. Text shown when an IO (Input/Output) error happens while exporting.-->
-    <string name="export_csv_io_exception">IO error occurred while exporting to CSV.</string>
+    <string name="backup_io_exception">IO error occurred while exporting.</string>
     <!--Will be shown under the progress bar while exporting data. Text shown when a DB (Database) error happens while exporting.-->
-    <string name="export_csv_sql_exception">DB error occurred while exporting to CSV.</string>
+    <string name="backup_sql_exception">DB error occurred while exporting.</string>
     <!--Will be shown under the progress bar while exporting data. Text shown when an unknown error happens while exporting.-->
-    <string name="export_csv_exception">Unidentified error occurred while exporting to CSV.</string>
+    <string name="backup_exception">Unidentified error occurred while exporting.</string>
     <!--Will be shown after export operation. Text indicates a file has been created. %1$s will be replaced with the file name. %1$s should be written where the file name should appear.-->
-    <string name="export_external_successful">%1$s created</string>
+    <string name="backup_external_successful">%1$s created</string>
     <!--Will be shown after export operation. Text indicates a data has been shared.-->
-    <string name="export_share_successful">CSV file shared.</string>
+    <string name="backup_share_successful">File shared.</string>
     <!--Will be shown while exporting data. Text indicates a data cannot be written because of required write permission has not been given. So, application asks user to give required permission for the write operation.-->
-    <string name="export_no_permission">Please give permission to write files.</string>
+    <string name="backup_no_permission">Please give permission to write files.</string>
     <!--Will be shown under the progress bar while importing data.-->
     <string name="import_progress_title">Importing&#8230;</string>
     <!--Will be shown on the backup/restore screen's restore tab. Text indicates to a file format to import.-->

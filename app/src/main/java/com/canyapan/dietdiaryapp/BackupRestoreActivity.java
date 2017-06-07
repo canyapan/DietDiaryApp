@@ -16,16 +16,16 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.canyapan.dietdiaryapp.fragments.ExportFragment;
-import com.canyapan.dietdiaryapp.fragments.ImportFragment;
+import com.canyapan.dietdiaryapp.fragments.BackupFragment;
+import com.canyapan.dietdiaryapp.fragments.RestoreFragment;
 
 import org.joda.time.LocalDate;
 
 import java.util.List;
 
 public class BackupRestoreActivity extends AppCompatActivity
-        implements ImportFragment.OnFragmentInteractionListener,
-        ExportFragment.OnFragmentInteractionListener {
+        implements RestoreFragment.OnFragmentInteractionListener,
+        BackupFragment.OnFragmentInteractionListener {
     public static final int REQUEST_BACKUP_RESTORE = 2;
     private static final String TAG = "BackupRestoreActivity";
 
@@ -115,9 +115,9 @@ public class BackupRestoreActivity extends AppCompatActivity
             // Return a PlaceholderFragment (defined as a static inner class below).
             switch (position) {
                 case 0:
-                    return ExportFragment.newInstance();
+                    return BackupFragment.newInstance();
                 case 1:
-                    return ImportFragment.newInstance();
+                    return RestoreFragment.newInstance();
             }
             return null;
         }

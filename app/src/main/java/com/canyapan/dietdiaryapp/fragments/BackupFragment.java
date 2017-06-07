@@ -38,8 +38,8 @@ import org.joda.time.LocalDate;
 
 import java.text.MessageFormat;
 
-public class ExportFragment extends Fragment implements View.OnClickListener {
-    public static final String TAG = "ExportFragment";
+public class BackupFragment extends Fragment implements View.OnClickListener {
+    public static final String TAG = "BackupFragment";
     private static final String KEY_FROM_DATE_SERIALIZABLE = "FROM DATE";
     private static final String KEY_TO_DATE_SERIALIZABLE = "TO DATE";
     private static final String KEY_SELECTED_FORMAT_INT = "FORMAT";
@@ -55,10 +55,10 @@ public class ExportFragment extends Fragment implements View.OnClickListener {
 
     protected DatabaseHelper mDatabaseHelper;
     protected ProgressDialog mProgressDialog;
-    protected ExportAsyncTask mAsyncTask = null;
+    protected BackupAsyncTask mAsyncTask = null;
 
-    public static ExportFragment newInstance() {
-        return new ExportFragment();
+    public static BackupFragment newInstance() {
+        return new BackupFragment();
     }
 
     @Override
@@ -145,8 +145,8 @@ public class ExportFragment extends Fragment implements View.OnClickListener {
                 }
 
                 try {
-                    mAsyncTask = (ExportAsyncTask) new ExportCSV(this, ExportAsyncTask.TO_EXTERNAL).execute();
-                } catch (ExportException e) {
+                    mAsyncTask = (BackupAsyncTask) new BackupAsCSV(this, BackupAsyncTask.TO_EXTERNAL).execute();
+                } catch (BackupException e) {
                     Crashlytics.logException(e);
                     Log.e(TAG, "Save to external storage unsuccessful.", e);
                 }
@@ -154,8 +154,8 @@ public class ExportFragment extends Fragment implements View.OnClickListener {
                 return true;
             case R.id.action_share:
                 try {
-                    mAsyncTask = (ExportAsyncTask) new ExportCSV(this, ExportAsyncTask.TO_SHARE).execute();
-                } catch (ExportException e) {
+                    mAsyncTask = (BackupAsyncTask) new BackupAsCSV(this, BackupAsyncTask.TO_SHARE).execute();
+                } catch (BackupException e) {
                     Crashlytics.logException(e);
                     Log.e(TAG, "Share unsuccessful.", e);
                 }
@@ -265,13 +265,21 @@ public class ExportFragment extends Fragment implements View.OnClickListener {
         if (requestCode == REQUEST_EXTERNAL_STORAGE
                 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             try {
-                mAsyncTask = (ExportAsyncTask) new ExportCSV(this, ExportAsyncTask.TO_EXTERNAL).execute();
-            } catch (ExportException e) {
+                switch (spFormats.getSelectedItemPosition()) {
+                    case 0: // JSON
+                        mAsyncTask = (BackupAsyncTask) new BackupAsJSON(this, BackupAsyncTask.TO_EXTERNAL).execute();
+                        break;
+                    default:
+                        throw new BackupException(getContext(), R.string.backup_unimplemented_destination);
+
+                }
+
+            } catch (BackupException e) {
                 Crashlytics.logException(e);
                 Log.e(TAG, "Save to external storage unsuccessful.", e);
             }
         } else {
-            Toast.makeText(getContext(), R.string.export_no_permission, Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), R.string.backup_no_permission, Toast.LENGTH_LONG).show();
         }
     }
 
