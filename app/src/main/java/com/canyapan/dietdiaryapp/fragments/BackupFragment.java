@@ -80,7 +80,7 @@ public class BackupFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mGridLayout = (GridLayout) inflater.inflate(R.layout.fragment_export_gridlayout, container, false);
+        mGridLayout = (GridLayout) inflater.inflate(R.layout.fragment_backup_gridlayout, container, false);
 
         tvFromDatePicker = (TextView) mGridLayout.findViewById(R.id.tvFromDatePicker);
         tvToDatePicker = (TextView) mGridLayout.findViewById(R.id.tvToDatePicker);
@@ -145,7 +145,7 @@ public class BackupFragment extends Fragment implements View.OnClickListener {
                 }
 
                 try {
-                    mAsyncTask = (BackupAsyncTask) new BackupAsCSV(this, BackupAsyncTask.TO_EXTERNAL).execute();
+                    mAsyncTask = (BackupAsyncTask) new BackupToCSV(this, BackupAsyncTask.TO_EXTERNAL).execute();
                 } catch (BackupException e) {
                     Crashlytics.logException(e);
                     Log.e(TAG, "Save to external storage unsuccessful.", e);
@@ -154,7 +154,7 @@ public class BackupFragment extends Fragment implements View.OnClickListener {
                 return true;
             case R.id.action_share:
                 try {
-                    mAsyncTask = (BackupAsyncTask) new BackupAsCSV(this, BackupAsyncTask.TO_SHARE).execute();
+                    mAsyncTask = (BackupAsyncTask) new BackupToCSV(this, BackupAsyncTask.TO_SHARE).execute();
                 } catch (BackupException e) {
                     Crashlytics.logException(e);
                     Log.e(TAG, "Share unsuccessful.", e);
@@ -267,7 +267,7 @@ public class BackupFragment extends Fragment implements View.OnClickListener {
             try {
                 switch (spFormats.getSelectedItemPosition()) {
                     case 0: // JSON
-                        mAsyncTask = (BackupAsyncTask) new BackupAsJSON(this, BackupAsyncTask.TO_EXTERNAL).execute();
+                        mAsyncTask = (BackupAsyncTask) new BackupToJSON(this, BackupAsyncTask.TO_EXTERNAL).execute();
                         break;
                     default:
                         throw new BackupException(getContext(), R.string.backup_unimplemented_destination);

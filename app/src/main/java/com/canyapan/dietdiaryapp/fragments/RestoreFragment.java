@@ -71,7 +71,7 @@ public class RestoreFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mLinearLayout = (LinearLayout) inflater.inflate(R.layout.fragment_import_linearlayout, container, false);
+        mLinearLayout = (LinearLayout) inflater.inflate(R.layout.fragment_restore_linearlayout, container, false);
 
         mSpinner = (Spinner) mLinearLayout.findViewById(R.id.spFiles);
 
@@ -131,7 +131,14 @@ public class RestoreFragment extends Fragment {
                 }
 
                 try {
-                    mAsyncTask = (RestoreAsyncTask) new RestoreAsyncTask(this, (File) mSpinnerItems.get(mSpinner.getSelectedItemPosition()).getTag()).execute();
+                    File f = (File) mSpinnerItems.get(mSpinner.getSelectedItemPosition()).getTag();
+                    if (f.getName().toLowerCase().endsWith(".json")) {
+                        mAsyncTask = (RestoreAsyncTask) new RestoreFromJSON(this, f).execute();
+                    } else if (f.getName().toLowerCase().endsWith(".csv")) {
+                        mAsyncTask = (RestoreAsyncTask) new RestoreFromCSV(this, f).execute();
+                    } else {
+                        throw new UnsupportedOperationException(getString(R.string.backup_unimplemented_destination));
+                    }
                 } catch (RestoreException e) {
                     Crashlytics.logException(e);
                     Log.e(TAG, "Import from external storage unsuccessful.", e);
@@ -160,7 +167,7 @@ public class RestoreFragment extends Fragment {
         File[] files = getSupportedFiles();
 
         mSpinnerItems = new ArrayList<>(files.length);
-        mSpinnerItems.add(new SpinnerItem(getString(R.string.import_spinner_hint), R.drawable.tab_import, true));
+        mSpinnerItems.add(new SpinnerItem(getString(R.string.restore_spinner_hint), R.drawable.tab_import, true));
         for (File f : files) {
             mSpinnerItems.add(new SpinnerItem(f.getName(), f.getName().toLowerCase().endsWith(".csv") ?
                     R.drawable.file_delimited : R.drawable.file, false, f));
@@ -180,8 +187,9 @@ public class RestoreFragment extends Fragment {
     private File[] getSupportedFiles(File dir) {
         return dir.listFiles(new FilenameFilter() {
             @Override
-            public boolean accept(File dir, String filename) {
-                return filename.toLowerCase().endsWith(".csv");
+            public boolean accept(File dir, String fileName) {
+                fileName = fileName.toLowerCase();
+                return fileName.endsWith(".json") || fileName.endsWith(".csv");
             }
         });
     }
@@ -209,7 +217,7 @@ public class RestoreFragment extends Fragment {
                 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             loadSpinnerItems();
         } else {
-            Toast.makeText(getContext(), R.string.import_no_permission, Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), R.string.restore_no_permission, Toast.LENGTH_LONG).show();
         }
     }
 

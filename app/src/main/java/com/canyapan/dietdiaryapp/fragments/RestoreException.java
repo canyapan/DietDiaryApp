@@ -6,11 +6,11 @@ import android.support.annotation.StringRes;
 
 class RestoreException extends Exception {
 
-    private RestoreException(String message) {
+    RestoreException(String message) {
         super(message);
     }
 
-    private RestoreException(String message, Throwable cause) {
+    RestoreException(String message, Throwable cause) {
         super(message, cause);
     }
 

@@ -13,13 +13,14 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.text.MessageFormat;
 
-class BackupAsCSV extends BackupAsyncTask {
-    private CSVWriter csvWriter = null;
-    private String[] types = null,
+class BackupToCSV extends BackupAsyncTask {
+    private CSVWriter writer = null;
+    private String[]
+            types = null,
             foodTypes = null,
             drinkTypes = null;
 
-    BackupAsCSV(BackupFragment backupFragment, int destination) throws BackupException {
+    BackupToCSV(BackupFragment backupFragment, int destination) throws BackupException {
         super(backupFragment, destination);
     }
 
@@ -32,8 +33,8 @@ class BackupAsCSV extends BackupAsyncTask {
 
     @Override
     protected void start(OutputStreamWriter outputStream, Resources resources) {
-        csvWriter = new CSVWriter(outputStream);
-        csvWriter.writeNext(resources.getStringArray(R.array.csv_headers));
+        writer = new CSVWriter(outputStream);
+        writer.writeNext(resources.getStringArray(R.array.csv_headers));
 
         types = resources.getStringArray(R.array.spinner_event_types);
         foodTypes = resources.getStringArray(R.array.spinner_event_food_types);
@@ -54,7 +55,7 @@ class BackupAsCSV extends BackupAsyncTask {
                 subType = "";
         }
 
-        csvWriter.writeNext(new String[]{
+        writer.writeNext(new String[]{
                 Long.toString(event.getID()),
                 event.getDate().toString(DatabaseHelper.DB_DATE_FORMATTER),
                 event.getTime().toString(DatabaseHelper.DB_TIME_FORMATTER),
@@ -66,9 +67,9 @@ class BackupAsCSV extends BackupAsyncTask {
 
     @Override
     protected void end() {
-        if (null != csvWriter) {
+        if (null != writer) {
             try {
-                csvWriter.close();
+                writer.close();
             } catch (IOException ignore) {
             }
         }

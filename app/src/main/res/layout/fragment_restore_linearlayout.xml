@@ -6,21 +6,24 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="@dimen/activity_vertical_margin"
-    tools:context=".fragments.RestoreFragment"
-    >
+    tools:context=".fragments.RestoreFragment">
 
     <Spinner
         android:id="@+id/spFiles"
         style="@style/Widget.AppCompat.Spinner"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Switch
+        android:id="@+id/switchForce"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        />
+        android:text="@string/restore_switch_force"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="@string/import_note"
-        />
+        android:text="@string/restore_note"/>
 
 </LinearLayout>

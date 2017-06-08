@@ -80,37 +80,41 @@
     <!--Will be shown while exporting data. Text indicates a data cannot be written because of required write permission has not been given. So, application asks user to give required permission for the write operation.-->
     <string name="backup_no_permission">Please give permission to write files.</string>
     <!--Will be shown under the progress bar while importing data.-->
-    <string name="import_progress_title">Importing&#8230;</string>
+    <string name="restore_progress_title">Importing&#8230;</string>
     <!--Will be shown on the backup/restore screen's restore tab. Text indicates to a file format to import.-->
-    <string name="import_file_selector">Files</string>
+    <string name="restore_file_selector">Files</string>
+    <!--Will be shown on the backup/restore screen's restore tab. Text indicates to force to import data on error.-->
+    <string name="restore_switch_force">Force</string>
     <!--Will be shown on the backup/restore screen's restore tab. A note to show users where they should put their backup data. <i>/sdcard/</i> and <i>/sdcard/DietDiaryApp/</i> must be copied without any modification.-->
-    <string name="import_note"><b>Note:</b> Locate your backup files in <i>/sdcard/</i>\nor <i>/sdcard/DietDiaryApp/</i></string>
+    <string name="restore_note"><b>Note:</b> Locate your backup files in <i>/sdcard/</i>\nor <i>/sdcard/DietDiaryApp/</i></string>
     <!--Will be shown while importing data. Text indicates a data cannot be read, because of required read permission has not been given. So, application asks user to give required permission for the read operation.-->
-    <string name="import_no_permission">Please give permission to read files.</string>
+    <string name="restore_no_permission">Please give permission to read files.</string>
     <!--Will be shown on the backup/restore screen's restore tab. Text indicates that the external storage (SD card) is not available. So, application asks user to plug in their SD card.-->
-    <string name="import_no_external_storage">Please plug in your external storage.</string>
+    <string name="restore_no_external_storage">Please plug in your external storage.</string>
     <!--Will be shown under the progress bar while importing data. Text shown when an IO (Input/Output) error happens while importing.-->
-    <string name="import_csv_io_exception">IO error occurred while importing from CSV.</string>
+    <string name="restore_io_exception">IO error occurred while restoring.</string>
     <!--Will be shown under the progress bar while importing data. Text shown when a DB (Database) error happens while importing.-->
-    <string name="import_csv_sql_exception">DB error occurred while importing from CSV.</string>
+    <string name="restore_sql_exception">DB error occurred while restoring.</string>
     <!--Will be shown under the progress bar while importing data. Text shown when an unknown error happens while importing.-->
-    <string name="import_csv_exception">Unidentified error occurred while importing from CSV.</string>
-    <!--Will be shown under the progress bar while importing data. Text shown when the selected CSV file is changed in a way that cannot be read.-->
-    <string name="import_csv_corrupted">CSV corrupted.</string>
+    <string name="restore_exception">Unidentified error occurred while restoring.</string>
     <!--Will be shown under the progress bar while importing data. Text shown the selected file contains data those conflicts with already existing data.-->
-    <string name="import_csv_already_existing_records">CSV includes already existing records.</string>
+    <string name="restore_already_existing_records">File includes already existing records.</string>
     <!--Will be shown under the progress bar while importing data. Text shown the selected file cannot be accessible anymore.-->
-    <string name="import_file_not_exists">Selected file does not exist!</string>
+    <string name="restore_file_not_exists">Selected file does not exist!</string>
     <!--Will be shown under the progress bar while importing data. Text shown the selected file cannot be read.-->
-    <string name="import_file_not_readable">Selected file is not readable!</string>
+    <string name="restore_file_not_readable">Selected file is not readable!</string>
     <!--Will be shown under the progress bar while importing data. Text shown the selected file does not contain any data.-->
-    <string name="import_file_empty">Selected file is empty!</string>
+    <string name="restore_file_empty">Selected file is empty!</string>
+    <!--Will be shown under the progress bar while importing data. Text shown when the selected CSV file is changed in a way that cannot be read.-->
+    <string name="restore_csv_corrupted">CSV corrupted.</string>
     <!--Will be shown under the progress bar while importing data. Text shown the selected file is not in CSV file format.-->
-    <string name="import_file_not_csv">Selected file is not a CSV file!</string>
+    <string name="restore_file_not_csv">Selected file is not a CSV file!</string>
+    <!--Will be shown under the progress bar while importing data. Text shown the selected file is not in JSON file format.-->
+    <string name="restore_file_not_json">Selected file is not a JSON file!</string>
     <!--Will be shown after import operation. Text indicates a file has been imported. %1$s will be replaced with the file name. %1$s should be written where the file name should appear.-->
-    <string name="import_successful">CSV file %1$s imported.</string>
+    <string name="restore_successful">File %1$s restored.</string>
     <!--Will be shown on the backup/restore screen's restore tab. Text asks user to choose a file from the list to be imported.-->
-    <string name="import_spinner_hint">Select file to import</string>
+    <string name="restore_spinner_hint">Select file to restore</string>
     <!--Let a message to go away.-->
     <string name="snack_bar_dismiss">Dismiss</string>
     <!--Revert an operation.-->

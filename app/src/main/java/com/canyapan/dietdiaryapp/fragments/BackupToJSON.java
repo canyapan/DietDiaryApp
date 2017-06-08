@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.text.MessageFormat;
 
-class BackupAsJSON extends BackupAsyncTask {
+class BackupToJSON extends BackupAsyncTask {
     private static final String KEY_ID = "ID";
     private static final String KEY_DATE = "Date";
     private static final String KEY_TIME = "Time";
@@ -26,7 +26,7 @@ class BackupAsJSON extends BackupAsyncTask {
             foodTypes = null,
             drinkTypes = null;
 
-    BackupAsJSON(BackupFragment backupFragment, int destination) throws BackupException {
+    BackupToJSON(BackupFragment backupFragment, int destination) throws BackupException {
         super(backupFragment, destination);
     }
 
