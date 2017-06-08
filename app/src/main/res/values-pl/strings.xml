@@ -50,6 +50,7 @@
     <string name="restore_sql_exception">Wystąpił błąd DB podczas importowania.</string>
     <string name="restore_exception">Wystąpił błąd w trakcie kopiowania.</string>
     <string name="restore_csv_corrupted">CSV uszkodzony.</string>
+    <string name="restore_json_corrupted">JSON uszkodzony.</string>
     <string name="restore_already_existing_records">CSV zawiera już istniejące dane.</string>
     <string name="restore_file_not_exists">Wybrany plik nie istnieje!</string>
     <string name="restore_file_not_readable">Wybrany plik nie jest czytelny!</string>

@@ -109,6 +109,8 @@
     <string name="restore_csv_corrupted">CSV corrupted.</string>
     <!--Will be shown under the progress bar while importing data. Text shown the selected file is not in CSV file format.-->
     <string name="restore_file_not_csv">Selected file is not a CSV file!</string>
+    <!--Will be shown under the progress bar while importing data. Text shown when the selected JSON file is changed in a way that cannot be read.-->
+    <string name="restore_json_corrupted">JSON corrupted.</string>
     <!--Will be shown under the progress bar while importing data. Text shown the selected file is not in JSON file format.-->
     <string name="restore_file_not_json">Selected file is not a JSON file!</string>
     <!--Will be shown after import operation. Text indicates a file has been imported. %1$s will be replaced with the file name. %1$s should be written where the file name should appear.-->

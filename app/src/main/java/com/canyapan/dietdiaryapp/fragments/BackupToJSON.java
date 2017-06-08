@@ -67,6 +67,7 @@ class BackupToJSON extends BackupAsyncTask {
         }
 
         writer.beginObject();
+        writer.name(KEY_ID).value(event.getID());
         writer.name(KEY_DATE).value(event.getDate().toString(DatabaseHelper.DB_DATE_FORMATTER));
         writer.name(KEY_TIME).value(event.getTime().toString(DatabaseHelper.DB_TIME_FORMATTER));
         writer.name(KEY_TYPE).value(types[event.getType()]);

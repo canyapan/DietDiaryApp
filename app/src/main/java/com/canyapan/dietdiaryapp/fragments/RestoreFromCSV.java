@@ -81,7 +81,11 @@ class RestoreFromCSV extends RestoreAsyncTask {
             return null;
         }
 
-        return parseRecord(record, reader.getRecordsRead());
+        try {
+            return parseRecord(record, reader.getRecordsRead());
+        } catch (IOException e) {
+            throw new IOException(getExceptionText(R.string.restore_csv_corrupted), e);
+        }
     }
 
     private ContentValues parseRecord(final String[] record, final long index) throws IOException {
@@ -95,7 +99,7 @@ class RestoreFromCSV extends RestoreAsyncTask {
         } catch (NumberFormatException e) {
             Log.e(RestoreFragment.TAG, MessageFormat.format("CSV id cannot be parsed. record: {0} id: {1}",
                     index, record[0]));
-            throw new IOException(getExceptionText(R.string.restore_csv_corrupted), e);
+            throw e;
         }
 
         try {
@@ -105,22 +109,22 @@ class RestoreFromCSV extends RestoreAsyncTask {
         } catch (IllegalArgumentException e) {
             Log.e(RestoreFragment.TAG, MessageFormat.format("CSV date cannot be parsed. record: {0} date: {1}",
                     index, record[1]));
-            throw new IOException(getExceptionText(R.string.restore_csv_corrupted), e);
+            throw e;
         }
 
         try {
             time = LocalTime.parse(record[2], DatabaseHelper.DB_TIME_FORMATTER);
         } catch (IllegalArgumentException e) {
-            Log.d(RestoreFragment.TAG, MessageFormat.format("CSV time cannot be parsed. record: {0} time: {1}",
+            Log.e(RestoreFragment.TAG, MessageFormat.format("CSV time cannot be parsed. record: {0} time: {1}",
                     index, record[2]));
-            throw new IOException(getExceptionText(R.string.restore_csv_corrupted));
+            throw e;
         }
 
         type = typesMap.get(record[3]);
         if (null == type) {
             Log.e(RestoreFragment.TAG, MessageFormat.format("CSV type cannot be identified. record: {0} type: {1}",
                     index, record[3]));
-            throw new IOException(getExceptionText(R.string.restore_csv_corrupted));
+            throw new IOException("Type cannot be identified. " + record[3]);
         } else {
             switch (type) {
                 case 0:
@@ -134,9 +138,9 @@ class RestoreFromCSV extends RestoreAsyncTask {
             }
 
             if (null == subType) {
-                Log.d(RestoreFragment.TAG, MessageFormat.format("CSV subtype cannot be identified. record: {0} type: {1} subtype: {2}",
+                Log.e(RestoreFragment.TAG, MessageFormat.format("CSV subtype cannot be identified. record: {0} type: {1} subtype: {2}",
                         index, record[3], record[4]));
-                throw new IOException(getExceptionText(R.string.restore_csv_corrupted));
+                throw new IOException("SubType cannot be identified. " + record[4]);
             }
         }
 

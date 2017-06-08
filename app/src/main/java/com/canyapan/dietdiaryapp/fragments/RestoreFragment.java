@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.canyapan.dietdiaryapp.Application;
@@ -38,6 +39,7 @@ import java.util.ArrayList;
 public class RestoreFragment extends Fragment {
     public static final String TAG = "RestoreFragment";
     private static final String KEY_SELECTED_FILE_INDEX_INT = "SELECTED FILE";
+    private static final String KEY_SWITCH_FORCED_BOOLEAN = "FORCED";
     private static final String KEY_FILES_PARCELABLE = "FILES";
     private static final int REQUEST_EXTERNAL_STORAGE = 20;
 
@@ -45,6 +47,7 @@ public class RestoreFragment extends Fragment {
 
     protected LinearLayout mLinearLayout;
     private Spinner mSpinner;
+    private Switch mSwitch;
 
     private ArrayList<SpinnerItem> mSpinnerItems = null;
 
@@ -74,6 +77,7 @@ public class RestoreFragment extends Fragment {
         mLinearLayout = (LinearLayout) inflater.inflate(R.layout.fragment_restore_linearlayout, container, false);
 
         mSpinner = (Spinner) mLinearLayout.findViewById(R.id.spFiles);
+        mSwitch = (Switch) mLinearLayout.findViewById(R.id.switchForce);
 
         if (savedInstanceState != null) {
             mSpinnerItems = savedInstanceState.getParcelableArrayList(KEY_FILES_PARCELABLE);
@@ -81,6 +85,8 @@ public class RestoreFragment extends Fragment {
 
             mSpinner.setAdapter(new SpinnerArrayAdapter(getContext(), mSpinnerItems));
             mSpinner.setSelection(selectedIndex);
+
+            mSwitch.setChecked(savedInstanceState.getBoolean(KEY_SWITCH_FORCED_BOOLEAN, false));
         }
 
         if (null == mSpinnerItems) {
@@ -101,6 +107,7 @@ public class RestoreFragment extends Fragment {
 
         outState.putParcelableArrayList(KEY_FILES_PARCELABLE, mSpinnerItems);
         outState.putInt(KEY_SELECTED_FILE_INDEX_INT, mSpinner.getSelectedItemPosition());
+        outState.putBoolean(KEY_SWITCH_FORCED_BOOLEAN, mSwitch.isChecked());
     }
 
     @Override
@@ -223,6 +230,10 @@ public class RestoreFragment extends Fragment {
 
     public interface OnFragmentInteractionListener {
         void onImportComplete(Uri uri, LocalDate startDate, LocalDate endDate);
+    }
+
+    boolean isForceEnabled() {
+        return mSwitch.isChecked();
     }
 
 }

@@ -2,11 +2,11 @@ package com.canyapan.dietdiaryapp.fragments;
 
 import android.content.ContentValues;
 import android.content.res.Resources;
+import android.util.JsonReader;
 import android.util.Log;
 
 import com.canyapan.dietdiaryapp.R;
 import com.canyapan.dietdiaryapp.db.DatabaseHelper;
-import com.opencsv.CSVReader;
 
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
@@ -15,16 +15,15 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.MessageFormat;
-import java.util.Arrays;
 import java.util.HashMap;
 
 class RestoreFromJSON extends RestoreAsyncTask {
-    private CSVReader reader = null;
+    private JsonReader reader = null;
     private HashMap<String, Integer>
             typesMap = null,
             foodTypesMap = null,
             drinkTypesMap = null;
-    private String[] csvHeaders;
+    private long index = 0;
 
     RestoreFromJSON(RestoreFragment restoreFragment, File file) throws RestoreException {
         super(restoreFragment, file);
@@ -34,13 +33,13 @@ class RestoreFromJSON extends RestoreAsyncTask {
     protected void checkFile(File file) throws IOException {
         if (!file.getName().toLowerCase().endsWith(".json")) {
             Log.e(RestoreFragment.TAG, "File is not a JSON.");
-            throw new IOException(getExceptionText(R.string.restore_file_not_csv));
+            throw new IOException(getExceptionText(R.string.restore_file_not_json));
         }
     }
 
     @Override
     protected void start(InputStreamReader inputStream, Resources resources) throws IOException {
-        reader = new CSVReader(inputStream);
+        reader = new JsonReader(inputStream);
 
         String[] types = resources.getStringArray(R.array.spinner_event_types);
         typesMap = new HashMap<>(types.length);
@@ -60,83 +59,97 @@ class RestoreFromJSON extends RestoreAsyncTask {
             drinkTypesMap.put(drinkTypes[i], i);
         }
 
-        csvHeaders = resources.getStringArray(R.array.csv_headers);
-
-        checkHeaders();
-    }
-
-    private void checkHeaders() throws IOException {
-        String[] record = reader.readNext();
-
-        if (!Arrays.equals(csvHeaders, record)) {
-            Log.e(RestoreFragment.TAG, "CSV headers does not match.");
-            throw new IOException(getExceptionText(R.string.restore_csv_corrupted));
+        reader.beginObject();
+        while (reader.hasNext()) {
+            switch (reader.nextName()) {
+                case "App":
+                    break;
+                case "Ver":
+                    break;
+                case "Events":
+                    reader.beginArray();
+                    return;
+                default:
+                    reader.skipValue();
+            }
         }
     }
 
     @Override
     protected ContentValues readNext() throws IOException {
-        String[] record;
-        if ((record = reader.readNext()) == null) {
+        if (!reader.hasNext()) {
             return null;
         }
 
-        return parseRecord(record, reader.getRecordsRead());
+        reader.beginObject();
+        try {
+            return parseRecord();
+        } catch (IOException e) {
+            throw new IOException(getExceptionText(R.string.restore_json_corrupted), e);
+        } finally {
+            reader.endObject();
+            index++;
+        }
     }
 
-    private ContentValues parseRecord(final String[] record, final long index) throws IOException {
+    private ContentValues parseRecord() throws IOException {
         Long id;
         LocalDate date;
         LocalTime time;
         Integer type, subType;
+        String temp = null;
 
         try {
-            id = Long.parseLong(record[0]);
-        } catch (NumberFormatException e) {
-            Log.e(RestoreFragment.TAG, MessageFormat.format("CSV id cannot be parsed. record: {0} id: {1}",
-                    index, record[0]));
-            throw new IOException(getExceptionText(R.string.restore_csv_corrupted), e);
+            id = reader.nextLong();
+        } catch (IOException e) {
+            Log.e(RestoreFragment.TAG, MessageFormat.format("JSON id cannot be parsed. record: {0}",
+                    index));
+            throw e;
         }
 
         try {
-            date = LocalDate.parse(record[1], DatabaseHelper.DB_DATE_FORMATTER);
+            temp = reader.nextString();
+            date = LocalDate.parse(temp, DatabaseHelper.DB_DATE_FORMATTER);
 
             updateDateRange(date); // sorry for this, but I didn't want to parse date on super, again. :(
         } catch (IllegalArgumentException e) {
-            Log.e(RestoreFragment.TAG, MessageFormat.format("CSV date cannot be parsed. record: {0} date: {1}",
-                    index, record[1]));
-            throw new IOException(getExceptionText(R.string.restore_csv_corrupted), e);
+            Log.e(RestoreFragment.TAG, MessageFormat.format("JSON date cannot be parsed. record: {0} date: {1}",
+                    index, temp));
+            throw e;
         }
 
         try {
-            time = LocalTime.parse(record[2], DatabaseHelper.DB_TIME_FORMATTER);
+            temp = reader.nextString();
+            time = LocalTime.parse(temp, DatabaseHelper.DB_TIME_FORMATTER);
         } catch (IllegalArgumentException e) {
-            Log.d(RestoreFragment.TAG, MessageFormat.format("CSV time cannot be parsed. record: {0} time: {1}",
-                    index, record[2]));
-            throw new IOException(getExceptionText(R.string.restore_csv_corrupted));
+            Log.e(RestoreFragment.TAG, MessageFormat.format("JSON time cannot be parsed. record: {0} time: {1}",
+                    index, temp));
+            throw e;
         }
 
-        type = typesMap.get(record[3]);
+        temp = reader.nextString();
+        type = typesMap.get(temp);
         if (null == type) {
-            Log.e(RestoreFragment.TAG, MessageFormat.format("CSV type cannot be identified. record: {0} type: {1}",
-                    index, record[3]));
-            throw new IOException(getExceptionText(R.string.restore_csv_corrupted));
+            Log.e(RestoreFragment.TAG, MessageFormat.format("JSON type cannot be identified. record: {0} type: {1}",
+                    index, temp));
+            throw new IOException("Type cannot be identified. " + temp);
         } else {
+            temp = reader.nextString();
             switch (type) {
                 case 0:
-                    subType = foodTypesMap.get(record[4]);
+                    subType = foodTypesMap.get(temp);
                     break;
                 case 1:
-                    subType = drinkTypesMap.get(record[4]);
+                    subType = drinkTypesMap.get(temp);
                     break;
                 default:
                     subType = 0;
             }
 
             if (null == subType) {
-                Log.d(RestoreFragment.TAG, MessageFormat.format("CSV subtype cannot be identified. record: {0} type: {1} subtype: {2}",
-                        index, record[3], record[4]));
-                throw new IOException(getExceptionText(R.string.restore_csv_corrupted));
+                Log.e(RestoreFragment.TAG, MessageFormat.format("JSON subtype cannot be identified. record: {0} type: {1} subtype: {2}",
+                        index, type, temp));
+                throw new IOException("SubType cannot be identified. " + temp);
             }
         }
 
@@ -147,7 +160,7 @@ class RestoreFromJSON extends RestoreAsyncTask {
         values.put(DatabaseHelper.DBC_EVENT_TIME, time.toString(DatabaseHelper.DB_TIME_FORMATTER));
         values.put(DatabaseHelper.DBC_EVENT_TYPE, type);
         values.put(DatabaseHelper.DBC_EVENT_SUBTYPE, subType);
-        values.put(DatabaseHelper.DBC_EVENT_DESC, record[5]);
+        values.put(DatabaseHelper.DBC_EVENT_DESC, reader.nextString());
 
         return values;
     }

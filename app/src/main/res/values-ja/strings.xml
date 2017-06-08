@@ -48,6 +48,7 @@
     <string name="restore_sql_exception">からのインポート中に DB エラーが発生しました。</string>
     <string name="restore_exception">からのインポート中に原因不明のエラーが発生しました。</string>
     <string name="restore_csv_corrupted">CSV が破損しています。</string>
+    <string name="restore_json_corrupted">JSON が破損しています。</string>
     <string name="restore_already_existing_records">CSV に、すでに存在するレコードが含まれます。</string>
     <string name="restore_file_not_exists">選択したファイルが存在しません!</string>
     <string name="restore_file_not_readable">選択したファイルを読み取りできません!</string>

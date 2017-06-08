@@ -48,6 +48,7 @@
     <string name="restore_sql_exception">Er is een databasefout opgetreden tijdens importeren.</string>
     <string name="restore_exception">Er is een onbekende fout opgetreden tijdens het importeren.</string>
     <string name="restore_csv_corrupted">Het CSV-bestand is corrupt.</string>
+    <string name="restore_json_corrupted">Het JSON-bestand is corrupt.</string>
     <string name="restore_already_existing_records">Het CSV-bestand bevat reeds bestaande invoeren.</string>
     <string name="restore_file_not_exists">Het geselecteerde bestand bestaat niet!</string>
     <string name="restore_file_not_readable">Het geselecteerde bestand is onleesbaar!</string>

@@ -41,6 +41,7 @@
     <string name="backup_unimplemented_destination">Seçili hedef henüz desteklenmiyor.</string>
     <string name="restore_already_existing_records">CSV zaten kayıtlı veriler içeriyor.</string>
     <string name="restore_csv_corrupted">CSV bozulmuş.</string>
+    <string name="restore_json_corrupted">JSON bozulmuş.</string>
     <string name="restore_exception">İçe aktarılırken bilinmeyen bir hata oluştu.</string>
     <string name="restore_io_exception">İçe aktarılırken IO hatası oluştu.</string>
     <string name="restore_sql_exception">İçe aktarılırken DB hatası oluştu.</string>

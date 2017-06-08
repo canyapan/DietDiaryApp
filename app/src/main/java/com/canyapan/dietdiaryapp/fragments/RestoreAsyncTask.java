@@ -100,7 +100,9 @@ abstract class RestoreAsyncTask extends AsyncTask<Void, Integer, Boolean> {
             while ((values = readNext()) != null) {
                 Log.d(RestoreFragment.TAG, values.toString());
 
-                values.remove(DatabaseHelper.DBC_EVENT_ROW_ID);
+                if (restoreFragment.isForceEnabled()) {
+                    values.remove(DatabaseHelper.DBC_EVENT_ROW_ID);
+                }
 
                 long rowID = db.insert(DatabaseHelper.DBT_EVENT, DatabaseHelper.DBC_EVENT_DESC, values);
                 if (rowID < 0) {

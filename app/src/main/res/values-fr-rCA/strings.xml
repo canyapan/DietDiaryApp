@@ -48,6 +48,7 @@
     <string name="restore_sql_exception">Erreur de base de données durant l\'import.</string>
     <string name="restore_exception">Problème non identifié durant l\'import.</string>
     <string name="restore_csv_corrupted">CSV corrompu.</string>
+    <string name="restore_json_corrupted">JSON corrompu.</string>
     <string name="restore_already_existing_records">Le fichier CSV inclut déjà ces entrées.</string>
     <string name="restore_file_not_exists">Le fichier choisi n\'existe pas !</string>
     <string name="restore_file_not_readable">Le fichier choisi n\'est pas lisible !</string>
