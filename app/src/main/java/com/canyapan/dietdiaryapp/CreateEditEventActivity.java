@@ -41,6 +41,9 @@ import java.text.MessageFormat;
 public class CreateEditEventActivity extends AppCompatActivity {
     private static final String TAG = "CreateEditEventActivity";
 
+    public static final String SHORTCUT_KEY_FOOD = "com.canyapan.dietdiaryapp.shortcut.food";
+    public static final String SHORTCUT_KEY_DRINK = "com.canyapan.dietdiaryapp.shortcut.drink";
+    public static final String SHORTCUT_KEY_OTHER = "com.canyapan.dietdiaryapp.shortcut.other";
     public static final String KEY_EVENT_PARCELABLE = "EVENT";
     public static final String KEY_POSITION_INT = "POSITION";
     public static final String KEY_ORG_DATE_SERIALIZABLE = "ORG_DATE";
@@ -69,7 +72,7 @@ public class CreateEditEventActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_edit_event);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         if (null != toolbar) {
             setSupportActionBar(toolbar);
         }
@@ -96,10 +99,25 @@ public class CreateEditEventActivity extends AppCompatActivity {
             mEvent.setDate(LocalDate.now());
         }
 
-        spTypes = (Spinner) findViewById(R.id.spTypes);
-        tvDatePicker = (TextView) findViewById(R.id.tvDatePicker);
-        tvTimePicker = (TextView) findViewById(R.id.tvTimePicker);
-        actvDescription = (AutoCompleteTextView) findViewById(R.id.etDescription);
+        String action = getIntent().getAction();
+        if (null != action) {
+            switch (action) {
+                case SHORTCUT_KEY_FOOD:
+                    mEvent.setType(Event.TYPE_FOOD);
+                    break;
+                case SHORTCUT_KEY_DRINK:
+                    mEvent.setType(Event.TYPE_DRINK);
+                    break;
+                case SHORTCUT_KEY_OTHER:
+                    mEvent.setType(Event.TYPE_OTHER);
+                    break;
+            }
+        }
+
+        spTypes = findViewById(R.id.spTypes);
+        tvDatePicker = findViewById(R.id.tvDatePicker);
+        tvTimePicker = findViewById(R.id.tvTimePicker);
+        actvDescription = findViewById(R.id.etDescription);
 
         switch (mEvent.getType()) {
             case Event.TYPE_FOOD:
@@ -111,7 +129,7 @@ public class CreateEditEventActivity extends AppCompatActivity {
             default:
                 setSpinnerContents(spTypes, R.array.spinner_event_types, mEvent.getType() - 2, 2, R.array.spinner_event_types_res);
 
-                ImageView icon = (ImageView) findViewById(R.id.ivTypes);
+                ImageView icon = findViewById(R.id.ivTypes);
                 if (null != icon) {
                     icon.setVisibility(ImageView.GONE);
                 }

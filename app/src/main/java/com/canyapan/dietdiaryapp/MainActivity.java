@@ -51,6 +51,9 @@ import java.util.ArrayList;
  * - add reminders for water, snacks, medication, entering events.
  * - add timed notifications
  * - add saving data to cloud option
+ * - add support for new android feature called app shortcuts
+ * - add widget support
+ * - add wear notifications
  */
 public class MainActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
@@ -104,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements
 
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         if (null != toolbar) {
             toolbar.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -121,10 +124,10 @@ public class MainActivity extends AppCompatActivity implements
         mFab2AnimationShow = AnimationUtils.loadAnimation(MainActivity.this, R.anim.fab2_show);
         mFab2AnimationHide = AnimationUtils.loadAnimation(MainActivity.this, R.anim.fab2_hide);
 
-        mFab = (FloatingActionButton) findViewById(R.id.fab);
-        mFabFood = (FloatingActionButton) findViewById(R.id.fabFood);
-        mFabDrink = (FloatingActionButton) findViewById(R.id.fabDrink);
-        mFabMore = (FloatingActionButton) findViewById(R.id.fabMore);
+        mFab = findViewById(R.id.fab);
+        mFabFood = findViewById(R.id.fabFood);
+        mFabDrink = findViewById(R.id.fabDrink);
+        mFabMore = findViewById(R.id.fabMore);
 
         if (mFab2Shown) {
             mFab.setAnimation(mFabAnimationRotateFw);
@@ -140,7 +143,7 @@ public class MainActivity extends AppCompatActivity implements
             mFabMore.animate().setDuration(0);
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (null != drawer) {
             ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                     this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -148,7 +151,7 @@ public class MainActivity extends AppCompatActivity implements
             toggle.syncState();
         }
 
-        NavigationView mNavigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView mNavigationView = findViewById(R.id.nav_view);
         if (null != mNavigationView) {
             mNavigationView.setNavigationItemSelectedListener(this);
         }
@@ -195,7 +198,7 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (null != drawer && drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -287,7 +290,7 @@ public class MainActivity extends AppCompatActivity implements
                 break;
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (null != drawer) {
             drawer.closeDrawer(GravityCompat.START);
         }

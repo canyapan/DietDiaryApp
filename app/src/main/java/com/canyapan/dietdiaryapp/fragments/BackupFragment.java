@@ -82,9 +82,9 @@ public class BackupFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mGridLayout = (GridLayout) inflater.inflate(R.layout.fragment_backup_gridlayout, container, false);
 
-        tvFromDatePicker = (TextView) mGridLayout.findViewById(R.id.tvFromDatePicker);
-        tvToDatePicker = (TextView) mGridLayout.findViewById(R.id.tvToDatePicker);
-        spFormats = (Spinner) mGridLayout.findViewById(R.id.spFormats);
+        tvFromDatePicker = mGridLayout.findViewById(R.id.tvFromDatePicker);
+        tvToDatePicker = mGridLayout.findViewById(R.id.tvToDatePicker);
+        spFormats = mGridLayout.findViewById(R.id.spFormats);
 
         ResourcesHelper.setLeftCompoundDrawable(mGridLayout, R.id.tvFrom, R.drawable.calendar_today);
         ResourcesHelper.setLeftCompoundDrawable(mGridLayout, R.id.tvTo, R.drawable.calendar);

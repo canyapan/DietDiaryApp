@@ -76,8 +76,8 @@ public class RestoreFragment extends Fragment {
                              Bundle savedInstanceState) {
         mLinearLayout = (LinearLayout) inflater.inflate(R.layout.fragment_restore_linearlayout, container, false);
 
-        mSpinner = (Spinner) mLinearLayout.findViewById(R.id.spFiles);
-        mSwitch = (Switch) mLinearLayout.findViewById(R.id.switchForce);
+        mSpinner = mLinearLayout.findViewById(R.id.spFiles);
+        mSwitch = mLinearLayout.findViewById(R.id.switchForce);
 
         if (savedInstanceState != null) {
             mSpinnerItems = savedInstanceState.getParcelableArrayList(KEY_FILES_PARCELABLE);

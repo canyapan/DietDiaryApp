@@ -46,4 +46,9 @@
         <item>JSON</item>
         <item>CSV</item>
     </string-array>
+
+    <string-array name="spinner_export_file_types" translatable="false">
+        <item>Email</item>
+        <item>HTML</item>
+    </string-array>
 </resources>

@@ -34,17 +34,17 @@ public class BackupRestoreActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_backup_restore);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //noinspection ConstantConditions
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        ViewPager viewPager = (ViewPager) findViewById(R.id.container);
+        ViewPager viewPager = findViewById(R.id.container);
         if (null != viewPager) {
             viewPager.setAdapter(new SectionsPagerAdapter(getSupportFragmentManager()));
         }
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        TabLayout tabLayout = findViewById(R.id.tabs);
         if (null != tabLayout) {
             tabLayout.setupWithViewPager(viewPager);
             //noinspection ConstantConditions

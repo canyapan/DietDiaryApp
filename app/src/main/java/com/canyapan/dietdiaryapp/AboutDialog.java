@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 class AboutDialog extends AlertDialog {
+
     AboutDialog(Context context) {
         super(context);
 
@@ -16,9 +17,10 @@ class AboutDialog extends AlertDialog {
         final View view = inflater.inflate(R.layout.dialog_about, (ViewGroup) null);
         setView(view);
 
-        TextView ver = (TextView) view.findViewById(R.id.appVersion);
+        final TextView ver = view.findViewById(R.id.appVersion);
         ver.setText(BuildConfig.VERSION_NAME);
 
         setButton(BUTTON_POSITIVE, context.getString(android.R.string.ok), (DialogInterface.OnClickListener) null);
     }
+
 }

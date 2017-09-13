@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.GridLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    app:columnCount="2"
+    app:columnOrderPreserved="false"
+    app:useDefaultMargins="true"
+    tools:layout_editor_absoluteX="8dp"
+    tools:layout_editor_absoluteY="8dp"
+
+    tools:context="com.canyapan.dietdiaryapp.ExportActivity"
+    tools:showIn="@layout/activity_export">
+
+    <TextView
+        android:id="@+id/tvFrom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawablePadding="4dp"
+        android:gravity="center_vertical"
+        android:padding="4dp"
+        android:text="@string/backup_from"
+        app:layout_columnWeight="1"/>
+
+    <TextView
+        android:id="@+id/tvFromDatePicker"
+        style="@style/Widget.AppCompat.Spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_columnWeight="1"
+        app:layout_gravity="fill_horizontal"/>
+
+    <TextView
+        android:id="@+id/tvTo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawablePadding="4dp"
+        android:gravity="center_vertical"
+        android:padding="4dp"
+        android:text="@string/backup_to"
+        app:layout_columnWeight="1"/>
+
+    <TextView
+        android:id="@+id/tvToDatePicker"
+        style="@style/Widget.AppCompat.Spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_columnWeight="1"
+        app:layout_gravity="fill_horizontal"/>
+
+    <TextView
+        android:id="@+id/tvType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawablePadding="4dp"
+        android:gravity="center_vertical"
+        android:padding="4dp"
+        android:text="@string/backup_type"
+        app:layout_columnWeight="1"/>
+
+    <Spinner
+        android:id="@+id/spFormats"
+        style="@style/Widget.AppCompat.Spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:entries="@array/spinner_export_file_types"
+        app:layout_columnWeight="1"
+        app:layout_gravity="fill_horizontal"/>
+
+</android.support.v7.widget.GridLayout>

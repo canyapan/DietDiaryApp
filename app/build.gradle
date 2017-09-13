@@ -14,6 +14,7 @@ apply plugin: 'io.fabric'
 
 repositories {
     maven { url 'https://maven.fabric.io/public' }
+    maven { url 'https://maven.google.com' }
 }
 
 dependencies {
@@ -23,13 +24,13 @@ dependencies {
 }
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 26
+    buildToolsVersion "26.0.1"
 
     defaultConfig {
         applicationId "com.canyapan.dietdiaryapp"
         minSdkVersion 15
-        targetSdkVersion 25
+        targetSdkVersion 26
         versionCode 41
         versionName "0.4.1"
         vectorDrawables.useSupportLibrary true
@@ -52,16 +53,21 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support:design:25.3.1'
-    compile 'com.android.support:support-compat:25.3.1'
-    compile 'com.android.support:support-core-utils:25.3.1'
-    compile 'com.android.support:support-core-ui:25.3.1'
-    compile 'com.android.support:support-fragment:25.3.1'
-    compile 'com.android.support:preference-v7:25.3.1'
-    compile 'com.android.support:gridlayout-v7:25.3.1'
-    compile 'com.android.support:recyclerview-v7:25.3.1'
-    compile 'com.android.support:support-v13:25.3.1'
+
+    //noinspection GradleDynamicVersion
+    compile 'com.android.support.constraint:constraint-layout:+'
+    compile 'com.android.support:design:26.0.1'
+    compile 'com.android.support:support-annotations:26.0.1'
+    compile 'com.android.support:support-compat:26.0.1'
+    compile 'com.android.support:support-core-utils:26.0.1'
+    compile 'com.android.support:support-core-ui:26.0.1'
+    compile 'com.android.support:support-fragment:26.0.1'
+    compile 'com.android.support:appcompat-v7:26.0.1'
+    compile 'com.android.support:preference-v7:26.0.1'
+    compile 'com.android.support:gridlayout-v7:26.0.1'
+    compile 'com.android.support:recyclerview-v7:26.0.1'
+    compile 'com.android.support:support-v13:26.0.1'
+    compile 'com.android.support:preference-v14:26.0.1'
     compile 'net.danlew:android.joda:2.9.9'
     compile 'com.opencsv:opencsv:3.7'
     compile 'commons-io:commons-io:2.5'

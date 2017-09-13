@@ -170,4 +170,5 @@
     <string name="rate_dialog_yes">Rate It Now</string>
     <string name="rate_dialog_later">Remind Me Later</string>
     <string name="rate_dialog_never">No, Thanks</string>
+    <string name="title_activity_export">ExportActivity</string>
 </resources>

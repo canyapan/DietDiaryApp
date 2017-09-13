@@ -84,8 +84,8 @@ public class SpinnerArrayAdapter extends ArrayAdapter<SpinnerItem> {
             layout = (LinearLayout) convertView;
         }
 
-        final ImageView imageView = (ImageView) layout.findViewById(R.id.ivIcon);
-        final TextView textView = (TextView) layout.findViewById(R.id.tvText);
+        final ImageView imageView = layout.findViewById(R.id.ivIcon);
+        final TextView textView = layout.findViewById(R.id.tvText);
 
         final SpinnerItem item = getItem(position);
 

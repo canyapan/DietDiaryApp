@@ -92,7 +92,7 @@ public class DailyAlarmReceiver extends BroadcastReceiver {
         }
 
         if (EventHelper.hasEventToday(context) == 0) {
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NotificationCompat.CATEGORY_REMINDER)
                     .setTicker(context.getString(R.string.daily_notification_title))
                     .setSmallIcon(R.drawable.app_icon_notify)
                     .setContentTitle(context.getString(R.string.daily_notification_title))

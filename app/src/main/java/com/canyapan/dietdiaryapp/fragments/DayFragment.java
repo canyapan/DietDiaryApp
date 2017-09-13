@@ -196,6 +196,7 @@ public class DayFragment extends Fragment {
 
     public void addNewEvent(Event newEvent) {
         if (null != mAdapter) {
+            Crashlytics.log("Adding an event");
             mAdapter.addNewEvent(newEvent);
         } else {
             getArguments().putBoolean(KEY_RELOAD_BOOLEAN, true);
@@ -204,13 +205,19 @@ public class DayFragment extends Fragment {
 
     public void updateAnEventAt(Event updatedEvent, int position) {
         if (null != mAdapter) {
+            Crashlytics.log("Updating an event at " + position);
             mAdapter.updateAnEventAt(updatedEvent, position);
+        } else {
+            getArguments().putBoolean(KEY_RELOAD_BOOLEAN, true);
         }
     }
 
     public void deleteAnEventAt(Event deletedEvent, int position) {
         if (null != mAdapter) {
+            Crashlytics.log("Deleting an event at " + position);
             mAdapter.deleteAnEventAt(deletedEvent, position);
+        } else {
+            getArguments().putBoolean(KEY_RELOAD_BOOLEAN, true);
         }
     }
 
@@ -387,10 +394,10 @@ public class DayFragment extends Fragment {
             ViewHolder(EventModelAdapter adapter, View itemView) {
                 super(itemView);
 
-                tvTitle = (TextView) itemView.findViewById(R.id.tvTitle);
-                tvDescription = (TextView) itemView.findViewById(R.id.tvDescription);
-                tvTime = (TextView) itemView.findViewById(R.id.tvTime);
-                ivIcon = (ImageView) itemView.findViewById(R.id.ivIcon);
+                tvTitle = itemView.findViewById(R.id.tvTitle);
+                tvDescription = itemView.findViewById(R.id.tvDescription);
+                tvTime = itemView.findViewById(R.id.tvTime);
+                ivIcon = itemView.findViewById(R.id.ivIcon);
 
                 itemView.setOnClickListener(this);
                 //itemView.setOnLongClickListener(this);
@@ -401,8 +408,9 @@ public class DayFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "Item clicked on position " + getAdapterPosition());
-
-                mClickListener.onClick(view, getAdapterPosition());
+                if (getAdapterPosition() >= 0) {
+                    mClickListener.onClick(view, getAdapterPosition());
+                }
             }
 
         /*@Override
