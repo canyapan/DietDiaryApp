@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Color scheme: https://color.adobe.com/YEYAN-Business-color-theme-9908286/ -->
     <color name="colorPrimary">#30A1B1</color>
     <color name="colorPrimaryDark">#04263F</color>
     <color name="colorSecondary">#2A4964</color>
