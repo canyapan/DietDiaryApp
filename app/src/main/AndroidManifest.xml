@@ -10,6 +10,9 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <!-- To setup alarms -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <!-- For Google/Drive API -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
 
     <permission
         android:name="com.canyapan.dietdiaryapp.provider.permission.READ"
@@ -19,20 +22,23 @@
 
     <application
         android:name=".Application"
-        android:allowBackup="true"
-        android:backupAgent=".BackupAgent"
-        android:fullBackupContent="true"
+        android:allowBackup="false"
         android:icon="@mipmap/app_icon"
         android:label="@string/app_name"
         android:launchMode="singleTop"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <!-- This meta-data tag is required to use Google Play Services. -->
         <meta-data
-            android:name="com.google.android.backup.api_key"
-            android:value="AEdPqrEAAAAIWsNGlzCK9UWb9RJ8ERDWEgSGqnEC_9HBJspCRw"/>
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version"/>
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="c6db3fb626ddb34768c40db61b30a4e7c84f029c"/>
+        <meta-data
+            android:name="firebase_crash_collection_enabled"
+            android:value="false"/>
 
         <activity
             android:name=".MainActivity"
@@ -52,14 +58,14 @@
                     android:scheme="android"/>
                 -->
             </intent-filter>
+
             <meta-data
                 android:name="android.app.shortcuts"
                 android:resource="@xml/shortcuts"/>
-
         </activity>
         <activity
-            android:name=".SettingsActivity"
-            android:label="@string/activity_settings_title"
+            android:name=".SettingsSupportActivity"
+            android:label="@string/title_activity_settings_support"
             android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -110,7 +116,6 @@
                 <category android:name="android.intent.category.HOME"/>
             </intent-filter>
         </receiver>
-
     </application>
 
 </manifest>

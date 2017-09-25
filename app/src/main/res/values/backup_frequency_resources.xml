@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="pref_list_backup_frequency" translatable="false">
+        <item>@string/pref_list_backup_frequency_none</item>
+        <item>@string/pref_list_backup_frequency_daily</item>
+        <item>@string/pref_list_backup_frequency_weekly</item>
+        <item>@string/pref_list_backup_frequency_monthly</item>
+    </string-array>
+    <string-array name="pref_list_backup_frequency_values" translatable="false">
+        <item>-1</item>
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+</resources>

@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Color scheme: https://color.adobe.com/YEYAN-Business-color-theme-9908286/ -->
-    <color name="colorPrimary">#30A1B1</color>
-    <color name="colorPrimaryDark">#04263F</color>
-    <color name="colorSecondary">#2A4964</color>
-    <color name="colorAccent">#30A1B1</color>
-    <color name="colorAction">#FFFFFF</color>
-    <color name="colorNavHeader">#F7F7F7</color>
-    <color name="colorIcon">#757575</color>
+    <!-- https://material.io/color/#!/?view.left=0&view.right=1&primary.color=2A4964&secondary.color=30A1B1&secondary.text.color=dddddd&primary.text.color=f7f7f7 -->
+    <color name="primaryColor">#2a4964</color>
+    <color name="primaryLightColor">#577492</color>
+    <color name="primaryDarkColor">#00223a</color>
+    <color name="secondaryColor">#30a1b1</color>
+    <color name="secondaryLightColor">#6bd2e3</color>
+    <color name="secondaryDarkColor">#007282</color>
+    <color name="primaryTextColor">#f7f7f7</color>
+    <color name="secondaryTextColor">#f7f7f7</color>
+    <color name="iconColor">#757575</color>
+    <color name="actionColor">#F7F7F7</color>
+    <color name="appIconApple">@color/secondaryColor</color>
+    <color name="appIconLeaf">#89DA3E</color>
 </resources>

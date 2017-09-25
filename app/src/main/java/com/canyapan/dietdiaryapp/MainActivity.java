@@ -41,6 +41,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.DateTimeFormatterBuilder;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 /**
@@ -81,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements
 
     private FloatingActionButton mFab, mFabFood, mFabDrink, mFabMore;
     private ActionBar mActionBar;
-    private CalendarFragment mCalendarFragment = null;
+    private WeakReference<CalendarFragment> mCalendarFragmentRef = null;
 
     private Animation mFab2AnimationShow, mFab2AnimationHide;
     private Animation mFabAnimationRotateFw, mFabAnimationRotateBw;
@@ -157,14 +158,16 @@ public class MainActivity extends AppCompatActivity implements
         }
 
         FragmentManager mFragmentManager = getSupportFragmentManager();
-        if (null == mCalendarFragment) {
-            mCalendarFragment = (CalendarFragment) mFragmentManager.findFragmentByTag(CalendarFragment.TAG);
+        if (null == mCalendarFragmentRef || null == mCalendarFragmentRef.get()) {
+            CalendarFragment calendarFragment = (CalendarFragment) mFragmentManager.findFragmentByTag(CalendarFragment.TAG);
 
-            if (null == mCalendarFragment) {
-                mCalendarFragment = CalendarFragment.newInstance(mSelectedDate);
+            if (null == calendarFragment) {
+                calendarFragment = CalendarFragment.newInstance(mSelectedDate);
                 mFragmentManager.beginTransaction()
-                        .add(R.id.frame_layout, mCalendarFragment, CalendarFragment.TAG).commit();
+                        .add(R.id.frame_layout, calendarFragment, CalendarFragment.TAG).commit();
             }
+
+            mCalendarFragmentRef = new WeakReference<CalendarFragment>(calendarFragment);
         }
 
         DailyAlarmReceiver.register(MainActivity.this);
@@ -183,14 +186,18 @@ public class MainActivity extends AppCompatActivity implements
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case CreateEditEventActivity.REQUEST_CREATE_EDIT:
-                mCalendarFragment.handleCreateEditEvent(resultCode, data);
+                if (null != mCalendarFragmentRef && null != mCalendarFragmentRef.get()) {
+                    mCalendarFragmentRef.get().handleCreateEditEvent(resultCode, data);
+                }
 
                 // Ask user to rate the app.
                 checkAppRateStatus();
                 break;
             case BackupRestoreActivity.REQUEST_BACKUP_RESTORE:
                 if (resultCode == Activity.RESULT_FIRST_USER) {
-                    mCalendarFragment.goToDateForced(mSelectedDate);
+                    if (null != mCalendarFragmentRef && null != mCalendarFragmentRef.get()) {
+                        mCalendarFragmentRef.get().goToDateForced(mSelectedDate);
+                    }
                 }
                 break;
         }
@@ -256,7 +263,9 @@ public class MainActivity extends AppCompatActivity implements
                     new DatePickerDialog.OnDateSetListener() {
                         @Override
                         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                            mCalendarFragment.goToDate(new LocalDate(year, monthOfYear + 1, dayOfMonth));
+                            if (null != mCalendarFragmentRef && null != mCalendarFragmentRef.get()) {
+                                mCalendarFragmentRef.get().goToDate(new LocalDate(year, monthOfYear + 1, dayOfMonth));
+                            }
                         }
                     }, mSelectedDate.getYear(), mSelectedDate.getMonthOfYear() - 1, mSelectedDate.getDayOfMonth()
             );
@@ -283,7 +292,7 @@ public class MainActivity extends AppCompatActivity implements
                 startActivityForResult(new Intent(MainActivity.this, BackupRestoreActivity.class), BackupRestoreActivity.REQUEST_BACKUP_RESTORE);
                 break;
             case R.id.nav_settings:
-                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+                startActivity(new Intent(MainActivity.this, SettingsSupportActivity.class));
                 break;
             case R.id.nav_about:
                 new AboutDialog(this).show();

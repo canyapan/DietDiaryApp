@@ -96,7 +96,8 @@
     <!-- Settings for Notifications -->
     <string name="pref_header_notifications">Bildirimler</string>
     <string name="pref_title_notifications_active">Aktif</string>
-    <string name="pref_title_daily_remainder">Eğer hiçbirşey yazmadıysam günlük hatırlat</string>
+    <string name="pref_title_daily_remainder">Günlük hatırlatıcı</string>
+    <string name="pref_title_daily_remainder_summary">Eğer hiçbirşey yazmadıysam hatırlatma çıkar.</string>
     <string name="pref_title_daily_remainder_time">Şu saatte hatırlat</string>
 
     <!-- Strings for App Rate Dialog -->

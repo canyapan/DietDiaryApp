@@ -15,9 +15,9 @@ import android.util.Log;
 
 import com.canyapan.dietdiaryapp.MainActivity;
 import com.canyapan.dietdiaryapp.R;
-import com.canyapan.dietdiaryapp.SettingsActivity;
 import com.canyapan.dietdiaryapp.db.DatabaseHelper;
 import com.canyapan.dietdiaryapp.db.EventHelper;
+import com.canyapan.dietdiaryapp.fragments.SettingsSupportFragment;
 
 import org.joda.time.LocalDateTime;
 import org.joda.time.LocalTime;
@@ -30,14 +30,14 @@ public class DailyAlarmReceiver extends BroadcastReceiver {
 
     public static void register(@NonNull final Context context) {
         final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        if (preferences.getBoolean(SettingsActivity.KEY_NOTIFICATIONS_ACTIVE, true)) {
+        if (preferences.getBoolean(SettingsSupportFragment.KEY_NOTIFICATIONS_ACTIVE, true)) {
             register(context, preferences);
         }
     }
 
     public static void register(@NonNull final Context context, final int hour, final int minute) {
         final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        if (preferences.getBoolean(SettingsActivity.KEY_NOTIFICATIONS_ACTIVE, true)) {
+        if (preferences.getBoolean(SettingsSupportFragment.KEY_NOTIFICATIONS_ACTIVE, true)) {
             final LocalTime time = new LocalTime(hour, minute);
 
             register(context, getNextAlarmTime(time));
@@ -45,9 +45,9 @@ public class DailyAlarmReceiver extends BroadcastReceiver {
     }
 
     public static void register(@NonNull final Context context, @NonNull final SharedPreferences preferences) {
-        if (preferences.getBoolean(SettingsActivity.KEY_NOTIFICATIONS_DAILY_REMAINDER, true)) {
+        if (preferences.getBoolean(SettingsSupportFragment.KEY_NOTIFICATIONS_DAILY_REMAINDER, true)) {
             final LocalTime time = LocalTime.parse(
-                    preferences.getString(SettingsActivity.KEY_NOTIFICATIONS_DAILY_REMAINDER_TIME, DEFAULT_TIME),
+                    preferences.getString(SettingsSupportFragment.KEY_NOTIFICATIONS_DAILY_REMAINDER_TIME, DEFAULT_TIME),
                     DatabaseHelper.DB_TIME_FORMATTER);
 
             register(context, getNextAlarmTime(time));
@@ -87,7 +87,7 @@ public class DailyAlarmReceiver extends BroadcastReceiver {
         Log.d(TAG, "Received");
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        if (!preferences.getBoolean(SettingsActivity.KEY_NOTIFICATIONS_ACTIVE, true)) {
+        if (!preferences.getBoolean(SettingsSupportFragment.KEY_NOTIFICATIONS_ACTIVE, true)) {
             return;
         }
 

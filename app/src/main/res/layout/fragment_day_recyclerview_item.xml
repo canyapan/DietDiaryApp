@@ -17,7 +17,7 @@
         android:layout_marginBottom="@dimen/list_icon_margin"
         android:layout_marginTop="@dimen/list_icon_margin"
         android:contentDescription="@string/content_description_icon"
-        android:tint="@color/colorIcon"/>
+        android:tint="@color/iconColor"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
