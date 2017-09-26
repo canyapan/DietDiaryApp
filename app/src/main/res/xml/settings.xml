@@ -59,11 +59,12 @@
             android:title="@string/pref_title_backup_frequency"
             />
 
-        <com.canyapan.dietdiaryapp.preference.TimePreferenceCompat
-            android:defaultValue="03:00"
+        <android.support.v7.preference.SwitchPreferenceCompat
+            android:defaultValue="true"
             android:dependency="backup_active"
-            android:key="backup_time"
-            android:title="@string/pref_title_backup_time"
+            android:key="backup_wifi_only"
+            android:summary="@string/pref_title_backup_wifi_only_summary"
+            android:title="@string/pref_title_backup_wifi_only"
             />
 
         <android.support.v7.preference.Preference

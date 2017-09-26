@@ -70,6 +70,7 @@ dependencies {
     compile 'com.android.support:preference-v14:26.1.0'
     compile 'com.google.android.gms:play-services-auth:11.2.2'
     compile 'com.google.android.gms:play-services-drive:11.2.2'
+    compile 'com.firebase:firebase-jobdispatcher:0.8.2'
     compile 'net.danlew:android.joda:2.9.9'
     compile 'com.opencsv:opencsv:3.7'
     compile 'commons-io:commons-io:2.5'

@@ -1,6 +1,10 @@
 package com.canyapan.dietdiaryapp.fragments;
 
+import android.Manifest;
+import android.content.Intent;
 import android.content.IntentSender;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,13 +16,14 @@ import android.support.v7.preference.PreferenceManager;
 import android.support.v7.preference.SwitchPreferenceCompat;
 import android.text.format.DateUtils;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.canyapan.dietdiaryapp.R;
 import com.canyapan.dietdiaryapp.db.DatabaseHelper;
+import com.canyapan.dietdiaryapp.helpers.DailyReminderHelper;
 import com.canyapan.dietdiaryapp.helpers.DateTimeHelper;
 import com.canyapan.dietdiaryapp.preference.TimePreferenceCompat;
 import com.canyapan.dietdiaryapp.preference.TimePreferenceDialogFragmentCompat;
-import com.canyapan.dietdiaryapp.receivers.DailyAlarmReceiver;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -29,12 +34,17 @@ import org.joda.time.LocalTime;
 
 import java.lang.ref.WeakReference;
 
+import static android.app.Activity.RESULT_OK;
+
 public class SettingsSupportFragment extends PreferenceFragmentCompat
-        implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+        implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, Preference.OnPreferenceChangeListener {
 
     private static final String TAG = "Settings";
     private static final String DIALOG_FRAGMENT_TAG =
             "android.support.v7.preference.PreferenceFragment.DIALOG";
+
+    private static final int REQUEST_ACCOUNTS = 1000;
+    private static final int REQUEST_RESOLVE_ERROR = 1001;
 
     public static final String KEY_GENERAL_CLOCK_MODE = "general_clock_mode";
     public static final String KEY_NOTIFICATIONS_ACTIVE = "notifications_active";
@@ -42,85 +52,10 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
     public static final String KEY_NOTIFICATIONS_DAILY_REMAINDER_TIME = "notifications_daily_remainder_time";
     public static final String KEY_BACKUP_ACTIVE = "backup_active";
     public static final String KEY_BACKUP_FREQUENCY = "backup_frequency";
-    public static final String KEY_BACKUP_TIME = "backup_time";
+    public static final String KEY_BACKUP_WIFI_ONLY = "backup_wifi_only";
     public static final String KEY_BACKUP_NOW = "backup_now";
 
     private WeakReference<GoogleApiClient> mGoogleApiClientRef = null;
-
-    /**
-     * A preference value change listener that updates the preference's summary
-     * to reflect its new value.
-     */
-    private static final Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
-        @Override
-        public boolean onPreferenceChange(Preference preference, Object value) {
-
-            if (preference.getKey().equals(KEY_BACKUP_NOW)) {
-                if (null == value) {
-                    preference.setSummary(preference.getContext().getString(R.string.pref_title_backup_now_summary, preference.getContext().getString(R.string.pref_title_backup_now_summary_never)));
-                } else {
-                    long time;
-                    if (value instanceof String) {
-                        time = Long.valueOf((String) value);
-                    } else if (value instanceof Long) {
-                        time = (long) value;
-                    } else {
-                        return false;
-                    }
-
-                    preference.setSummary(preference.getContext().getString(R.string.pref_title_backup_now_summary, DateUtils.getRelativeTimeSpanString(time)));
-                }
-            } else if (preference instanceof ListPreference) {
-                // For list preferences, look up the correct display value in
-                // the preference's 'entries' list.
-                ListPreference listPreference = (ListPreference) preference;
-                if (null != value) {
-                    int index = listPreference.findIndexOfValue(value.toString());
-
-                    CharSequence summary;
-                    if (index >= 0) {
-                        summary = listPreference.getEntries()[index];
-                    } else if (null != listPreference.getValue()) {
-                        summary = listPreference.getValue();
-                    } else {
-                        summary = null;
-                    }
-
-                    // Set the summary to reflect the new value.
-                    preference.setSummary(summary);
-                }
-            } else if (preference instanceof TimePreferenceCompat) {
-                if (null != value && value instanceof String) {
-                    LocalTime time = LocalTime.parse((String) value, DatabaseHelper.DB_TIME_FORMATTER);
-
-                    TimePreferenceCompat timePreference = (TimePreferenceCompat) preference;
-                    preference.setSummary(DateTimeHelper.convertLocalTimeToString(preference.getContext(),
-                            time.getHourOfDay(), time.getMinuteOfHour()));
-
-                    DailyAlarmReceiver.register(preference.getContext(), timePreference.getHour(), timePreference.getMinute());
-                }
-            } else {
-                // For all other preferences, set the summary to the value's
-                // simple string representation.
-                if (value instanceof String) {
-                    preference.setSummary(value.toString());
-                } else if (value instanceof Boolean) {
-                    switch (preference.getKey()) {
-                        case KEY_NOTIFICATIONS_ACTIVE:
-                        case KEY_NOTIFICATIONS_DAILY_REMAINDER:
-                            if (value.equals(false)) {
-                                DailyAlarmReceiver.cancel(preference.getContext());
-                            } else {
-                                DailyAlarmReceiver.register(preference.getContext());
-                            }
-                            break;
-                    }
-                }
-            }
-
-            return true;
-        }
-    };
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -135,18 +70,36 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
         bindPreferenceSummaryToValue(findPreference(KEY_NOTIFICATIONS_DAILY_REMAINDER));
         bindPreferenceSummaryToValue(findPreference(KEY_NOTIFICATIONS_DAILY_REMAINDER_TIME));
         bindPreferenceSummaryToValue(findPreference(KEY_BACKUP_FREQUENCY));
-        bindPreferenceSummaryToValue(findPreference(KEY_BACKUP_TIME));
 
         SwitchPreferenceCompat backupActivePref = (SwitchPreferenceCompat) findPreference(KEY_BACKUP_ACTIVE);
         backupActivePref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
-                if (null != mGoogleApiClientRef && null != mGoogleApiClientRef.get()) {
-                    mGoogleApiClientRef.get().connect();
-                    return true;
+                if ((Boolean) newValue) { // changing to active
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        if (getActivity().checkSelfPermission(Manifest.permission.GET_ACCOUNTS)
+                                != PackageManager.PERMISSION_GRANTED) {
+                            getActivity().requestPermissions( // request permission
+                                    new String[]{
+                                            Manifest.permission.GET_ACCOUNTS
+                                    }, REQUEST_ACCOUNTS);
+
+                            return false;
+                        }
+                    }
+
+                    // have the permission or version is lower
+                    connectGoogleApiClient();
+
+                    return false; // will be handled if drive connection successful.
                 }
 
-                return false;
+                // changing to passive
+                if (null != mGoogleApiClientRef && null != mGoogleApiClientRef.get()) {
+                    mGoogleApiClientRef.get().disconnect();
+                }
+
+                return true; // let it
             }
         });
 
@@ -170,8 +123,16 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
     }
 
     @Override
-    public void onDisplayPreferenceDialog(Preference preference) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_RESOLVE_ERROR) {
+            if (resultCode == RESULT_OK) {
+                connectGoogleApiClient();
+            }
+        }
+    }
 
+    @Override
+    public void onDisplayPreferenceDialog(Preference preference) {
         // check if dialog is already showing
         if (getFragmentManager().findFragmentByTag(DIALOG_FRAGMENT_TAG) != null) {
             return;
@@ -186,7 +147,127 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
         } else {
             super.onDisplayPreferenceDialog(preference);
         }
+    }
 
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        // Activate the drive backup.
+        final SwitchPreferenceCompat backupActivePref = (SwitchPreferenceCompat) findPreference(KEY_BACKUP_ACTIVE);
+        if (!backupActivePref.isChecked()) {
+            backupActivePref.setChecked(true);
+        }
+        Log.d(TAG, "Drive API connected.");
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        Log.d(TAG, "Drive API connection suspended.");
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        if (!connectionResult.hasResolution()) {
+            // show the localized error dialog.
+            GoogleApiAvailability.getInstance().getErrorDialog(this.getActivity(),
+                    connectionResult.getErrorCode(), 0).show();
+            return;
+        }
+
+        try {
+            connectionResult.startResolutionForResult(this.getActivity(), REQUEST_RESOLVE_ERROR);
+        } catch (IntentSender.SendIntentException e) {
+            Log.e(TAG, "Exception while starting resolution activity", e);
+        }
+        Log.e(TAG, "Drive API connection failed. " + connectionResult.toString());
+    }
+
+    @Override
+    public void onStop() {
+        disconnectGoogleApiClient();
+
+        super.onStop();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == REQUEST_ACCOUNTS
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            connectGoogleApiClient(); // Permission granted, lets try to connect now.
+        } else {
+            Toast.makeText(getContext(), R.string.pref_backup_no_permission, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    /**
+     * A preference value change listener that updates the preference's summary
+     * to reflect its new value.
+     */
+    @Override
+    public boolean onPreferenceChange(Preference preference, Object value) {
+        if (preference.getKey().equals(KEY_BACKUP_NOW)) {
+            if (null == value) {
+                preference.setSummary(preference.getContext().getString(R.string.pref_title_backup_now_summary, preference.getContext().getString(R.string.pref_title_backup_now_summary_never)));
+            } else {
+                long time;
+                if (value instanceof String) {
+                    time = Long.valueOf((String) value);
+                } else if (value instanceof Long) {
+                    time = (long) value;
+                } else {
+                    return false;
+                }
+
+                preference.setSummary(preference.getContext().getString(R.string.pref_title_backup_now_summary, DateUtils.getRelativeTimeSpanString(time)));
+            }
+        } else if (preference instanceof ListPreference) {
+            // For list preferences, look up the correct display value in
+            // the preference's 'entries' list.
+            ListPreference listPreference = (ListPreference) preference;
+            if (null != value) {
+                int index = listPreference.findIndexOfValue(value.toString());
+
+                CharSequence summary;
+                if (index >= 0) {
+                    summary = listPreference.getEntries()[index];
+                } else if (null != listPreference.getValue()) {
+                    summary = listPreference.getValue();
+                } else {
+                    summary = null;
+                }
+
+                // Set the summary to reflect the new value.
+                preference.setSummary(summary);
+            }
+        } else if (preference instanceof TimePreferenceCompat) {
+            if (null != value && value instanceof String) {
+                LocalTime time = LocalTime.parse((String) value, DatabaseHelper.DB_TIME_FORMATTER);
+
+                TimePreferenceCompat timePreference = (TimePreferenceCompat) preference;
+                preference.setSummary(DateTimeHelper.convertLocalTimeToString(preference.getContext(),
+                        time.getHourOfDay(), time.getMinuteOfHour()));
+
+                DailyReminderHelper.register(preference.getContext(), timePreference.getHour(), timePreference.getMinute());
+            }
+        } else {
+            // For all other preferences, set the summary to the value's
+            // simple string representation.
+            if (value instanceof String) {
+                preference.setSummary(value.toString());
+            } else if (value instanceof Boolean) {
+                switch (preference.getKey()) {
+                    case KEY_NOTIFICATIONS_ACTIVE:
+                    case KEY_NOTIFICATIONS_DAILY_REMAINDER:
+                        if (value.equals(false)) {
+                            DailyReminderHelper.cancel(preference.getContext());
+                        } else {
+                            DailyReminderHelper.register(preference.getContext());
+                        }
+                        break;
+                }
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -195,16 +276,14 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
      * preference tvTitle) is updated to reflect the value. The summary is also
      * immediately updated upon calling this method. The exact display format is
      * dependent on the type of preference.
-     *
-     * @see #sBindPreferenceSummaryToValueListener
      */
-    private static void bindPreferenceSummaryToValue(Preference preference) {
+    private void bindPreferenceSummaryToValue(Preference preference) {
         // Set the listener to watch for value changes.
-        preference.setOnPreferenceChangeListener(sBindPreferenceSummaryToValueListener);
+        preference.setOnPreferenceChangeListener(this);
 
         // Trigger the listener immediately with the preference's
         // current value.
-        sBindPreferenceSummaryToValueListener.onPreferenceChange(preference,
+        this.onPreferenceChange(preference,
                 PreferenceManager
                         .getDefaultSharedPreferences(preference.getContext())
                         .getAll().get(preference.getKey()));
@@ -220,38 +299,19 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
                 .build();
     }
 
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
-        Log.d(TAG, "Drive API connected.");
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-        Log.d(TAG, "Drive API connection suspended.");
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        if (!connectionResult.hasResolution()) {
-            // show the localized error dialog.
-            GoogleApiAvailability.getInstance().getErrorDialog(this.getActivity(), connectionResult.getErrorCode(), 0).show();
-            return;
-        }
-
-        try {
-            connectionResult.startResolutionForResult(this.getActivity(), 1234);
-        } catch (IntentSender.SendIntentException e) {
-            Log.e(TAG, "Exception while starting resolution activity", e);
-        }
-        Log.e(TAG, "Drive API connection failed. " + connectionResult.toString());
-    }
-
-    @Override
-    public void onStop() {
+    private void connectGoogleApiClient() {
         if (null != mGoogleApiClientRef && null != mGoogleApiClientRef.get()) {
-            mGoogleApiClientRef.get().disconnect();
+            if (!mGoogleApiClientRef.get().isConnecting() && !mGoogleApiClientRef.get().isConnected()) {
+                mGoogleApiClientRef.get().connect();
+            }
         }
+    }
 
-        super.onStop();
+    private void disconnectGoogleApiClient() {
+        if (null != mGoogleApiClientRef && null != mGoogleApiClientRef.get()) {
+            if (mGoogleApiClientRef.get().isConnected() || mGoogleApiClientRef.get().isConnecting()) {
+                mGoogleApiClientRef.get().disconnect();
+            }
+        }
     }
 }

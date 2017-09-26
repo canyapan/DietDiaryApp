@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.support.v7.preference.PreferenceManager;
 
 import com.canyapan.dietdiaryapp.fragments.SettingsSupportFragment;
+import com.canyapan.dietdiaryapp.helpers.DailyReminderHelper;
 
 
 public class BootReceiver extends BroadcastReceiver {
@@ -16,7 +17,7 @@ public class BootReceiver extends BroadcastReceiver {
         if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
             final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
             if (preferences.getBoolean(SettingsSupportFragment.KEY_NOTIFICATIONS_ACTIVE, true)) {
-                DailyAlarmReceiver.register(context, preferences);
+                DailyReminderHelper.register(context, preferences);
             }
         }
     }

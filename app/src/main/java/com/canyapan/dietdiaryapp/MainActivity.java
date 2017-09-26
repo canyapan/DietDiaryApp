@@ -31,9 +31,9 @@ import android.widget.DatePicker;
 import com.canyapan.dietdiaryapp.db.DatabaseHelper;
 import com.canyapan.dietdiaryapp.db.EventHelper;
 import com.canyapan.dietdiaryapp.fragments.CalendarFragment;
+import com.canyapan.dietdiaryapp.helpers.DailyReminderHelper;
 import com.canyapan.dietdiaryapp.helpers.FixedDatePickerDialog;
 import com.canyapan.dietdiaryapp.models.Event;
-import com.canyapan.dietdiaryapp.receivers.DailyAlarmReceiver;
 
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
@@ -51,8 +51,6 @@ import java.util.ArrayList;
  * - add XML export, validate XML by the help of XSD and generate HTML by the help of XSLT
  * - add reminders for water, snacks, medication, entering events.
  * - add timed notifications
- * - add saving data to cloud option
- * - add support for new android feature called app shortcuts
  * - add widget support
  * - add wear notifications
  */
@@ -167,10 +165,10 @@ public class MainActivity extends AppCompatActivity implements
                         .add(R.id.frame_layout, calendarFragment, CalendarFragment.TAG).commit();
             }
 
-            mCalendarFragmentRef = new WeakReference<CalendarFragment>(calendarFragment);
+            mCalendarFragmentRef = new WeakReference<>(calendarFragment);
         }
 
-        DailyAlarmReceiver.register(MainActivity.this);
+        DailyReminderHelper.register(MainActivity.this);
     }
 
     @Override

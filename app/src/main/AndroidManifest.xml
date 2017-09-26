@@ -11,8 +11,8 @@
     <!-- To setup alarms -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <!-- For Google/Drive API -->
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
 
     <permission
         android:name="com.canyapan.dietdiaryapp.provider.permission.READ"
@@ -65,7 +65,7 @@
         </activity>
         <activity
             android:name=".SettingsSupportActivity"
-            android:label="@string/title_activity_settings_support"
+            android:label="@string/activity_settings_title"
             android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -91,7 +91,7 @@
         </activity>
         <activity
             android:name=".ExportActivity"
-            android:label="@string/title_activity_export"
+            android:label="@string/activity_export_title"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
@@ -107,8 +107,9 @@
             android:readPermission="com.canyapan.dietdiaryapp.provider.permission.READ"/>
 
         <receiver
-            android:name=".receivers.DailyAlarmReceiver"
+            android:name=".receivers.DailyReminderReceiver"
             android:process=":remote"/>
+
         <receiver android:name=".receivers.BootReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
@@ -116,6 +117,12 @@
                 <category android:name="android.intent.category.HOME"/>
             </intent-filter>
         </receiver>
+
+        <service
+            android:name=".services.DriveBackupService"
+            android:permission="android.permission.BIND_JOB_SERVICE">
+
+        </service>
     </application>
 
 </manifest>

@@ -9,6 +9,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.net.Uri;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -280,6 +282,20 @@ public class BackupFragment extends Fragment implements View.OnClickListener {
             }
         } else {
             Toast.makeText(getContext(), R.string.backup_no_permission, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public boolean isWiFiConnected() {
+        WifiManager wifiMgr = (WifiManager) getContext().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+
+        if (wifiMgr != null && wifiMgr.isWifiEnabled()) {
+
+            WifiInfo wifiInfo = wifiMgr.getConnectionInfo();
+
+            return !(wifiInfo != null && wifiInfo.getNetworkId() == -1);
+
+        } else {
+            return false;
         }
     }
 
