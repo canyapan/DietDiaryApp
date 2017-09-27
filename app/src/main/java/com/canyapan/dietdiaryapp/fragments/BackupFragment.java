@@ -147,7 +147,7 @@ public class BackupFragment extends Fragment implements View.OnClickListener {
                 }
 
                 try {
-                    mAsyncTask = (BackupAsyncTask) new BackupToCSV(this, BackupAsyncTask.TO_EXTERNAL).execute();
+                    mAsyncTask = (BackupAsyncTask) new BackupToJSON(this, BackupAsyncTask.TO_EXTERNAL).execute();
                 } catch (BackupException e) {
                     Crashlytics.logException(e);
                     Log.e(TAG, "Save to external storage unsuccessful.", e);
@@ -156,7 +156,7 @@ public class BackupFragment extends Fragment implements View.OnClickListener {
                 return true;
             case R.id.action_share:
                 try {
-                    mAsyncTask = (BackupAsyncTask) new BackupToCSV(this, BackupAsyncTask.TO_SHARE).execute();
+                    mAsyncTask = (BackupAsyncTask) new BackupToJSON(this, BackupAsyncTask.TO_SHARE).execute();
                 } catch (BackupException e) {
                     Crashlytics.logException(e);
                     Log.e(TAG, "Share unsuccessful.", e);

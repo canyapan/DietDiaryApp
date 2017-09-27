@@ -1,9 +1,10 @@
-package com.canyapan.dietdiaryapp.receivers;
+package com.canyapan.dietdiaryapp.services;
 
 import android.app.NotificationManager;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
@@ -11,14 +12,21 @@ import android.util.Log;
 import com.canyapan.dietdiaryapp.MainActivity;
 import com.canyapan.dietdiaryapp.R;
 import com.canyapan.dietdiaryapp.db.EventHelper;
-import com.canyapan.dietdiaryapp.helpers.DailyReminderHelper;
+import com.canyapan.dietdiaryapp.helpers.DailyReminderServiceHelper;
+import com.firebase.jobdispatcher.JobParameters;
+import com.firebase.jobdispatcher.JobService;
 
-public class DailyReminderReceiver extends BroadcastReceiver {
-    private static final String TAG = "DailyReminderReceiver";
+@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+public class DailyReminderService extends JobService {
+    public static final String TAG = "DailyReminderService";
+
+    private static final int REQUEST_CODE = 1100;
 
     @Override
-    public void onReceive(Context context, Intent intent) {
-        Log.d(TAG, "Received");
+    public boolean onStartJob(JobParameters jobParameters) {
+        Log.d(TAG, "Job started");
+
+        final Context context = getApplicationContext();
 
         if (EventHelper.hasEventToday(context) == 0) {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NotificationCompat.CATEGORY_REMINDER)
@@ -34,12 +42,20 @@ public class DailyReminderReceiver extends BroadcastReceiver {
                     .setContentIntent(TaskStackBuilder.create(context)
                             .addParentStack(MainActivity.class)
                             .addNextIntent(new Intent(context, MainActivity.class))
-                            .getPendingIntent(DailyReminderHelper.REQUEST_CODE, 0));
+                            .getPendingIntent(REQUEST_CODE, 0));
             NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             nm.notify(TAG, R.id.daily_notification, builder.build());
         }
 
-        // Setup next alarm.
-        DailyReminderHelper.register(context);
+        // Setup next reminder.
+        DailyReminderServiceHelper.setup(context);
+
+        return false;
+    }
+
+    @Override
+    public boolean onStopJob(JobParameters jobParameters) {
+        Log.d(TAG, "Job stopped");
+        return false;
     }
 }

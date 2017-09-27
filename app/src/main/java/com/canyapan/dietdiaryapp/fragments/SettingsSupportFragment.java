@@ -20,16 +20,21 @@ import android.widget.Toast;
 
 import com.canyapan.dietdiaryapp.R;
 import com.canyapan.dietdiaryapp.db.DatabaseHelper;
-import com.canyapan.dietdiaryapp.helpers.DailyReminderHelper;
 import com.canyapan.dietdiaryapp.helpers.DateTimeHelper;
 import com.canyapan.dietdiaryapp.preference.TimePreferenceCompat;
 import com.canyapan.dietdiaryapp.preference.TimePreferenceDialogFragmentCompat;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.drive.Drive;
+import com.google.android.gms.drive.DriveApi;
+import com.google.android.gms.drive.query.Filters;
+import com.google.android.gms.drive.query.Query;
+import com.google.android.gms.drive.query.SearchableField;
+import com.google.android.gms.drive.query.SortOrder;
+import com.google.android.gms.drive.query.SortableField;
 
-import org.joda.time.LocalDateTime;
 import org.joda.time.LocalTime;
 
 import java.lang.ref.WeakReference;
@@ -37,7 +42,7 @@ import java.lang.ref.WeakReference;
 import static android.app.Activity.RESULT_OK;
 
 public class SettingsSupportFragment extends PreferenceFragmentCompat
-        implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, Preference.OnPreferenceChangeListener {
+        implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, Preference.OnPreferenceChangeListener, ResultCallback<DriveApi.MetadataBufferResult> {
 
     private static final String TAG = "Settings";
     private static final String DIALOG_FRAGMENT_TAG =
@@ -108,14 +113,8 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
         backupNowPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                long now = LocalDateTime.now().toDateTime().getMillis();
-                if (preference.callChangeListener(now)) {
-                    //SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(preference.getContext());
-                    //SharedPreferences.Editor editor = sharedPreferences.edit();
-                    //editor.putString(preference.getKey(), String.valueOf(now));
-                    //editor.apply();
-                    Log.d(TAG, "backup now save disabled for now!");
-                }
+                //todo setup Drive backup service now.
+                //todo setup a listener to watch changes on last backup pref
 
                 return true;
             }
@@ -151,12 +150,29 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
+        Log.d(TAG, "Drive API connected.");
+
+        // Get backup files from drive.
+        SortOrder sortOrder = new SortOrder.Builder()
+                .addSortDescending(SortableField.CREATED_DATE)
+                .build();
+
+        Query query = new Query.Builder()
+                .addFilter(Filters.and(
+                        Filters.eq(SearchableField.MIME_TYPE, "application/zip"),
+                        Filters.contains(SearchableField.TITLE, "backup.zip")))
+                .setSortOrder(sortOrder)
+                .build();
+
+        Drive.DriveApi.getAppFolder(mGoogleApiClientRef.get())
+                .queryChildren(mGoogleApiClientRef.get(), query)
+                .setResultCallback(this);
+
         // Activate the drive backup.
         final SwitchPreferenceCompat backupActivePref = (SwitchPreferenceCompat) findPreference(KEY_BACKUP_ACTIVE);
         if (!backupActivePref.isChecked()) {
             backupActivePref.setChecked(true);
         }
-        Log.d(TAG, "Drive API connected.");
     }
 
     @Override
@@ -245,25 +261,12 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
                 TimePreferenceCompat timePreference = (TimePreferenceCompat) preference;
                 preference.setSummary(DateTimeHelper.convertLocalTimeToString(preference.getContext(),
                         time.getHourOfDay(), time.getMinuteOfHour()));
-
-                DailyReminderHelper.register(preference.getContext(), timePreference.getHour(), timePreference.getMinute());
             }
         } else {
             // For all other preferences, set the summary to the value's
             // simple string representation.
             if (value instanceof String) {
                 preference.setSummary(value.toString());
-            } else if (value instanceof Boolean) {
-                switch (preference.getKey()) {
-                    case KEY_NOTIFICATIONS_ACTIVE:
-                    case KEY_NOTIFICATIONS_DAILY_REMAINDER:
-                        if (value.equals(false)) {
-                            DailyReminderHelper.cancel(preference.getContext());
-                        } else {
-                            DailyReminderHelper.register(preference.getContext());
-                        }
-                        break;
-                }
             }
         }
 
@@ -312,6 +315,22 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
             if (mGoogleApiClientRef.get().isConnected() || mGoogleApiClientRef.get().isConnecting()) {
                 mGoogleApiClientRef.get().disconnect();
             }
+        }
+    }
+
+    @Override
+    public void onResult(@NonNull DriveApi.MetadataBufferResult metadataBufferResult) {
+        if (!metadataBufferResult.getStatus().isSuccess()) {
+            //todo showMessage("Problem while retrieving results");
+            return;
+        }
+
+        long size = 0; // total backup size
+        for (int i = 0; i < metadataBufferResult.getMetadataBuffer().getCount(); i++) {
+            size += metadataBufferResult.getMetadataBuffer().get(i).getFileSize();
+
+            //TODO print total backup size.
+            //TODO perform actions for the found backup.
         }
     }
 }

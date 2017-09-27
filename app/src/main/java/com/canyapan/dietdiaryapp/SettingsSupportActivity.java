@@ -1,5 +1,6 @@
 package com.canyapan.dietdiaryapp;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,6 +9,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import com.canyapan.dietdiaryapp.fragments.SettingsSupportFragment;
+import com.canyapan.dietdiaryapp.helpers.DailyReminderServiceHelper;
+import com.canyapan.dietdiaryapp.helpers.DriveBackupServiceHelper;
 
 import java.util.List;
 
@@ -32,8 +35,28 @@ public class SettingsSupportActivity extends AppCompatActivity
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        // TODO set a JobScheduler like this
-        // https://github.com/talCrafts/Udhari/blob/407395bbdc2c499ca9d96a1070662c14f2767f2b/app/src/main/java/org/talcrafts/udhari/SettingsActivity.java
+        final Context context = getApplicationContext();
+
+        switch (key) {
+            case SettingsSupportFragment.KEY_NOTIFICATIONS_ACTIVE:
+            case SettingsSupportFragment.KEY_NOTIFICATIONS_DAILY_REMAINDER:
+            case SettingsSupportFragment.KEY_NOTIFICATIONS_DAILY_REMAINDER_TIME:
+                if (sharedPreferences.getBoolean(SettingsSupportFragment.KEY_NOTIFICATIONS_ACTIVE, false)
+                        && sharedPreferences.getBoolean(SettingsSupportFragment.KEY_NOTIFICATIONS_DAILY_REMAINDER, false)) {
+                    DailyReminderServiceHelper.setup(context);
+                } else {
+                    DailyReminderServiceHelper.cancel(context);
+                }
+                break;
+            case SettingsSupportFragment.KEY_BACKUP_ACTIVE:
+                if (sharedPreferences.getBoolean(SettingsSupportFragment.KEY_BACKUP_ACTIVE, false)) {
+                    DriveBackupServiceHelper.setup(context);
+                } else {
+                    DriveBackupServiceHelper.cancel(context);
+                }
+                break;
+        }
+
     }
 
     @Override

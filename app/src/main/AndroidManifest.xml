@@ -106,23 +106,21 @@
             android:grantUriPermissions="true"
             android:readPermission="com.canyapan.dietdiaryapp.provider.permission.READ"/>
 
-        <receiver
-            android:name=".receivers.DailyReminderReceiver"
-            android:process=":remote"/>
-
         <receiver android:name=".receivers.BootReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
-
                 <category android:name="android.intent.category.HOME"/>
             </intent-filter>
         </receiver>
 
         <service
-            android:name=".services.DriveBackupService"
-            android:permission="android.permission.BIND_JOB_SERVICE">
+            android:name=".services.DailyReminderService"
+            android:permission="android.permission.BIND_JOB_SERVICE"/>
 
-        </service>
+        <service
+            android:name=".services.DriveBackupService"
+            android:permission="android.permission.BIND_JOB_SERVICE"/>
+
     </application>
 
 </manifest>
