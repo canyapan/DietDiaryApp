@@ -168,6 +168,16 @@ public class MainActivity extends AppCompatActivity implements
             mCalendarFragmentRef = new WeakReference<>(calendarFragment);
         }
 
+        // TODO: ASK USER IF THEY WANT TO CONNECT TO DRIVE
+        /*TODO add this if they select NO or they dont have app data in their drive account.
+        SharedPreferences preferenceManager = PreferenceManager.getDefaultSharedPreferences(this);
+        if (!preferenceManager.contains(PreferenceKeys.KEY_ID)) {
+            SharedPreferences.Editor editor = preferenceManager.edit();
+            editor.putString(PreferenceKeys.KEY_ID, UUID.randomUUID().toString());
+            editor.commit();
+        }*/
+
+
         DailyReminderServiceHelper.setup(MainActivity.this);
     }
 

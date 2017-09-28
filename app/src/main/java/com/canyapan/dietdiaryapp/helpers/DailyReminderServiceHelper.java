@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.preference.PreferenceManager;
 
 import com.canyapan.dietdiaryapp.db.DatabaseHelper;
-import com.canyapan.dietdiaryapp.fragments.SettingsSupportFragment;
 import com.canyapan.dietdiaryapp.services.DailyReminderService;
 import com.firebase.jobdispatcher.FirebaseJobDispatcher;
 import com.firebase.jobdispatcher.GooglePlayDriver;
@@ -19,15 +18,19 @@ import org.joda.time.LocalDateTime;
 import org.joda.time.LocalTime;
 import org.joda.time.Seconds;
 
+import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_NOTIFICATIONS_ACTIVE;
+import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_NOTIFICATIONS_DAILY_REMAINDER;
+import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_NOTIFICATIONS_DAILY_REMAINDER_TIME;
+
 public class DailyReminderServiceHelper {
     private static final String DEFAULT_TIME = "19:00";
 
     public static void setup(@NonNull final Context context) {
         final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        if (preferences.getBoolean(SettingsSupportFragment.KEY_NOTIFICATIONS_ACTIVE, false)
-                && preferences.getBoolean(SettingsSupportFragment.KEY_NOTIFICATIONS_DAILY_REMAINDER, false)) {
+        if (preferences.getBoolean(KEY_NOTIFICATIONS_ACTIVE, false)
+                && preferences.getBoolean(KEY_NOTIFICATIONS_DAILY_REMAINDER, false)) {
             final LocalTime time = LocalTime.parse(
-                    preferences.getString(SettingsSupportFragment.KEY_NOTIFICATIONS_DAILY_REMAINDER_TIME, DEFAULT_TIME),
+                    preferences.getString(KEY_NOTIFICATIONS_DAILY_REMAINDER_TIME, DEFAULT_TIME),
                     DatabaseHelper.DB_TIME_FORMATTER);
 
             setup(context, getSecondsUntilTime(time));

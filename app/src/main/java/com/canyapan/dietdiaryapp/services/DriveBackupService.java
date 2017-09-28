@@ -28,6 +28,7 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.drive.Drive;
 import com.google.android.gms.drive.DriveApi;
 import com.google.android.gms.drive.DriveFolder;
+import com.google.android.gms.drive.Metadata;
 import com.google.android.gms.drive.MetadataChangeSet;
 
 import org.joda.time.LocalDateTime;
@@ -264,10 +265,45 @@ public class DriveBackupService extends JobService implements GoogleApiClient.Co
             return;
         }
 
+        OutputStream os = null;
+        try {
+            os = driveContentsResult.getDriveContents().getOutputStream();
+            compressBackupDataToStream(os);
+
+        } catch (IOException e) {
+            Log.e(TAG, "Failed to write backup data to drive", e);
+
+            if (null != mBackupFile && null != mBackupFile.get()) {
+                if (!mBackupFile.get().delete()) {
+                    Log.e(TAG, "Unable to delete compressed backup data.");
+                }
+            }
+
+            finishJob();
+        } finally {
+            if (null != os) {
+                try {
+                    os.flush();
+                    os.close();
+                } catch (IOException e) {
+                    Log.w(TAG, "Unable to closer drive OutputStream.", e);
+                }
+            }
+        }
+
         MetadataChangeSet changeSet = new MetadataChangeSet.Builder()
                 .setTitle("backup.zip")
                 .setMimeType("application/zip")
                 .build();
+
+        DriveApi.MetadataBufferResult result = Drive.DriveApi.getAppFolder(mGoogleApiClientRef.get())
+                .listChildren(mGoogleApiClientRef.get()).await();
+
+        for (Metadata m : result.getMetadataBuffer()) {
+
+            m.getDriveId().asDriveFile().delete(mGoogleApiClientRef.get());
+
+        }
 
         Drive.DriveApi.getAppFolder(mGoogleApiClientRef.get())
                 .createFile(mGoogleApiClientRef.get(), changeSet, driveContentsResult.getDriveContents())
@@ -275,37 +311,13 @@ public class DriveBackupService extends JobService implements GoogleApiClient.Co
                         new ResultCallback<DriveFolder.DriveFileResult>() {
                             @Override
                             public void onResult(@NonNull DriveFolder.DriveFileResult driveFileResult) {
-                                if (!driveFileResult.getStatus().isSuccess()) {
-                                    Log.e(TAG, "Error while trying to create new file contents");
+                                if (driveFileResult.getStatus().isSuccess()) {
+                                    Log.d(TAG, "Drive file created " + driveFileResult.getDriveFile().getDriveId().encodeToString());
+                                    finishJob(true);
                                 } else {
-                                    OutputStream os = null;
-                                    try {
-                                        os = driveContentsResult.getDriveContents().getOutputStream();
-                                        compressBackupDataToStream(os);
-
-                                        finishJob(true);
-                                        return;
-                                    } catch (IOException e) {
-                                        Log.e(TAG, "Failed to write backup data to drive", e);
-
-                                        if (null != mBackupFile && null != mBackupFile.get()) {
-                                            if (!mBackupFile.get().delete()) {
-                                                Log.e(TAG, "Unable to delete compressed backup data.");
-                                            }
-                                        }
-                                    } finally {
-                                        if (null != os) {
-                                            try {
-                                                os.flush();
-                                                os.close();
-                                            } catch (IOException e) {
-                                                Log.w(TAG, "Unable to closer drive OutputStream.", e);
-                                            }
-                                        }
-                                    }
+                                    Log.e(TAG, "Error while trying to create new file contents. Message : " + driveFileResult.getStatus().getStatusMessage());
+                                    finishJob();
                                 }
-
-                                finishJob();
                             }
                         }
                 );
@@ -315,7 +327,7 @@ public class DriveBackupService extends JobService implements GoogleApiClient.Co
         long now = LocalDateTime.now().toDateTime().getMillis();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(SettingsSupportFragment.KEY_BACKUP_ACTIVE, String.valueOf(now));
+        editor.putString(SettingsSupportFragment.KEY_BACKUP_NOW, String.valueOf(now));
         editor.apply();
     }
 

@@ -30,6 +30,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.drive.Drive;
 import com.google.android.gms.drive.DriveApi;
+import com.google.android.gms.drive.Metadata;
 import com.google.android.gms.drive.query.Filters;
 import com.google.android.gms.drive.query.Query;
 import com.google.android.gms.drive.query.SearchableField;
@@ -39,8 +40,16 @@ import com.google.android.gms.drive.query.SortableField;
 import org.joda.time.LocalTime;
 
 import java.lang.ref.WeakReference;
+import java.util.Locale;
 
 import static android.app.Activity.RESULT_OK;
+import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_BACKUP_ACTIVE;
+import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_BACKUP_FREQUENCY;
+import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_BACKUP_NOW;
+import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_GENERAL_CLOCK_MODE;
+import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_NOTIFICATIONS_ACTIVE;
+import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_NOTIFICATIONS_DAILY_REMAINDER;
+import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_NOTIFICATIONS_DAILY_REMAINDER_TIME;
 
 public class SettingsSupportFragment extends PreferenceFragmentCompat
         implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, Preference.OnPreferenceChangeListener, ResultCallback<DriveApi.MetadataBufferResult> {
@@ -51,15 +60,6 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
 
     private static final int REQUEST_ACCOUNTS = 1000;
     private static final int REQUEST_RESOLVE_ERROR = 1001;
-
-    public static final String KEY_GENERAL_CLOCK_MODE = "general_clock_mode";
-    public static final String KEY_NOTIFICATIONS_ACTIVE = "notifications_active";
-    public static final String KEY_NOTIFICATIONS_DAILY_REMAINDER = "notifications_daily_remainder";
-    public static final String KEY_NOTIFICATIONS_DAILY_REMAINDER_TIME = "notifications_daily_remainder_time";
-    public static final String KEY_BACKUP_ACTIVE = "backup_active";
-    public static final String KEY_BACKUP_FREQUENCY = "backup_frequency";
-    public static final String KEY_BACKUP_WIFI_ONLY = "backup_wifi_only";
-    public static final String KEY_BACKUP_NOW = "backup_now";
 
     private WeakReference<GoogleApiClient> mGoogleApiClientRef = null;
 
@@ -327,13 +327,13 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
         }
 
         long size = 0; // total backup size
-        for (int i = 0; i < metadataBufferResult.getMetadataBuffer().getCount(); i++) {
-            size += metadataBufferResult.getMetadataBuffer().get(i).getFileSize();
+        for (Metadata m : metadataBufferResult.getMetadataBuffer()) {
+            Log.d(TAG, m.getTitle() + " " + m.getFileSize() + " bytes");
+            size += m.getFileSize();
         }
-
 
         //TODO print total backup size.
         //TODO perform actions for the found backup.
-        Toast.makeText(getContext(), "Total backup size " + (size / 1024 / 1024) + "MB.", Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(), String.format(Locale.getDefault(), "Total backup size %.2fMB.", size / 1024f / 1024f), Toast.LENGTH_LONG).show();
     }
 }

@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.preference.PreferenceManager;
 
 import com.canyapan.dietdiaryapp.db.DatabaseHelper;
-import com.canyapan.dietdiaryapp.fragments.SettingsSupportFragment;
 import com.canyapan.dietdiaryapp.services.DailyReminderService;
 import com.canyapan.dietdiaryapp.services.DriveBackupService;
 import com.firebase.jobdispatcher.Constraint;
@@ -21,6 +20,8 @@ import com.firebase.jobdispatcher.Trigger;
 import org.joda.time.LocalDateTime;
 import org.joda.time.LocalTime;
 import org.joda.time.Seconds;
+
+import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_BACKUP_ACTIVE;
 
 public class DriveBackupServiceHelper {
     private static final String DEFAULT_TIME = "21:00";
@@ -84,7 +85,7 @@ public class DriveBackupServiceHelper {
 
     private static boolean isBackupActive(@NonNull final Context context) {
         final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return preferences.getBoolean(SettingsSupportFragment.KEY_BACKUP_ACTIVE, false);
+        return preferences.getBoolean(KEY_BACKUP_ACTIVE, false);
     }
 
     private static int getSecondsUntilTime(@NonNull final LocalTime time) {
