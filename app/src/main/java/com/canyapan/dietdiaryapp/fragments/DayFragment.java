@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.canyapan.dietdiaryapp.BuildConfig;
 import com.canyapan.dietdiaryapp.CreateEditEventActivity;
 import com.canyapan.dietdiaryapp.MainActivity;
 import com.canyapan.dietdiaryapp.R;
@@ -187,7 +188,9 @@ public class DayFragment extends Fragment {
         try {
             list = EventHelper.getEventByDate(getContext(), date);
         } catch (SQLiteException e) {
-            Crashlytics.logException(e);
+            if (BuildConfig.CRASHLYTICS_ENABLED) {
+                Crashlytics.logException(e);
+            }
             Log.e(TAG, "Content cannot be prepared probably a DB issue.", e);
         }
 
@@ -196,7 +199,9 @@ public class DayFragment extends Fragment {
 
     public void addNewEvent(Event newEvent) {
         if (null != mAdapter) {
-            Crashlytics.log("Adding an event");
+            if (BuildConfig.CRASHLYTICS_ENABLED) {
+                Crashlytics.log("Adding an event");
+            }
             mAdapter.addNewEvent(newEvent);
         } else {
             getArguments().putBoolean(KEY_RELOAD_BOOLEAN, true);
@@ -205,7 +210,9 @@ public class DayFragment extends Fragment {
 
     public void updateAnEventAt(Event updatedEvent, int position) {
         if (null != mAdapter) {
-            Crashlytics.log("Updating an event at " + position);
+            if (BuildConfig.CRASHLYTICS_ENABLED) {
+                Crashlytics.log("Updating an event at " + position);
+            }
             mAdapter.updateAnEventAt(updatedEvent, position);
         } else {
             getArguments().putBoolean(KEY_RELOAD_BOOLEAN, true);
@@ -214,7 +221,9 @@ public class DayFragment extends Fragment {
 
     public void deleteAnEventAt(Event deletedEvent, int position) {
         if (null != mAdapter) {
-            Crashlytics.log("Deleting an event at " + position);
+            if (BuildConfig.CRASHLYTICS_ENABLED) {
+                Crashlytics.log("Deleting an event at " + position);
+            }
             mAdapter.deleteAnEventAt(deletedEvent, position);
         } else {
             getArguments().putBoolean(KEY_RELOAD_BOOLEAN, true);

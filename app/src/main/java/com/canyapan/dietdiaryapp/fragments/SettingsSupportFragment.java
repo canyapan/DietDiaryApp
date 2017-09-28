@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.canyapan.dietdiaryapp.R;
 import com.canyapan.dietdiaryapp.db.DatabaseHelper;
 import com.canyapan.dietdiaryapp.helpers.DateTimeHelper;
+import com.canyapan.dietdiaryapp.helpers.DriveBackupServiceHelper;
 import com.canyapan.dietdiaryapp.preference.TimePreferenceCompat;
 import com.canyapan.dietdiaryapp.preference.TimePreferenceDialogFragmentCompat;
 import com.google.android.gms.common.ConnectionResult;
@@ -113,7 +114,7 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
         backupNowPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                //todo setup Drive backup service now.
+                DriveBackupServiceHelper.setupImmediate(getContext());
                 //todo setup a listener to watch changes on last backup pref
 
                 return true;
@@ -321,16 +322,18 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
     @Override
     public void onResult(@NonNull DriveApi.MetadataBufferResult metadataBufferResult) {
         if (!metadataBufferResult.getStatus().isSuccess()) {
-            //todo showMessage("Problem while retrieving results");
+            Toast.makeText(getContext(), R.string.pref_backup_unable_to_list_drive_backups, Toast.LENGTH_LONG).show();
             return;
         }
 
         long size = 0; // total backup size
         for (int i = 0; i < metadataBufferResult.getMetadataBuffer().getCount(); i++) {
             size += metadataBufferResult.getMetadataBuffer().get(i).getFileSize();
-
-            //TODO print total backup size.
-            //TODO perform actions for the found backup.
         }
+
+
+        //TODO print total backup size.
+        //TODO perform actions for the found backup.
+        Toast.makeText(getContext(), "Total backup size " + (size / 1024 / 1024) + "MB.", Toast.LENGTH_LONG).show();
     }
 }

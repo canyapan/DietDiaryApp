@@ -84,7 +84,9 @@ public class DriveBackupService extends JobService implements GoogleApiClient.Co
     }
 
     private void finishJob(boolean isSuccessful) {
-        //TODO: Write last backup time (NOW)
+        if (isSuccessful) {
+            setLastBackupTime();
+        }
 
         if (null != mJobParameters && null != mJobParameters.get()) {
             jobFinished(mJobParameters.get(), false);

@@ -13,6 +13,7 @@ import com.firebase.jobdispatcher.Constraint;
 import com.firebase.jobdispatcher.FirebaseJobDispatcher;
 import com.firebase.jobdispatcher.GooglePlayDriver;
 import com.firebase.jobdispatcher.Job;
+import com.firebase.jobdispatcher.JobTrigger;
 import com.firebase.jobdispatcher.Lifetime;
 import com.firebase.jobdispatcher.RetryStrategy;
 import com.firebase.jobdispatcher.Trigger;
@@ -25,11 +26,16 @@ public class DriveBackupServiceHelper {
     private static final String DEFAULT_TIME = "21:00";
 
     public static void setup(@NonNull final Context context) {
-        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        if (preferences.getBoolean(SettingsSupportFragment.KEY_BACKUP_ACTIVE, false)) {
+        if (isBackupActive(context)) {
             final LocalTime time = LocalTime.parse(DEFAULT_TIME, DatabaseHelper.DB_TIME_FORMATTER);
 
             setup(context, getSecondsUntilTime(time));
+        }
+    }
+
+    public static void setupImmediate(@NonNull final Context context) {
+        if (isBackupActive(context)) {
+            setup(context, -1);
         }
     }
 
@@ -38,6 +44,12 @@ public class DriveBackupServiceHelper {
 
         //Bundle myExtrasBundle = new Bundle();
         //myExtrasBundle.putString("some_key", "some_value");
+        JobTrigger trigger;
+        if (timeInSeconds >= 0) {
+            trigger = Trigger.executionWindow(timeInSeconds, timeInSeconds + 1800);
+        } else {
+            trigger = Trigger.NOW;
+        }
 
         Job myJob = dispatcher.newJobBuilder()
                 // the JobService that will be called
@@ -49,7 +61,7 @@ public class DriveBackupServiceHelper {
                 // don't persist past a device reboot
                 .setLifetime(Lifetime.UNTIL_NEXT_BOOT)
                 // start between 0 and 60 seconds from now
-                .setTrigger(Trigger.executionWindow(timeInSeconds, 1800))
+                .setTrigger(trigger)
                 // overwrite an existing job with the same tag
                 .setReplaceCurrent(true)
                 // retry with exponential backoff
@@ -68,6 +80,11 @@ public class DriveBackupServiceHelper {
     public static void cancel(@NonNull final Context context) {
         FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(context));
         dispatcher.cancel(DailyReminderService.TAG);
+    }
+
+    private static boolean isBackupActive(@NonNull final Context context) {
+        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return preferences.getBoolean(SettingsSupportFragment.KEY_BACKUP_ACTIVE, false);
     }
 
     private static int getSecondsUntilTime(@NonNull final LocalTime time) {

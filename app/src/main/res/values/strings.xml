@@ -185,7 +185,7 @@
     <string name="pref_list_backup_frequency_daily">Daily</string>
     <string name="pref_list_backup_frequency_weekly">Weekly</string>
     <string name="pref_list_backup_frequency_monthly">Monthly</string>
-
+    <string name="pref_backup_unable_to_list_drive_backups">Couldn\'t load Google Drive backups.</string>
 
     <!-- Strings for App Rate Dialog -->
     <string name="rate_dialog_title">Rate this app</string>
