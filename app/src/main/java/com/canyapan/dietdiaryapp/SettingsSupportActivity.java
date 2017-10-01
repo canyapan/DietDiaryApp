@@ -14,8 +14,15 @@ import com.canyapan.dietdiaryapp.helpers.DriveBackupServiceHelper;
 
 import java.util.List;
 
+import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_BACKUP_ACTIVE;
+import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_NOTIFICATIONS_ACTIVE;
+import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_NOTIFICATIONS_DAILY_REMAINDER;
+import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_NOTIFICATIONS_DAILY_REMAINDER_TIME;
+
 public class SettingsSupportActivity extends AppCompatActivity
         implements SharedPreferences.OnSharedPreferenceChangeListener {
+
+    public static final String KEY_ACTIVATE_BACKUP_BOOLEAN = "ACTIVATE BACKUP";
 
     private Fragment preferenceFragment = null;
 
@@ -25,7 +32,12 @@ public class SettingsSupportActivity extends AppCompatActivity
         setContentView(R.layout.activity_settings_support);
 
         if (null == preferenceFragment) {
-            preferenceFragment = new SettingsSupportFragment();
+            int flags = 0;
+            if (getIntent().getBooleanExtra(KEY_ACTIVATE_BACKUP_BOOLEAN, false)) {
+                flags |= SettingsSupportFragment.FLAG_ACTIVATE_BACKUP;
+            }
+
+            preferenceFragment = SettingsSupportFragment.newInstance(flags);
         }
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -38,18 +50,18 @@ public class SettingsSupportActivity extends AppCompatActivity
         final Context context = getApplicationContext();
 
         switch (key) {
-            case SettingsSupportFragment.KEY_NOTIFICATIONS_ACTIVE:
-            case SettingsSupportFragment.KEY_NOTIFICATIONS_DAILY_REMAINDER:
-            case SettingsSupportFragment.KEY_NOTIFICATIONS_DAILY_REMAINDER_TIME:
-                if (sharedPreferences.getBoolean(SettingsSupportFragment.KEY_NOTIFICATIONS_ACTIVE, false)
-                        && sharedPreferences.getBoolean(SettingsSupportFragment.KEY_NOTIFICATIONS_DAILY_REMAINDER, false)) {
+            case KEY_NOTIFICATIONS_ACTIVE:
+            case KEY_NOTIFICATIONS_DAILY_REMAINDER:
+            case KEY_NOTIFICATIONS_DAILY_REMAINDER_TIME:
+                if (sharedPreferences.getBoolean(KEY_NOTIFICATIONS_ACTIVE, false)
+                        && sharedPreferences.getBoolean(KEY_NOTIFICATIONS_DAILY_REMAINDER, false)) {
                     DailyReminderServiceHelper.setup(context);
                 } else {
                     DailyReminderServiceHelper.cancel(context);
                 }
                 break;
-            case SettingsSupportFragment.KEY_BACKUP_ACTIVE:
-                if (sharedPreferences.getBoolean(SettingsSupportFragment.KEY_BACKUP_ACTIVE, false)) {
+            case KEY_BACKUP_ACTIVE:
+                if (sharedPreferences.getBoolean(KEY_BACKUP_ACTIVE, false)) {
                     DriveBackupServiceHelper.setup(context);
                 } else {
                     DriveBackupServiceHelper.cancel(context);

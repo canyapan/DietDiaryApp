@@ -17,7 +17,6 @@ import com.canyapan.dietdiaryapp.R;
 import com.canyapan.dietdiaryapp.db.DatabaseHelper;
 import com.canyapan.dietdiaryapp.db.EventHelper;
 import com.canyapan.dietdiaryapp.fragments.BackupFragment;
-import com.canyapan.dietdiaryapp.fragments.SettingsSupportFragment;
 import com.canyapan.dietdiaryapp.helpers.ResourcesHelper;
 import com.canyapan.dietdiaryapp.models.Event;
 import com.firebase.jobdispatcher.JobParameters;
@@ -31,7 +30,7 @@ import com.google.android.gms.drive.DriveFolder;
 import com.google.android.gms.drive.Metadata;
 import com.google.android.gms.drive.MetadataChangeSet;
 
-import org.joda.time.LocalDateTime;
+import org.joda.time.DateTime;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -45,6 +44,8 @@ import java.text.MessageFormat;
 import java.util.zip.CRC32;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
+
+import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_BACKUP_NOW;
 
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class DriveBackupService extends JobService implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, ResultCallback<DriveApi.DriveContentsResult> {
@@ -324,10 +325,10 @@ public class DriveBackupService extends JobService implements GoogleApiClient.Co
     }
 
     private void setLastBackupTime() {
-        long now = LocalDateTime.now().toDateTime().getMillis();
+        long now = DateTime.now().getMillis();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(SettingsSupportFragment.KEY_BACKUP_NOW, String.valueOf(now));
+        editor.putString(KEY_BACKUP_NOW, String.valueOf(now));
         editor.apply();
     }
 

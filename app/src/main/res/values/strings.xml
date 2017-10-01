@@ -193,6 +193,12 @@
     <string name="rate_dialog_yes">Rate It Now</string>
     <string name="rate_dialog_later">Remind Me Later</string>
     <string name="rate_dialog_never">No, Thanks</string>
-    <string name="action_settings">Settings</string>
-    <string name="title_activity_test">TESTActivity</string>
+
+    <!-- Strings for Drive Dialog -->
+    <string name="drive_dialog_title">Connect Google Drive</string>
+    <string name="drive_dialog_text">Would you like to backup your data into your google drive account?</string>
+    <string name="drive_dialog_yes">Yes, Do It Now</string>
+    <string name="drive_dialog_later">Remind Me Later</string>
+    <string name="drive_dialog_never">No, Thanks</string>
+
 </resources>

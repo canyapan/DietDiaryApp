@@ -6,13 +6,13 @@ import android.support.annotation.NonNull;
 import android.support.v7.preference.PreferenceManager;
 import android.text.format.DateFormat;
 
-import com.canyapan.dietdiaryapp.fragments.SettingsSupportFragment;
-
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.joda.time.LocalTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+
+import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_GENERAL_CLOCK_MODE;
 
 public class DateTimeHelper {
     public static final DateTimeFormatter DATE_FORMAT = DateTimeFormat.shortDate();
@@ -31,7 +31,7 @@ public class DateTimeHelper {
 
     public static boolean is24HourMode(@NonNull final Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        switch (preferences.getString(SettingsSupportFragment.KEY_GENERAL_CLOCK_MODE, "-1")) {
+        switch (preferences.getString(KEY_GENERAL_CLOCK_MODE, "-1")) {
             case "0":
                 return false;
             case "1":

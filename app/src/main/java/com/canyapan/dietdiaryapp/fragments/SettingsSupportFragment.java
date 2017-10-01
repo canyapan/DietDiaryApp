@@ -24,23 +24,24 @@ import com.canyapan.dietdiaryapp.helpers.DateTimeHelper;
 import com.canyapan.dietdiaryapp.helpers.DriveBackupServiceHelper;
 import com.canyapan.dietdiaryapp.preference.TimePreferenceCompat;
 import com.canyapan.dietdiaryapp.preference.TimePreferenceDialogFragmentCompat;
+import com.canyapan.dietdiaryapp.utils.Base62;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.drive.Drive;
 import com.google.android.gms.drive.DriveApi;
+import com.google.android.gms.drive.DriveFolder;
 import com.google.android.gms.drive.Metadata;
-import com.google.android.gms.drive.query.Filters;
-import com.google.android.gms.drive.query.Query;
-import com.google.android.gms.drive.query.SearchableField;
-import com.google.android.gms.drive.query.SortOrder;
-import com.google.android.gms.drive.query.SortableField;
+import com.google.android.gms.drive.MetadataChangeSet;
 
+import org.joda.time.DateTime;
 import org.joda.time.LocalTime;
 
 import java.lang.ref.WeakReference;
+import java.math.BigInteger;
 import java.util.Locale;
+import java.util.Random;
 
 import static android.app.Activity.RESULT_OK;
 import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_BACKUP_ACTIVE;
@@ -58,15 +59,38 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
     private static final String DIALOG_FRAGMENT_TAG =
             "android.support.v7.preference.PreferenceFragment.DIALOG";
 
+    public static final int FLAG_ACTIVATE_BACKUP = 1;
+    private static final String KEY_ACTIVATE_BACKUP_BOOLEAN = "ACTIVATE BACKUP";
+
     private static final int REQUEST_ACCOUNTS = 1000;
     private static final int REQUEST_RESOLVE_ERROR = 1001;
 
     private WeakReference<GoogleApiClient> mGoogleApiClientRef = null;
 
+    public static SettingsSupportFragment newInstance(int flags) {
+        Log.d(TAG, "newInstance");
+        SettingsSupportFragment fragment = new SettingsSupportFragment();
+        Bundle args = new Bundle();
+
+        if ((flags & FLAG_ACTIVATE_BACKUP) != 0) {
+            args.putBoolean(KEY_ACTIVATE_BACKUP_BOOLEAN, true);
+        }
+
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         if (null == mGoogleApiClientRef || null == mGoogleApiClientRef.get()) {
             mGoogleApiClientRef = new WeakReference<>(getGoogleApiClient());
+        }
+
+        boolean activateBackup = false;
+        if (null != savedInstanceState) {
+            activateBackup = savedInstanceState.getBoolean(KEY_ACTIVATE_BACKUP_BOOLEAN);
+        } else if (getArguments() != null) {
+            activateBackup = getArguments().getBoolean(KEY_ACTIVATE_BACKUP_BOOLEAN);
         }
 
         addPreferencesFromResource(R.xml.settings);
@@ -101,13 +125,19 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
                 }
 
                 // changing to passive
-                if (null != mGoogleApiClientRef && null != mGoogleApiClientRef.get()) {
-                    mGoogleApiClientRef.get().disconnect();
-                }
+                disconnectGoogleApiClient();
 
                 return true; // let it
             }
         });
+
+        if (backupActivePref.isChecked()) {
+            connectGoogleApiClient();
+        } else if (activateBackup) {
+            backupActivePref.callChangeListener(true); // This will fire the preference changed event, above.
+            // But, it won't let to change it. It will control the change itself.
+            // Therefore we won't try this here.
+        }
 
         Preference backupNowPref = findPreference(KEY_BACKUP_NOW);
         bindPreferenceSummaryToValue(backupNowPref);
@@ -153,21 +183,65 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
     public void onConnected(@Nullable Bundle bundle) {
         Log.d(TAG, "Drive API connected.");
 
-        // Get backup files from drive.
-        SortOrder sortOrder = new SortOrder.Builder()
-                .addSortDescending(SortableField.CREATED_DATE)
-                .build();
-
-        Query query = new Query.Builder()
-                .addFilter(Filters.and(
-                        Filters.eq(SearchableField.MIME_TYPE, "application/zip"),
-                        Filters.contains(SearchableField.TITLE, "backup.zip")))
-                .setSortOrder(sortOrder)
-                .build();
-
         Drive.DriveApi.getAppFolder(mGoogleApiClientRef.get())
-                .queryChildren(mGoogleApiClientRef.get(), query)
-                .setResultCallback(this);
+                .listChildren(mGoogleApiClientRef.get())
+                .setResultCallback(new ResultCallback<DriveApi.MetadataBufferResult>() {
+                    @Override
+                    public void onResult(@NonNull DriveApi.MetadataBufferResult metadataBufferResult) {
+                        if (!metadataBufferResult.getStatus().isSuccess()) {
+                            Log.e(TAG, "List dirs failed. " + metadataBufferResult.getStatus().getStatusMessage());
+                            return;
+                        }
+
+                        if (metadataBufferResult.getMetadataBuffer().getCount() == 0) {
+                            String uid = Base62.encode( // This will generate a time based alphanumeric 10 char value.
+                                    BigInteger.valueOf(DateTime.now().getMillis())                  // Time
+                                            .multiply(BigInteger.valueOf(10000))                    // Push 4 digit left
+                                            .add(BigInteger.valueOf(new Random().nextInt(9999)))    // Rand 0000:9999
+                            );
+
+                            MetadataChangeSet newDir = new MetadataChangeSet.Builder()
+                                    .setTitle(uid)
+                                    .build();
+
+                            Drive.DriveApi.getAppFolder(mGoogleApiClientRef.get())
+                                    .createFolder(mGoogleApiClientRef.get(), newDir)
+                                    .setResultCallback(new ResultCallback<DriveFolder.DriveFolderResult>() {
+                                        @Override
+                                        public void onResult(@NonNull DriveFolder.DriveFolderResult driveFolderResult) {
+                                            if (!driveFolderResult.getStatus().isSuccess()) {
+                                                Log.e(TAG, "Create drive folder failed. " + driveFolderResult.getStatus().getStatusMessage());
+                                                return;
+                                            }
+
+                                            Log.d(TAG, "FOLDER CREATED " + driveFolderResult.getDriveFolder().getDriveId());
+                                        }
+                                    });
+
+
+                        } else {
+                            for (Metadata m : metadataBufferResult.getMetadataBuffer()) {
+                                Log.d(TAG, m.getTitle() + " " + String.valueOf(m.isFolder()));
+                            }
+                        }
+
+                        /*// Get backup files from drive.
+                        SortOrder sortOrder = new SortOrder.Builder()
+                                .addSortDescending(SortableField.CREATED_DATE)
+                                .build();
+
+                        Query query = new Query.Builder()
+                                .addFilter(Filters.and(
+                                        Filters.eq(SearchableField.MIME_TYPE, "application/zip"),
+                                        Filters.contains(SearchableField.TITLE, "backup.zip")))
+                                .setSortOrder(sortOrder)
+                                .build();
+
+                        Drive.DriveApi.getAppFolder(mGoogleApiClientRef.get())
+                                .queryChildren(mGoogleApiClientRef.get(), query)
+                                .setResultCallback(this);*/
+                    }
+                });
 
         // Activate the drive backup.
         final SwitchPreferenceCompat backupActivePref = (SwitchPreferenceCompat) findPreference(KEY_BACKUP_ACTIVE);
@@ -259,7 +333,7 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
             if (null != value && value instanceof String) {
                 LocalTime time = LocalTime.parse((String) value, DatabaseHelper.DB_TIME_FORMATTER);
 
-                TimePreferenceCompat timePreference = (TimePreferenceCompat) preference;
+                //TimePreferenceCompat timePreference = (TimePreferenceCompat) preference;
                 preference.setSummary(DateTimeHelper.convertLocalTimeToString(preference.getContext(),
                         time.getHourOfDay(), time.getMinuteOfHour()));
             }
@@ -326,6 +400,7 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
             return;
         }
 
+
         long size = 0; // total backup size
         for (Metadata m : metadataBufferResult.getMetadataBuffer()) {
             Log.d(TAG, m.getTitle() + " " + m.getFileSize() + " bytes");
@@ -336,4 +411,5 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
         //TODO perform actions for the found backup.
         Toast.makeText(getContext(), String.format(Locale.getDefault(), "Total backup size %.2fMB.", size / 1024f / 1024f), Toast.LENGTH_LONG).show();
     }
+
 }

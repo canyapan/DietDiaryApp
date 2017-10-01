@@ -34,6 +34,7 @@ import com.canyapan.dietdiaryapp.fragments.CalendarFragment;
 import com.canyapan.dietdiaryapp.helpers.DailyReminderServiceHelper;
 import com.canyapan.dietdiaryapp.helpers.FixedDatePickerDialog;
 import com.canyapan.dietdiaryapp.models.Event;
+import com.canyapan.dietdiaryapp.preference.PreferenceKeys;
 
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
@@ -63,10 +64,12 @@ public class MainActivity extends AppCompatActivity implements
     private static final String KEY_FAB_SHOWN_BOOLEAN = "FAB";
     private static final String KEY_APP_RATE_DATE_STRING = "APP RATE DATE";
     private static final String KEY_APP_RATE_STATUS_INT = "APP RATE STATUS CODE";
+    private static final String KEY_DRIVE_CONN_DATE_STRING = "DRIVE CONNNECTION DATE";
+    private static final String KEY_DRIVE_CONN_STATUS_INT = "DRIVE CONNNECTION CODE";
 
-    private static final int FLAG_APP_RATE_STATUS_WAITING = 1;
-    private static final int FLAG_APP_RATE_STATUS_DONE = 2;
-    private static final int FLAG_APP_RATE_STATUS_NEVER_SHOW = 3;
+    private static final int FLAG_STATUS_WAITING = 1;
+    private static final int FLAG_STATUS_DONE = 2;
+    private static final int FLAG_STATUS_NEVER_SHOW = 3;
 
     private static final DateTimeFormatter DATE_FORMATTER;
 
@@ -86,7 +89,6 @@ public class MainActivity extends AppCompatActivity implements
     private Animation mFabAnimationRotateFw, mFabAnimationRotateBw;
 
     private DatePickerDialog mDatePickerDialog;
-    private AlertDialog mRateDialog;
 
     private LocalDate mSelectedDate;
     private Boolean mFab2Shown;
@@ -168,16 +170,6 @@ public class MainActivity extends AppCompatActivity implements
             mCalendarFragmentRef = new WeakReference<>(calendarFragment);
         }
 
-        // TODO: ASK USER IF THEY WANT TO CONNECT TO DRIVE
-        /*TODO add this if they select NO or they dont have app data in their drive account.
-        SharedPreferences preferenceManager = PreferenceManager.getDefaultSharedPreferences(this);
-        if (!preferenceManager.contains(PreferenceKeys.KEY_ID)) {
-            SharedPreferences.Editor editor = preferenceManager.edit();
-            editor.putString(PreferenceKeys.KEY_ID, UUID.randomUUID().toString());
-            editor.commit();
-        }*/
-
-
         DailyReminderServiceHelper.setup(MainActivity.this);
     }
 
@@ -198,8 +190,10 @@ public class MainActivity extends AppCompatActivity implements
                     mCalendarFragmentRef.get().handleCreateEditEvent(resultCode, data);
                 }
 
-                // Ask user to rate the app.
-                checkAppRateStatus();
+                // Don't show too many dialogs at once.
+                if (!checkDriveConnectionStatus()) { // check if a dialog is shown for drive connection.
+                    checkAppRateStatus(); // Ask user to rate the app.
+                }
                 break;
             case BackupRestoreActivity.REQUEST_BACKUP_RESTORE:
                 if (resultCode == Activity.RESULT_FIRST_USER) {
@@ -325,14 +319,105 @@ public class MainActivity extends AppCompatActivity implements
     }
     //endregion
 
+    //region Drive Backup
+    private boolean checkDriveConnectionStatus() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        boolean backupStatus = preferences.getBoolean(PreferenceKeys.KEY_BACKUP_ACTIVE, false);
+
+        if (backupStatus) {
+            return false; // Backup is already active.
+        }
+
+        int surveyStatus = preferences.getInt(KEY_DRIVE_CONN_STATUS_INT, FLAG_STATUS_WAITING);
+
+        switch (surveyStatus) {
+            case FLAG_STATUS_DONE:
+            case FLAG_STATUS_NEVER_SHOW:
+                return false; // Drive backup offer dialog is already shown. And user made their choice.
+        }
+
+        // case FLAG_STATUS_WAITING:
+        // Check if user has been using the application for 3 days and entered at least 10 events.
+        String date = preferences.getString(KEY_DRIVE_CONN_DATE_STRING, null);
+        if (null == date) { // This is the first use.
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString(KEY_DRIVE_CONN_DATE_STRING, LocalDate.now().toString(DatabaseHelper.DB_DATE_FORMATTER));
+            editor.apply();
+
+            showDriveConnectDialog();
+            return true;
+        }
+
+        LocalDate startDate = DatabaseHelper.DB_DATE_FORMATTER.parseLocalDate(date);
+        int days = Days.daysBetween(startDate, LocalDate.now()).getDays();
+        if (days >= 3) { // It has been more than 3 days since last dialog
+            ArrayList<Event> events = EventHelper.getEventByDateRange(this, startDate, LocalDate.now());
+
+            if (null != events && events.size() >= 15) { // There are more than 15 recorded events.
+                showDriveConnectDialog(); // They may want to activate now.
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private void showDriveConnectDialog() {
+        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.drive_dialog_title)
+                .setMessage(R.string.drive_dialog_text)
+                .setCancelable(true)
+                .setPositiveButton(R.string.drive_dialog_yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        setDriveConnectionStatus(preferences, FLAG_STATUS_DONE);
+
+                        // Open settings activity and activate drive backup
+                        startActivity(new Intent(MainActivity.this, SettingsSupportActivity.class).putExtra(SettingsSupportActivity.KEY_ACTIVATE_BACKUP_BOOLEAN, true));
+                    }
+                })
+                .setNeutralButton(R.string.drive_dialog_later, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        setDriveConnectionStatus(preferences, FLAG_STATUS_WAITING);
+                    }
+                })
+                .setNegativeButton(R.string.drive_dialog_never, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        setDriveConnectionStatus(preferences, FLAG_STATUS_NEVER_SHOW);
+                    }
+                })
+                .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialog) {
+                        setDriveConnectionStatus(preferences, FLAG_STATUS_WAITING);
+                    }
+                }).show();
+    }
+
+    private void setDriveConnectionStatus(final SharedPreferences preferences, int status) {
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(KEY_DRIVE_CONN_DATE_STRING, LocalDate.now().toString(DatabaseHelper.DB_DATE_FORMATTER));
+
+        if (status > 1) {
+            editor.putInt(KEY_DRIVE_CONN_STATUS_INT, status);
+        }
+
+        editor.apply();
+    }
+    //endregion
+
     //region Rate App
     private void checkAppRateStatus() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        int surveyStatus = preferences.getInt(KEY_APP_RATE_STATUS_INT, FLAG_APP_RATE_STATUS_WAITING);
+        int surveyStatus = preferences.getInt(KEY_APP_RATE_STATUS_INT, FLAG_STATUS_WAITING);
 
         switch (surveyStatus) {
-            case FLAG_APP_RATE_STATUS_DONE:
-            case FLAG_APP_RATE_STATUS_NEVER_SHOW:
+            case FLAG_STATUS_DONE:
+            case FLAG_STATUS_NEVER_SHOW:
                 return;
         }
 
@@ -360,17 +445,14 @@ public class MainActivity extends AppCompatActivity implements
     private void showAppRateDialog() {
         final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
-        mRateDialog = new AlertDialog.Builder(this)
+        new AlertDialog.Builder(this)
                 .setTitle(R.string.rate_dialog_title)
                 .setMessage(R.string.rate_dialog_text)
                 .setCancelable(true)
                 .setPositiveButton(R.string.rate_dialog_yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        SharedPreferences.Editor editor = preferences.edit();
-                        editor.putInt(KEY_APP_RATE_STATUS_INT, FLAG_APP_RATE_STATUS_DONE);
-                        editor.putString(KEY_APP_RATE_DATE_STRING, LocalDate.now().toString(DatabaseHelper.DB_DATE_FORMATTER));
-                        editor.apply();
+                        setAppRateStatus(preferences, FLAG_STATUS_DONE);
 
                         openPlayStore();
                     }
@@ -378,34 +460,32 @@ public class MainActivity extends AppCompatActivity implements
                 .setNeutralButton(R.string.rate_dialog_later, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        SharedPreferences.Editor editor = preferences.edit();
-                        editor.putString(KEY_APP_RATE_DATE_STRING, LocalDate.now().toString(DatabaseHelper.DB_DATE_FORMATTER));
-                        editor.apply();
+                        setAppRateStatus(preferences, FLAG_STATUS_WAITING);
                     }
                 })
                 .setNegativeButton(R.string.rate_dialog_never, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        SharedPreferences.Editor editor = preferences.edit();
-                        editor.putInt(KEY_APP_RATE_STATUS_INT, FLAG_APP_RATE_STATUS_NEVER_SHOW);
-                        editor.putString(KEY_APP_RATE_DATE_STRING, LocalDate.now().toString(DatabaseHelper.DB_DATE_FORMATTER));
-                        editor.apply();
+                        setAppRateStatus(preferences, FLAG_STATUS_NEVER_SHOW);
                     }
                 })
                 .setOnCancelListener(new DialogInterface.OnCancelListener() {
                     @Override
                     public void onCancel(DialogInterface dialog) {
-                        SharedPreferences.Editor editor = preferences.edit();
-                        editor.putString(KEY_APP_RATE_DATE_STRING, LocalDate.now().toString(DatabaseHelper.DB_DATE_FORMATTER));
-                        editor.apply();
-                    }
-                })
-                .setOnDismissListener(new DialogInterface.OnDismissListener() {
-                    @Override
-                    public void onDismiss(DialogInterface dialog) {
-                        mRateDialog = null;
+                        setAppRateStatus(preferences, FLAG_STATUS_WAITING);
                     }
                 }).show();
+    }
+
+    private void setAppRateStatus(final SharedPreferences preferences, int status) {
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(KEY_APP_RATE_DATE_STRING, LocalDate.now().toString(DatabaseHelper.DB_DATE_FORMATTER));
+
+        if (status > 1) {
+            editor.putInt(KEY_APP_RATE_STATUS_INT, status);
+        }
+
+        editor.apply();
     }
 
     private void openPlayStore() {

@@ -12,7 +12,6 @@ import com.firebase.jobdispatcher.Constraint;
 import com.firebase.jobdispatcher.FirebaseJobDispatcher;
 import com.firebase.jobdispatcher.GooglePlayDriver;
 import com.firebase.jobdispatcher.Job;
-import com.firebase.jobdispatcher.JobTrigger;
 import com.firebase.jobdispatcher.Lifetime;
 import com.firebase.jobdispatcher.RetryStrategy;
 import com.firebase.jobdispatcher.Trigger;
@@ -22,37 +21,28 @@ import org.joda.time.LocalTime;
 import org.joda.time.Seconds;
 
 import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_BACKUP_ACTIVE;
+import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_BACKUP_WIFI_ONLY;
 
 public class DriveBackupServiceHelper {
     private static final String DEFAULT_TIME = "21:00";
 
-    public static void setup(@NonNull final Context context) {
-        if (isBackupActive(context)) {
-            final LocalTime time = LocalTime.parse(DEFAULT_TIME, DatabaseHelper.DB_TIME_FORMATTER);
-
-            setup(context, getSecondsUntilTime(time));
-        }
+    public static boolean setup(@NonNull final Context context) {
+        final LocalTime time = LocalTime.parse(DEFAULT_TIME, DatabaseHelper.DB_TIME_FORMATTER);
+        return setup(context, getSecondsUntilTime(time), isWaitForWiFi(context));
     }
 
-    public static void setupImmediate(@NonNull final Context context) {
-        if (isBackupActive(context)) {
-            setup(context, -1);
-        }
+    public static boolean setupImmediate(@NonNull final Context context) {
+        return setup(context, -1, false);
     }
 
-    private static void setup(@NonNull final Context context, final int timeInSeconds) {
+    private static boolean setup(@NonNull final Context context, final int timeInSeconds, final boolean waitUnmeteredNetwork) {
+        if (!isBackupActive(context)) {
+            return false;
+        }
+
         FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(context));
 
-        //Bundle myExtrasBundle = new Bundle();
-        //myExtrasBundle.putString("some_key", "some_value");
-        JobTrigger trigger;
-        if (timeInSeconds >= 0) {
-            trigger = Trigger.executionWindow(timeInSeconds, timeInSeconds + 1800);
-        } else {
-            trigger = Trigger.NOW;
-        }
-
-        Job myJob = dispatcher.newJobBuilder()
+        Job.Builder obBuilder = dispatcher.newJobBuilder()
                 // the JobService that will be called
                 .setService(DriveBackupService.class)
                 // uniquely identifies the job
@@ -61,31 +51,39 @@ public class DriveBackupServiceHelper {
                 .setRecurring(false)
                 // don't persist past a device reboot
                 .setLifetime(Lifetime.UNTIL_NEXT_BOOT)
-                // start between 0 and 60 seconds from now
-                .setTrigger(trigger)
                 // overwrite an existing job with the same tag
                 .setReplaceCurrent(true)
                 // retry with exponential backoff
-                .setRetryStrategy(RetryStrategy.DEFAULT_EXPONENTIAL)
-                // constraints that need to be satisfied for the job to run
-                .setConstraints(
-                        // only run on an unmetered network
-                        Constraint.ON_UNMETERED_NETWORK
-                )
-                //.setExtras(myExtrasBundle)
-                .build();
+                .setRetryStrategy(RetryStrategy.DEFAULT_EXPONENTIAL);
 
-        dispatcher.schedule(myJob);
+        if (waitUnmeteredNetwork) {
+            // only run on an unmetered network
+            obBuilder.addConstraint(Constraint.ON_UNMETERED_NETWORK);
+        }
+
+        if (timeInSeconds >= 0) {
+            // Run after selected time and any time in one hour
+            obBuilder.setTrigger(Trigger.executionWindow(timeInSeconds, timeInSeconds + 1800));
+        } else {
+            obBuilder.setTrigger(Trigger.NOW);
+        }
+
+        return dispatcher.schedule(obBuilder.build()) == FirebaseJobDispatcher.SCHEDULE_RESULT_SUCCESS;
     }
 
-    public static void cancel(@NonNull final Context context) {
+    public static boolean cancel(@NonNull final Context context) {
         FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(context));
-        dispatcher.cancel(DailyReminderService.TAG);
+        return dispatcher.cancel(DailyReminderService.TAG) == FirebaseJobDispatcher.CANCEL_RESULT_SUCCESS;
     }
 
     private static boolean isBackupActive(@NonNull final Context context) {
         final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         return preferences.getBoolean(KEY_BACKUP_ACTIVE, false);
+    }
+
+    private static boolean isWaitForWiFi(@NonNull final Context context) {
+        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return preferences.getBoolean(KEY_BACKUP_WIFI_ONLY, true);
     }
 
     private static int getSecondsUntilTime(@NonNull final LocalTime time) {

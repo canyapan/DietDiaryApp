@@ -1,7 +1,7 @@
 package com.canyapan.dietdiaryapp.preference;
 
 public class PreferenceKeys {
-    public static final String KEY_ID = "id";
+    public static final String KEY_UUID = "uuid";
     public static final String KEY_GENERAL_CLOCK_MODE = "general_clock_mode";
     public static final String KEY_NOTIFICATIONS_ACTIVE = "notifications_active";
     public static final String KEY_NOTIFICATIONS_DAILY_REMAINDER = "notifications_daily_remainder";
