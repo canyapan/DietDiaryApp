@@ -31,7 +31,6 @@ import android.widget.DatePicker;
 import com.canyapan.dietdiaryapp.db.DatabaseHelper;
 import com.canyapan.dietdiaryapp.db.EventHelper;
 import com.canyapan.dietdiaryapp.fragments.CalendarFragment;
-import com.canyapan.dietdiaryapp.helpers.DailyReminderServiceHelper;
 import com.canyapan.dietdiaryapp.helpers.FixedDatePickerDialog;
 import com.canyapan.dietdiaryapp.models.Event;
 import com.canyapan.dietdiaryapp.preference.PreferenceKeys;
@@ -169,8 +168,6 @@ public class MainActivity extends AppCompatActivity implements
 
             mCalendarFragmentRef = new WeakReference<>(calendarFragment);
         }
-
-        DailyReminderServiceHelper.setup(MainActivity.this);
     }
 
     @Override

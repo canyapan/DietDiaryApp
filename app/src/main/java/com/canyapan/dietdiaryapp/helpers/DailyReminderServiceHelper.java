@@ -26,11 +26,14 @@ public class DailyReminderServiceHelper {
     private static final String DEFAULT_TIME = "19:00";
 
     public static void setup(@NonNull final Context context) {
-        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        if (preferences.getBoolean(KEY_NOTIFICATIONS_ACTIVE, false)
-                && preferences.getBoolean(KEY_NOTIFICATIONS_DAILY_REMAINDER, false)) {
+        setup(context, PreferenceManager.getDefaultSharedPreferences(context));
+    }
+
+    public static void setup(@NonNull final Context context, final SharedPreferences sharedPreferences) {
+        if (sharedPreferences.getBoolean(KEY_NOTIFICATIONS_ACTIVE, false)
+                && sharedPreferences.getBoolean(KEY_NOTIFICATIONS_DAILY_REMAINDER, false)) {
             final LocalTime time = LocalTime.parse(
-                    preferences.getString(KEY_NOTIFICATIONS_DAILY_REMAINDER_TIME, DEFAULT_TIME),
+                    sharedPreferences.getString(KEY_NOTIFICATIONS_DAILY_REMAINDER_TIME, DEFAULT_TIME),
                     DatabaseHelper.DB_TIME_FORMATTER);
 
             setup(context, getSecondsUntilTime(time));

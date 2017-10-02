@@ -2,6 +2,7 @@ package com.canyapan.dietdiaryapp.helpers;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.preference.PreferenceManager;
 
@@ -20,6 +21,7 @@ import org.joda.time.LocalDateTime;
 import org.joda.time.LocalTime;
 import org.joda.time.Seconds;
 
+import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_APP_ID;
 import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_BACKUP_ACTIVE;
 import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_BACKUP_WIFI_ONLY;
 
@@ -40,6 +42,9 @@ public class DriveBackupServiceHelper {
             return false;
         }
 
+        Bundle extras = new Bundle();
+        extras.putString(KEY_APP_ID, getAppID(context)); // app ID will be needed to set backup file name
+
         FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(context));
 
         Job.Builder obBuilder = dispatcher.newJobBuilder()
@@ -54,7 +59,9 @@ public class DriveBackupServiceHelper {
                 // overwrite an existing job with the same tag
                 .setReplaceCurrent(true)
                 // retry with exponential backoff
-                .setRetryStrategy(RetryStrategy.DEFAULT_EXPONENTIAL);
+                .setRetryStrategy(RetryStrategy.DEFAULT_EXPONENTIAL)
+                // attach additional information
+                .setExtras(extras);
 
         if (waitUnmeteredNetwork) {
             // only run on an unmetered network
@@ -84,6 +91,11 @@ public class DriveBackupServiceHelper {
     private static boolean isWaitForWiFi(@NonNull final Context context) {
         final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         return preferences.getBoolean(KEY_BACKUP_WIFI_ONLY, true);
+    }
+
+    private static String getAppID(@NonNull final Context context) {
+        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return preferences.getString(KEY_APP_ID, null);
     }
 
     private static int getSecondsUntilTime(@NonNull final LocalTime time) {

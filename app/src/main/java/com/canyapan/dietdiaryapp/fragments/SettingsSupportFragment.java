@@ -3,6 +3,7 @@ package com.canyapan.dietdiaryapp.fragments;
 import android.Manifest;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -24,26 +25,26 @@ import com.canyapan.dietdiaryapp.helpers.DateTimeHelper;
 import com.canyapan.dietdiaryapp.helpers.DriveBackupServiceHelper;
 import com.canyapan.dietdiaryapp.preference.TimePreferenceCompat;
 import com.canyapan.dietdiaryapp.preference.TimePreferenceDialogFragmentCompat;
-import com.canyapan.dietdiaryapp.utils.Base62;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.drive.Drive;
 import com.google.android.gms.drive.DriveApi;
-import com.google.android.gms.drive.DriveFolder;
 import com.google.android.gms.drive.Metadata;
-import com.google.android.gms.drive.MetadataChangeSet;
+import com.google.android.gms.drive.query.Filters;
+import com.google.android.gms.drive.query.Query;
+import com.google.android.gms.drive.query.SearchableField;
+import com.google.android.gms.drive.query.SortOrder;
+import com.google.android.gms.drive.query.SortableField;
 
-import org.joda.time.DateTime;
 import org.joda.time.LocalTime;
 
 import java.lang.ref.WeakReference;
-import java.math.BigInteger;
 import java.util.Locale;
-import java.util.Random;
 
 import static android.app.Activity.RESULT_OK;
+import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_APP_ID;
 import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_BACKUP_ACTIVE;
 import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_BACKUP_FREQUENCY;
 import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_BACKUP_NOW;
@@ -183,63 +184,45 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
     public void onConnected(@Nullable Bundle bundle) {
         Log.d(TAG, "Drive API connected.");
 
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String appID = preferences.getString(KEY_APP_ID, null);
+
+        // Get backup files from drive.
+        SortOrder sortOrder = new SortOrder.Builder()
+                .addSortDescending(SortableField.CREATED_DATE)
+                .build();
+
+        Query query = new Query.Builder()
+                .addFilter(
+                        Filters.and(
+                                Filters.eq(SearchableField.MIME_TYPE, "application/zip"),
+                                Filters.contains(SearchableField.TITLE, "backup."),
+                                Filters.contains(SearchableField.TITLE, ".zip"),
+                                Filters.not(Filters.contains(SearchableField.TITLE, appID))
+                        )
+                )
+                .setSortOrder(sortOrder)
+                .build();
+
         Drive.DriveApi.getAppFolder(mGoogleApiClientRef.get())
-                .listChildren(mGoogleApiClientRef.get())
+                .queryChildren(mGoogleApiClientRef.get(), query)
                 .setResultCallback(new ResultCallback<DriveApi.MetadataBufferResult>() {
                     @Override
                     public void onResult(@NonNull DriveApi.MetadataBufferResult metadataBufferResult) {
                         if (!metadataBufferResult.getStatus().isSuccess()) {
-                            Log.e(TAG, "List dirs failed. " + metadataBufferResult.getStatus().getStatusMessage());
+                            Log.e(TAG, "Cannot query current backups. " + metadataBufferResult.getStatus().getStatusMessage());
                             return;
                         }
 
-                        if (metadataBufferResult.getMetadataBuffer().getCount() == 0) {
-                            String uid = Base62.encode( // This will generate a time based alphanumeric 10 char value.
-                                    BigInteger.valueOf(DateTime.now().getMillis())                  // Time
-                                            .multiply(BigInteger.valueOf(10000))                    // Push 4 digit left
-                                            .add(BigInteger.valueOf(new Random().nextInt(9999)))    // Rand 0000:9999
-                            );
+                        if (metadataBufferResult.getMetadataBuffer().getCount() != 0) {
+                            //TODO show user if they want to import any of these
 
-                            MetadataChangeSet newDir = new MetadataChangeSet.Builder()
-                                    .setTitle(uid)
-                                    .build();
-
-                            Drive.DriveApi.getAppFolder(mGoogleApiClientRef.get())
-                                    .createFolder(mGoogleApiClientRef.get(), newDir)
-                                    .setResultCallback(new ResultCallback<DriveFolder.DriveFolderResult>() {
-                                        @Override
-                                        public void onResult(@NonNull DriveFolder.DriveFolderResult driveFolderResult) {
-                                            if (!driveFolderResult.getStatus().isSuccess()) {
-                                                Log.e(TAG, "Create drive folder failed. " + driveFolderResult.getStatus().getStatusMessage());
-                                                return;
-                                            }
-
-                                            Log.d(TAG, "FOLDER CREATED " + driveFolderResult.getDriveFolder().getDriveId());
-                                        }
-                                    });
-
-
-                        } else {
                             for (Metadata m : metadataBufferResult.getMetadataBuffer()) {
-                                Log.d(TAG, m.getTitle() + " " + String.valueOf(m.isFolder()));
+                                Log.d(TAG, m.getTitle());
                             }
+
+                            //TODO import data if user choose one
                         }
-
-                        /*// Get backup files from drive.
-                        SortOrder sortOrder = new SortOrder.Builder()
-                                .addSortDescending(SortableField.CREATED_DATE)
-                                .build();
-
-                        Query query = new Query.Builder()
-                                .addFilter(Filters.and(
-                                        Filters.eq(SearchableField.MIME_TYPE, "application/zip"),
-                                        Filters.contains(SearchableField.TITLE, "backup.zip")))
-                                .setSortOrder(sortOrder)
-                                .build();
-
-                        Drive.DriveApi.getAppFolder(mGoogleApiClientRef.get())
-                                .queryChildren(mGoogleApiClientRef.get(), query)
-                                .setResultCallback(this);*/
                     }
                 });
 

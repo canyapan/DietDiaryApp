@@ -45,6 +45,7 @@ import java.util.zip.CRC32;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_APP_ID;
 import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_BACKUP_NOW;
 
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -60,15 +61,20 @@ public class DriveBackupService extends JobService implements GoogleApiClient.Co
 
     private WeakReference<GoogleApiClient> mGoogleApiClientRef = null;
     private WeakReference<JobParameters> mJobParameters = null;
-    private WeakReference<File> mBackupFile = null;
+    private File mBackupFile = null;
+    private String mAppId = null;
 
     @Override
     public boolean onStartJob(JobParameters jobParameters) {
         Log.d(TAG, "Job started");
         mJobParameters = new WeakReference<>(jobParameters);
 
+        if (null != jobParameters.getExtras()) {
+            mAppId = jobParameters.getExtras().getString(KEY_APP_ID);
+        }
+
         try {
-            mBackupFile = new WeakReference<>(createBackupData());
+            mBackupFile = createBackupData();
 
             mGoogleApiClientRef = new WeakReference<>(getGoogleApiClient());
             connectGoogleApiClient();
@@ -248,8 +254,8 @@ public class DriveBackupService extends JobService implements GoogleApiClient.Co
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Log.e(TAG, "Unable to connect drive. Message : " + connectionResult.getErrorMessage());
 
-        if (null != mBackupFile && null != mBackupFile.get()) {
-            if (!mBackupFile.get().delete()) {
+        if (null != mBackupFile) {
+            if (!mBackupFile.delete()) {
                 Log.e(TAG, "Unable to delete compressed backup data.");
             }
         }
@@ -266,6 +272,11 @@ public class DriveBackupService extends JobService implements GoogleApiClient.Co
             return;
         }
 
+        DriveApi.MetadataBufferResult currentBackupFilesInDriveMetadata =
+                Drive.DriveApi.getAppFolder(mGoogleApiClientRef.get())
+                        .listChildren(mGoogleApiClientRef.get()).await();
+
+        // Compress and write backup into Drive AppFolder
         OutputStream os = null;
         try {
             os = driveContentsResult.getDriveContents().getOutputStream();
@@ -274,8 +285,8 @@ public class DriveBackupService extends JobService implements GoogleApiClient.Co
         } catch (IOException e) {
             Log.e(TAG, "Failed to write backup data to drive", e);
 
-            if (null != mBackupFile && null != mBackupFile.get()) {
-                if (!mBackupFile.get().delete()) {
+            if (null != mBackupFile) {
+                if (!mBackupFile.delete()) {
                     Log.e(TAG, "Unable to delete compressed backup data.");
                 }
             }
@@ -293,35 +304,27 @@ public class DriveBackupService extends JobService implements GoogleApiClient.Co
         }
 
         MetadataChangeSet changeSet = new MetadataChangeSet.Builder()
-                .setTitle("backup.zip")
+                .setTitle(MessageFormat.format("backup.{0}.zip", mAppId))
                 .setMimeType("application/zip")
                 .build();
 
-        DriveApi.MetadataBufferResult result = Drive.DriveApi.getAppFolder(mGoogleApiClientRef.get())
-                .listChildren(mGoogleApiClientRef.get()).await();
-
-        for (Metadata m : result.getMetadataBuffer()) {
-
-            m.getDriveId().asDriveFile().delete(mGoogleApiClientRef.get());
-
-        }
-
-        Drive.DriveApi.getAppFolder(mGoogleApiClientRef.get())
+        DriveFolder.DriveFileResult fileResult = Drive.DriveApi.getAppFolder(mGoogleApiClientRef.get())
                 .createFile(mGoogleApiClientRef.get(), changeSet, driveContentsResult.getDriveContents())
-                .setResultCallback(
-                        new ResultCallback<DriveFolder.DriveFileResult>() {
-                            @Override
-                            public void onResult(@NonNull DriveFolder.DriveFileResult driveFileResult) {
-                                if (driveFileResult.getStatus().isSuccess()) {
-                                    Log.d(TAG, "Drive file created " + driveFileResult.getDriveFile().getDriveId().encodeToString());
-                                    finishJob(true);
-                                } else {
-                                    Log.e(TAG, "Error while trying to create new file contents. Message : " + driveFileResult.getStatus().getStatusMessage());
-                                    finishJob();
-                                }
-                            }
-                        }
-                );
+                .await();
+
+        if (fileResult.getStatus().isSuccess()) {
+            Log.d(TAG, "Drive file created " + fileResult.getDriveFile().getDriveId().encodeToString());
+
+            // Delete old backup(s)
+            for (Metadata m : currentBackupFilesInDriveMetadata.getMetadataBuffer()) {
+                m.getDriveId().asDriveFile().delete(mGoogleApiClientRef.get());
+            }
+
+            finishJob(true);
+        } else {
+            Log.e(TAG, "Error while trying to create new file contents. Message : " + fileResult.getStatus().getStatusMessage());
+            finishJob();
+        }
     }
 
     private void setLastBackupTime() {
@@ -333,7 +336,7 @@ public class DriveBackupService extends JobService implements GoogleApiClient.Co
     }
 
     private void compressBackupDataToStream(OutputStream outputStream) throws IOException {
-        if (null == mBackupFile || null == mBackupFile.get() || !mBackupFile.get().exists()) {
+        if (null == mBackupFile || !mBackupFile.exists()) {
             throw new IOException("Backup file is gone.");
         }
 
@@ -341,14 +344,14 @@ public class DriveBackupService extends JobService implements GoogleApiClient.Co
         ZipOutputStream zipOutputStream = null;
 
         try {
-            inputStream = new FileInputStream(mBackupFile.get());
+            inputStream = new FileInputStream(mBackupFile);
             zipOutputStream = new ZipOutputStream(outputStream);
 
             zipOutputStream.setLevel(6);
 
             final byte[] buffer = new byte[1024];
 
-            final ZipEntry zipEntry = new ZipEntry(mBackupFile.get().getName());
+            final ZipEntry zipEntry = new ZipEntry(mBackupFile.getName());
             zipEntry.setSize((long) buffer.length);
 
             zipOutputStream.putNextEntry(zipEntry);
