@@ -39,7 +39,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.lang.ref.WeakReference;
 import java.text.MessageFormat;
 import java.util.zip.CRC32;
 import java.util.zip.ZipEntry;
@@ -59,24 +58,29 @@ public class DriveBackupService extends JobService implements GoogleApiClient.Co
     private static final String KEY_TITLE = "Title";
     private static final String KEY_DESC = "Description";
 
-    private WeakReference<GoogleApiClient> mGoogleApiClientRef = null;
-    private WeakReference<JobParameters> mJobParameters = null;
+    private JobParameters mJobParameters = null;
+    private GoogleApiClient mGoogleApiClient = null;
     private File mBackupFile = null;
     private String mAppId = null;
 
     @Override
     public boolean onStartJob(JobParameters jobParameters) {
         Log.d(TAG, "Job started");
-        mJobParameters = new WeakReference<>(jobParameters);
+        mJobParameters = jobParameters;
 
         if (null != jobParameters.getExtras()) {
             mAppId = jobParameters.getExtras().getString(KEY_APP_ID);
         }
 
+        if (null == mAppId) {
+            Log.e(TAG, "AppId is null");
+            return false;
+        }
+
         try {
             mBackupFile = createBackupData();
 
-            mGoogleApiClientRef = new WeakReference<>(getGoogleApiClient());
+            mGoogleApiClient = getGoogleApiClient();
             connectGoogleApiClient();
 
             return true;
@@ -92,13 +96,17 @@ public class DriveBackupService extends JobService implements GoogleApiClient.Co
     }
 
     private void finishJob(boolean isSuccessful) {
+        if (null != mBackupFile) {
+            if (!mBackupFile.delete()) {
+                Log.e(TAG, "Unable to delete compressed backup data.");
+            }
+        }
+
         if (isSuccessful) {
             setLastBackupTime();
         }
 
-        if (null != mJobParameters && null != mJobParameters.get()) {
-            jobFinished(mJobParameters.get(), false);
-        }
+        jobFinished(mJobParameters, false);
     }
 
     private File createBackupData() throws IOException {
@@ -215,9 +223,9 @@ public class DriveBackupService extends JobService implements GoogleApiClient.Co
     }
 
     private void connectGoogleApiClient() {
-        if (null != mGoogleApiClientRef && null != mGoogleApiClientRef.get()) {
-            if (!mGoogleApiClientRef.get().isConnecting() && !mGoogleApiClientRef.get().isConnected()) {
-                mGoogleApiClientRef.get().connect();
+        if (null != mGoogleApiClient) {
+            if (!mGoogleApiClient.isConnecting() && !mGoogleApiClient.isConnected()) {
+                mGoogleApiClient.connect();
             }
         }
     }
@@ -226,9 +234,9 @@ public class DriveBackupService extends JobService implements GoogleApiClient.Co
     public boolean onStopJob(JobParameters jobParameters) {
         Log.d(TAG, "Job stopped.");
 
-        if (null != mGoogleApiClientRef && null != mGoogleApiClientRef.get()) {
-            if (mGoogleApiClientRef.get().isConnecting() || mGoogleApiClientRef.get().isConnected()) {
-                mGoogleApiClientRef.get().disconnect();
+        if (null != mGoogleApiClient) {
+            if (mGoogleApiClient.isConnecting() || mGoogleApiClient.isConnected()) {
+                mGoogleApiClient.disconnect();
             }
         }
 
@@ -239,8 +247,8 @@ public class DriveBackupService extends JobService implements GoogleApiClient.Co
     public void onConnected(@Nullable Bundle bundle) {
         Log.d(TAG, "Drive API connected.");
 
-        if (null != mGoogleApiClientRef && null != mGoogleApiClientRef.get()) {
-            Drive.DriveApi.newDriveContents(mGoogleApiClientRef.get())
+        if (null != mGoogleApiClient) {
+            Drive.DriveApi.newDriveContents(mGoogleApiClient)
                     .setResultCallback(this);
         }
     }
@@ -253,12 +261,6 @@ public class DriveBackupService extends JobService implements GoogleApiClient.Co
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Log.e(TAG, "Unable to connect drive. Message : " + connectionResult.getErrorMessage());
-
-        if (null != mBackupFile) {
-            if (!mBackupFile.delete()) {
-                Log.e(TAG, "Unable to delete compressed backup data.");
-            }
-        }
 
         finishJob();
     }
@@ -273,23 +275,17 @@ public class DriveBackupService extends JobService implements GoogleApiClient.Co
         }
 
         DriveApi.MetadataBufferResult currentBackupFilesInDriveMetadata =
-                Drive.DriveApi.getAppFolder(mGoogleApiClientRef.get())
-                        .listChildren(mGoogleApiClientRef.get()).await();
+                Drive.DriveApi.getAppFolder(mGoogleApiClient)
+                        .listChildren(mGoogleApiClient).await();
 
         // Compress and write backup into Drive AppFolder
         OutputStream os = null;
         try {
             os = driveContentsResult.getDriveContents().getOutputStream();
-            compressBackupDataToStream(os);
+            compressBackupDataIntoStream(os);
 
         } catch (IOException e) {
             Log.e(TAG, "Failed to write backup data to drive", e);
-
-            if (null != mBackupFile) {
-                if (!mBackupFile.delete()) {
-                    Log.e(TAG, "Unable to delete compressed backup data.");
-                }
-            }
 
             finishJob();
         } finally {
@@ -308,8 +304,8 @@ public class DriveBackupService extends JobService implements GoogleApiClient.Co
                 .setMimeType("application/zip")
                 .build();
 
-        DriveFolder.DriveFileResult fileResult = Drive.DriveApi.getAppFolder(mGoogleApiClientRef.get())
-                .createFile(mGoogleApiClientRef.get(), changeSet, driveContentsResult.getDriveContents())
+        DriveFolder.DriveFileResult fileResult = Drive.DriveApi.getAppFolder(mGoogleApiClient)
+                .createFile(mGoogleApiClient, changeSet, driveContentsResult.getDriveContents())
                 .await();
 
         if (fileResult.getStatus().isSuccess()) {
@@ -317,7 +313,7 @@ public class DriveBackupService extends JobService implements GoogleApiClient.Co
 
             // Delete old backup(s)
             for (Metadata m : currentBackupFilesInDriveMetadata.getMetadataBuffer()) {
-                m.getDriveId().asDriveFile().delete(mGoogleApiClientRef.get());
+                m.getDriveId().asDriveFile().delete(mGoogleApiClient);
             }
 
             finishJob(true);
@@ -335,9 +331,9 @@ public class DriveBackupService extends JobService implements GoogleApiClient.Co
         editor.apply();
     }
 
-    private void compressBackupDataToStream(OutputStream outputStream) throws IOException {
+    private void compressBackupDataIntoStream(final OutputStream outputStream) throws IOException {
         if (null == mBackupFile || !mBackupFile.exists()) {
-            throw new IOException("Backup file is gone.");
+            throw new IOException("Backup file is gone."); // :S
         }
 
         InputStream inputStream = null;

@@ -10,6 +10,7 @@ public class PreferenceKeys {
     public static final String KEY_BACKUP_FREQUENCY = "backup_frequency";
     public static final String KEY_BACKUP_WIFI_ONLY = "backup_wifi_only";
     public static final String KEY_BACKUP_NOW = "backup_now";
+    public static final String KEY_BACKUP_FILE_DRIVE_ID = "backup_file_drive_id";
 
     private PreferenceKeys() {
     }

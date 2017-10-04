@@ -41,11 +41,15 @@ import com.google.android.gms.drive.query.SortableField;
 import org.joda.time.LocalTime;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import static android.app.Activity.RESULT_OK;
 import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_APP_ID;
 import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_BACKUP_ACTIVE;
+import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_BACKUP_FILE_DRIVE_ID;
 import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_BACKUP_FREQUENCY;
 import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_BACKUP_NOW;
 import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_GENERAL_CLOCK_MODE;
@@ -54,7 +58,7 @@ import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_NOTIFICATI
 import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_NOTIFICATIONS_DAILY_REMAINDER_TIME;
 
 public class SettingsSupportFragment extends PreferenceFragmentCompat
-        implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, Preference.OnPreferenceChangeListener, ResultCallback<DriveApi.MetadataBufferResult> {
+        implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, Preference.OnPreferenceChangeListener {
 
     private static final String TAG = "Settings";
     private static final String DIALOG_FRAGMENT_TAG =
@@ -186,51 +190,67 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         String appID = preferences.getString(KEY_APP_ID, null);
+        String driveFileID = preferences.getString(KEY_BACKUP_FILE_DRIVE_ID, null);
 
-        // Get backup files from drive.
-        SortOrder sortOrder = new SortOrder.Builder()
-                .addSortDescending(SortableField.CREATED_DATE)
-                .build();
+        if (null == driveFileID) { // This is the first time connecting to drive
+            // 1- Check drive contents
+            // 2- Ask user to choose a backup to restore if found any
 
-        Query query = new Query.Builder()
-                .addFilter(
-                        Filters.and(
-                                Filters.eq(SearchableField.MIME_TYPE, "application/zip"),
-                                Filters.contains(SearchableField.TITLE, "backup."),
-                                Filters.contains(SearchableField.TITLE, ".zip"),
-                                Filters.not(Filters.contains(SearchableField.TITLE, appID))
-                        )
-                )
-                .setSortOrder(sortOrder)
-                .build();
+            // Get backup files from drive.
+            SortOrder sortOrder = new SortOrder.Builder()
+                    .addSortDescending(SortableField.CREATED_DATE)
+                    .build();
 
-        Drive.DriveApi.getAppFolder(mGoogleApiClientRef.get())
-                .queryChildren(mGoogleApiClientRef.get(), query)
-                .setResultCallback(new ResultCallback<DriveApi.MetadataBufferResult>() {
-                    @Override
-                    public void onResult(@NonNull DriveApi.MetadataBufferResult metadataBufferResult) {
-                        if (!metadataBufferResult.getStatus().isSuccess()) {
-                            Log.e(TAG, "Cannot query current backups. " + metadataBufferResult.getStatus().getStatusMessage());
-                            return;
-                        }
+            Query query = new Query.Builder()
+                    .addFilter(
+                            Filters.and(
+                                    Filters.eq(SearchableField.MIME_TYPE, "application/zip"),
+                                    Filters.contains(SearchableField.TITLE, "backup."),
+                                    Filters.contains(SearchableField.TITLE, ".zip"),
+                                    Filters.not(Filters.contains(SearchableField.TITLE, appID))
+                            )
+                    )
+                    .setSortOrder(sortOrder)
+                    .build();
 
-                        if (metadataBufferResult.getMetadataBuffer().getCount() != 0) {
-                            //TODO show user if they want to import any of these
-
-                            for (Metadata m : metadataBufferResult.getMetadataBuffer()) {
-                                Log.d(TAG, m.getTitle());
+            Drive.DriveApi.getAppFolder(mGoogleApiClientRef.get())
+                    .queryChildren(mGoogleApiClientRef.get(), query)
+                    .setResultCallback(new ResultCallback<DriveApi.MetadataBufferResult>() {
+                        @Override
+                        public void onResult(@NonNull DriveApi.MetadataBufferResult metadataBufferResult) {
+                            if (!metadataBufferResult.getStatus().isSuccess()) {
+                                Log.e(TAG, "Cannot query current backups. " + metadataBufferResult.getStatus().getStatusMessage());
+                                return;
                             }
 
-                            //TODO import data if user choose one
-                        }
-                    }
-                });
+                            if (metadataBufferResult.getMetadataBuffer().getCount() != 0) {
+                                // Found some backup files saved in the drive.
+                                // show user if they want to restore from any of these backups
 
-        // Activate the drive backup.
-        final SwitchPreferenceCompat backupActivePref = (SwitchPreferenceCompat) findPreference(KEY_BACKUP_ACTIVE);
-        if (!backupActivePref.isChecked()) {
-            backupActivePref.setChecked(true);
+                                List<DriveFile> files = new ArrayList<>(metadataBufferResult.getMetadataBuffer().getCount());
+                                for (Metadata m : metadataBufferResult.getMetadataBuffer()) {
+                                    files.add(new DriveFile(m.getDriveId().encodeToString(), m.getTitle(), m.getCreatedDate(), m.getModifiedDate()));
+                                    Log.d(TAG, String.format(Locale.getDefault(), "%s %,.2fKB", m.getTitle(), (m.getFileSize() / 1024f)));
+                                }
+
+                                showSelectDriveBackupDialog(files);
+                            } else {
+                                // No backup found.. Activate the drive backup.
+                                final SwitchPreferenceCompat backupActivePref = (SwitchPreferenceCompat) findPreference(KEY_BACKUP_ACTIVE);
+                                if (!backupActivePref.isChecked()) {
+                                    backupActivePref.setChecked(true);
+                                }
+                            }
+                        }
+                    });
         }
+    }
+
+    private void showSelectDriveBackupDialog(List<DriveFile> files) {
+        // Show a dialog to get user's choice
+
+
+        //TODO import data if user choose one
     }
 
     @Override
@@ -376,23 +396,17 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
         }
     }
 
-    @Override
-    public void onResult(@NonNull DriveApi.MetadataBufferResult metadataBufferResult) {
-        if (!metadataBufferResult.getStatus().isSuccess()) {
-            Toast.makeText(getContext(), R.string.pref_backup_unable_to_list_drive_backups, Toast.LENGTH_LONG).show();
-            return;
+    private class DriveFile {
+        public String mId;
+        public String mTitle;
+        public Date mCreationDate;
+        public Date mModificationDate;
+
+        DriveFile(String id, String title, Date creationDate, Date modificationDate) {
+            mId = id;
+            mTitle = title;
+            mCreationDate = creationDate;
+            mModificationDate = modificationDate;
         }
-
-
-        long size = 0; // total backup size
-        for (Metadata m : metadataBufferResult.getMetadataBuffer()) {
-            Log.d(TAG, m.getTitle() + " " + m.getFileSize() + " bytes");
-            size += m.getFileSize();
-        }
-
-        //TODO print total backup size.
-        //TODO perform actions for the found backup.
-        Toast.makeText(getContext(), String.format(Locale.getDefault(), "Total backup size %.2fMB.", size / 1024f / 1024f), Toast.LENGTH_LONG).show();
     }
-
 }

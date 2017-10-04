@@ -31,7 +31,7 @@ public class Application extends android.app.Application {
         JodaTimeAndroid.init(this);
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        if (!preferences.contains(PreferenceKeys.KEY_APP_ID)) {
+        if (null == preferences.getString(PreferenceKeys.KEY_APP_ID, null)) {
             String id = Base62.encode( // This will generate a time based alphanumeric 10 char value.
                     BigInteger.valueOf(DateTime.now().getMillis())                  // Time
                             .multiply(BigInteger.valueOf(10000))                    // Push 4 digit left
@@ -44,5 +44,6 @@ public class Application extends android.app.Application {
         }
 
         DailyReminderServiceHelper.setup(this, preferences);
+        // TODO SETUP Drive Backup Service
     }
 }
