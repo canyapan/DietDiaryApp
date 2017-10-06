@@ -2,10 +2,14 @@ package com.canyapan.dietdiaryapp.db;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.support.v7.preference.PreferenceManager;
 import android.util.Log;
+
+import com.canyapan.dietdiaryapp.preference.PreferenceKeys;
 
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -22,7 +26,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             DBC_EVENT_DESC = "[Description]";
     private static final String TAG = "DatabaseHelper";
     private static final String DATABASE_NAME = "Events.db";
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 6;
     private static final String SQL_CREATE_DBT_EVENT =
             "CREATE TABLE " + DBT_EVENT + " (" +
                     DBC_EVENT_DATE + " DATE NOT NULL, " +
@@ -35,8 +39,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String SQL_CREATE_DBI_EVENT_TYPE =
             "CREATE INDEX [EventTypeIndex] ON " + DBT_EVENT + " (" + DBC_EVENT_TYPE + " ASC);";
 
+    private Context mContext = null;
+
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        mContext = context;
     }
 
     @Override
@@ -146,6 +153,32 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 }
                 //db.execSQL("ALTER TABLE [Event]....;");
                 //db.delete(DBT_EVENT, null, null); // DELETE EVERYTHING!!!
+                break;
+            case 5:
+                // Settings keys has been changed. And this is the easiest way to apply this for the previous versions.
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(mContext);
+                SharedPreferences.Editor editor = preferences.edit();
+                if (preferences.contains("general_clock_mode")) {
+                    editor.putString(PreferenceKeys.KEY_GENERAL_CLOCK_MODE_STRING,
+                            preferences.getString("general_clock_mode", "-1"));
+                    editor.remove("general_clock_mode");
+                }
+                if (preferences.contains("notifications_active")) {
+                    editor.putBoolean(PreferenceKeys.KEY_NOTIFICATIONS_ACTIVE_BOOL,
+                            preferences.getBoolean("notifications_active", true));
+                    editor.remove("notifications_active");
+                }
+                if (preferences.contains("notifications_daily_remainder")) {
+                    editor.putBoolean(PreferenceKeys.KEY_NOTIFICATIONS_DAILY_REMAINDER_BOOL,
+                            preferences.getBoolean("notifications_daily_remainder", true));
+                    editor.remove("notifications_daily_remainder");
+                }
+                if (preferences.contains("notifications_daily_remainder_time")) {
+                    editor.putString(PreferenceKeys.KEY_NOTIFICATIONS_DAILY_REMAINDER_TIME_STRING,
+                            preferences.getString("notifications_daily_remainder_time", "19:00"));
+                    editor.remove("notifications_daily_remainder_time");
+                }
+                editor.apply();
                 break;
             default:
                 break;

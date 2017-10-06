@@ -1,6 +1,8 @@
 package com.canyapan.dietdiaryapp.fragments;
 
 import android.Manifest;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
@@ -9,14 +11,15 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v14.preference.SwitchPreference;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
-import android.support.v7.preference.PreferenceManager;
-import android.support.v7.preference.SwitchPreferenceCompat;
 import android.text.format.DateUtils;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.canyapan.dietdiaryapp.R;
@@ -48,14 +51,16 @@ import java.util.Locale;
 
 import static android.app.Activity.RESULT_OK;
 import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_APP_ID;
-import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_BACKUP_ACTIVE;
-import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_BACKUP_FILE_DRIVE_ID;
-import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_BACKUP_FREQUENCY;
-import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_BACKUP_NOW;
-import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_GENERAL_CLOCK_MODE;
-import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_NOTIFICATIONS_ACTIVE;
-import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_NOTIFICATIONS_DAILY_REMAINDER;
-import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_NOTIFICATIONS_DAILY_REMAINDER_TIME;
+import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_BACKUP_ACTIVE_BOOL;
+import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_BACKUP_FILE_DRIVE_ID_STRING;
+import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_BACKUP_FREQUENCY_STRING;
+import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_BACKUP_LAST_BACKUP_TIMESTAMP_LONG;
+import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_BACKUP_NOW_ACT;
+import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_GENERAL_CLOCK_MODE_STRING;
+import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_NOTIFICATIONS_ACTIVE_BOOL;
+import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_NOTIFICATIONS_DAILY_REMAINDER_BOOL;
+import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_NOTIFICATIONS_DAILY_REMAINDER_TIME_STRING;
+import static com.canyapan.dietdiaryapp.services.DriveBackupService.DRIVE_KEY_DEVICE_NAME;
 
 public class SettingsSupportFragment extends PreferenceFragmentCompat
         implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, Preference.OnPreferenceChangeListener {
@@ -100,13 +105,13 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
 
         addPreferencesFromResource(R.xml.settings);
 
-        bindPreferenceSummaryToValue(findPreference(KEY_GENERAL_CLOCK_MODE));
-        bindPreferenceSummaryToValue(findPreference(KEY_NOTIFICATIONS_ACTIVE));
-        bindPreferenceSummaryToValue(findPreference(KEY_NOTIFICATIONS_DAILY_REMAINDER));
-        bindPreferenceSummaryToValue(findPreference(KEY_NOTIFICATIONS_DAILY_REMAINDER_TIME));
-        bindPreferenceSummaryToValue(findPreference(KEY_BACKUP_FREQUENCY));
+        bindPreferenceSummaryToValue(findPreference(KEY_GENERAL_CLOCK_MODE_STRING));
+        bindPreferenceSummaryToValue(findPreference(KEY_NOTIFICATIONS_ACTIVE_BOOL));
+        bindPreferenceSummaryToValue(findPreference(KEY_NOTIFICATIONS_DAILY_REMAINDER_BOOL));
+        bindPreferenceSummaryToValue(findPreference(KEY_NOTIFICATIONS_DAILY_REMAINDER_TIME_STRING));
+        bindPreferenceSummaryToValue(findPreference(KEY_BACKUP_FREQUENCY_STRING));
 
-        SwitchPreferenceCompat backupActivePref = (SwitchPreferenceCompat) findPreference(KEY_BACKUP_ACTIVE);
+        SwitchPreference backupActivePref = (SwitchPreference) findPreference(KEY_BACKUP_ACTIVE_BOOL);
         backupActivePref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
@@ -144,17 +149,28 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
             // Therefore we won't try this here.
         }
 
-        Preference backupNowPref = findPreference(KEY_BACKUP_NOW);
+        Preference backupNowPref = findPreference(KEY_BACKUP_NOW_ACT);
         bindPreferenceSummaryToValue(backupNowPref);
         backupNowPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 DriveBackupServiceHelper.setupImmediate(getContext());
-                //todo setup a listener to watch changes on last backup pref
-
                 return true;
             }
         });
+        //todo setup a listener to watch changes on last backup pref
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        final DialogFragment f = (DialogFragment) getFragmentManager()
+                .findFragmentByTag(DIALOG_FRAGMENT_TAG);
+
+        if (f != null) {
+            f.setTargetFragment(this, 0);
+        }
     }
 
     @Override
@@ -177,7 +193,7 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
             final DialogFragment dialogFragment = TimePreferenceDialogFragmentCompat.newInstance(preference.getKey());
             if (dialogFragment != null) {
                 dialogFragment.setTargetFragment(this, 0);
-                dialogFragment.show(this.getFragmentManager(), DIALOG_FRAGMENT_TAG);
+                dialogFragment.show(getFragmentManager(), DIALOG_FRAGMENT_TAG);
             }
         } else {
             super.onDisplayPreferenceDialog(preference);
@@ -188,9 +204,9 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
     public void onConnected(@Nullable Bundle bundle) {
         Log.d(TAG, "Drive API connected.");
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        SharedPreferences preferences = getPreferenceManager().getSharedPreferences();
         String appID = preferences.getString(KEY_APP_ID, null);
-        String driveFileID = preferences.getString(KEY_BACKUP_FILE_DRIVE_ID, null);
+        String driveFileID = preferences.getString(KEY_BACKUP_FILE_DRIVE_ID_STRING, null);
 
         if (null == driveFileID) { // This is the first time connecting to drive
             // 1- Check drive contents
@@ -229,28 +245,63 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
 
                                 List<DriveFile> files = new ArrayList<>(metadataBufferResult.getMetadataBuffer().getCount());
                                 for (Metadata m : metadataBufferResult.getMetadataBuffer()) {
-                                    files.add(new DriveFile(m.getDriveId().encodeToString(), m.getTitle(), m.getCreatedDate(), m.getModifiedDate()));
+                                    files.add(new DriveFile(m));
                                     Log.d(TAG, String.format(Locale.getDefault(), "%s %,.2fKB", m.getTitle(), (m.getFileSize() / 1024f)));
                                 }
 
                                 showSelectDriveBackupDialog(files);
                             } else {
                                 // No backup found.. Activate the drive backup.
-                                final SwitchPreferenceCompat backupActivePref = (SwitchPreferenceCompat) findPreference(KEY_BACKUP_ACTIVE);
-                                if (!backupActivePref.isChecked()) {
-                                    backupActivePref.setChecked(true);
-                                }
+                                setDriveFileId("");
+                                activateBackup();
                             }
                         }
                     });
         }
     }
 
+    private void activateBackup() {
+        final SwitchPreference backupActivePref = (SwitchPreference) findPreference(KEY_BACKUP_ACTIVE_BOOL);
+        if (!backupActivePref.isChecked()) {
+            backupActivePref.setChecked(true);
+        }
+    }
+
+    private void setDriveFileId(String driveId) {
+        SharedPreferences preferences = getPreferenceManager().getSharedPreferences();
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(KEY_BACKUP_FILE_DRIVE_ID_STRING, driveId);
+        editor.apply();
+    }
+
     private void showSelectDriveBackupDialog(List<DriveFile> files) {
+        // TODO Show with device name like Xiaomi Mi 5
         // Show a dialog to get user's choice
+        final ArrayAdapter<DriveFile> arrayAdapter = new ArrayAdapter<>(getContext(), android.R.layout.select_dialog_singlechoice, files);
 
+        new AlertDialog.Builder(getContext())
+                .setTitle("Select a backup to restore:") // TODO
+                .setNegativeButton("Do not restore", new DialogInterface.OnClickListener() { // TODO
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        setDriveFileId("");
+                        activateBackup();
 
-        //TODO import data if user choose one
+                        dialog.dismiss();
+                    }
+                })
+                .setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        final DriveFile file = arrayAdapter.getItem(which);
+
+                        Log.d(TAG, file.getTitle() + " selected.");
+
+                        //TODO import data @file
+                        //TODO after that set setDriveFileId(file.getId());
+                    }
+                })
+                .show();
     }
 
     @Override
@@ -298,14 +349,12 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
      */
     @Override
     public boolean onPreferenceChange(Preference preference, Object value) {
-        if (preference.getKey().equals(KEY_BACKUP_NOW)) {
+        if (preference.getKey().equals(KEY_BACKUP_NOW_ACT)) {
             if (null == value) {
                 preference.setSummary(preference.getContext().getString(R.string.pref_title_backup_now_summary, preference.getContext().getString(R.string.pref_title_backup_now_summary_never)));
             } else {
                 long time;
-                if (value instanceof String) {
-                    time = Long.valueOf((String) value);
-                } else if (value instanceof Long) {
+                if (value instanceof Long) {
                     time = (long) value;
                 } else {
                     return false;
@@ -362,12 +411,20 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
         // Set the listener to watch for value changes.
         preference.setOnPreferenceChangeListener(this);
 
-        // Trigger the listener immediately with the preference's
-        // current value.
-        this.onPreferenceChange(preference,
-                PreferenceManager
-                        .getDefaultSharedPreferences(preference.getContext())
-                        .getAll().get(preference.getKey()));
+        // This is an action not a value holder. But I want to show last backup time for this one.
+        if (preference.getKey().equals(KEY_BACKUP_NOW_ACT)) {
+            this.onPreferenceChange(preference, getPreferenceManager()
+                    .getSharedPreferences()
+                    .getAll()
+                    .get(KEY_BACKUP_LAST_BACKUP_TIMESTAMP_LONG));
+            return;
+        }
+
+        // Trigger the listener immediately with the preference's current value.
+        this.onPreferenceChange(preference, getPreferenceManager()
+                .getSharedPreferences()
+                .getAll()
+                .get(preference.getKey()));
     }
 
     private GoogleApiClient getGoogleApiClient() {
@@ -397,16 +454,57 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
     }
 
     private class DriveFile {
-        public String mId;
-        public String mTitle;
-        public Date mCreationDate;
-        public Date mModificationDate;
+        private String mId;
+        private String mTitle;
+        private Date mCreationDate;
+        private Date mModificationDate;
+        private String mDeviceName;
+        private Long mSize;
 
-        DriveFile(String id, String title, Date creationDate, Date modificationDate) {
-            mId = id;
-            mTitle = title;
-            mCreationDate = creationDate;
-            mModificationDate = modificationDate;
+        DriveFile(Metadata m) {
+            mId = m.getDriveId().encodeToString();
+            mTitle = m.getTitle();
+            mCreationDate = m.getCreatedDate();
+            mModificationDate = m.getModifiedDate();
+            mDeviceName = m.getCustomProperties().get(DRIVE_KEY_DEVICE_NAME);
+            mSize = m.getFileSize();
+        }
+
+        @Override
+        public String toString() {
+            return getTitle();
+        }
+
+        public String getId() {
+            return mId;
+        }
+
+        public String getTitle() {
+            return mTitle;
+        }
+
+        public Date getCreationDate() {
+            return mCreationDate;
+        }
+
+        public Date getModificationDate() {
+            return mModificationDate;
+        }
+
+        public String getDeviceName() {
+            return mDeviceName;
+        }
+
+        public Long getSize() {
+            return mSize;
+        }
+
+        public Long getSizeInKB() {
+            return getSize() / 1024;
+        }
+
+        public Long getSizeInMB() {
+            return getSizeInKB() / 1024;
         }
     }
 }

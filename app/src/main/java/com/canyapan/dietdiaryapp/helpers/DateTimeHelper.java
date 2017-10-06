@@ -12,7 +12,7 @@ import org.joda.time.LocalTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_GENERAL_CLOCK_MODE;
+import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_GENERAL_CLOCK_MODE_STRING;
 
 public class DateTimeHelper {
     public static final DateTimeFormatter DATE_FORMAT = DateTimeFormat.shortDate();
@@ -31,7 +31,7 @@ public class DateTimeHelper {
 
     public static boolean is24HourMode(@NonNull final Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        switch (preferences.getString(KEY_GENERAL_CLOCK_MODE, "-1")) {
+        switch (preferences.getString(KEY_GENERAL_CLOCK_MODE_STRING, "-1")) {
             case "0":
                 return false;
             case "1":

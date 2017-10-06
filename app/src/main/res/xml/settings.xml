@@ -1,79 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.preference.PreferenceScreen
+<PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <android.support.v7.preference.PreferenceCategory
+    <PreferenceCategory
         android:title="@string/pref_header_general">
 
         <ListPreference
             android:defaultValue="-1"
             android:entries="@array/pref_list_clock_mode_messages"
             android:entryValues="@array/pref_list_clock_mode_values"
-            android:key="general_clock_mode"
+            android:key="General Settings - Clock Mode"
             android:title="@string/pref_title_clock_mode"
             />
 
-    </android.support.v7.preference.PreferenceCategory>
+    </PreferenceCategory>
 
-    <android.support.v7.preference.PreferenceCategory
+    <PreferenceCategory
         android:title="@string/pref_header_notifications">
 
-        <android.support.v7.preference.SwitchPreferenceCompat
+        <SwitchPreference
             android:defaultValue="true"
-            android:key="notifications_active"
+            android:key="Notification Settings - Active"
             android:title="@string/pref_title_notifications_active"
             />
 
-        <android.support.v7.preference.SwitchPreferenceCompat
+        <SwitchPreference
             android:defaultValue="true"
-            android:dependency="notifications_active"
-            android:key="notifications_daily_remainder"
+            android:dependency="Notification Settings - Active"
+            android:key="Notification Settings - Daily Remainder - Active"
             android:summary="@string/pref_title_daily_remainder_summary"
             android:title="@string/pref_title_daily_remainder"
             />
 
         <com.canyapan.dietdiaryapp.preference.TimePreferenceCompat
             android:defaultValue="19:00"
-            android:dependency="notifications_daily_remainder"
-            android:key="notifications_daily_remainder_time"
+            android:dependency="Notification Settings - Active"
+            android:key="Notification Settings - Daily Remainder - Time"
             android:title="@string/pref_title_daily_remainder_time"
             />
 
-    </android.support.v7.preference.PreferenceCategory>
+    </PreferenceCategory>
 
-    <android.support.v7.preference.PreferenceCategory
+    <PreferenceCategory
         android:title="@string/pref_header_backup">
 
-        <android.support.v7.preference.SwitchPreferenceCompat
+        <SwitchPreference
             android:defaultValue="false"
-            android:key="backup_active"
+            android:key="Backup Settings - Active"
             android:title="@string/pref_title_backup_active"
             />
 
-        <android.support.v7.preference.ListPreference
+        <ListPreference
             android:defaultValue="0"
-            android:dependency="backup_active"
+            android:dependency="Backup Settings - Active"
             android:entries="@array/pref_list_backup_frequency"
             android:entryValues="@array/pref_list_backup_frequency_values"
-            android:key="backup_frequency"
+            android:key="Backup Settings - Frequency"
             android:title="@string/pref_title_backup_frequency"
             />
 
-        <android.support.v7.preference.SwitchPreferenceCompat
+        <SwitchPreference
             android:defaultValue="true"
-            android:dependency="backup_active"
-            android:key="backup_wifi_only"
+            android:dependency="Backup Settings - Active"
+            android:key="Backup Settings - Wifi Only"
             android:summary="@string/pref_title_backup_wifi_only_summary"
             android:title="@string/pref_title_backup_wifi_only"
             />
 
-        <android.support.v7.preference.Preference
-            android:defaultValue="true"
-            android:dependency="backup_active"
-            android:key="backup_now"
+        <Preference
+            android:dependency="Backup Settings - Active"
+            android:key="Backup Settings - Backup Now"
             android:title="@string/pref_title_backup_now"
             />
 
-    </android.support.v7.preference.PreferenceCategory>
+    </PreferenceCategory>
 
-</android.support.v7.preference.PreferenceScreen>
+</PreferenceScreen>

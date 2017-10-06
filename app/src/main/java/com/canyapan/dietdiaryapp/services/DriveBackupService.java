@@ -24,11 +24,15 @@ import com.firebase.jobdispatcher.JobService;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.drive.Drive;
 import com.google.android.gms.drive.DriveApi;
-import com.google.android.gms.drive.DriveFolder;
-import com.google.android.gms.drive.Metadata;
+import com.google.android.gms.drive.DriveContents;
+import com.google.android.gms.drive.DriveFile;
+import com.google.android.gms.drive.DriveId;
 import com.google.android.gms.drive.MetadataChangeSet;
+import com.google.android.gms.drive.metadata.CustomPropertyKey;
+import com.jaredrummler.android.device.DeviceName;
 
 import org.joda.time.DateTime;
 
@@ -45,7 +49,12 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_APP_ID;
-import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_BACKUP_NOW;
+import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_BACKUP_FILE_DRIVE_ID_STRING;
+import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_BACKUP_LAST_BACKUP_TIMESTAMP_LONG;
+import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_GENERAL_CLOCK_MODE_STRING;
+import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_NOTIFICATIONS_ACTIVE_BOOL;
+import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_NOTIFICATIONS_DAILY_REMAINDER_BOOL;
+import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_NOTIFICATIONS_DAILY_REMAINDER_TIME_STRING;
 
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class DriveBackupService extends JobService implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, ResultCallback<DriveApi.DriveContentsResult> {
@@ -58,18 +67,25 @@ public class DriveBackupService extends JobService implements GoogleApiClient.Co
     private static final String KEY_TITLE = "Title";
     private static final String KEY_DESC = "Description";
 
+    public static final CustomPropertyKey DRIVE_KEY_DEVICE_NAME = new CustomPropertyKey("DeviceName", CustomPropertyKey.PRIVATE);
+
     private JobParameters mJobParameters = null;
+    private SharedPreferences mSharedPreferences = null;
     private GoogleApiClient mGoogleApiClient = null;
     private File mBackupFile = null;
     private String mAppId = null;
+    private String mDriveId = null;
 
     @Override
     public boolean onStartJob(JobParameters jobParameters) {
         Log.d(TAG, "Job started");
         mJobParameters = jobParameters;
 
-        if (null != jobParameters.getExtras()) {
-            mAppId = jobParameters.getExtras().getString(KEY_APP_ID);
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+        if (null != mSharedPreferences) {
+            mAppId = mSharedPreferences.getString(KEY_APP_ID, null);
+            mDriveId = mSharedPreferences.getString(KEY_BACKUP_FILE_DRIVE_ID_STRING, null);
         }
 
         if (null == mAppId) {
@@ -78,7 +94,9 @@ public class DriveBackupService extends JobService implements GoogleApiClient.Co
         }
 
         try {
-            mBackupFile = createBackupData();
+            // Write file in the app cache dir.
+            mBackupFile = new File(getCacheDir(), "backup.json");
+            writeBackupData();
 
             mGoogleApiClient = getGoogleApiClient();
             connectGoogleApiClient();
@@ -86,9 +104,18 @@ public class DriveBackupService extends JobService implements GoogleApiClient.Co
             return true;
         } catch (IOException e) {
             Log.e(TAG, "EXCEPTION", e);
+            deleteBackupFile();
         }
 
         return false;
+    }
+
+    private void deleteBackupFile() {
+        if (null != mBackupFile) {
+            if (!mBackupFile.delete()) {
+                Log.e(TAG, "Unable to delete backup data.");
+            }
+        }
     }
 
     private void finishJob() {
@@ -96,11 +123,7 @@ public class DriveBackupService extends JobService implements GoogleApiClient.Co
     }
 
     private void finishJob(boolean isSuccessful) {
-        if (null != mBackupFile) {
-            if (!mBackupFile.delete()) {
-                Log.e(TAG, "Unable to delete compressed backup data.");
-            }
-        }
+        deleteBackupFile();
 
         if (isSuccessful) {
             setLastBackupTime();
@@ -109,51 +132,28 @@ public class DriveBackupService extends JobService implements GoogleApiClient.Co
         jobFinished(mJobParameters, false);
     }
 
-    private File createBackupData() throws IOException {
-        final File f = new File(getCacheDir(), "backup.json");
-
+    private void writeBackupData() throws IOException {
         OutputStreamWriter os = null;
         JsonWriter writer = null;
-        SQLiteDatabase db = null;
-        Cursor cursor = null;
         try {
-            os = new OutputStreamWriter(new FileOutputStream(f, false), "UTF-8");
+            os = new OutputStreamWriter(new FileOutputStream(mBackupFile, false), "UTF-8");
             os.write('\uFEFF'); // Unicode character, U+FEFF BYTE ORDER MARK (BOM) | https://en.wikipedia.org/wiki/Byte_order_mark
 
             writer = new JsonWriter(os);
             writer.setIndent("  ");
 
             writer.beginObject();
+
             writer.name("App").value("DietDiaryApp");
             writer.name("Ver").value(1);
-            writer.name("Events").beginArray();
 
-            Resources resources = ResourcesHelper.getEngResources(getApplicationContext());
-            final String[] types = resources.getStringArray(R.array.spinner_event_types);
-            final String[] foodTypes = resources.getStringArray(R.array.spinner_event_food_types);
-            final String[] drinkTypes = resources.getStringArray(R.array.spinner_event_drink_types);
+            writeDeviceProperties(writer);
+            writeSettings(writer);
+            writeEvents(writer);
 
-
-            DatabaseHelper dbHelper = new DatabaseHelper(getApplicationContext());
-            db = dbHelper.getReadableDatabase();
-            cursor = db.query(DatabaseHelper.DBT_EVENT, EventHelper.getDatabaseColumns(),
-                    null, null, null, null, DatabaseHelper.DBC_EVENT_DATE + "," + DatabaseHelper.DBC_EVENT_TIME + "," + DatabaseHelper.DBC_EVENT_ROW_ID);
-
-            if (cursor.moveToFirst()) {
-                final int count = cursor.getCount();
-                Log.d(BackupFragment.TAG, MessageFormat.format("Exporting {0,number,integer} records.", count));
-
-                do {
-                    write(writer, types, foodTypes, drinkTypes, EventHelper.parse(cursor));
-                } while (cursor.moveToNext());
-            }
-
-            writer.endArray();
             writer.endObject();
 
             Log.d(TAG, "Backup file created.");
-
-            return f;
         } catch (IOException e) {
             Log.e(TAG, "Backup file creation failed.");
             throw e;
@@ -177,7 +177,74 @@ public class DriveBackupService extends JobService implements GoogleApiClient.Co
                     Log.w(TAG, "Output stream cannot be closed.", e);
                 }
             }
+        }
+    }
 
+    private void writeDeviceProperties(@NonNull final JsonWriter writer) throws IOException {
+        // Write device properties
+        writer.name("Device")
+                .beginObject()
+                .name("Manufacturer").value(Build.MANUFACTURER)
+                .name("Brand").value(Build.BRAND)
+                .name("Product").value(Build.PRODUCT)
+                .name("Model").value(Build.MODEL)
+                .endObject();
+    }
+
+    private void writeSettings(@NonNull final JsonWriter writer) throws IOException {
+        // Write settings
+        writer.name("Settings").beginObject();
+
+        if (mSharedPreferences.contains(KEY_GENERAL_CLOCK_MODE_STRING)) {
+            writer.name(KEY_GENERAL_CLOCK_MODE_STRING)
+                    .value(mSharedPreferences.getString(KEY_GENERAL_CLOCK_MODE_STRING, "-1"));
+        }
+
+        if (mSharedPreferences.contains(KEY_NOTIFICATIONS_ACTIVE_BOOL)) {
+            writer.name(KEY_NOTIFICATIONS_ACTIVE_BOOL)
+                    .value(mSharedPreferences.getBoolean(KEY_NOTIFICATIONS_ACTIVE_BOOL, true));
+        }
+
+        if (mSharedPreferences.contains(KEY_NOTIFICATIONS_DAILY_REMAINDER_BOOL)) {
+            writer.name(KEY_NOTIFICATIONS_DAILY_REMAINDER_BOOL)
+                    .value(mSharedPreferences.getBoolean(KEY_NOTIFICATIONS_DAILY_REMAINDER_BOOL, true));
+        }
+
+        if (mSharedPreferences.contains(KEY_NOTIFICATIONS_DAILY_REMAINDER_TIME_STRING)) {
+            writer.name(KEY_NOTIFICATIONS_DAILY_REMAINDER_TIME_STRING)
+                    .value(mSharedPreferences.getString(KEY_NOTIFICATIONS_DAILY_REMAINDER_TIME_STRING, "19:00"));
+        }
+
+        writer.endObject();
+    }
+
+    private void writeEvents(@NonNull final JsonWriter writer) throws IOException {
+        SQLiteDatabase db = null;
+        Cursor cursor = null;
+        try {
+            Resources resources = ResourcesHelper.getEngResources(getApplicationContext());
+            final String[] types = resources.getStringArray(R.array.spinner_event_types);
+            final String[] foodTypes = resources.getStringArray(R.array.spinner_event_food_types);
+            final String[] drinkTypes = resources.getStringArray(R.array.spinner_event_drink_types);
+
+            DatabaseHelper dbHelper = new DatabaseHelper(getApplicationContext());
+            db = dbHelper.getReadableDatabase();
+            cursor = db.query(DatabaseHelper.DBT_EVENT, EventHelper.getDatabaseColumns(),
+                    null, null, null, null, DatabaseHelper.DBC_EVENT_DATE + "," + DatabaseHelper.DBC_EVENT_TIME + "," + DatabaseHelper.DBC_EVENT_ROW_ID);
+
+            writer.name("Events").beginArray();
+
+            if (cursor.moveToFirst()) {
+                final int count = cursor.getCount();
+                Log.d(BackupFragment.TAG, MessageFormat.format("Exporting {0,number,integer} records.", count));
+
+                do {
+                    writeEvent(writer, types, foodTypes, drinkTypes, EventHelper.parse(cursor));
+                } while (cursor.moveToNext());
+            }
+
+            writer.endArray();
+        } finally {
             if (null != cursor) {
                 cursor.close();
             }
@@ -188,7 +255,9 @@ public class DriveBackupService extends JobService implements GoogleApiClient.Co
         }
     }
 
-    private void write(JsonWriter writer, String[] types, String[] foodTypes, String[] drinkTypes, Event event) throws IOException {
+    private void writeEvent(@NonNull final JsonWriter writer, @NonNull final String[] types,
+                            @NonNull final String[] foodTypes, @NonNull final String[] drinkTypes,
+                            @NonNull Event event) throws IOException {
         String subType;
         switch (event.getType()) {
             case Event.TYPE_FOOD:
@@ -247,8 +316,24 @@ public class DriveBackupService extends JobService implements GoogleApiClient.Co
     public void onConnected(@Nullable Bundle bundle) {
         Log.d(TAG, "Drive API connected.");
 
+        // -> Check if driveID exists
+        // false - Create new file if not
+        // true  - Write over the current file if the drive ID exists
         if (null != mGoogleApiClient) {
-            Drive.DriveApi.newDriveContents(mGoogleApiClient)
+            if (null != mDriveId && !mDriveId.isEmpty()) {
+                DriveApi.DriveIdResult driveIdResult = Drive.DriveApi.fetchDriveId(mGoogleApiClient, mDriveId).await();
+
+                if (driveIdResult.getStatus().isSuccess()) {
+                    DriveId driveId = driveIdResult.getDriveId();
+
+                    driveId.asDriveFile().open(mGoogleApiClient, DriveFile.MODE_WRITE_ONLY, null)
+                            .setResultCallback(this);
+
+                    return;
+                }
+            }
+
+            Drive.DriveApi.newDriveContents(mGoogleApiClient) // Create a new file
                     .setResultCallback(this);
         }
     }
@@ -265,7 +350,6 @@ public class DriveBackupService extends JobService implements GoogleApiClient.Co
         finishJob();
     }
 
-    @Override
     public void onResult(@NonNull final DriveApi.DriveContentsResult driveContentsResult) {
         if (!driveContentsResult.getStatus().isSuccess()) {
             Log.e(TAG, "Error while trying to create new file contents");
@@ -274,60 +358,51 @@ public class DriveBackupService extends JobService implements GoogleApiClient.Co
             return;
         }
 
-        DriveApi.MetadataBufferResult currentBackupFilesInDriveMetadata =
-                Drive.DriveApi.getAppFolder(mGoogleApiClient)
-                        .listChildren(mGoogleApiClient).await();
+        DriveContents driveContents = driveContentsResult.getDriveContents();
 
         // Compress and write backup into Drive AppFolder
-        OutputStream os = null;
+        OutputStream outputStream = driveContents.getOutputStream();
         try {
-            os = driveContentsResult.getDriveContents().getOutputStream();
-            compressBackupDataIntoStream(os);
-
+            compressBackupDataIntoStream(outputStream);
         } catch (IOException e) {
             Log.e(TAG, "Failed to write backup data to drive", e);
 
             finishJob();
         } finally {
-            if (null != os) {
+            if (null != outputStream) {
                 try {
-                    os.flush();
-                    os.close();
+                    outputStream.flush();
+                    outputStream.close();
                 } catch (IOException e) {
                     Log.w(TAG, "Unable to closer drive OutputStream.", e);
                 }
             }
         }
 
-        MetadataChangeSet changeSet = new MetadataChangeSet.Builder()
+        MetadataChangeSet metadataChangeSet = new MetadataChangeSet.Builder()
                 .setTitle(MessageFormat.format("backup.{0}.zip", mAppId))
                 .setMimeType("application/zip")
+                .setCustomProperty(DRIVE_KEY_DEVICE_NAME, DeviceName.getDeviceName())
                 .build();
 
-        DriveFolder.DriveFileResult fileResult = Drive.DriveApi.getAppFolder(mGoogleApiClient)
-                .createFile(mGoogleApiClient, changeSet, driveContentsResult.getDriveContents())
-                .await();
+        Status status = driveContents.commit(mGoogleApiClient, metadataChangeSet).await();
 
-        if (fileResult.getStatus().isSuccess()) {
-            Log.d(TAG, "Drive file created " + fileResult.getDriveFile().getDriveId().encodeToString());
+        if (status.isSuccess()) {
+            Log.d(TAG, "Drive file created " + driveContents.getDriveId().encodeToString());
 
-            // Delete old backup(s)
-            for (Metadata m : currentBackupFilesInDriveMetadata.getMetadataBuffer()) {
-                m.getDriveId().asDriveFile().delete(mGoogleApiClient);
-            }
-
-            finishJob(true);
+            mDriveId = driveContents.getDriveId().encodeToString();
         } else {
-            Log.e(TAG, "Error while trying to create new file contents. Message : " + fileResult.getStatus().getStatusMessage());
-            finishJob();
+            Log.e(TAG, "Error while trying to create/modify file contents. Message : " + status.getStatusMessage());
         }
+
+        finishJob(status.isSuccess());
     }
 
     private void setLastBackupTime() {
         long now = DateTime.now().getMillis();
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(KEY_BACKUP_NOW, String.valueOf(now));
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        editor.putLong(KEY_BACKUP_LAST_BACKUP_TIMESTAMP_LONG, now);
+        editor.putString(KEY_BACKUP_FILE_DRIVE_ID_STRING, mDriveId);
         editor.apply();
     }
 

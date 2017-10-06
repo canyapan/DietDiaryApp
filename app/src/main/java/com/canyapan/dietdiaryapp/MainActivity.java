@@ -319,7 +319,7 @@ public class MainActivity extends AppCompatActivity implements
     //region Drive Backup
     private boolean checkDriveConnectionStatus() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        boolean backupStatus = preferences.getBoolean(PreferenceKeys.KEY_BACKUP_ACTIVE, false);
+        boolean backupStatus = preferences.getBoolean(PreferenceKeys.KEY_BACKUP_ACTIVE_BOOL, false);
 
         if (backupStatus) {
             return false; // Backup is already active.

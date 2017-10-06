@@ -14,10 +14,10 @@ import com.canyapan.dietdiaryapp.helpers.DriveBackupServiceHelper;
 
 import java.util.List;
 
-import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_BACKUP_ACTIVE;
-import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_NOTIFICATIONS_ACTIVE;
-import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_NOTIFICATIONS_DAILY_REMAINDER;
-import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_NOTIFICATIONS_DAILY_REMAINDER_TIME;
+import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_BACKUP_ACTIVE_BOOL;
+import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_NOTIFICATIONS_ACTIVE_BOOL;
+import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_NOTIFICATIONS_DAILY_REMAINDER_BOOL;
+import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_NOTIFICATIONS_DAILY_REMAINDER_TIME_STRING;
 
 public class SettingsSupportActivity extends AppCompatActivity
         implements SharedPreferences.OnSharedPreferenceChangeListener {
@@ -45,24 +45,25 @@ public class SettingsSupportActivity extends AppCompatActivity
         transaction.commit();
     }
 
+
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         final Context context = getApplicationContext();
 
         switch (key) {
-            case KEY_NOTIFICATIONS_ACTIVE:
-            case KEY_NOTIFICATIONS_DAILY_REMAINDER:
-            case KEY_NOTIFICATIONS_DAILY_REMAINDER_TIME:
-                if (sharedPreferences.getBoolean(KEY_NOTIFICATIONS_ACTIVE, false)
-                        && sharedPreferences.getBoolean(KEY_NOTIFICATIONS_DAILY_REMAINDER, false)) {
+            case KEY_NOTIFICATIONS_ACTIVE_BOOL:
+            case KEY_NOTIFICATIONS_DAILY_REMAINDER_BOOL:
+            case KEY_NOTIFICATIONS_DAILY_REMAINDER_TIME_STRING:
+                if (sharedPreferences.getBoolean(KEY_NOTIFICATIONS_ACTIVE_BOOL, false)
+                        && sharedPreferences.getBoolean(KEY_NOTIFICATIONS_DAILY_REMAINDER_BOOL, false)) {
                     DailyReminderServiceHelper.setup(context);
                 } else {
                     DailyReminderServiceHelper.cancel(context);
                 }
                 break;
-            case KEY_BACKUP_ACTIVE:
-                if (sharedPreferences.getBoolean(KEY_BACKUP_ACTIVE, false)) {
-                    DriveBackupServiceHelper.setup(context);
+            case KEY_BACKUP_ACTIVE_BOOL:
+                if (sharedPreferences.getBoolean(KEY_BACKUP_ACTIVE_BOOL, false)) {
+                    //TODO DriveBackupServiceHelper.setup(context);
                 } else {
                     DriveBackupServiceHelper.cancel(context);
                 }

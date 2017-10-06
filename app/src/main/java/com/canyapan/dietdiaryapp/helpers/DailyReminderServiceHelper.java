@@ -18,9 +18,9 @@ import org.joda.time.LocalDateTime;
 import org.joda.time.LocalTime;
 import org.joda.time.Seconds;
 
-import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_NOTIFICATIONS_ACTIVE;
-import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_NOTIFICATIONS_DAILY_REMAINDER;
-import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_NOTIFICATIONS_DAILY_REMAINDER_TIME;
+import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_NOTIFICATIONS_ACTIVE_BOOL;
+import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_NOTIFICATIONS_DAILY_REMAINDER_BOOL;
+import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_NOTIFICATIONS_DAILY_REMAINDER_TIME_STRING;
 
 public class DailyReminderServiceHelper {
     private static final String DEFAULT_TIME = "19:00";
@@ -30,10 +30,10 @@ public class DailyReminderServiceHelper {
     }
 
     public static void setup(@NonNull final Context context, final SharedPreferences sharedPreferences) {
-        if (sharedPreferences.getBoolean(KEY_NOTIFICATIONS_ACTIVE, false)
-                && sharedPreferences.getBoolean(KEY_NOTIFICATIONS_DAILY_REMAINDER, false)) {
+        if (sharedPreferences.getBoolean(KEY_NOTIFICATIONS_ACTIVE_BOOL, false)
+                && sharedPreferences.getBoolean(KEY_NOTIFICATIONS_DAILY_REMAINDER_BOOL, false)) {
             final LocalTime time = LocalTime.parse(
-                    sharedPreferences.getString(KEY_NOTIFICATIONS_DAILY_REMAINDER_TIME, DEFAULT_TIME),
+                    sharedPreferences.getString(KEY_NOTIFICATIONS_DAILY_REMAINDER_TIME_STRING, DEFAULT_TIME),
                     DatabaseHelper.DB_TIME_FORMATTER);
 
             setup(context, getSecondsUntilTime(time));
