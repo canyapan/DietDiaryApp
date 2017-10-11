@@ -29,7 +29,7 @@ import com.google.android.gms.drive.Drive;
 import com.google.android.gms.drive.DriveApi;
 import com.google.android.gms.drive.DriveContents;
 import com.google.android.gms.drive.DriveFile;
-import com.google.android.gms.drive.DriveId;
+import com.google.android.gms.drive.DriveFolder;
 import com.google.android.gms.drive.MetadataChangeSet;
 import com.google.android.gms.drive.metadata.CustomPropertyKey;
 import com.jaredrummler.android.device.DeviceName;
@@ -67,6 +67,7 @@ public class DriveBackupService extends JobService implements GoogleApiClient.Co
     private static final String KEY_TITLE = "Title";
     private static final String KEY_DESC = "Description";
 
+    public static final CustomPropertyKey DRIVE_KEY_APP_ID = new CustomPropertyKey("AppID", CustomPropertyKey.PRIVATE);
     public static final CustomPropertyKey DRIVE_KEY_DEVICE_NAME = new CustomPropertyKey("DeviceName", CustomPropertyKey.PRIVATE);
 
     private JobParameters mJobParameters = null;
@@ -184,6 +185,7 @@ public class DriveBackupService extends JobService implements GoogleApiClient.Co
         // Write device properties
         writer.name("Device")
                 .beginObject()
+                .name("Name").value(DeviceName.getDeviceName())
                 .name("Manufacturer").value(Build.MANUFACTURER)
                 .name("Brand").value(Build.BRAND)
                 .name("Product").value(Build.PRODUCT)
@@ -313,7 +315,7 @@ public class DriveBackupService extends JobService implements GoogleApiClient.Co
     }
 
     @Override
-    public void onConnected(@Nullable Bundle bundle) {
+    public void onConnected(@Nullable final Bundle bundle) {
         Log.d(TAG, "Drive API connected.");
 
         // -> Check if driveID exists
@@ -321,20 +323,29 @@ public class DriveBackupService extends JobService implements GoogleApiClient.Co
         // true  - Write over the current file if the drive ID exists
         if (null != mGoogleApiClient) {
             if (null != mDriveId && !mDriveId.isEmpty()) {
-                DriveApi.DriveIdResult driveIdResult = Drive.DriveApi.fetchDriveId(mGoogleApiClient, mDriveId).await();
+                Drive.DriveApi.fetchDriveId(mGoogleApiClient, mDriveId)
+                        .setResultCallback(new ResultCallback<DriveApi.DriveIdResult>() {
+                            @Override
+                            public void onResult(@NonNull DriveApi.DriveIdResult driveIdResult) {
+                                if (!driveIdResult.getStatus().isSuccess()) {
+                                    Log.w(TAG, "Couldn't get drive id. Maybe deleted by user. ");
 
-                if (driveIdResult.getStatus().isSuccess()) {
-                    DriveId driveId = driveIdResult.getDriveId();
+                                    mDriveId = null; // Create a new file
+                                    onConnected(bundle); // Let's try this again
 
-                    driveId.asDriveFile().open(mGoogleApiClient, DriveFile.MODE_WRITE_ONLY, null)
-                            .setResultCallback(this);
+                                    return;
+                                }
 
-                    return;
-                }
+                                driveIdResult.getDriveId().asDriveFile()
+                                        .open(mGoogleApiClient, DriveFile.MODE_WRITE_ONLY, null)
+                                        .setResultCallback(DriveBackupService.this);
+
+                            }
+                        });
+            } else {
+                Drive.DriveApi.newDriveContents(mGoogleApiClient) // Create a new file
+                        .setResultCallback(this);
             }
-
-            Drive.DriveApi.newDriveContents(mGoogleApiClient) // Create a new file
-                    .setResultCallback(this);
         }
     }
 
@@ -352,13 +363,13 @@ public class DriveBackupService extends JobService implements GoogleApiClient.Co
 
     public void onResult(@NonNull final DriveApi.DriveContentsResult driveContentsResult) {
         if (!driveContentsResult.getStatus().isSuccess()) {
-            Log.e(TAG, "Error while trying to create new file contents");
+            Log.e(TAG, "Error while trying to create new file contents. " + driveContentsResult.getStatus().getStatusMessage());
 
             finishJob();
             return;
         }
 
-        DriveContents driveContents = driveContentsResult.getDriveContents();
+        final DriveContents driveContents = driveContentsResult.getDriveContents();
 
         // Compress and write backup into Drive AppFolder
         OutputStream outputStream = driveContents.getOutputStream();
@@ -380,22 +391,46 @@ public class DriveBackupService extends JobService implements GoogleApiClient.Co
         }
 
         MetadataChangeSet metadataChangeSet = new MetadataChangeSet.Builder()
-                .setTitle(MessageFormat.format("backup.{0}.zip", mAppId))
+                .setTitle(MessageFormat.format("backup.zip", mAppId))
                 .setMimeType("application/zip")
+                .setCustomProperty(DRIVE_KEY_APP_ID, mAppId)
                 .setCustomProperty(DRIVE_KEY_DEVICE_NAME, DeviceName.getDeviceName())
                 .build();
 
-        Status status = driveContents.commit(mGoogleApiClient, metadataChangeSet).await();
+        if (null != driveContents.getDriveId()) { // Modifying a file
+            driveContents.commit(mGoogleApiClient, metadataChangeSet)
+                    .setResultCallback(new ResultCallback<Status>() {
+                        @Override
+                        public void onResult(@NonNull Status status) {
+                            if (status.getStatus().isSuccess()) {
+                                Log.d(TAG, "Drive file modified " + mDriveId);
+                            } else {
+                                Log.e(TAG, "Error while trying to modify file. " + status.getStatus().getStatusMessage());
+                            }
 
-        if (status.isSuccess()) {
-            Log.d(TAG, "Drive file created " + driveContents.getDriveId().encodeToString());
+                            mDriveId = driveContents.getDriveId().encodeToString();
 
-            mDriveId = driveContents.getDriveId().encodeToString();
-        } else {
-            Log.e(TAG, "Error while trying to create/modify file contents. Message : " + status.getStatusMessage());
+                            finishJob(status.getStatus().isSuccess());
+                        }
+                    });
+        } else { // Creating a new file
+            Drive.DriveApi.getAppFolder(mGoogleApiClient)
+                    .createFile(mGoogleApiClient, metadataChangeSet, driveContents)
+                    .setResultCallback(new ResultCallback<DriveFolder.DriveFileResult>() {
+                        @Override
+                        public void onResult(@NonNull DriveFolder.DriveFileResult driveFileResult) {
+                            if (driveFileResult.getStatus().isSuccess()) {
+                                Log.d(TAG, "Drive file created " + driveFileResult.getDriveFile().getDriveId());
+                            } else {
+                                Log.e(TAG, "Error while trying to create file. " + driveFileResult.getStatus().getStatusMessage());
+                            }
+
+                            mDriveId = driveFileResult.getDriveFile().getDriveId().toString();
+
+                            finishJob(driveFileResult.getStatus().isSuccess());
+                        }
+                    });
         }
-
-        finishJob(status.isSuccess());
     }
 
     private void setLastBackupTime() {

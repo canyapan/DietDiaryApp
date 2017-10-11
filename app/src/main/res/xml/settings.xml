@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen
+<android.support.v7.preference.PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory
+    <android.support.v7.preference.PreferenceCategory
         android:title="@string/pref_header_general">
 
         <ListPreference
@@ -13,18 +13,18 @@
             android:title="@string/pref_title_clock_mode"
             />
 
-    </PreferenceCategory>
+    </android.support.v7.preference.PreferenceCategory>
 
-    <PreferenceCategory
+    <android.support.v7.preference.PreferenceCategory
         android:title="@string/pref_header_notifications">
 
-        <SwitchPreference
+        <android.support.v7.preference.SwitchPreferenceCompat
             android:defaultValue="true"
             android:key="Notification Settings - Active"
             android:title="@string/pref_title_notifications_active"
             />
 
-        <SwitchPreference
+        <android.support.v7.preference.SwitchPreferenceCompat
             android:defaultValue="true"
             android:dependency="Notification Settings - Active"
             android:key="Notification Settings - Daily Remainder - Active"
@@ -39,18 +39,18 @@
             android:title="@string/pref_title_daily_remainder_time"
             />
 
-    </PreferenceCategory>
+    </android.support.v7.preference.PreferenceCategory>
 
-    <PreferenceCategory
+    <android.support.v7.preference.PreferenceCategory
         android:title="@string/pref_header_backup">
 
-        <SwitchPreference
+        <android.support.v7.preference.SwitchPreferenceCompat
             android:defaultValue="false"
             android:key="Backup Settings - Active"
             android:title="@string/pref_title_backup_active"
             />
 
-        <ListPreference
+        <android.support.v7.preference.ListPreference
             android:defaultValue="0"
             android:dependency="Backup Settings - Active"
             android:entries="@array/pref_list_backup_frequency"
@@ -59,7 +59,7 @@
             android:title="@string/pref_title_backup_frequency"
             />
 
-        <SwitchPreference
+        <android.support.v7.preference.SwitchPreferenceCompat
             android:defaultValue="true"
             android:dependency="Backup Settings - Active"
             android:key="Backup Settings - Wifi Only"
@@ -67,12 +67,12 @@
             android:title="@string/pref_title_backup_wifi_only"
             />
 
-        <Preference
+        <android.support.v7.preference.Preference
             android:dependency="Backup Settings - Active"
             android:key="Backup Settings - Backup Now"
             android:title="@string/pref_title_backup_now"
             />
 
-    </PreferenceCategory>
+    </android.support.v7.preference.PreferenceCategory>
 
-</PreferenceScreen>
+</android.support.v7.preference.PreferenceScreen>

@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 
 import com.canyapan.dietdiaryapp.fragments.SettingsSupportFragment;
 import com.canyapan.dietdiaryapp.helpers.DailyReminderServiceHelper;
@@ -24,24 +25,29 @@ public class SettingsSupportActivity extends AppCompatActivity
 
     public static final String KEY_ACTIVATE_BACKUP_BOOLEAN = "ACTIVATE BACKUP";
 
-    private Fragment preferenceFragment = null;
+    private Fragment mPreferenceFragment = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings_support);
 
-        if (null == preferenceFragment) {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        //noinspection ConstantConditions
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        if (null == mPreferenceFragment) {
             int flags = 0;
             if (getIntent().getBooleanExtra(KEY_ACTIVATE_BACKUP_BOOLEAN, false)) {
                 flags |= SettingsSupportFragment.FLAG_ACTIVATE_BACKUP;
             }
 
-            preferenceFragment = SettingsSupportFragment.newInstance(flags);
+            mPreferenceFragment = SettingsSupportFragment.newInstance(flags);
         }
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(android.R.id.list_container, preferenceFragment);
+        transaction.replace(android.R.id.list_container, mPreferenceFragment);
         transaction.commit();
     }
 

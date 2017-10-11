@@ -27,8 +27,8 @@ public class DriveBackupServiceHelper {
     private static final String DEFAULT_TIME = "21:00";
 
     public static boolean setup(@NonNull final Context context) {
-        final LocalTime time = LocalTime.parse(DEFAULT_TIME, DatabaseHelper.DB_TIME_FORMATTER);
-        return setup(context, getSecondsUntilTime(time), isWaitForWiFi(context));
+
+        return setup(context, getSecondsUntilTime(context), isWaitForWiFi(context));
     }
 
     public static boolean setupImmediate(@NonNull final Context context) {
@@ -86,7 +86,13 @@ public class DriveBackupServiceHelper {
         return preferences.getBoolean(KEY_BACKUP_WIFI_ONLY_BOOL, true);
     }
 
-    private static int getSecondsUntilTime(@NonNull final LocalTime time) {
+    private static int getSecondsUntilTime(@NonNull final Context context) {
+        // TODO Consider user's backup frequency decisions to calculate next backup time.
+        // TODO Get last backup and add 1 day/week/month with default_time
+        // TODO Setup for the current day if the backup time is already passed.
+
+        final LocalTime time = LocalTime.parse(DEFAULT_TIME, DatabaseHelper.DB_TIME_FORMATTER);
+
         LocalDateTime alarmClock = LocalDateTime.now()
                 .withHourOfDay(time.getHourOfDay())
                 .withMinuteOfHour(time.getMinuteOfHour())

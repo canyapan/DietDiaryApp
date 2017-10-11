@@ -2,7 +2,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/primaryColor</item>
         <item name="colorPrimaryDark">@color/primaryDarkColor</item>
@@ -15,12 +15,6 @@
 
     <!-- Custom Preference Theme inherits from the v14 support library Material Theme -->
     <style name="AppPreferenceTheme" parent="@style/PreferenceThemeOverlay.v14.Material">
-        <item name="preferenceFragmentCompatStyle">@style/AppPreferenceFragmentCompatStyle</item>
-    </style>
-
-    <!-- Custom Style for PreferenceFragmentCompat -->
-    <style name="AppPreferenceFragmentCompatStyle" parent="@style/PreferenceFragment.Material">
-        <item name="android:layout">@layout/activity_settings_support</item>
     </style>
 
     <!-- Style for a custom Preference Entry -->

@@ -65,35 +65,28 @@
         </activity>
         <activity
             android:name=".SettingsSupportActivity"
-            android:label="@string/activity_settings_title"
-            android:parentActivityName=".MainActivity">
+            android:label="@string/activity_settings_title">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.canyapan.dietdiaryapp.MainActivity"/>
+                android:value=".MainActivity" />
         </activity>
         <activity
             android:name=".CreateEditEventActivity"
-            android:label="@string/activity_create_event_title"
-            android:parentActivityName=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:label="@string/activity_create_event_title">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity"/>
         </activity>
         <activity
             android:name=".BackupRestoreActivity"
-            android:label="@string/activity_backup_restore_title"
-            android:parentActivityName=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:label="@string/activity_backup_restore_title">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.canyapan.dietdiaryapp.MainActivity"/>
         </activity>
         <activity
             android:name=".ExportActivity"
-            android:label="@string/activity_export_title"
-            android:parentActivityName=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:label="@string/activity_export_title">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.canyapan.dietdiaryapp.MainActivity"/>
