@@ -35,17 +35,18 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.drive.Drive;
 import com.google.android.gms.drive.DriveApi;
 import com.google.android.gms.drive.Metadata;
+import com.google.android.gms.drive.MetadataBuffer;
 import com.google.android.gms.drive.query.Filters;
 import com.google.android.gms.drive.query.Query;
 import com.google.android.gms.drive.query.SearchableField;
 import com.google.android.gms.drive.query.SortOrder;
 import com.google.android.gms.drive.query.SortableField;
 
+import org.joda.time.LocalDateTime;
 import org.joda.time.LocalTime;
+import org.joda.time.format.DateTimeFormat;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -76,7 +77,7 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
     private static final int REQUEST_ACCOUNTS = 1000;
     private static final int REQUEST_RESOLVE_ERROR = 1001;
 
-    private WeakReference<GoogleApiClient> mGoogleApiClientRef = null;
+    private GoogleApiClient mGoogleApiClient = null;
 
     public static SettingsSupportFragment newInstance(int flags) {
         Log.d(TAG, "newInstance");
@@ -93,8 +94,8 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        if (null == mGoogleApiClientRef || null == mGoogleApiClientRef.get()) {
-            mGoogleApiClientRef = new WeakReference<>(getGoogleApiClient());
+        if (null == mGoogleApiClient) {
+            mGoogleApiClient = getGoogleApiClient();
         }
 
         boolean activateBackup = false;
@@ -120,10 +121,8 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         if (getActivity().checkSelfPermission(Manifest.permission.GET_ACCOUNTS)
                                 != PackageManager.PERMISSION_GRANTED) {
-                            getActivity().requestPermissions( // request permission
-                                    new String[]{
-                                            Manifest.permission.GET_ACCOUNTS
-                                    }, REQUEST_ACCOUNTS);
+                            requestPermissions( // request permission
+                                    new String[]{Manifest.permission.GET_ACCOUNTS}, REQUEST_ACCOUNTS);
 
                             return false;
                         }
@@ -161,6 +160,12 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
         });
         // Setup a listener to watch changes on last backup pref
         getPreferenceManager().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    public void onDetach() {
+        getPreferenceManager().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
+        super.onDetach();
     }
 
     @Override
@@ -246,8 +251,8 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
                     .setSortOrder(sortOrder)
                     .build();
 
-            Drive.DriveApi.getAppFolder(mGoogleApiClientRef.get())
-                    .queryChildren(mGoogleApiClientRef.get(), query)
+            Drive.DriveApi.getAppFolder(mGoogleApiClient)
+                    .queryChildren(mGoogleApiClient, query)
                     .setResultCallback(new ResultCallback<DriveApi.MetadataBufferResult>() {
                         @Override
                         public void onResult(@NonNull DriveApi.MetadataBufferResult metadataBufferResult) {
@@ -255,13 +260,13 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
                                 Log.e(TAG, "Cannot query current backups. " + metadataBufferResult.getStatus().getStatusMessage());
                                 return;
                             }
-
-                            if (metadataBufferResult.getMetadataBuffer().getCount() != 0) {
+                            MetadataBuffer metadatas = metadataBufferResult.getMetadataBuffer();
+                            if (metadatas.getCount() != 0) {
                                 // Found some backup files saved in the drive.
                                 // show user if they want to restore from any of these backups
 
-                                List<DriveFile> files = new ArrayList<>(metadataBufferResult.getMetadataBuffer().getCount());
-                                for (Metadata m : metadataBufferResult.getMetadataBuffer()) {
+                                List<DriveFile> files = new ArrayList<>(metadatas.getCount());
+                                for (Metadata m : metadatas) {
                                     files.add(new DriveFile(m));
                                     Log.d(TAG, String.format(Locale.getDefault(), "%s %,.2fKB", m.getTitle(), (m.getFileSize() / 1024f)));
                                 }
@@ -300,6 +305,7 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
                 .setNegativeButton("Do not restore", new DialogInterface.OnClickListener() { // TODO
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        Log.d(TAG, "Not restore selected");
                         setDriveFileId("");
                         activateBackup();
 
@@ -434,26 +440,28 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
     }
 
     private void connectGoogleApiClient() {
-        if (null != mGoogleApiClientRef && null != mGoogleApiClientRef.get()) {
-            if (!mGoogleApiClientRef.get().isConnecting() && !mGoogleApiClientRef.get().isConnected()) {
-                mGoogleApiClientRef.get().connect();
+        if (null != mGoogleApiClient) {
+            if (mGoogleApiClient.isConnecting()) {
+                Log.d(TAG, "Google API is connecting");
+            } else if (mGoogleApiClient.isConnected()) {
+                onConnected(null);
+            } else {
+                mGoogleApiClient.connect();
             }
         }
     }
 
     private void disconnectGoogleApiClient() {
-        if (null != mGoogleApiClientRef && null != mGoogleApiClientRef.get()) {
-            if (mGoogleApiClientRef.get().isConnected() || mGoogleApiClientRef.get().isConnecting()) {
-                mGoogleApiClientRef.get().disconnect();
-            }
+        if (null != mGoogleApiClient) {
+            mGoogleApiClient.disconnect();
         }
     }
 
     private class DriveFile {
         private final String mId;
         private final String mTitle;
-        private final Date mCreationDate;
-        private final Date mModificationDate;
+        private final LocalDateTime mCreationDate;
+        private final LocalDateTime mModificationDate;
         private final Long mSize;
         private final String mAppId;
         private final String mDeviceName;
@@ -461,8 +469,8 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
         DriveFile(final Metadata m) {
             mId = m.getDriveId().encodeToString();
             mTitle = m.getTitle();
-            mCreationDate = m.getCreatedDate();
-            mModificationDate = m.getModifiedDate();
+            mCreationDate = new LocalDateTime(m.getCreatedDate());
+            mModificationDate = new LocalDateTime(m.getModifiedDate());
             mSize = m.getFileSize();
 
             mAppId = m.getCustomProperties().get(DRIVE_KEY_APP_ID);
@@ -471,43 +479,41 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
 
         @Override
         public String toString() {
-            return getDeviceName();
+            return "Device: " + getDeviceName() + "\n"
+                    + "On: " + DateTimeFormat.shortDateTime().print(getModificationDate()) + "\n"
+                    + "Size: " + getSizeInKB();
         }
 
-        public String getId() {
+        String getId() {
             return mId;
         }
 
-        public String getTitle() {
+        String getTitle() {
             return mTitle;
         }
 
-        public Date getCreationDate() {
+        LocalDateTime getCreationDate() {
             return mCreationDate;
         }
 
-        public Date getModificationDate() {
+        LocalDateTime getModificationDate() {
             return mModificationDate;
         }
 
-        public String getAppId() {
+        String getAppId() {
             return mAppId;
         }
 
-        public String getDeviceName() {
+        String getDeviceName() {
             return mDeviceName;
         }
 
-        public Long getSize() {
+        Long getSize() {
             return mSize;
         }
 
-        public Long getSizeInKB() {
-            return getSize() / 1024;
-        }
-
-        public Long getSizeInMB() {
-            return getSizeInKB() / 1024;
+        String getSizeInKB() {
+            return String.format(Locale.getDefault(), "%,.2fKB", (getSize() / 1024f));
         }
     }
 }

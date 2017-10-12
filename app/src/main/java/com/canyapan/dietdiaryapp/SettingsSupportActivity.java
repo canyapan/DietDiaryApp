@@ -1,9 +1,9 @@
 package com.canyapan.dietdiaryapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -79,13 +79,15 @@ public class SettingsSupportActivity extends AppCompatActivity
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        //super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //super.onActivityResult(requestCode, resultCode, data);
+        // Unfortunately Drive API for Android only accepts an Activity for resolutions.
+        // I might check requestCode, but there is no point doing that. Since the activity doesn't wait for any result.
         List<Fragment> fragments = getSupportFragmentManager().getFragments();
         if (fragments != null) {
             for (Fragment fragment : fragments) {
                 if (fragment != null) {
-                    fragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
+                    fragment.onActivityResult(requestCode, resultCode, data);
                 }
             }
         }

@@ -5,12 +5,12 @@
     <!-- To send crash reports and backup to google cloud -->
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-    <!-- To import/export -->
+    <!-- To backup/restore/export -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <!-- To setup alarms -->
+    <!-- To setup services -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-    <!-- For Google/Drive API -->
+    <!-- Google Drive API for Android requires those permissions -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
 
