@@ -1,4 +1,5 @@
 ## DietDiaryApp
+
 [![Build Status](https://travis-ci.org/canyapan/DietDiaryApp.svg?branch=master)](https://travis-ci.org/canyapan/DietDiaryApp) [![Translation Status](https://hosted.weblate.org/widgets/diet-diary/-/svg-badge.svg)](https://hosted.weblate.org/engage/diet-diary/?utm_source=widget)
 
 Android application to keep your daily diet.
@@ -27,6 +28,19 @@ Please fork this repository and contribute back using [pull requests](https://gi
 
 Any contributions, large or small, major features, bug fixes, unit/integration tests are welcomed and appreciated
 but will be thoroughly reviewed and discussed.
+
+
+### TODO
+
+* backup into google drive
+* add take picture functionality to create/edit view.
+* user should be able to share photo to social networks.
+* add XML export, validate XML by the help of XSD and generate HTML by the help of XSLT
+* add reminders for water, snacks, medication, entering events.
+* add widget support
+* add wear notifications
+* allow user to add their weight and show change over time in a graph
+* search
 
 
 ### License

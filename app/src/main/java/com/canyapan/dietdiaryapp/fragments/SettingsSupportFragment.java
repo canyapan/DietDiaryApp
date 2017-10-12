@@ -301,8 +301,8 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
         final ArrayAdapter<DriveFile> arrayAdapter = new ArrayAdapter<>(getContext(), android.R.layout.select_dialog_singlechoice, files);
 
         new AlertDialog.Builder(getContext())
-                .setTitle("Select a backup to restore:") // TODO
-                .setNegativeButton("Do not restore", new DialogInterface.OnClickListener() { // TODO
+                .setTitle(R.string.pref_backup_restore_title)
+                .setNegativeButton(R.string.pref_backup_restore_not, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Log.d(TAG, "Not restore selected");
