@@ -49,8 +49,8 @@ public class DriveBackupServiceHelper {
                 .setTag(DriveBackupService.TAG)
                 // one-off job
                 .setRecurring(false)
-                // don't persist past a device reboot
-                .setLifetime(Lifetime.UNTIL_NEXT_BOOT)
+                // persist past a device reboot (requires boot receiver permission)
+                .setLifetime(Lifetime.FOREVER)
                 // overwrite an existing job with the same tag
                 .setReplaceCurrent(true)
                 // retry with exponential backoff

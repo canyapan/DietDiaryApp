@@ -24,8 +24,8 @@ import android.widget.Toast;
 
 import com.canyapan.dietdiaryapp.Application;
 import com.canyapan.dietdiaryapp.R;
-import com.canyapan.dietdiaryapp.adapters.SpinnerArrayAdapter;
-import com.canyapan.dietdiaryapp.adapters.SpinnerItem;
+import com.canyapan.dietdiaryapp.adapters.RestoreFileArrayAdapter;
+import com.canyapan.dietdiaryapp.adapters.RestoreFileItem;
 import com.canyapan.dietdiaryapp.db.DatabaseHelper;
 import com.crashlytics.android.Crashlytics;
 
@@ -49,7 +49,7 @@ public class RestoreFragment extends Fragment {
     private Spinner mSpinner;
     private Switch mSwitch;
 
-    private ArrayList<SpinnerItem> mSpinnerItems = null;
+    private ArrayList<RestoreFileItem> mSpinnerItems = null;
 
     protected DatabaseHelper mDatabaseHelper;
     protected ProgressDialog mProgressDialog;
@@ -83,7 +83,7 @@ public class RestoreFragment extends Fragment {
             mSpinnerItems = savedInstanceState.getParcelableArrayList(KEY_FILES_PARCELABLE);
             int selectedIndex = savedInstanceState.getInt(KEY_SELECTED_FILE_INDEX_INT);
 
-            mSpinner.setAdapter(new SpinnerArrayAdapter(getContext(), mSpinnerItems));
+            mSpinner.setAdapter(new RestoreFileArrayAdapter(getContext(), mSpinnerItems));
             mSpinner.setSelection(selectedIndex);
 
             mSwitch.setChecked(savedInstanceState.getBoolean(KEY_SWITCH_FORCED_BOOLEAN, false));
@@ -174,13 +174,12 @@ public class RestoreFragment extends Fragment {
         File[] files = getSupportedFiles();
 
         mSpinnerItems = new ArrayList<>(files.length);
-        mSpinnerItems.add(new SpinnerItem(getString(R.string.restore_spinner_hint), R.drawable.tab_import, true));
+        mSpinnerItems.add(new RestoreFileItem(getString(R.string.restore_spinner_hint), null));
         for (File f : files) {
-            mSpinnerItems.add(new SpinnerItem(f.getName(), f.getName().toLowerCase().endsWith(".csv") ?
-                    R.drawable.file_delimited : R.drawable.file, false, f));
+            mSpinnerItems.add(new RestoreFileItem(f.getName(), f));
         }
 
-        mSpinner.setAdapter(new SpinnerArrayAdapter(getContext(), mSpinnerItems));
+        mSpinner.setAdapter(new RestoreFileArrayAdapter(getContext(), mSpinnerItems));
     }
 
     private File[] getSupportedFiles() {

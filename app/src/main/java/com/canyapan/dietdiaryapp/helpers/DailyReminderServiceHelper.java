@@ -50,8 +50,8 @@ public class DailyReminderServiceHelper {
                 .setTag(DailyReminderService.TAG)
                 // one-off job
                 .setRecurring(false)
-                // don't persist past a device reboot
-                .setLifetime(Lifetime.UNTIL_NEXT_BOOT)
+                // persist past a device reboot (requires boot receiver permission)
+                .setLifetime(Lifetime.FOREVER)
                 // start between 0 and 60 seconds from now
                 .setTrigger(Trigger.executionWindow(timeInSeconds, timeInSeconds + 30))
                 // overwrite an existing job with the same tag

@@ -19,10 +19,11 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.SwitchPreferenceCompat;
 import android.text.format.DateUtils;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.canyapan.dietdiaryapp.R;
+import com.canyapan.dietdiaryapp.adapters.DriveFileArrayAdapter;
+import com.canyapan.dietdiaryapp.adapters.DriveFileItem;
 import com.canyapan.dietdiaryapp.db.DatabaseHelper;
 import com.canyapan.dietdiaryapp.helpers.DateTimeHelper;
 import com.canyapan.dietdiaryapp.helpers.DriveBackupServiceHelper;
@@ -42,16 +43,13 @@ import com.google.android.gms.drive.query.SearchableField;
 import com.google.android.gms.drive.query.SortOrder;
 import com.google.android.gms.drive.query.SortableField;
 
-import org.joda.time.LocalDateTime;
 import org.joda.time.LocalTime;
-import org.joda.time.format.DateTimeFormat;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 import static android.app.Activity.RESULT_OK;
-import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_APP_ID;
 import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_BACKUP_ACTIVE_BOOL;
 import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_BACKUP_FILE_DRIVE_ID_STRING;
 import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_BACKUP_FREQUENCY_STRING;
@@ -61,8 +59,7 @@ import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_GENERAL_CL
 import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_NOTIFICATIONS_ACTIVE_BOOL;
 import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_NOTIFICATIONS_DAILY_REMAINDER_BOOL;
 import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_NOTIFICATIONS_DAILY_REMAINDER_TIME_STRING;
-import static com.canyapan.dietdiaryapp.services.DriveBackupService.DRIVE_KEY_APP_ID;
-import static com.canyapan.dietdiaryapp.services.DriveBackupService.DRIVE_KEY_DEVICE_NAME;
+
 
 public class SettingsSupportFragment extends PreferenceFragmentCompat
         implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, Preference.OnPreferenceChangeListener, SharedPreferences.OnSharedPreferenceChangeListener {
@@ -229,7 +226,6 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
         Log.d(TAG, "Drive API connected.");
 
         SharedPreferences preferences = getPreferenceManager().getSharedPreferences();
-        String appID = preferences.getString(KEY_APP_ID, null);
         String driveFileID = preferences.getString(KEY_BACKUP_FILE_DRIVE_ID_STRING, null);
 
         if (null == driveFileID) { // This is the first time connecting to drive
@@ -265,10 +261,10 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
                                 // Found some backup files saved in the drive.
                                 // show user if they want to restore from any of these backups
 
-                                List<DriveFile> files = new ArrayList<>(metadatas.getCount());
+                                List<DriveFileItem> files = new ArrayList<>(metadatas.getCount());
                                 for (Metadata m : metadatas) {
-                                    files.add(new DriveFile(m));
-                                    Log.d(TAG, String.format(Locale.getDefault(), "%s %,.2fKB", m.getTitle(), (m.getFileSize() / 1024f)));
+                                    files.add(new DriveFileItem(m));
+                                    Log.d(TAG, String.format(Locale.getDefault(), "%s %,.2fKB", m.getDriveId().encodeToString(), (m.getFileSize() / 1024f)));
                                 }
 
                                 showSelectDriveBackupDialog(files);
@@ -296,9 +292,9 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
         editor.apply();
     }
 
-    private void showSelectDriveBackupDialog(List<DriveFile> files) {
+    private void showSelectDriveBackupDialog(List<DriveFileItem> files) {
         // Show a dialog to get user's choice
-        final ArrayAdapter<DriveFile> arrayAdapter = new ArrayAdapter<>(getContext(), android.R.layout.select_dialog_singlechoice, files);
+        final DriveFileArrayAdapter arrayAdapter = new DriveFileArrayAdapter(getContext(), files);
 
         new AlertDialog.Builder(getContext())
                 .setTitle(R.string.pref_backup_restore_title)
@@ -315,8 +311,8 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
                 .setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        final DriveFile file = arrayAdapter.getItem(which);
-                        Log.d(TAG, file.getTitle() + " selected.");
+                        final DriveFileItem file = arrayAdapter.getItem(which);
+                        Log.d(TAG, file.getId() + " selected.");
 
                         //TODO import data @file in background
 
@@ -454,66 +450,6 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
     private void disconnectGoogleApiClient() {
         if (null != mGoogleApiClient) {
             mGoogleApiClient.disconnect();
-        }
-    }
-
-    private class DriveFile {
-        private final String mId;
-        private final String mTitle;
-        private final LocalDateTime mCreationDate;
-        private final LocalDateTime mModificationDate;
-        private final Long mSize;
-        private final String mAppId;
-        private final String mDeviceName;
-
-        DriveFile(final Metadata m) {
-            mId = m.getDriveId().encodeToString();
-            mTitle = m.getTitle();
-            mCreationDate = new LocalDateTime(m.getCreatedDate());
-            mModificationDate = new LocalDateTime(m.getModifiedDate());
-            mSize = m.getFileSize();
-
-            mAppId = m.getCustomProperties().get(DRIVE_KEY_APP_ID);
-            mDeviceName = m.getCustomProperties().get(DRIVE_KEY_DEVICE_NAME);
-        }
-
-        @Override
-        public String toString() {
-            return "Device: " + getDeviceName() + "\n"
-                    + "On: " + DateTimeFormat.shortDateTime().print(getModificationDate()) + "\n"
-                    + "Size: " + getSizeInKB();
-        }
-
-        String getId() {
-            return mId;
-        }
-
-        String getTitle() {
-            return mTitle;
-        }
-
-        LocalDateTime getCreationDate() {
-            return mCreationDate;
-        }
-
-        LocalDateTime getModificationDate() {
-            return mModificationDate;
-        }
-
-        String getAppId() {
-            return mAppId;
-        }
-
-        String getDeviceName() {
-            return mDeviceName;
-        }
-
-        Long getSize() {
-            return mSize;
-        }
-
-        String getSizeInKB() {
-            return String.format(Locale.getDefault(), "%,.2fKB", (getSize() / 1024f));
         }
     }
 }

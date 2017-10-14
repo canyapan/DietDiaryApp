@@ -32,7 +32,10 @@ but will be thoroughly reviewed and discussed.
 
 ### TODO
 
-* backup into google drive
+* ~~backup into google drive~~
+* ~~use JSON bor backup/restore~~
+* add export to HTML
+* add export to e-mail
 * add take picture functionality to create/edit view.
 * user should be able to share photo to social networks.
 * add XML export, validate XML by the help of XSD and generate HTML by the help of XSLT
@@ -41,6 +44,7 @@ but will be thoroughly reviewed and discussed.
 * add wear notifications
 * allow user to add their weight and show change over time in a graph
 * search
+* user defined sub-types
 
 
 ### License

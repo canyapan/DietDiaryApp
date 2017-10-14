@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.app.backup.BackupManager;
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -25,7 +26,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-import com.canyapan.dietdiaryapp.adapters.SpinnerArrayAdapter;
+import com.canyapan.dietdiaryapp.adapters.EventTypeArrayAdapter;
+import com.canyapan.dietdiaryapp.adapters.EventTypeItem;
 import com.canyapan.dietdiaryapp.db.DatabaseHelper;
 import com.canyapan.dietdiaryapp.db.EventHelper;
 import com.canyapan.dietdiaryapp.helpers.DateTimeHelper;
@@ -37,6 +39,8 @@ import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CreateEditEventActivity extends AppCompatActivity {
     private static final String TAG = "CreateEditEventActivity";
@@ -127,7 +131,7 @@ public class CreateEditEventActivity extends AppCompatActivity {
                 setSpinnerContents(spTypes, R.array.spinner_event_drink_types, mEvent.getSubType());
                 break;
             default:
-                setSpinnerContents(spTypes, R.array.spinner_event_types, mEvent.getType() - 2, 2, R.array.spinner_event_types_res);
+                setSpinnerContents(spTypes, R.array.spinner_event_types, mEvent.getType(), 2, R.array.spinner_event_types_res);
 
                 ImageView icon = findViewById(R.id.ivTypes);
                 if (null != icon) {
@@ -184,12 +188,30 @@ public class CreateEditEventActivity extends AppCompatActivity {
         setSpinnerContents(spinner, spinnerContents, selectedIndex, 0, 0);
     }
 
-    private void setSpinnerContents(Spinner spinner, @ArrayRes int spinnerContents, int selectedIndex,
-                                    final int offset, @ArrayRes int spinnerIcons) {
-        final SpinnerArrayAdapter arrayAdapter = new SpinnerArrayAdapter(CreateEditEventActivity.this,
-                spinnerContents, spinnerIcons, false, offset);
+    private void setSpinnerContents(Spinner spinner, @ArrayRes int spinnerContents, int selectedIndex, int offset,
+                                    @ArrayRes int spinnerIcons) {
+        List<EventTypeItem> items = new ArrayList<>();
+        final String[] arrTexts = getResources().getStringArray(spinnerContents);
+        final TypedArray arrIcons = spinnerIcons > 0 ? getResources().obtainTypedArray(spinnerIcons) : null;
+
+        if (offset >= arrTexts.length) {
+            throw new IllegalArgumentException("Offset >= Array.length");
+        } else if (offset < 0) {
+            throw new IllegalArgumentException("Offset < 0");
+        }
+
+        for (int i = offset; i < arrTexts.length; i++) {
+            //noinspection ResourceType
+            items.add(new EventTypeItem(i, arrTexts[i], (null != arrIcons) ? arrIcons.getResourceId(i, 0) : 0));
+        }
+
+        if (null != arrIcons) {
+            arrIcons.recycle();
+        }
+
+        final EventTypeArrayAdapter arrayAdapter = new EventTypeArrayAdapter(CreateEditEventActivity.this, items);
         spinner.setAdapter(arrayAdapter);
-        spinner.setSelection(selectedIndex);
+        spinner.setSelection(selectedIndex - offset);
     }
 
     @Override
@@ -255,8 +277,7 @@ public class CreateEditEventActivity extends AppCompatActivity {
                             mEvent.setSubType(spTypes.getSelectedItemPosition());
                             break;
                         default:
-                            mEvent.setType(spTypes.getSelectedItemPosition() +
-                                    ((SpinnerArrayAdapter) spTypes.getAdapter()).getOffset());
+                            mEvent.setType(((EventTypeItem) spTypes.getSelectedItem()).getId());
                             break;
                     }
                     mEvent.setDescription(actvDescription.getText().toString());
