@@ -7,4 +7,5 @@
     android:drawablePadding="4dp"
     android:ellipsize="marquee"
     android:maxLines="1"
-    android:minHeight="?android:attr/listPreferredItemHeight" />
+    android:paddingBottom="10dp"
+    android:paddingTop="10dp" />

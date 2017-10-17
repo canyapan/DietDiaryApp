@@ -126,7 +126,6 @@ public class CalendarFragment extends Fragment implements ViewPager.OnPageChange
 
     @Override
     public void onPageScrollStateChanged(int state) {
-
     }
 
     private void initViewPagerAdapter(final LocalDate date) {

@@ -434,9 +434,8 @@ public class DriveBackupService extends JobService implements GoogleApiClient.Co
     }
 
     private void setLastBackupTime() {
-        long now = DateTime.now().getMillis();
         SharedPreferences.Editor editor = mSharedPreferences.edit();
-        editor.putLong(KEY_BACKUP_LAST_BACKUP_TIMESTAMP_LONG, now);
+        editor.putLong(KEY_BACKUP_LAST_BACKUP_TIMESTAMP_LONG, DateTime.now().getMillis());
         editor.putString(KEY_BACKUP_FILE_DRIVE_ID_STRING, mDriveId);
         editor.apply();
     }

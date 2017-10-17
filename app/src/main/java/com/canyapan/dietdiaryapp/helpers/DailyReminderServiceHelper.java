@@ -14,6 +14,7 @@ import com.firebase.jobdispatcher.Lifetime;
 import com.firebase.jobdispatcher.RetryStrategy;
 import com.firebase.jobdispatcher.Trigger;
 
+import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.joda.time.LocalTime;
 import org.joda.time.Seconds;
@@ -70,11 +71,8 @@ public class DailyReminderServiceHelper {
     }
 
     private static int getSecondsUntilTime(@NonNull final LocalTime time) {
-        LocalDateTime alarmClock = LocalDateTime.now()
-                .withHourOfDay(time.getHourOfDay())
-                .withMinuteOfHour(time.getMinuteOfHour())
-                .withSecondOfMinute(time.getSecondOfMinute())
-                .withMillisOfSecond(time.getMillisOfSecond());
+        LocalDateTime alarmClock = LocalDate.now()
+                .toLocalDateTime(time);
 
         if (alarmClock.isBefore(LocalDateTime.now())) {
             alarmClock = alarmClock.plusDays(1);

@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.preference.PreferenceManager;
 
 import com.canyapan.dietdiaryapp.db.DatabaseHelper;
+import com.canyapan.dietdiaryapp.preference.PreferenceKeys;
 import com.canyapan.dietdiaryapp.services.DailyReminderService;
 import com.canyapan.dietdiaryapp.services.DriveBackupService;
 import com.firebase.jobdispatcher.Constraint;
@@ -16,19 +17,27 @@ import com.firebase.jobdispatcher.Lifetime;
 import com.firebase.jobdispatcher.RetryStrategy;
 import com.firebase.jobdispatcher.Trigger;
 
+import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.joda.time.LocalTime;
 import org.joda.time.Seconds;
 
 import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_BACKUP_ACTIVE_BOOL;
+import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_BACKUP_LAST_BACKUP_TIMESTAMP_LONG;
 import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_BACKUP_WIFI_ONLY_BOOL;
 
 public class DriveBackupServiceHelper {
     private static final String DEFAULT_TIME = "21:00";
 
     public static boolean setup(@NonNull final Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 
-        return setup(context, getSecondsUntilTime(context), isWaitForWiFi(context));
+        long lastBackupTimestamp = sharedPreferences.getLong(KEY_BACKUP_LAST_BACKUP_TIMESTAMP_LONG, -1);
+        LocalDate lastBackup = lastBackupTimestamp >= 0 ? new LocalDate(lastBackupTimestamp) : null;
+
+        Frequency frequency = Frequency.identify(sharedPreferences.getString(PreferenceKeys.KEY_BACKUP_FREQUENCY_STRING, "0"));
+
+        return frequency != Frequency.NEVER && setup(context, getSecondsUntilTime(frequency, lastBackup), isWaitForWiFi(context));
     }
 
     public static boolean setupImmediate(@NonNull final Context context) {
@@ -54,7 +63,7 @@ public class DriveBackupServiceHelper {
                 // overwrite an existing job with the same tag
                 .setReplaceCurrent(true)
                 // retry with exponential backoff
-                .setRetryStrategy(RetryStrategy.DEFAULT_EXPONENTIAL);
+                .setRetryStrategy(RetryStrategy.DEFAULT_LINEAR);
 
         if (waitUnmeteredNetwork) {
             // only run on an unmetered network
@@ -86,23 +95,53 @@ public class DriveBackupServiceHelper {
         return preferences.getBoolean(KEY_BACKUP_WIFI_ONLY_BOOL, true);
     }
 
-    private static int getSecondsUntilTime(@NonNull final Context context) {
-        // TODO Consider user's backup frequency decisions to calculate next backup time.
-        // TODO Get last backup and add 1 day/week/month with default_time
-        // TODO Setup for the current day if the backup time is already passed.
-
+    private static int getSecondsUntilTime(@NonNull final Frequency frequency, final LocalDate lastUpdate) {
         final LocalTime time = LocalTime.parse(DEFAULT_TIME, DatabaseHelper.DB_TIME_FORMATTER);
 
-        LocalDateTime alarmClock = LocalDateTime.now()
-                .withHourOfDay(time.getHourOfDay())
-                .withMinuteOfHour(time.getMinuteOfHour())
-                .withSecondOfMinute(time.getSecondOfMinute())
-                .withMillisOfSecond(time.getMillisOfSecond());
+        LocalDateTime alarmClock;
+        if (null == lastUpdate) { // Never run before
+            alarmClock = LocalDate.now().toLocalDateTime(time);
+        } else { // Run before
+            alarmClock = lastUpdate.toLocalDateTime(time);
+            switch (frequency) {
+                case DAILY:
+                    alarmClock = alarmClock.plusDays(1);
+                    break;
+                case WEEKLY:
+                    alarmClock = alarmClock.plusWeeks(1);
+                    break;
+                case MONTHLY:
+                    alarmClock = alarmClock.plusMonths(1);
+                    break;
+                default:
+                    throw new IllegalStateException("Unknown value " + frequency);
+            }
+        }
 
-        if (alarmClock.isBefore(LocalDateTime.now())) {
+        // May be pointing some time before now.
+        while (alarmClock.isBefore(LocalDateTime.now())) {
             alarmClock = alarmClock.plusDays(1);
         }
 
         return Seconds.secondsBetween(LocalDateTime.now(), alarmClock).getSeconds();
+    }
+
+    private enum Frequency {
+        NEVER, DAILY, WEEKLY, MONTHLY;
+
+        public static Frequency identify(@NonNull String frequency) {
+            switch (frequency) {
+                case "-1":
+                    return NEVER;
+                case "0":
+                    return DAILY;
+                case "1":
+                    return WEEKLY;
+                case "2":
+                    return MONTHLY;
+                default:
+                    throw new IllegalStateException("Unknown value " + frequency);
+            }
+        }
     }
 }

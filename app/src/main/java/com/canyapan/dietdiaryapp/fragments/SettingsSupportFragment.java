@@ -19,6 +19,7 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.SwitchPreferenceCompat;
 import android.text.format.DateUtils;
 import android.util.Log;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.canyapan.dietdiaryapp.R;
@@ -155,14 +156,9 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
                 return true;
             }
         });
+
         // Setup a listener to watch changes on last backup pref
         getPreferenceManager().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
-    }
-
-    @Override
-    public void onDetach() {
-        getPreferenceManager().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
-        super.onDetach();
     }
 
     @Override
@@ -192,6 +188,12 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
         if (f != null) {
             f.setTargetFragment(this, 0);
         }
+    }
+
+    @Override
+    public void onDetach() {
+        getPreferenceManager().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
+        super.onDetach();
     }
 
     @Override
@@ -275,6 +277,8 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
                             }
                         }
                     });
+        } else {
+            activateBackup();
         }
     }
 
@@ -283,6 +287,13 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
         if (!backupActivePref.isChecked()) {
             backupActivePref.setChecked(true);
         }
+
+        changeProgressBarVisibility(false);
+    }
+
+    private void changeProgressBarVisibility(boolean visible) {
+        ProgressBar progressBar = getActivity().findViewById(R.id.toolbarProgressBar);
+        progressBar.setVisibility(visible ? ProgressBar.VISIBLE : ProgressBar.GONE);
     }
 
     private void setDriveFileId(String driveId) {
@@ -320,6 +331,12 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
                         //TODO after that set setDriveFileId(file.getId());
                     }
                 })
+                .setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        changeProgressBarVisibility(false);
+                    }
+                })
                 .show();
     }
 
@@ -336,6 +353,8 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
                     connectionResult.getErrorCode(), 0).show();
             return;
         }
+
+        changeProgressBarVisibility(false);
 
         try {
             connectionResult.startResolutionForResult(this.getActivity(), REQUEST_RESOLVE_ERROR);
@@ -358,6 +377,7 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
                 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             connectGoogleApiClient(); // Permission granted, lets try to connect now.
         } else {
+            changeProgressBarVisibility(false);
             Toast.makeText(getContext(), R.string.pref_backup_no_permission, Toast.LENGTH_LONG).show();
         }
     }
@@ -436,6 +456,8 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
     }
 
     private void connectGoogleApiClient() {
+        changeProgressBarVisibility(true);
+
         if (null != mGoogleApiClient) {
             if (mGoogleApiClient.isConnecting()) {
                 Log.d(TAG, "Google API is connecting");

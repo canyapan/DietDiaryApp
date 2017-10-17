@@ -6,14 +6,10 @@ import android.support.v7.preference.PreferenceManager;
 import com.canyapan.dietdiaryapp.helpers.DailyReminderServiceHelper;
 import com.canyapan.dietdiaryapp.preference.PreferenceKeys;
 import com.canyapan.dietdiaryapp.utils.Base62;
+import com.canyapan.dietdiaryapp.utils.TimeBasedRandomGenerator;
 import com.crashlytics.android.Crashlytics;
 
 import net.danlew.android.joda.JodaTimeAndroid;
-
-import org.joda.time.DateTime;
-
-import java.math.BigInteger;
-import java.util.Random;
 
 import io.fabric.sdk.android.Fabric;
 
@@ -32,11 +28,7 @@ public class Application extends android.app.Application {
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         if (null == preferences.getString(PreferenceKeys.KEY_APP_ID, null)) {
-            String id = Base62.encode( // This will generate a time based alphanumeric 10 char value.
-                    BigInteger.valueOf(DateTime.now().getMillis())                  // Time
-                            .multiply(BigInteger.valueOf(10000))                    // Push 4 digit left
-                            .add(BigInteger.valueOf(new Random().nextInt(9999)))    // Rand 0000:9999
-            );
+            String id = Base62.encode(TimeBasedRandomGenerator.generate());
 
             SharedPreferences.Editor editor = preferences.edit();
             editor.putString(PreferenceKeys.KEY_APP_ID, id);

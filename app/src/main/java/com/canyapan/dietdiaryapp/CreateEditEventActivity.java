@@ -2,7 +2,6 @@ package com.canyapan.dietdiaryapp;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.app.backup.BackupManager;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.database.Cursor;
@@ -280,15 +279,12 @@ public class CreateEditEventActivity extends AppCompatActivity {
                             mEvent.setType(((EventTypeItem) spTypes.getSelectedItem()).getId());
                             break;
                     }
-                    mEvent.setDescription(actvDescription.getText().toString());
 
-                    BackupManager backupManager = new BackupManager(this);
+                    mEvent.setDescription(actvDescription.getText().toString());
 
                     if (mPosition >= 0) { // UPDATE
                         if (EventHelper.update(db, mEvent)) {
                             setResult(RESULT_UPDATED, intent);
-
-                            backupManager.dataChanged();
                         } else {
                             Log.e(TAG, "Update operation failed.");
                             setResult(RESULT_FAILED, intent);
@@ -297,8 +293,6 @@ public class CreateEditEventActivity extends AppCompatActivity {
                         if (EventHelper.insert(db, mEvent)) {
                             Log.d(TAG, MessageFormat.format("A new record inserted to the database with id {0,number,integer}.", mEvent.getID()));
                             setResult(RESULT_INSERTED, intent);
-
-                            backupManager.dataChanged();
                         } else {
                             Log.e(TAG, "Insert operation failed.");
                             setResult(RESULT_FAILED, intent);

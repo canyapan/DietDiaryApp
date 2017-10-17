@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -28,15 +27,14 @@
             android:layout_marginEnd="@dimen/default_gap"
             android:layout_marginRight="@dimen/default_gap"
             android:contentDescription="@string/content_description_icon"
-            app:srcCompat="@drawable/app_icon"
-            />
+            app:srcCompat="@drawable/app_icon" />
 
         <TextView
             style="@style/Base.TextAppearance.AppCompat.Large"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/app_name"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/appVersion"
@@ -45,23 +43,23 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/default_gap"
             android:layout_marginStart="@dimen/default_gap"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
     </LinearLayout>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/about_copyright"/>
+        android:text="@string/about_copyright" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/about_license"/>
+        android:text="@string/about_license" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:autoLink="web"
-        android:text="@string/about_github"/>
+        android:text="@string/about_github" />
 
 </LinearLayout>

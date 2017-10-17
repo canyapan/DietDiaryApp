@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -18,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay"/>
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </android.support.design.widget.AppBarLayout>
 
@@ -39,7 +38,7 @@
         android:layout_margin="@dimen/fab_margin"
         android:onClick="onFabClicked"
         android:tint="@android:color/white"
-        app:srcCompat="@drawable/add"/>
+        app:srcCompat="@drawable/add" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabFood"
@@ -54,7 +53,7 @@
         android:tag="0"
         android:tint="@android:color/white"
         android:visibility="invisible"
-        app:srcCompat="@drawable/food"/>
+        app:srcCompat="@drawable/food" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabDrink"
@@ -69,7 +68,7 @@
         android:tag="1"
         android:tint="@android:color/white"
         android:visibility="invisible"
-        app:srcCompat="@drawable/drink"/>
+        app:srcCompat="@drawable/drink" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabMore"
@@ -84,6 +83,6 @@
         android:tag="5"
         android:tint="@android:color/white"
         android:visibility="invisible"
-        app:srcCompat="@drawable/dots_vertical"/>
+        app:srcCompat="@drawable/dots_vertical" />
 
 </android.support.design.widget.CoordinatorLayout>

@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.canyapan.dietdiaryapp.R;
 import com.canyapan.dietdiaryapp.db.DatabaseHelper;
+import com.canyapan.dietdiaryapp.utils.TimeBasedRandomGenerator;
 
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
@@ -151,6 +152,10 @@ class RestoreFromJSON extends RestoreAsyncTask {
                         index, type, temp));
                 throw new IOException("SubType cannot be identified. " + temp);
             }
+        }
+
+        if (id < 1000000000000L) {
+            id = TimeBasedRandomGenerator.generateLong(date.toLocalDateTime(time).toDateTime());
         }
 
         ContentValues values = new ContentValues();

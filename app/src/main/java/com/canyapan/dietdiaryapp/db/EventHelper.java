@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.canyapan.dietdiaryapp.models.Event;
+import com.canyapan.dietdiaryapp.utils.TimeBasedRandomGenerator;
 
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
@@ -80,8 +81,12 @@ public class EventHelper {
     public static boolean insert(@NonNull final SQLiteDatabase writableDatabase,
                                  @NonNull final Event event)
             throws SQLiteException {
+        if (event.getID() == 0) {
+            event.setID(TimeBasedRandomGenerator.generateLong());
+        }
+
         long id = writableDatabase.insert(DatabaseHelper.DBT_EVENT, DatabaseHelper.DBC_EVENT_DESC,
-                EventHelper.getContentValues(event, event.getID() > 0));
+                EventHelper.getContentValues(event, true));
 
         if (id >= 0) {
             event.setID(id);

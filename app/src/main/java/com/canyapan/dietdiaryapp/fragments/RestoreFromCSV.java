@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.canyapan.dietdiaryapp.R;
 import com.canyapan.dietdiaryapp.db.DatabaseHelper;
+import com.canyapan.dietdiaryapp.utils.TimeBasedRandomGenerator;
 import com.opencsv.CSVReader;
 
 import org.joda.time.LocalDate;
@@ -142,6 +143,10 @@ class RestoreFromCSV extends RestoreAsyncTask {
                         index, record[3], record[4]));
                 throw new IOException("SubType cannot be identified. " + record[4]);
             }
+        }
+
+        if (id < 1000000000000L) {
+            id = TimeBasedRandomGenerator.generateLong(date.toLocalDateTime(time).toDateTime());
         }
 
         ContentValues values = new ContentValues();

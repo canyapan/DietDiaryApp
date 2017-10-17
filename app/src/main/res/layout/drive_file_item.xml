@@ -3,22 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:minHeight="?android:attr/listPreferredItemHeight"
     android:orientation="horizontal"
-    android:paddingBottom="@dimen/text_margin"
-    android:paddingTop="@dimen/text_margin">
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingStart="@dimen/activity_horizontal_margin"
+    android:paddingEnd="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingBottom="10dp"
+    android:paddingTop="10dp">
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:contentDescription="@string/content_description_icon"
-        android:minHeight="48dp"
-        android:minWidth="48dp"
         app:srcCompat="@drawable/file_cloud" />
 
-    <Space
-        android:layout_width="@dimen/default_gap"
+    <android.support.v4.widget.Space
+        android:layout_width="32dp"
         android:layout_height="wrap_content" />
 
     <LinearLayout
@@ -49,7 +50,7 @@
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="?android:attr/textColorHint" />
 
-            <Space
+            <android.support.v4.widget.Space
                 android:layout_width="@dimen/default_gap"
                 android:layout_height="wrap_content" />
 

@@ -6,6 +6,7 @@ import android.util.JsonWriter;
 import com.canyapan.dietdiaryapp.R;
 import com.canyapan.dietdiaryapp.db.DatabaseHelper;
 import com.canyapan.dietdiaryapp.models.Event;
+import com.canyapan.dietdiaryapp.utils.TimeBasedRandomGenerator;
 
 import org.joda.time.LocalDate;
 
@@ -66,8 +67,13 @@ class BackupToJSON extends BackupAsyncTask {
                 subType = "";
         }
 
+        long id = event.getID();
+        if (id < 1000000000000L) {
+            id = TimeBasedRandomGenerator.generateLong(event.getDate().toLocalDateTime(event.getTime()).toDateTime());
+        }
+
         writer.beginObject();
-        writer.name(KEY_ID).value(event.getID());
+        writer.name(KEY_ID).value(id);
         writer.name(KEY_DATE).value(event.getDate().toString(DatabaseHelper.DB_DATE_FORMATTER));
         writer.name(KEY_TIME).value(event.getTime().toString(DatabaseHelper.DB_TIME_FORMATTER));
         writer.name(KEY_TYPE).value(types[event.getType()]);
