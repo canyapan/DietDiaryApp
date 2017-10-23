@@ -318,8 +318,7 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
 
                         dialog.dismiss();
                     }
-                })
-                .setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+                }).setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         final DriveFileItem file = arrayAdapter.getItem(which);
@@ -330,14 +329,12 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
 
                         //TODO after that set setDriveFileId(file.getId());
                     }
-                })
-                .setOnDismissListener(new DialogInterface.OnDismissListener() {
+        }).setOnCancelListener(new DialogInterface.OnCancelListener() {
                     @Override
-                    public void onDismiss(DialogInterface dialog) {
+                    public void onCancel(DialogInterface dialog) {
                         changeProgressBarVisibility(false);
                     }
-                })
-                .show();
+        }).show();
     }
 
     @Override

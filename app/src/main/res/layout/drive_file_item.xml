@@ -18,7 +18,7 @@
         android:contentDescription="@string/content_description_icon"
         app:srcCompat="@drawable/file_cloud" />
 
-    <android.support.v4.widget.Space
+    <Space
         android:layout_width="32dp"
         android:layout_height="wrap_content" />
 
@@ -50,7 +50,7 @@
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="?android:attr/textColorHint" />
 
-            <android.support.v4.widget.Space
+            <Space
                 android:layout_width="@dimen/default_gap"
                 android:layout_height="wrap_content" />
 

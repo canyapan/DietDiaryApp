@@ -81,7 +81,7 @@ public class EventHelper {
     public static boolean insert(@NonNull final SQLiteDatabase writableDatabase,
                                  @NonNull final Event event)
             throws SQLiteException {
-        if (event.getID() == 0) {
+        if (event.getID() == -1) {
             event.setID(TimeBasedRandomGenerator.generateLong());
         }
 
