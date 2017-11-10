@@ -1,2 +1,53 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<?xml version='1.0' encoding='UTF-8'?>
+<resources><string name="app_name">Diettdagbok</string>
+
+    <string name="content_description_icon">Ikon</string>
+
+    <string name="navigation_drawer_open">Åpne navigasjonsskuff</string>
+    <string name="navigation_drawer_close">Lukk navigasjonsskuff</string>
+
+    <string name="action_save">Lagre</string>
+    <string name="action_share">Del</string>
+    <string name="action_delete">Slett</string>
+    <string name="action_copy">Kopier</string>
+    <string name="action_calendar_today">I dag</string>
+    <string name="action_done">Ferdig</string>
+    <string name="action_cancel">Avbryt</string>
+    <string name="activity_settings_title">Innstillinger</string>
+    <string name="activity_create_event_title">Ny hendelse</string>
+    <string name="activity_edit_event_title">Rediger hendelse</string>
+    <string name="activity_create_edit_description_hint">Beskrivelse</string>
+    <string name="activity_backup_restore_title">Sikkerhetskopier/gjenopprett</string>
+    <string name="day_fragment_nothing_to_share">Det finnes ingen historikk å dele.</string>
+    <string name="nav_home">Hjem</string>
+    <string name="nav_backup_restore">Sikkerhetskopier/gjenopprett</string>
+    <string name="nav_settings">Innstillinger</string>
+    <string name="nav_donate">Doner</string>
+    <string name="nav_about">Om</string>
+    <string name="backup">Sikkerhetskopier</string>
+    <string name="restore">Gjenopprett</string>
+    <string name="export_from">Fra</string>
+    <string name="export_to">Til</string>
+    <string name="export_type">Type</string>
+    <string name="export_progress_title">Eksporterer…</string>
+    <string name="export_sd_card_unavailable">SD-kort utilgjengelig.</string>
+    <string name="export_temp_file_creation_error">Kan ikke opprette midlertidig fil.</string>
+    <string name="export_file_creation_error">Kan ikke opprette eksportfil.</string>
+    <string name="export_unimplemented_destination">Valgt mål er ikke implementert, enda.</string>
+    <string name="export_csv_exception">Ukjent feil under eksport til CSV.</string>
+    <string name="export_external_successful">%1$s opprettet</string>
+    <string name="export_share_successful">CSV-fil delt.</string>
+    <string name="export_no_permission">Gi skrivetilgang.</string>
+    <string name="import_progress_title">Importerer…</string>
+    <string name="import_file_selector">Filer</string>
+    <string name="import_file_not_exists">Valgt fil finnes ikke!</string>
+    <string name="import_file_not_readable">Valgt fil er ikke lesbar!</string>
+    <string name="import_file_empty">Valgt fil er tom!</string>
+    <string name="import_file_not_csv">Valgt fil er ikke ei CSV-fil!</string>
+    <string name="import_successful">CSV-fil %1$s importert.</string>
+    <string name="import_spinner_hint">Velg fil å importere</string>
+    <string name="snack_bar_dismiss">Avslå</string>
+    <string name="snack_bar_undo">Angre</string>
+    <string name="snack_bar_deleted">Slettet</string>
+
+    </resources>
