@@ -2,13 +2,15 @@
 <resources>
     <!--This is how application will be shown on the app launcher.-->
     <string name="app_name">Diet Diary</string>
-
+    <!--The icon of the app.-->
     <string name="content_description_icon">Icon</string>
-
-    <string name="provider_permission_read_label" translatable="false">Read shared contents of diet diary app.</string>
-    <string name="provider_permission_read_description" translatable="false">Allows application to read the shared content created by the user.</string>
-
+    <!--The explanation of the permission needed for Diet Diary to function.-->
+    <string name="provider_permission_read_label">Read shared contents of diet diary app.</string>
+    <!--Description of the permission needed for Diet Diary to function.-->
+    <string name="provider_permission_read_description">Allows application to read the shared content created by the user.</string>
+    <!--Action to open the selector of various sections of the app.-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
+    <!--Action to close the selector of various sections of the app.-->
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <!--Will be shown in action bar at the top on the screen. Text indicates to save some data in the application database or to a file. Should be translated as short as possible.-->
@@ -36,7 +38,7 @@
     <!--Will be shown on the header of edit backup/restore screen. Text indicates to backup application data or restore from a backup.-->
     <string name="activity_backup_restore_title">Backup/Restore</string>
     <!--Will be shown when user tap on share button. Text indicates that there is no data on the selected date.-->
-    <string name="day_fragment_nothing_to_share">There is no record to share.</string>
+    <string name="day_fragment_nothing_to_share">There is no history to share.</string>
     <!--Will be shown on the side navigation panel. Text indicates to open the main screen of the application. Should be translated as short as possible.-->
     <string name="nav_home">Home</string>
     <!--Will be shown on the side navigation panel. Text indicates to open the backup/restore screen of the application. Should be translated as short as possible.-->
@@ -66,13 +68,13 @@
     <!--Will be shown under the progress bar while exporting data. Text indicates a file was not be able to created.-->
     <string name="export_file_creation_error">Cannot create export file.</string>
     <!--Will be shown under the progress bar while exporting data. Text indicates an unimplemented export destination has been selected.-->
-    <string name="export_unimplemented_destination">Selected destination is not implemented, yet.</string>
+    <string name="export_unimplemented_destination">Selected destination is not supported, yet.</string>
     <!--Will be shown under the progress bar while exporting data. Text shown when an IO (Input/Output) error happens while exporting.-->
-    <string name="export_csv_io_exception">IO error occurred while exporting to CSV.</string>
+    <string name="export_csv_io_exception">I/O error occurred while exporting to CSV.</string>
     <!--Will be shown under the progress bar while exporting data. Text shown when a DB (Database) error happens while exporting.-->
-    <string name="export_csv_sql_exception">DB error occurred while exporting to CSV.</string>
+    <string name="export_csv_sql_exception">DB error during export to CSV.</string>
     <!--Will be shown under the progress bar while exporting data. Text shown when an unknown error happens while exporting.-->
-    <string name="export_csv_exception">Unidentified error occurred while exporting to CSV.</string>
+    <string name="export_csv_exception">Unidentified error during export to CSV.</string>
     <!--Will be shown after export operation. Text indicates a file has been created. %1$s will be replaced with the file name. %1$s should be written where the file name should appear.-->
     <string name="export_external_successful">%1$s created</string>
     <!--Will be shown after export operation. Text indicates a data has been shared.-->
@@ -86,27 +88,27 @@
     <!--Will be shown on the backup/restore screen's restore tab. A note to show users where they should put their backup data. <i>/sdcard/</i> and <i>/sdcard/DietDiaryApp/</i> must be copied without any modification.-->
     <string name="import_note"><b>Note:</b> Locate your backup files in <i>/sdcard/</i>\nor <i>/sdcard/DietDiaryApp/</i></string>
     <!--Will be shown while importing data. Text indicates a data cannot be read, because of required read permission has not been given. So, application asks user to give required permission for the read operation.-->
-    <string name="import_no_permission">Please give permission to read files.</string>
+    <string name="import_no_permission">Please grant reading access.</string>
     <!--Will be shown on the backup/restore screen's restore tab. Text indicates that the external storage (SD card) is not available. So, application asks user to plug in their SD card.-->
     <string name="import_no_external_storage">Please plug in your external storage.</string>
     <!--Will be shown under the progress bar while importing data. Text shown when an IO (Input/Output) error happens while importing.-->
-    <string name="import_csv_io_exception">IO error occurred while importing from CSV.</string>
+    <string name="import_csv_io_exception">I/O error during import from CSV.</string>
     <!--Will be shown under the progress bar while importing data. Text shown when a DB (Database) error happens while importing.-->
-    <string name="import_csv_sql_exception">DB error occurred while importing from CSV.</string>
+    <string name="import_csv_sql_exception">DB error during import from CSV.</string>
     <!--Will be shown under the progress bar while importing data. Text shown when an unknown error happens while importing.-->
-    <string name="import_csv_exception">Unidentified error occurred while importing from CSV.</string>
+    <string name="import_csv_exception">Unknown error during import from CSV.</string>
     <!--Will be shown under the progress bar while importing data. Text shown when the selected CSV file is changed in a way that cannot be read.-->
     <string name="import_csv_corrupted">CSV corrupted.</string>
     <!--Will be shown under the progress bar while importing data. Text shown the selected file contains data those conflicts with already existing data.-->
-    <string name="import_csv_already_existing_records">CSV includes already existing records.</string>
+    <string name="import_csv_already_existing_records">CSV includes already existing history.</string>
     <!--Will be shown under the progress bar while importing data. Text shown the selected file cannot be accessible anymore.-->
-    <string name="import_file_not_exists">Selected file does not exist!</string>
+    <string name="import_file_not_exists">Selected file does not exist.</string>
     <!--Will be shown under the progress bar while importing data. Text shown the selected file cannot be read.-->
-    <string name="import_file_not_readable">Selected file is not readable!</string>
+    <string name="import_file_not_readable">Selected file is not readable.</string>
     <!--Will be shown under the progress bar while importing data. Text shown the selected file does not contain any data.-->
-    <string name="import_file_empty">Selected file is empty!</string>
+    <string name="import_file_empty">Selected file is empty.</string>
     <!--Will be shown under the progress bar while importing data. Text shown the selected file is not in CSV file format.-->
-    <string name="import_file_not_csv">Selected file is not a CSV file!</string>
+    <string name="import_file_not_csv">Selected file is not a CSV file.</string>
     <!--Will be shown after import operation. Text indicates a file has been imported. %1$s will be replaced with the file name. %1$s should be written where the file name should appear.-->
     <string name="import_successful">CSV file %1$s imported.</string>
     <!--Will be shown on the backup/restore screen's restore tab. Text asks user to choose a file from the list to be imported.-->
@@ -119,9 +121,9 @@
     <string name="snack_bar_deleted">Deleted</string>
 
     <!--Daily remainder notification title.-->
-    <string name="daily_notification_title">Diet Diary Daily Remainder</string>
+    <string name="daily_notification_title">Diet Diary Daily Reminder</string>
     <!--Daily remainder notification message.-->
-    <string name="daily_notification_message">You haven\'t added any entries on your diary, today.</string>
+    <string name="daily_notification_message">No new diary entries today.</string>
 
     <string name="spinner_event_types_food">Food</string>
     <string name="spinner_event_types_drink">Drink</string>
@@ -155,13 +157,13 @@
     <!-- Settings for Notifications -->
     <string name="pref_header_notifications">Notifications</string>
     <string name="pref_title_notifications_active">Active</string>
-    <string name="pref_title_daily_remainder">Daily remind me if I don\'t add any entries</string>
+    <string name="pref_title_daily_remainder">Remind me daily if I don\'t add any entries</string>
     <string name="pref_title_daily_remainder_time">Remind me at</string>
 
     <!-- Strings for App Rate Dialog -->
     <string name="rate_dialog_title">Rate this app</string>
-    <string name="rate_dialog_text">If you enjoy using this app, would you mind taking a moment to rate it? It won\'t take more than a minute. Thank you for your support!</string>
-    <string name="rate_dialog_yes">Rate It Now</string>
+    <string name="rate_dialog_text">Tell the world about this app to help the decisions of others. Thank you for your support!</string>
+    <string name="rate_dialog_yes">Rate Now</string>
     <string name="rate_dialog_later">Remind Me Later</string>
     <string name="rate_dialog_never">No, Thanks</string>
 </resources>
