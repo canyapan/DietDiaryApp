@@ -121,9 +121,9 @@
     <string name="snack_bar_deleted">Deleted</string>
 
     <!--Daily remainder notification title.-->
-    <string name="daily_notification_title">Diet Diary Daily Reminder</string>
+    <string name="daily_notification_title">Daily Diet Diary Reminder</string>
     <!--Daily remainder notification message.-->
-    <string name="daily_notification_message">No new diary entries today.</string>
+    <string name="daily_notification_message">Describe your nutrition of the day.</string>
 
     <string name="spinner_event_types_food">Food</string>
     <string name="spinner_event_types_drink">Drink</string>
