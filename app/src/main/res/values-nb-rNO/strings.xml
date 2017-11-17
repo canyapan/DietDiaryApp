@@ -50,4 +50,55 @@
     <string name="snack_bar_undo">Angre</string>
     <string name="snack_bar_deleted">Slettet</string>
 
-    </resources>
+    <string name="export_csv_io_exception">Inn/ut-datafeil under eksport til CSV.</string>
+    <string name="export_csv_sql_exception">Databasefeil inntraff under eksport til CSV.</string>
+    <string name="import_note"><b>Merk:</b> Finn dine sikkerhetskopifiler i <i>/sdcard/</i>
+\neller <i>/sdcard/DietDiaryApp/</i></string>
+    <string name="import_no_permission">Gi lesetilgang.</string>
+    <string name="import_no_external_storage">Plugg inn eksternt lagringsmedium.</string>
+    <string name="import_csv_io_exception">Inn/ut-datafeil inntraff under import fra CSV.</string>
+    <string name="import_csv_sql_exception">Databasefeil inntraff under import fra CSV.</string>
+    <string name="import_csv_exception">Uidentifisert feil inntraff under import fra CSV.</string>
+    <string name="import_csv_corrupted">CSV skadet.</string>
+    <string name="import_csv_already_existing_records">CSV inkluderer historikk som allerede finnes.</string>
+    <string name="daily_notification_title">Daglig påminnelse fra Diettdagbok</string>
+    <string name="daily_notification_message">Du har ikke lagt til noen oppføringen i diettdagboken i dag.</string>
+
+    <string name="spinner_event_types_food">Mat</string>
+    <string name="spinner_event_types_drink">Drikke</string>
+    <string name="spinner_event_types_medication">Medikamenter</string>
+    <string name="spinner_event_types_supplements">Kosttilskudd</string>
+    <string name="spinner_event_types_exercise">Trening</string>
+    <string name="spinner_event_types_other">Annet</string>
+
+    <string name="spinner_event_food_types_breakfast">Frokost</string>
+    <string name="spinner_event_food_types_lunch">Lunsj</string>
+    <string name="spinner_event_food_types_dinner">Middag</string>
+    <string name="spinner_event_food_types_snack">Småspising</string>
+    <string name="spinner_event_food_types_junk">Søppelmat</string>
+
+    <string name="spinner_event_drink_types_coffee">Kaffe</string>
+    <string name="spinner_event_drink_types_tea">Te</string>
+    <string name="spinner_event_drink_types_alcohol">Alkohol</string>
+    <string name="spinner_event_drink_types_water">Vann</string>
+    <string name="spinner_event_drink_types_energy_drink">Energidrikk</string>
+    <string name="spinner_event_drink_types_fruit_juice">Juice</string>
+    <string name="spinner_event_drink_types_milk">Melk</string>
+
+    <string name="pref_header_general">Hovedinnstillinger</string>
+    <string name="pref_title_clock_mode">Klokkemodus</string>
+    <string name="pref_list_clock_mode_messages_default">Systemforvalg</string>
+    <string name="pref_list_clock_mode_messages_24h">24-timers</string>
+    <string name="pref_list_clock_mode_messages_ampm">AM/PM</string>
+
+    <string name="pref_header_notifications">Merknader</string>
+    <string name="pref_title_notifications_active">Aktiv</string>
+    <string name="pref_title_daily_remainder">Påminn meg daglig om jeg ikke legger til noen oppføringer</string>
+    <string name="pref_title_daily_remainder_time">Påminn meg klokka</string>
+
+    <string name="rate_dialog_title">Vurder dette programmet</string>
+    <string name="rate_dialog_text">Hvis du liker dette programmet, ta deg tid til å vurdere det. Det vil ikke ta mer enn ett minutt. Takk for din støtte.</string>
+    <string name="rate_dialog_yes">Vurder nå</string>
+    <string name="rate_dialog_later">Minn meg på dette senere</string>
+    <string name="rate_dialog_never">Nei takk</string>
+</resources>
