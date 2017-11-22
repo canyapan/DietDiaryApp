@@ -24,14 +24,14 @@ dependencies {
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion "25.0.3"
 
     defaultConfig {
         applicationId "com.canyapan.dietdiaryapp"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 40
-        versionName "0.4.0"
+        versionCode 41
+        versionName "0.4.1"
         vectorDrawables.useSupportLibrary true
     }
     buildTypes {
@@ -52,18 +52,17 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support:design:25.3.1'
-    compile 'com.android.support:support-compat:25.3.1'
-    compile 'com.android.support:support-core-utils:25.3.1'
-    compile 'com.android.support:support-core-ui:25.3.1'
-    compile 'com.android.support:support-fragment:25.3.1'
-    compile 'com.android.support:preference-v7:25.3.1'
-    compile 'com.android.support:gridlayout-v7:25.3.1'
-    compile 'com.android.support:recyclerview-v7:25.3.1'
-    compile 'com.android.support:support-v13:25.3.1'
+    compile 'com.android.support:appcompat-v7:25.4.0'
+    compile 'com.android.support:design:25.4.0'
+    compile 'com.android.support:support-compat:25.4.0'
+    compile 'com.android.support:support-core-utils:25.4.0'
+    compile 'com.android.support:support-core-ui:25.4.0'
+    compile 'com.android.support:support-fragment:25.4.0'
+    compile 'com.android.support:preference-v7:25.4.0'
+    compile 'com.android.support:gridlayout-v7:25.4.0'
+    compile 'com.android.support:recyclerview-v7:25.4.0'
+    compile 'com.android.support:support-v13:25.4.0'
     compile 'net.danlew:android.joda:2.9.9'
-    compile 'com.google.android.gms:play-services-appindexing:9.8.0'
     compile 'com.opencsv:opencsv:3.7'
     compile 'commons-io:commons-io:2.5'
 }
