@@ -72,23 +72,21 @@
     <!--Will be shown under the progress bar while exporting data. Text indicates an unimplemented export destination has been selected.-->
     <string name="backup_unimplemented_destination">Selected destination is not supported, yet.</string>
     <!--Will be shown under the progress bar while exporting data. Text shown when an IO (Input/Output) error happens while exporting.-->
-    <string name="backup_io_exception">I/O error occurred while exporting to CSV.</string>
+    <string name="backup_io_exception">I/O error occurred during export.</string>
     <!--Will be shown under the progress bar while exporting data. Text shown when a DB (Database) error happens while exporting.-->
-    <string name="backup_sql_exception">DB error during export to CSV.</string>
+    <string name="backup_sql_exception">DB error during export.</string>
     <!--Will be shown under the progress bar while exporting data. Text shown when an unknown error happens while exporting.-->
-    <string name="backup_exception">Unidentified error during export to CSV.</string>
+    <string name="backup_exception">Unidentified error during export.</string>
     <!--Will be shown after export operation. Text indicates a file has been created. %1$s will be replaced with the file name. %1$s should be written where the file name should appear.-->
     <string name="backup_external_successful">%1$s created</string>
     <!--Will be shown after export operation. Text indicates a data has been shared.-->
-    <string name="backup_share_successful">File shared.</string>
+    <string name="backup_share_successful">File shared</string>
     <!--Will be shown while exporting data. Text indicates a data cannot be written because of required write permission has not been given. So, application asks user to give required permission for the write operation.-->
     <string name="backup_no_permission">Please give permission to write files.</string>
     <!--Will be shown under the progress bar while importing data.-->
     <string name="restore_progress_title">Importing&#8230;</string>
     <!--Will be shown on the backup/restore screen's restore tab. Text indicates to a file format to import.-->
     <string name="restore_file_selector">Files</string>
-    <!--Will be shown on the backup/restore screen's restore tab. Text indicates to force to import data on error.-->
-    <string name="restore_switch_force">Force</string>
     <!--Will be shown on the backup/restore screen's restore tab. A note to show users where they should put their backup data. <i>/sdcard/</i> and <i>/sdcard/DietDiaryApp/</i> must be copied without any modification.-->
     <string name="restore_note"><b>Note:</b> Locate your backup files in <i>/sdcard/</i>\nor <i>/sdcard/DietDiaryApp/</i></string>
     <!--Will be shown while importing data. Text indicates a data cannot be read, because of required read permission has not been given. So, application asks user to give required permission for the read operation.-->
@@ -96,15 +94,15 @@
     <!--Will be shown on the backup/restore screen's restore tab. Text indicates that the external storage (SD card) is not available. So, application asks user to plug in their SD card.-->
     <string name="restore_no_external_storage">Please plug in your external storage.</string>
     <!--Will be shown under the progress bar while importing data. Text shown when an IO (Input/Output) error happens while importing.-->
-    <string name="restore_csv_io_exception">I/O error during import from CSV.</string>
+    <string name="restore_io_exception">I/O error during import.</string>
     <!--Will be shown under the progress bar while importing data. Text shown when a DB (Database) error happens while importing.-->
-    <string name="restore_csv_sql_exception">DB error during import from CSV.</string>
+    <string name="restore_sql_exception">DB error during import.</string>
     <!--Will be shown under the progress bar while importing data. Text shown when an unknown error happens while importing.-->
-    <string name="restore_csv_exception">Unknown error during import from CSV.</string>
+    <string name="restore_exception">Unknown error during import.</string>
     <!--Will be shown under the progress bar while importing data. Text shown when the selected CSV file is changed in a way that cannot be read.-->
     <string name="restore_csv_corrupted">CSV corrupted.</string>
     <!--Will be shown under the progress bar while importing data. Text shown the selected file contains data those conflicts with already existing data.-->
-    <string name="restore_csv_already_existing_records">CSV includes already existing history.</string>
+    <string name="restore_already_existing_records">File includes already existing history.</string>
     <!--Will be shown under the progress bar while importing data. Text shown the selected file cannot be accessible anymore.-->
     <string name="restore_file_not_exists">Selected file does not exist.</string>
     <!--Will be shown under the progress bar while importing data. Text shown the selected file cannot be read.-->
@@ -166,19 +164,18 @@
     <string name="pref_header_notifications">Notifications</string>
     <string name="pref_title_notifications_active">Active</string>
     <string name="pref_title_daily_remainder">Daily reminder</string>
-    <string name="pref_title_daily_remainder_summary">Remind me daily if I don\'t add any entries</string>
     <string name="pref_title_daily_remainder_time">Remind me at</string>
 
     <!-- Settings for Backup -->
     <string name="pref_header_backup">Cloud Backup</string>
     <string name="pref_title_backup_active">Active</string>
-    <string name="pref_backup_no_permission">Please give permission to access Google accounts for Google Drive API.</string>
+    <string name="pref_backup_no_permission">Please grant permission to access Google accounts for Google Drive API.</string>
     <string name="pref_title_backup_active_connected">Drive connected</string>
     <string name="pref_title_backup_active_not_connected">Drive not connected!</string>
     <string name="pref_title_backup_active_failed">Drive connection failed!</string>
     <string name="pref_title_backup_active_connecting">Drive connecting&#8230;</string>
     <string name="pref_title_backup_wifi_only">Transfer files only over WI-FI</string>
-    <string name="pref_title_backup_wifi_only_summary">Uploading and updating of files will pause when WI-DI connection isn\'t available.</string>
+    <string name="pref_title_backup_wifi_only_summary">Uploading and updating of files will pause when WI-FI connection isn\'t available.</string>
     <string name="pref_title_backup_now">Backup Now!</string>
     <string name="pref_title_backup_now_summary">Last backup: %1$s</string>
     <string name="pref_title_backup_now_summary_never">Never</string>
@@ -194,7 +191,7 @@
     <!-- Strings for App Rate Dialog -->
     <string name="rate_dialog_title">Rate this app</string>
     <string name="rate_dialog_text">If you enjoy using this app, would you mind taking a moment to rate it? It won\'t take more than a minute. Thank you for your support!</string>
-    <string name="rate_dialog_yes">Rate It Now</string>
+    <string name="rate_dialog_yes">Rate Now</string>
     <string name="rate_dialog_later">Remind Me Later</string>
     <string name="rate_dialog_never">No, Thanks</string>
 

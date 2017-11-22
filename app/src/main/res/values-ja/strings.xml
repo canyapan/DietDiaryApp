@@ -39,7 +39,6 @@
     <string name="backup_share_successful">ファイルを共有しました。</string>
     <string name="backup_no_permission">ファイルの書き込みアクセス許可を付与してください。</string>
     <string name="restore_progress_title">インポートしています&#8230;</string>
-    <string name="restore_switch_force">強行</string>
     <string name="restore_file_selector">ファイル</string>
     <string name="restore_note"><b>注意:</b> バックアップファイルの保存場所は <i>/sdcard/</i>\nまたは <i>/sdcard/DietDiaryApp/</i></string>
     <string name="restore_no_permission">ファイルの読み取りアクセス許可を付与してください。</string>
@@ -105,4 +104,6 @@
     <string name="rate_dialog_yes">今すぐ評価する</string>
     <string name="rate_dialog_later">後でする</string>
     <string name="rate_dialog_never">いえ、結構です</string>
+    <string name="drive_dialog_never">いえ、結構です</string>
+    <string name="drive_dialog_later">後でする</string>
 </resources>

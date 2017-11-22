@@ -36,11 +36,10 @@
     <string name="backup_sql_exception">Er is een database-fout opgetreden tijdens het exporteren.</string>
     <string name="backup_exception">Er is een onbekende fout opgetreden tijdens het exporteren.</string>
     <string name="backup_external_successful">%1$s is gecreëerd</string>
-    <string name="backup_share_successful">Het bestand is gedeeld.</string>
+    <string name="backup_share_successful">Het bestand is gedeeld</string>
     <string name="backup_no_permission">Geef toestemming om bestanden te kunnen schrijven.</string>
     <string name="restore_progress_title">Bezig met importeren&#8230;</string>
     <string name="restore_file_selector">Bestanden</string>
-    <string name="restore_switch_force">Gedwongen</string>
     <string name="restore_note"><b>Let op:</b> Uw back-upbestanden staan in <i>/sdcard/</i>\nof <i>/sdcard/DietDiaryApp/</i></string>
     <string name="restore_no_permission">Geef toestemming om bestanden te mogen lezen.</string>
     <string name="restore_no_external_storage">Koppel uw externe opslag aan.</string>
@@ -105,4 +104,6 @@
     <string name="rate_dialog_yes">Nu beoordelen</string>
     <string name="rate_dialog_later">Remind Me Later</string>
     <string name="rate_dialog_never">Nee, Bedankt</string>
+    <string name="drive_dialog_later">Remind Me Later</string>
+    <string name="drive_dialog_never">Nee, Bedankt</string>
 </resources>

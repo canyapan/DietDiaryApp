@@ -43,7 +43,6 @@
     <string name="backup_external_successful">%1$s utworzony</string>
     <string name="restore_progress_title">Importowanie&#8230;</string>
     <string name="restore_file_selector">Pliki</string>
-    <string name="restore_switch_force">Wymuszony</string>
     <string name="restore_no_permission">Proszę udzielić uprawnienia do odczytu plików.</string>
     <string name="restore_no_external_storage">Proszę podłączyć zewnętrzną pamięć masową.</string>
     <string name="restore_io_exception">Wystąpił błąd we/wy podczas importowania.</string>
@@ -105,4 +104,6 @@
     <string name="rate_dialog_yes">Oceń teraz</string>
     <string name="rate_dialog_later">Przypomnij mi później</string>
     <string name="rate_dialog_never">Nie, dziękuję</string>
+    <string name="drive_dialog_never">Nie, dziękuję</string>
+    <string name="drive_dialog_later">Przypomnij mi później</string>
 </resources>

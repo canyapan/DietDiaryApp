@@ -39,7 +39,6 @@
     <string name="backup_file_creation_error">Невозможно создать экспортный файл.</string>
     <string name="backup_exception">Неизвестная ошибка в процессе экспорта.</string>
     <string name="backup_share_successful">Файл общий.</string>
-    <string name="restore_switch_force">Сила</string>
     <string name="restore_progress_title">Получение&#8230;</string>
     <string name="restore_no_permission">Откройте доступ для чтения файлов.</string>
     <string name="restore_no_external_storage">Вставьте внешний носитель.</string>
@@ -92,4 +91,5 @@
     <string name="rate_dialog_yes">Оценить сейчас</string>
     <string name="rate_dialog_later">Напомнить позже</string>
     <string name="rate_dialog_never">Нет, спасибо</string>
+    <string name="drive_dialog_never">Нет, спасибо</string>
 </resources>
