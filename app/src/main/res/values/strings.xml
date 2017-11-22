@@ -5,9 +5,9 @@
     <!--The icon of the app.-->
     <string name="content_description_icon">Icon</string>
     <!--The explanation of the permission needed for Diet Diary to function.-->
-    <string name="provider_permission_read_label">Read shared contents of diet diary app.</string>
+    <string name="provider_permission_read_label" translatable="false">Read shared contents of diet diary app.</string>
     <!--Description of the permission needed for Diet Diary to function.-->
-    <string name="provider_permission_read_description">Allows application to read the shared content created by the user.</string>
+    <string name="provider_permission_read_description" translatable="false">Allows application to read the shared content created by the user.</string>
     <!--Action to open the selector of various sections of the app.-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <!--Action to close the selector of various sections of the app.-->

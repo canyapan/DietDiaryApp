@@ -1,0 +1,104 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+    <string name="app_name">Diettdagbok</string>
+
+    <string name="content_description_icon">Ikon</string>
+
+    <string name="navigation_drawer_open">Åpne navigasjonsskuff</string>
+    <string name="navigation_drawer_close">Lukk navigasjonsskuff</string>
+
+    <string name="action_save">Lagre</string>
+    <string name="action_share">Del</string>
+    <string name="action_delete">Slett</string>
+    <string name="action_copy">Kopier</string>
+    <string name="action_calendar_today">I dag</string>
+    <string name="action_done">Ferdig</string>
+    <string name="action_cancel">Avbryt</string>
+    <string name="activity_settings_title">Innstillinger</string>
+    <string name="activity_create_event_title">Ny hendelse</string>
+    <string name="activity_edit_event_title">Rediger hendelse</string>
+    <string name="activity_create_edit_description_hint">Beskrivelse</string>
+    <string name="activity_backup_restore_title">Sikkerhetskopier/gjenopprett</string>
+    <string name="day_fragment_nothing_to_share">Det finnes ingen historikk å dele.</string>
+    <string name="nav_home">Hjem</string>
+    <string name="nav_backup_restore">Sikkerhetskopier/gjenopprett</string>
+    <string name="nav_settings">Innstillinger</string>
+    <string name="nav_donate">Doner</string>
+    <string name="nav_about">Om</string>
+    <string name="backup">Sikkerhetskopier</string>
+    <string name="restore">Gjenopprett</string>
+    <string name="export_from">Fra</string>
+    <string name="export_to">Til</string>
+    <string name="export_type">Type</string>
+    <string name="export_progress_title">Eksporterer&#8230;</string>
+    <string name="export_sd_card_unavailable">SD-kort utilgjengelig.</string>
+    <string name="export_temp_file_creation_error">Kan ikke opprette midlertidig fil.</string>
+    <string name="export_file_creation_error">Kan ikke opprette eksportfil.</string>
+    <string name="export_unimplemented_destination">Valgt mål støttes ikke enda.</string>
+    <string name="export_csv_exception">Ukjent feil under eksport til CSV.</string>
+    <string name="export_external_successful">%1$s opprettet</string>
+    <string name="export_share_successful">CSV-fil delt.</string>
+    <string name="export_no_permission">Gi skrivetilgang.</string>
+    <string name="import_progress_title">Importerer&#8230;</string>
+    <string name="import_file_selector">Filer</string>
+    <string name="import_file_not_exists">Valgt fil finnes ikke.</string>
+    <string name="import_file_not_readable">Valgt fil er ikke lesbar.</string>
+    <string name="import_file_empty">Valgt fil er tom.</string>
+    <string name="import_file_not_csv">Valgt fil er ikke ei CSV-fil.</string>
+    <string name="import_successful">CSV-fil %1$s importert.</string>
+    <string name="import_spinner_hint">Velg fil å importere</string>
+    <string name="snack_bar_dismiss">Avslå</string>
+    <string name="snack_bar_undo">Angre</string>
+    <string name="snack_bar_deleted">Slettet</string>
+
+    <string name="export_csv_io_exception">Inn/ut-datafeil under eksport til CSV.</string>
+    <string name="export_csv_sql_exception">Databasefeil under eksport til CSV.</string>
+    <string name="import_note"><b>Merk:</b> Finn dine sikkerhetskopifiler i <i>/sdcard/</i>\neller <i>/sdcard/DietDiaryApp/</i></string>
+    <string name="import_no_permission">Gi lesetilgang.</string>
+    <string name="import_no_external_storage">Plugg inn eksternt lagringsmedium.</string>
+    <string name="import_csv_io_exception">Inn/ut-datafeil under import fra CSV.</string>
+    <string name="import_csv_sql_exception">Databasefeil under import fra CSV.</string>
+    <string name="import_csv_exception">Uidentifisert feil under import fra CSV.</string>
+    <string name="import_csv_corrupted">CSV skadet.</string>
+    <string name="import_csv_already_existing_records">CSV inkluderer historikk som allerede finnes.</string>
+    <string name="daily_notification_title">Daglig påminnelse fra Diettdagbok</string>
+    <string name="daily_notification_message">Beskriv næringsinntaket for dagen.</string>
+
+    <string name="spinner_event_types_food">Mat</string>
+    <string name="spinner_event_types_drink">Drikke</string>
+    <string name="spinner_event_types_medication">Medikamenter</string>
+    <string name="spinner_event_types_supplements">Kosttilskudd</string>
+    <string name="spinner_event_types_exercise">Trening</string>
+    <string name="spinner_event_types_other">Annet</string>
+
+    <string name="spinner_event_food_types_breakfast">Frokost</string>
+    <string name="spinner_event_food_types_lunch">Lunsj</string>
+    <string name="spinner_event_food_types_dinner">Middag</string>
+    <string name="spinner_event_food_types_snack">Småspising</string>
+    <string name="spinner_event_food_types_junk">Søppelmat</string>
+
+    <string name="spinner_event_drink_types_coffee">Kaffe</string>
+    <string name="spinner_event_drink_types_tea">Te</string>
+    <string name="spinner_event_drink_types_alcohol">Alkohol</string>
+    <string name="spinner_event_drink_types_water">Vann</string>
+    <string name="spinner_event_drink_types_energy_drink">Energidrikk</string>
+    <string name="spinner_event_drink_types_fruit_juice">Juice</string>
+    <string name="spinner_event_drink_types_milk">Melk</string>
+
+    <string name="pref_header_general">Hovedinnstillinger</string>
+    <string name="pref_title_clock_mode">Klokkemodus</string>
+    <string name="pref_list_clock_mode_messages_default">Systemforvalg</string>
+    <string name="pref_list_clock_mode_messages_24h">24-timers</string>
+    <string name="pref_list_clock_mode_messages_ampm">AM/PM</string>
+
+    <string name="pref_header_notifications">Merknader</string>
+    <string name="pref_title_notifications_active">Aktiv</string>
+    <string name="pref_title_daily_remainder">Påminn meg daglig om jeg ikke legger til noen oppføringer</string>
+    <string name="pref_title_daily_remainder_time">Påminn meg klokka</string>
+
+    <string name="rate_dialog_title">Vurder dette programmet</string>
+    <string name="rate_dialog_text">Fortell verden om dette programmet for å hjelpe andre å forme sine beslutninger. Takk for din støtte!</string>
+    <string name="rate_dialog_yes">Vurder nå</string>
+    <string name="rate_dialog_later">Minn meg på dette senere</string>
+    <string name="rate_dialog_never">Nei takk</string>
+</resources>

@@ -1,2 +1,104 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+    <string name="app_name">Ernährungs-Tagebuch</string>
+
+    <string name="content_description_icon">Symbol</string>
+
+    <string name="navigation_drawer_open">Navigationsleiste öffnen</string>
+    <string name="navigation_drawer_close">Navigationsleiste schließen</string>
+
+    <string name="action_save">Speichern</string>
+    <string name="action_share">Teilen</string>
+    <string name="action_delete">Löschen</string>
+    <string name="action_copy">Kopieren</string>
+    <string name="action_calendar_today">Heute</string>
+    <string name="action_done">Fertig</string>
+    <string name="action_cancel">Abbrechen</string>
+    <string name="activity_settings_title">Einstellungen</string>
+    <string name="activity_create_event_title">Neues Ereignis</string>
+    <string name="activity_edit_event_title">Ereignis bearbeiten</string>
+    <string name="activity_create_edit_description_hint">Beschreibung</string>
+    <string name="activity_backup_restore_title">Sichern/Wiederherstellen</string>
+    <string name="day_fragment_nothing_to_share">Es gibt keinen Eintrag der geteilt werden könnte.</string>
+    <string name="nav_home">Startseite</string>
+    <string name="nav_backup_restore">Sichern/Wiederherstellen</string>
+    <string name="nav_settings">Einstellungen</string>
+    <string name="nav_donate">Spenden</string>
+    <string name="nav_about">Über</string>
+    <string name="backup">Sicherung</string>
+    <string name="restore">Wiederherstellen</string>
+    <string name="export_from">Von</string>
+    <string name="export_to">Bis</string>
+    <string name="export_type">Typ</string>
+    <string name="export_progress_title">Wird exportiert&#8230;</string>
+    <string name="export_sd_card_unavailable">SD-Karte nicht verfügbar.</string>
+    <string name="export_temp_file_creation_error">Temporäre Datei konnte nicht erstellt werden.</string>
+    <string name="export_file_creation_error">Exportdatei konnte nicht erstellt werden.</string>
+    <string name="export_unimplemented_destination">Ausgewählte Speicherort ist noch nicht festgelegt.</string>
+    <string name="export_csv_io_exception">Beim Export der CSV-Datei ist ein E/A-Fehler aufgetreten.</string>
+    <string name="export_csv_sql_exception">Beim Export der CSV-Datei ist ein DB-Fehler aufgetreten.</string>
+    <string name="export_csv_exception">Beim Export der CSV-Datei ist ein nicht identifizierter Fehler aufgetreten.</string>
+    <string name="export_external_successful">„%1$s” wurde erstellt</string>
+    <string name="export_share_successful">CSV-Datei freigegeben.</string>
+    <string name="export_no_permission">Bitte lassen Sie zu, dass Dateien geschrieben werden dürfen.</string>
+    <string name="import_progress_title">Wird importiert&#8230;</string>
+    <string name="import_file_selector">Dateien</string>
+    <string name="import_note"><b>Hinweis:</b>Suchen Sie Ihre Sicherungsdateien in <i>/sdcard/</i>\noder <i>/sdcard/DietDiaryApp/</i></string>
+    <string name="import_no_permission">Bitte lassen Sie zu, dass Dateien gelesen werden dürfen.</string>
+    <string name="import_no_external_storage">Bitte schließen Sie Ihren externen Speicher an.</string>
+    <string name="import_csv_io_exception">Beim Import der CSV-Datei ist ein E/A-Fehler aufgetreten.</string>
+    <string name="import_csv_sql_exception">Beim Import der CSV-Datei ist ein DB-Fehler aufgetreten.</string>
+    <string name="import_csv_exception">Beim Import der CSV-Datei ist ein nicht identifizierter Fehler aufgetreten.</string>
+    <string name="import_csv_corrupted">CSV-Datei beschädigt.</string>
+    <string name="import_csv_already_existing_records">CSV-Datei enthält bereits vorhandene Datensätze.</string>
+    <string name="import_file_not_exists">Ausgewählte Datei ist nicht vorhanden.</string>
+    <string name="import_file_not_readable">Ausgewählte Datei ist nicht lesbar.</string>
+    <string name="import_file_empty">Ausgewählte Datei ist leer.</string>
+    <string name="import_file_not_csv">Ausgewählte Datei ist keine CSV-Datei.</string>
+    <string name="import_successful">CSV-Datei „%1$s” wurde importiert.</string>
+    <string name="import_spinner_hint">Importdatei auswählen</string>
+    <string name="snack_bar_dismiss">Ablehnen</string>
+    <string name="snack_bar_undo">Widerrufen</string>
+    <string name="snack_bar_deleted">Gelöscht</string>
+
+    <string name="daily_notification_title">Ernährung-Tagebuch tägliche Erinnerung</string>
+    <string name="daily_notification_message">Sie haben heute noch keine Einträge Ihrem Tagebuch hinzugefügt.</string>
+
+    <string name="spinner_event_types_food">Essen</string>
+    <string name="spinner_event_types_drink">Getränke</string>
+    <string name="spinner_event_types_medication">Medikamente</string>
+    <string name="spinner_event_types_supplements">Ergänzungen</string>
+    <string name="spinner_event_types_exercise">Leibesübungen</string>
+    <string name="spinner_event_types_other">Sonstiges</string>
+
+    <string name="spinner_event_food_types_breakfast">Frühstück</string>
+    <string name="spinner_event_food_types_lunch">Mittagessen</string>
+    <string name="spinner_event_food_types_dinner">Abendessen</string>
+    <string name="spinner_event_food_types_snack">Zwischenmahlzeit</string>
+    <string name="spinner_event_food_types_junk">Schnellgerichte</string>
+
+    <string name="spinner_event_drink_types_coffee">Kaffee</string>
+    <string name="spinner_event_drink_types_tea">Tee</string>
+    <string name="spinner_event_drink_types_alcohol">Alkohol</string>
+    <string name="spinner_event_drink_types_water">Wasser</string>
+    <string name="spinner_event_drink_types_energy_drink">Energy-Drink</string>
+    <string name="spinner_event_drink_types_fruit_juice">Fruchtsaft</string>
+    <string name="spinner_event_drink_types_milk">Milch</string>
+
+    <string name="pref_header_general">Allgemein</string>
+    <string name="pref_title_clock_mode">Uhrzeit-Modus</string>
+    <string name="pref_list_clock_mode_messages_default">Systemstandardeinstellung</string>
+    <string name="pref_list_clock_mode_messages_24h">24-Stunden-Anzeige</string>
+    <string name="pref_list_clock_mode_messages_ampm">AM/PM</string>
+
+    <string name="pref_header_notifications">Benachrichtigungen</string>
+    <string name="pref_title_notifications_active">Aktiv</string>
+    <string name="pref_title_daily_remainder">Mich täglich erinnern, wenn keine Einträge hinzufügt wurden</string>
+    <string name="pref_title_daily_remainder_time">Erinnern um</string>
+
+    <string name="rate_dialog_title">App bewerten</string>
+    <string name="rate_dialog_text">Wenn Sie diese App gerne nutzen, würden Sie sich einen Moment Zeit nehmen, um sie zu bewerten? Es dauert nicht länger als eine Minute. Vielen Dank für Ihre Unterstützung!</string>
+    <string name="rate_dialog_yes">Jetzt bewerten</string>
+    <string name="rate_dialog_later">Später bewerten</string>
+    <string name="rate_dialog_never">Nein, Danke</string>
+</resources>

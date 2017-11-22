@@ -16,7 +16,7 @@
     <string name="activity_edit_event_title">Gebeurtenis bewerken</string>
     <string name="activity_create_edit_description_hint">Omschrijving</string>
     <string name="activity_backup_restore_title">Back-uppen/Herstellen</string>
-    <string name="day_fragment_nothing_to_share">Er is niks om te delen.</string>
+    <string name="day_fragment_nothing_to_share">Er is geen te delen geschiedenis.</string>
     <string name="nav_home">Start</string>
     <string name="nav_backup_restore">Back-uppen/Herstellen</string>
     <string name="nav_settings">Instellingen</string>
@@ -62,7 +62,7 @@
     <string name="snack_bar_undo">Ongedaan maken</string>
     <string name="snack_bar_deleted">Verwijderd</string>
     <string name="daily_notification_title">Dieetdagboek - Dagelijkse herinnering</string>
-    <string name="daily_notification_message">U heeft vandaag niks toegevoegd aan uw dagboek.</string>
+    <string name="daily_notification_message">Beschrijf de voeding die u vandaag hebt geconsumeerd.</string>
     <string name="spinner_event_types_food">Eten</string>
     <string name="spinner_event_types_drink">Drinken</string>
     <string name="spinner_event_types_medication">Medicatie</string>
@@ -101,8 +101,8 @@
 
     <!-- Strings for App Rate Dialog -->
     <string name="rate_dialog_title">Beoordeel de app</string>
-    <string name="rate_dialog_text">We vinden uw mening belangrijk. Als u tevreden bent over onze app dan stellen wij het op prijs als u dat met andere gebruikers wilt delen. Het beoordelen kost minder dan 1 minuut. Bedankt voor uw ondersteuning!</string>
-    <string name="rate_dialog_yes">Beoordeel It Now</string>
+    <string name="rate_dialog_text">Vertel iedereen over deze app en help anderen beslissen of ze deze app wel of niet moeten installeren. Bedankt voor uw ondersteuning!</string>
+    <string name="rate_dialog_yes">Nu beoordelen</string>
     <string name="rate_dialog_later">Remind Me Later</string>
     <string name="rate_dialog_never">Nee, Bedankt</string>
 </resources>
