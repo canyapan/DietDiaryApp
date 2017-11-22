@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <resources>
     <string name="app_name">Diyet Günlüğü</string>
     <string name="navigation_drawer_close">Navigasyon panelini kapat</string>
@@ -26,13 +26,13 @@
     <string name="day_fragment_nothing_to_share">Paylaşılacak kayıt yok.</string>
     <string name="content_description_icon">İkon</string>
     <string name="export_csv_exception">CSV dışa aktarılırken bilinmeyen bir hata oluştu.</string>
-    <string name="export_csv_io_exception">CSV dışa aktarılırken IO hatası oluştu.</string>
+    <string name="export_csv_io_exception">CSV dışa aktarılırken I/O hatası oluştu.</string>
     <string name="export_csv_sql_exception">CSV dışa aktarılırken DB hatası oluştu.</string>
     <string name="export_external_successful">%1$s oluşturuldu</string>
     <string name="export_file_creation_error">Dışa aktarım dosyası oluşturulamadı.</string>
     <string name="export_from">Başlangıç</string>
     <string name="export_no_permission">Lütfen dosya yazma için izin verin.</string>
-    <string name="export_progress_title">Dışa aktarılıyor&#8230;</string>
+    <string name="export_progress_title">Dışa aktarılıyor…</string>
     <string name="export_sd_card_unavailable">SD Kart hazır değil.</string>
     <string name="export_share_successful">CSV dosyası paylaşıldı.</string>
     <string name="export_temp_file_creation_error">Geçici dosya oluşturulamadı.</string>
@@ -42,23 +42,23 @@
     <string name="import_csv_already_existing_records">CSV zaten kayıtlı veriler içeriyor.</string>
     <string name="import_csv_corrupted">CSV bozulmuş.</string>
     <string name="import_csv_exception">CSV içe aktarılırken bilinmeyen bir hata oluştu.</string>
-    <string name="import_csv_io_exception">CSV içe aktarılırken IO hatası oluştu.</string>
+    <string name="import_csv_io_exception">CSV içe aktarılırken I/O hatası oluştu.</string>
     <string name="import_csv_sql_exception">CSV içe aktarılırken DB hatası oluştu.</string>
-    <string name="import_file_empty">Seçili dosya boş!</string>
-    <string name="import_file_not_csv">Seçili dosya bir CSV dosyası değil!</string>
+    <string name="import_file_empty">Seçili dosya boş.</string>
+    <string name="import_file_not_csv">Seçili dosya bir CSV dosyası değil.</string>
     <string name="import_file_not_exists">Seçili dosya dizinde bulunamadı.</string>
     <string name="import_file_not_readable">Seçili dosya okunabilir değil.</string>
     <string name="import_file_selector">Dosyalar</string>
     <string name="import_no_external_storage">Lütfen harici depolama birimini bağlayın.</string>
     <string name="import_no_permission">Lütfen dosya okuma için izin verin.</string>
     <string name="import_note"><b>Not:</b> Yedek dosyalarınızı <i>/sdcard/</i>\nveya <i>/sdcard/DietDiaryApp/</i> dizinine ekleyin</string>
-    <string name="import_progress_title">İçe aktarılıyor&#8230;</string>
+    <string name="import_progress_title">İçe aktarılıyor…</string>
     <string name="import_spinner_hint">Dosya seçin</string>
     <string name="import_successful">%1$s dosyası içe aktarıldı.</string>
     <string name="snack_bar_undo">Geri</string>
     <string name="snack_bar_dismiss">Kapat</string>
     <string name="snack_bar_deleted">Silindi</string>
-    <string name="daily_notification_title">Diet Diary Günlük Hatırlatıcı</string>
+    <string name="daily_notification_title">Diyet Günlüğü Hatırlatıcı</string>
     <string name="daily_notification_message">Bugün yediklerinizi yazmak ister misiniz?</string>
 
     <string name="spinner_event_types_food">Yemek</string>
@@ -93,13 +93,13 @@
     <!-- Settings for Notifications -->
     <string name="pref_header_notifications">Bildirimler</string>
     <string name="pref_title_notifications_active">Aktif</string>
-    <string name="pref_title_daily_remainder">Eğer hiçbirşey yazmadıysam günlük hatırlat</string>
+    <string name="pref_title_daily_remainder">Eğer hiçbirşey yazmadıysam her gün hatırlat</string>
     <string name="pref_title_daily_remainder_time">Şu saatte hatırlat</string>
 
     <!-- Strings for App Rate Dialog -->
     <string name="rate_dialog_title">Bu uygulamaya puan verin</string>
     <string name="rate_dialog_text">Eğer bu uygulamayı beğendiyseniz, lütfen birkaç dakikanızı ayırarak puan verir miydiniz? Bir dakikadan fazla sürmeyecek. Desteğiniz için teşekkür ederiz!</string>
-    <string name="rate_dialog_yes">Puan Ver</string>
+    <string name="rate_dialog_yes">Puanla</string>
     <string name="rate_dialog_later">Daha Sonra Hatırlat</string>
     <string name="rate_dialog_never">Hayır, Teşekkürler</string>
 </resources>
