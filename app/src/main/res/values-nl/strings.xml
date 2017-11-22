@@ -16,7 +16,7 @@
     <string name="activity_edit_event_title">Gebeurtenis bewerken</string>
     <string name="activity_create_edit_description_hint">Omschrijving</string>
     <string name="activity_backup_restore_title">Back-uppen/Herstellen</string>
-    <string name="day_fragment_nothing_to_share">Er is niks om te delen.</string>
+    <string name="day_fragment_nothing_to_share">Er is geen te delen geschiedenis.</string>
     <string name="nav_home">Start</string>
     <string name="nav_backup_restore">Back-uppen/Herstellen</string>
     <string name="nav_settings">Instellingen</string>
@@ -27,18 +27,18 @@
     <string name="export_from">Van</string>
     <string name="export_to">Naar</string>
     <string name="export_type">Type</string>
-    <string name="export_progress_title">Bezig met exporteren&#8230;</string>
+    <string name="export_progress_title">Bezig met exporteren…</string>
     <string name="export_sd_card_unavailable">De SD-kaart is niet beschikbaar.</string>
     <string name="export_temp_file_creation_error">Het creëren van een tijdelijk bestand is mislukt.</string>
     <string name="export_file_creation_error">Het creëren van het exportbestand is mislukt.</string>
-    <string name="export_unimplemented_destination">De geselecteerde bestemming is nog niet geïmplementeerd.</string>
+    <string name="export_unimplemented_destination">De geselecteerde bestemming wordt nog niet ondersteund.</string>
     <string name="export_csv_io_exception">Er is een in-/uitvoerfout opgetreden tijdens het exporteren naar CSV.</string>
     <string name="export_csv_sql_exception">Er is een database-fout opgetreden tijdens het exporteren naar CSV.</string>
     <string name="export_csv_exception">Er is een onbekende fout opgetreden tijdens het exporteren naar CSV.</string>
     <string name="export_external_successful">%1$s is gecreëerd</string>
     <string name="export_share_successful">Het CSV-bestand is gedeeld.</string>
     <string name="export_no_permission">Geef toestemming om bestanden te kunnen schrijven.</string>
-    <string name="import_progress_title">Bezig met importeren&#8230;</string>
+    <string name="import_progress_title">Bezig met importeren…</string>
     <string name="import_file_selector">Bestanden</string>
     <string name="import_note"><b>Let op:</b> Uw back-upbestanden staan in <i>/sdcard/</i>\nof <i>/sdcard/DietDiaryApp/</i></string>
     <string name="import_no_permission">Geef toestemming om bestanden te mogen lezen.</string>
@@ -47,11 +47,11 @@
     <string name="import_csv_sql_exception">Er is een databasefout opgetreden tijdens importeren uit CSV.</string>
     <string name="import_csv_exception">Er is een onbekende fout opgetreden tijdens het importeren uit CSV.</string>
     <string name="import_csv_corrupted">Het CSV-bestand is corrupt.</string>
-    <string name="import_csv_already_existing_records">Het CSV-bestand bevat reeds bestaande invoeren.</string>
-    <string name="import_file_not_exists">Het geselecteerde bestand bestaat niet!</string>
-    <string name="import_file_not_readable">Het geselecteerde bestand is onleesbaar!</string>
-    <string name="import_file_empty">Het geselecteerde bestand is leeg!</string>
-    <string name="import_file_not_csv">Het geselecteerde bestand is geen CSV-bestand!</string>
+    <string name="import_csv_already_existing_records">Het CSV-bestand bevat reeds bestaande geschiedenis.</string>
+    <string name="import_file_not_exists">Het geselecteerde bestand bestaat niet.</string>
+    <string name="import_file_not_readable">Het geselecteerde bestand is onleesbaar.</string>
+    <string name="import_file_empty">Het geselecteerde bestand is leeg.</string>
+    <string name="import_file_not_csv">Het geselecteerde bestand is geen CSV-bestand.</string>
     <string name="import_successful">Het CSV-bestand, %1$s, is geïmporteerd.</string>
     <string name="import_spinner_hint">Selecteer het te importeren bestand</string>
     <string name="content_description_icon">Pictogram</string>
@@ -59,7 +59,7 @@
     <string name="snack_bar_undo">Ongedaan maken</string>
     <string name="snack_bar_deleted">Verwijderd</string>
     <string name="daily_notification_title">Dieetdagboek - Dagelijkse herinnering</string>
-    <string name="daily_notification_message">U heeft vandaag niks toegevoegd aan uw dagboek.</string>
+    <string name="daily_notification_message">Beschrijf de voeding die u vandaag hebt geconsumeerd.</string>
     <string name="spinner_event_types_food">Eten</string>
     <string name="spinner_event_types_drink">Drinken</string>
     <string name="spinner_event_types_medication">Medicatie</string>
@@ -98,8 +98,8 @@
 
     <!-- Strings for App Rate Dialog -->
     <string name="rate_dialog_title">Beoordeel de app</string>
-    <string name="rate_dialog_text">We vinden uw mening belangrijk. Als u tevreden bent over onze app dan stellen wij het op prijs als u dat met andere gebruikers wilt delen. Het beoordelen kost minder dan 1 minuut. Bedankt voor uw ondersteuning!</string>
-    <string name="rate_dialog_yes">Beoordeel It Now</string>
+    <string name="rate_dialog_text">Vertel iedereen over deze app en help anderen beslissen of ze deze app wel of niet moeten installeren. Bedankt voor uw ondersteuning!</string>
+    <string name="rate_dialog_yes">Nu beoordelen</string>
     <string name="rate_dialog_later">Remind Me Later</string>
     <string name="rate_dialog_never">Nee, Bedankt</string>
 </resources>
