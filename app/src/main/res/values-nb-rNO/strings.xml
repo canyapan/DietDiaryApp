@@ -33,17 +33,17 @@
     <string name="export_sd_card_unavailable">SD-kort utilgjengelig.</string>
     <string name="export_temp_file_creation_error">Kan ikke opprette midlertidig fil.</string>
     <string name="export_file_creation_error">Kan ikke opprette eksportfil.</string>
-    <string name="export_unimplemented_destination">Valgt mål er ikke implementert, enda.</string>
+    <string name="export_unimplemented_destination">Valgt mål støttes ikke enda.</string>
     <string name="export_csv_exception">Ukjent feil under eksport til CSV.</string>
     <string name="export_external_successful">%1$s opprettet</string>
     <string name="export_share_successful">CSV-fil delt.</string>
     <string name="export_no_permission">Gi skrivetilgang.</string>
     <string name="import_progress_title">Importerer…</string>
     <string name="import_file_selector">Filer</string>
-    <string name="import_file_not_exists">Valgt fil finnes ikke!</string>
-    <string name="import_file_not_readable">Valgt fil er ikke lesbar!</string>
-    <string name="import_file_empty">Valgt fil er tom!</string>
-    <string name="import_file_not_csv">Valgt fil er ikke ei CSV-fil!</string>
+    <string name="import_file_not_exists">Valgt fil finnes ikke.</string>
+    <string name="import_file_not_readable">Valgt fil er ikke lesbar.</string>
+    <string name="import_file_empty">Valgt fil er tom.</string>
+    <string name="import_file_not_csv">Valgt fil er ikke ei CSV-fil.</string>
     <string name="import_successful">CSV-fil %1$s importert.</string>
     <string name="import_spinner_hint">Velg fil å importere</string>
     <string name="snack_bar_dismiss">Avslå</string>
@@ -51,18 +51,18 @@
     <string name="snack_bar_deleted">Slettet</string>
 
     <string name="export_csv_io_exception">Inn/ut-datafeil under eksport til CSV.</string>
-    <string name="export_csv_sql_exception">Databasefeil inntraff under eksport til CSV.</string>
+    <string name="export_csv_sql_exception">Databasefeil under eksport til CSV.</string>
     <string name="import_note"><b>Merk:</b> Finn dine sikkerhetskopifiler i <i>/sdcard/</i>
 \neller <i>/sdcard/DietDiaryApp/</i></string>
     <string name="import_no_permission">Gi lesetilgang.</string>
     <string name="import_no_external_storage">Plugg inn eksternt lagringsmedium.</string>
-    <string name="import_csv_io_exception">Inn/ut-datafeil inntraff under import fra CSV.</string>
-    <string name="import_csv_sql_exception">Databasefeil inntraff under import fra CSV.</string>
-    <string name="import_csv_exception">Uidentifisert feil inntraff under import fra CSV.</string>
+    <string name="import_csv_io_exception">Inn/ut-datafeil under import fra CSV.</string>
+    <string name="import_csv_sql_exception">Databasefeil under import fra CSV.</string>
+    <string name="import_csv_exception">Uidentifisert feil under import fra CSV.</string>
     <string name="import_csv_corrupted">CSV skadet.</string>
     <string name="import_csv_already_existing_records">CSV inkluderer historikk som allerede finnes.</string>
     <string name="daily_notification_title">Daglig påminnelse fra Diettdagbok</string>
-    <string name="daily_notification_message">Du har ikke lagt til noen oppføringen i diettdagboken i dag.</string>
+    <string name="daily_notification_message">Beskriv næringsinntaket for dagen.</string>
 
     <string name="spinner_event_types_food">Mat</string>
     <string name="spinner_event_types_drink">Drikke</string>
@@ -97,7 +97,7 @@
     <string name="pref_title_daily_remainder_time">Påminn meg klokka</string>
 
     <string name="rate_dialog_title">Vurder dette programmet</string>
-    <string name="rate_dialog_text">Hvis du liker dette programmet, ta deg tid til å vurdere det. Det vil ikke ta mer enn ett minutt. Takk for din støtte.</string>
+    <string name="rate_dialog_text">Fortell verden om dette programmet for å hjelpe andre å forme sine beslutninger. Takk for din støtte!</string>
     <string name="rate_dialog_yes">Vurder nå</string>
     <string name="rate_dialog_later">Minn meg på dette senere</string>
     <string name="rate_dialog_never">Nei takk</string>
