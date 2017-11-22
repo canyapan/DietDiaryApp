@@ -44,6 +44,7 @@ import com.google.android.gms.drive.query.SearchableField;
 import com.google.android.gms.drive.query.SortOrder;
 import com.google.android.gms.drive.query.SortableField;
 
+import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 
 import java.util.ArrayList;
@@ -63,7 +64,7 @@ import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_NOTIFICATI
 
 
 public class SettingsSupportFragment extends PreferenceFragmentCompat
-        implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, Preference.OnPreferenceChangeListener, SharedPreferences.OnSharedPreferenceChangeListener {
+        implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, Preference.OnPreferenceChangeListener, SharedPreferences.OnSharedPreferenceChangeListener, RestoreDialog.OnRestoreListener {
 
     private static final String TAG = "Settings";
     private static final String DIALOG_FRAGMENT_TAG =
@@ -76,6 +77,7 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
     private static final int REQUEST_RESOLVE_ERROR = 1001;
 
     private GoogleApiClient mGoogleApiClient = null;
+    private RestoreDialog mRestoreDialog = null;
 
     public static SettingsSupportFragment newInstance(int flags) {
         Log.d(TAG, "newInstance");
@@ -159,6 +161,10 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
 
         // Setup a listener to watch changes on last backup pref
         getPreferenceManager().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
+
+        if (null != mRestoreDialog && !mRestoreDialog.isEnded()) {
+            mRestoreDialog.show();
+        }
     }
 
     @Override
@@ -266,7 +272,7 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
                                 List<DriveFileItem> files = new ArrayList<>(metadatas.getCount());
                                 for (Metadata m : metadatas) {
                                     files.add(new DriveFileItem(m));
-                                    Log.d(TAG, String.format(Locale.getDefault(), "%s %,.2fKB", m.getDriveId().encodeToString(), (m.getFileSize() / 1024f)));
+                                    Log.d(TAG, String.format(Locale.getDefault(), "%s %,.2fKB", m.getDriveId().getResourceId(), (m.getFileSize() / 1024f)));
                                 }
 
                                 showSelectDriveBackupDialog(files);
@@ -322,12 +328,18 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         final DriveFileItem file = arrayAdapter.getItem(which);
-                        Log.d(TAG, file.getId() + " selected.");
+                        if (null != file) {
+                            Log.d(TAG, file.getId() + " selected.");
 
-                        //TODO import data @file in background
-
-
-                        //TODO after that set setDriveFileId(file.getId());
+                            // import data @file in background
+                            try {
+                                mRestoreDialog = new RestoreDialog(getContext(), mGoogleApiClient, file.getId(), SettingsSupportFragment.this);
+                                mRestoreDialog.show();
+                            } catch (RestoreException e) {
+                                e.printStackTrace();
+                                mRestoreDialog = null;
+                            }
+                        }
                     }
         }).setOnCancelListener(new DialogInterface.OnCancelListener() {
                     @Override
@@ -470,5 +482,20 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
         if (null != mGoogleApiClient) {
             mGoogleApiClient.disconnect();
         }
+    }
+
+    @Override
+    public void onRestoreComplete(String driveId, LocalDate startDate, LocalDate endDate, long recordsInserted) {
+        mRestoreDialog.dismiss();
+        mRestoreDialog = null;
+
+        // set DriveFileId so next updates will overwrite that drive id.
+        setDriveFileId(driveId);
+    }
+
+    @Override
+    public void onRestoreFailed(String tag, String message) {
+        mRestoreDialog.dismiss();
+        mRestoreDialog = null;
     }
 }

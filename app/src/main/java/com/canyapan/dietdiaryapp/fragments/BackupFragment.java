@@ -29,6 +29,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.canyapan.dietdiaryapp.BuildConfig;
 import com.canyapan.dietdiaryapp.R;
 import com.canyapan.dietdiaryapp.db.DatabaseHelper;
 import com.canyapan.dietdiaryapp.helpers.DateTimeHelper;
@@ -81,7 +82,7 @@ public class BackupFragment extends Fragment implements View.OnClickListener {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mGridLayout = (GridLayout) inflater.inflate(R.layout.fragment_backup_gridlayout, container, false);
 
         tvFromDatePicker = mGridLayout.findViewById(R.id.tvFromDatePicker);
@@ -111,7 +112,7 @@ public class BackupFragment extends Fragment implements View.OnClickListener {
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
         outState.putSerializable(KEY_FROM_DATE_SERIALIZABLE, mFromDate);
@@ -149,7 +150,9 @@ public class BackupFragment extends Fragment implements View.OnClickListener {
                 try {
                     mAsyncTask = (BackupAsyncTask) new BackupToJSON(this, BackupAsyncTask.TO_EXTERNAL).execute();
                 } catch (BackupException e) {
-                    Crashlytics.logException(e);
+                    if (BuildConfig.CRASHLYTICS_ENABLED) {
+                        Crashlytics.logException(e);
+                    }
                     Log.e(TAG, "Save to external storage unsuccessful.", e);
                 }
 
@@ -158,7 +161,9 @@ public class BackupFragment extends Fragment implements View.OnClickListener {
                 try {
                     mAsyncTask = (BackupAsyncTask) new BackupToJSON(this, BackupAsyncTask.TO_SHARE).execute();
                 } catch (BackupException e) {
-                    Crashlytics.logException(e);
+                    if (BuildConfig.CRASHLYTICS_ENABLED) {
+                        Crashlytics.logException(e);
+                    }
                     Log.e(TAG, "Share unsuccessful.", e);
                 }
 
@@ -244,10 +249,14 @@ public class BackupFragment extends Fragment implements View.OnClickListener {
                 return LocalDate.parse(cursor.getString(0), DatabaseHelper.DB_DATE_FORMATTER);
             }
         } catch (SQLiteException e) {
-            Crashlytics.logException(e);
+            if (BuildConfig.CRASHLYTICS_ENABLED) {
+                Crashlytics.logException(e);
+            }
             Log.e(TAG, "Content cannot be prepared probably a DB issue.", e);
         } catch (Exception e) {
-            Crashlytics.logException(e);
+            if (BuildConfig.CRASHLYTICS_ENABLED) {
+                Crashlytics.logException(e);
+            }
             Log.e(TAG, "Content cannot be prepared.", e);
         } finally {
             if (null != cursor) {
@@ -277,7 +286,9 @@ public class BackupFragment extends Fragment implements View.OnClickListener {
                 }
 
             } catch (BackupException e) {
-                Crashlytics.logException(e);
+                if (BuildConfig.CRASHLYTICS_ENABLED) {
+                    Crashlytics.logException(e);
+                }
                 Log.e(TAG, "Save to external storage unsuccessful.", e);
             }
         } else {
@@ -300,9 +311,9 @@ public class BackupFragment extends Fragment implements View.OnClickListener {
     }
 
     public interface OnFragmentInteractionListener {
-        void onExported(Uri uri, LocalDate startDate, LocalDate endDate);
+        void onBackupComplete(Uri uri, LocalDate startDate, LocalDate endDate);
 
-        void onShared(Uri uri, LocalDate startDate, LocalDate endDate);
+        void onShareComplete(Uri uri, LocalDate startDate, LocalDate endDate);
     }
 
 }

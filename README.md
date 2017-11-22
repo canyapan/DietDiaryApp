@@ -33,7 +33,7 @@ but will be thoroughly reviewed and discussed.
 ### TODO
 
 - [X] backup into google drive.
-- [X] use JSON bor backup/restore.
+- [X] use JSON for backup/restore.
 - [ ] add export to HTML.
 - [ ] add export to e-mail.
 - [ ] add XML export, validate XML by the help of XSD and use XSLT to transform into HTML.

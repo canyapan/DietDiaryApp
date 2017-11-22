@@ -332,13 +332,17 @@ public class CreateEditEventActivity extends AppCompatActivity {
                     return true;
             }
         } catch (SQLiteException e) {
-            Crashlytics.logException(e);
+            if (BuildConfig.CRASHLYTICS_ENABLED) {
+                Crashlytics.logException(e);
+            }
             Log.e(TAG, "Content cannot be prepared probably a DB issue.", e);
 
             intent.putExtra(KEY_EXCEPTION_SERIALIZABLE, e);
             setResult(RESULT_ERROR, intent);
         } catch (Exception e) {
-            Crashlytics.logException(e);
+            if (BuildConfig.CRASHLYTICS_ENABLED) {
+                Crashlytics.logException(e);
+            }
             Log.e(TAG, "Content cannot be prepared.", e);
 
             intent.putExtra(KEY_EXCEPTION_SERIALIZABLE, e);

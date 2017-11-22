@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -71,14 +72,22 @@ public class BackupRestoreActivity extends AppCompatActivity
     }
 
     @Override
-    public void onExported(Uri uri, LocalDate startDate, LocalDate endDate) {
-        // Broadcast the new created file.
+    public void onBackupComplete(Uri uri, LocalDate startDate, LocalDate endDate) {
+        Log.d(TAG, "backed up.");
+
+        // Broadcast the new created file. So, it will be available on usb data connection.
         sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri));
     }
 
     @Override
-    public void onShared(Uri uri, LocalDate startDate, LocalDate endDate) {
+    public void onShareComplete(Uri uri, LocalDate startDate, LocalDate endDate) {
+        Log.d(TAG, "Shared.");
+    }
 
+    @Override
+    public void onRestoreComplete(String path, LocalDate startDate, LocalDate endDate) {
+        Log.d(TAG, "Restored.");
+        setResult(Activity.RESULT_FIRST_USER);
     }
 
     @Override
@@ -92,11 +101,6 @@ public class BackupRestoreActivity extends AppCompatActivity
                 }
             }
         }
-    }
-
-    @Override
-    public void onImportComplete(Uri uri, LocalDate startDate, LocalDate endDate) {
-        setResult(Activity.RESULT_FIRST_USER);
     }
 
     private class SectionsPagerAdapter extends FragmentPagerAdapter {

@@ -3,8 +3,6 @@ package com.canyapan.dietdiaryapp.services;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
@@ -16,7 +14,6 @@ import com.canyapan.dietdiaryapp.helpers.DailyReminderServiceHelper;
 import com.firebase.jobdispatcher.JobParameters;
 import com.firebase.jobdispatcher.JobService;
 
-@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class DailyReminderService extends JobService {
     public static final String TAG = "DailyReminderService";
 

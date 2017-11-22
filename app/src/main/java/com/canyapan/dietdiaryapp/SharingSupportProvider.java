@@ -66,7 +66,9 @@ public class SharingSupportProvider extends ContentProvider {
                 //noinspection ConstantConditions
                 return ParcelFileDescriptor.open(f, ParcelFileDescriptor.MODE_READ_ONLY);
             } catch (FileNotFoundException e) {
-                Crashlytics.logException(e);
+                if (BuildConfig.CRASHLYTICS_ENABLED) {
+                    Crashlytics.logException(e);
+                }
                 Log.e(TAG, "Bad file " + uri);
             }
         }

@@ -15,6 +15,7 @@ import android.support.v4.app.ShareCompat;
 import android.util.Log;
 
 import com.canyapan.dietdiaryapp.Application;
+import com.canyapan.dietdiaryapp.BuildConfig;
 import com.canyapan.dietdiaryapp.R;
 import com.canyapan.dietdiaryapp.SharingSupportProvider;
 import com.canyapan.dietdiaryapp.db.DatabaseHelper;
@@ -131,15 +132,21 @@ abstract class BackupAsyncTask extends AsyncTask<Void, Integer, Boolean> {
             publishProgress(100);
             return true;
         } catch (IOException e) {
-            Crashlytics.logException(e);
+            if (BuildConfig.CRASHLYTICS_ENABLED) {
+                Crashlytics.logException(e);
+            }
             Log.e(BackupFragment.TAG, "Content cannot be prepared probably a IO issue.", e);
             mErrorString = backupFragment.getString(R.string.backup_io_exception);
         } catch (SQLiteException e) {
-            Crashlytics.logException(e);
+            if (BuildConfig.CRASHLYTICS_ENABLED) {
+                Crashlytics.logException(e);
+            }
             Log.e(BackupFragment.TAG, "Content cannot be prepared probably a DB issue.", e);
             mErrorString = backupFragment.getString(R.string.backup_sql_exception);
         } catch (Exception e) {
-            Crashlytics.logException(e);
+            if (BuildConfig.CRASHLYTICS_ENABLED) {
+                Crashlytics.logException(e);
+            }
             Log.e(BackupFragment.TAG, "Content cannot be prepared.", e);
             mErrorString = backupFragment.getString(R.string.backup_exception);
         } finally {
@@ -190,13 +197,13 @@ abstract class BackupAsyncTask extends AsyncTask<Void, Integer, Boolean> {
 
                 builder.startChooser();
 
-                backupFragment.mListener.onShared(Uri.fromFile(mFile), backupFragment.mFromDate, backupFragment.mToDate);
+                backupFragment.mListener.onShareComplete(Uri.fromFile(mFile), backupFragment.mFromDate, backupFragment.mToDate);
             } else {
                 // initiate media scan and put the new things into the path array to
                 // make the scanner aware of the location and the files
                 MediaScannerConnection.scanFile(backupFragment.getContext(), new String[]{mFile.getPath()}, null, null);
 
-                backupFragment.mListener.onExported(Uri.fromFile(mFile), backupFragment.mFromDate, backupFragment.mToDate);
+                backupFragment.mListener.onBackupComplete(Uri.fromFile(mFile), backupFragment.mFromDate, backupFragment.mToDate);
             }
         }
     }

@@ -13,12 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <Switch
-        android:id="@+id/switchForce"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/restore_switch_force" />
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

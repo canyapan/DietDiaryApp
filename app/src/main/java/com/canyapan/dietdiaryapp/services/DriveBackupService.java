@@ -8,7 +8,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v7.preference.PreferenceManager;
 import android.util.JsonWriter;
 import android.util.Log;
@@ -56,7 +55,6 @@ import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_NOTIFICATI
 import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_NOTIFICATIONS_DAILY_REMAINDER_BOOL;
 import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_NOTIFICATIONS_DAILY_REMAINDER_TIME_STRING;
 
-@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class DriveBackupService extends JobService implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, ResultCallback<DriveApi.DriveContentsResult> {
     public static final String TAG = "DriveBackupService";
 

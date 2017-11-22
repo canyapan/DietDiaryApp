@@ -19,18 +19,18 @@ repositories {
 
 dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.7.0@aar') {
-        transitive = true;
+        transitive = true
     }
 }
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion "26.0.2"
+    compileSdkVersion 27
+    buildToolsVersion "27.0.1"
 
     defaultConfig {
         applicationId "com.canyapan.dietdiaryapp"
         minSdkVersion 15
-        targetSdkVersion 26
+        targetSdkVersion 27
         versionCode 50
         versionName "0.5.0"
         vectorDrawables.useSupportLibrary true
@@ -56,23 +56,23 @@ dependencies {
 
     //noinspection GradleDynamicVersion
     compile 'com.android.support.constraint:constraint-layout:+'
-    compile 'com.android.support:design:26.1.0'
-    compile 'com.android.support:support-annotations:26.1.0'
-    compile 'com.android.support:support-compat:26.1.0'
-    compile 'com.android.support:support-core-utils:26.1.0'
-    compile 'com.android.support:support-core-ui:26.1.0'
-    compile 'com.android.support:support-fragment:26.1.0'
-    compile 'com.android.support:appcompat-v7:26.1.0'
-    compile 'com.android.support:preference-v7:26.1.0'
-    compile 'com.android.support:gridlayout-v7:26.1.0'
-    compile 'com.android.support:recyclerview-v7:26.1.0'
-    compile 'com.android.support:support-v13:26.1.0'
-    compile 'com.android.support:preference-v14:26.1.0'
-    compile 'com.google.android.gms:play-services-auth:11.2.2'
-    compile 'com.google.android.gms:play-services-drive:11.2.2'
+    compile 'com.android.support:design:27.0.1'
+    compile 'com.android.support:support-annotations:27.0.1'
+    compile 'com.android.support:support-compat:27.0.1'
+    compile 'com.android.support:support-core-utils:27.0.1'
+    compile 'com.android.support:support-core-ui:27.0.1'
+    compile 'com.android.support:support-fragment:27.0.1'
+    compile 'com.android.support:appcompat-v7:27.0.1'
+    compile 'com.android.support:preference-v7:27.0.1'
+    compile 'com.android.support:gridlayout-v7:27.0.1'
+    compile 'com.android.support:recyclerview-v7:27.0.1'
+    compile 'com.android.support:support-v13:27.0.1'
+    compile 'com.android.support:preference-v14:27.0.1'
+    compile 'com.google.android.gms:play-services-auth:11.6.0'
+    compile 'com.google.android.gms:play-services-drive:11.6.0'
     compile 'com.firebase:firebase-jobdispatcher:0.8.2'
     compile 'net.danlew:android.joda:2.9.9'
-    compile 'com.opencsv:opencsv:3.7'
+    compile 'com.opencsv:opencsv:3.8'
     compile 'commons-io:commons-io:2.5'
     compile 'com.jaredrummler:android-device-names:1.1.5'
 }

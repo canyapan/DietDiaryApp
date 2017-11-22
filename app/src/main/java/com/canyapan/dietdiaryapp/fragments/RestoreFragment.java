@@ -1,14 +1,13 @@
 package com.canyapan.dietdiaryapp.fragments;
 
 import android.Manifest;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,14 +18,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.Toast;
 
 import com.canyapan.dietdiaryapp.Application;
+import com.canyapan.dietdiaryapp.BuildConfig;
 import com.canyapan.dietdiaryapp.R;
 import com.canyapan.dietdiaryapp.adapters.RestoreFileArrayAdapter;
 import com.canyapan.dietdiaryapp.adapters.RestoreFileItem;
-import com.canyapan.dietdiaryapp.db.DatabaseHelper;
 import com.crashlytics.android.Crashlytics;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -36,10 +34,9 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
 
-public class RestoreFragment extends Fragment {
+public class RestoreFragment extends Fragment implements RestoreDialog.OnRestoreListener {
     public static final String TAG = "RestoreFragment";
     private static final String KEY_SELECTED_FILE_INDEX_INT = "SELECTED FILE";
-    private static final String KEY_SWITCH_FORCED_BOOLEAN = "FORCED";
     private static final String KEY_FILES_PARCELABLE = "FILES";
     private static final int REQUEST_EXTERNAL_STORAGE = 20;
 
@@ -47,13 +44,10 @@ public class RestoreFragment extends Fragment {
 
     protected LinearLayout mLinearLayout;
     private Spinner mSpinner;
-    private Switch mSwitch;
 
     private ArrayList<RestoreFileItem> mSpinnerItems = null;
 
-    protected DatabaseHelper mDatabaseHelper;
-    protected ProgressDialog mProgressDialog;
-    protected RestoreAsyncTask mAsyncTask = null;
+    protected RestoreDialog mRestoreDialog;
 
     public RestoreFragment() {
     }
@@ -67,8 +61,6 @@ public class RestoreFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         setHasOptionsMenu(true);
-
-        mDatabaseHelper = new DatabaseHelper(getContext());
     }
 
     @Override
@@ -77,7 +69,6 @@ public class RestoreFragment extends Fragment {
         mLinearLayout = (LinearLayout) inflater.inflate(R.layout.fragment_restore_linearlayout, container, false);
 
         mSpinner = mLinearLayout.findViewById(R.id.spFiles);
-        mSwitch = mLinearLayout.findViewById(R.id.switchForce);
 
         if (savedInstanceState != null) {
             mSpinnerItems = savedInstanceState.getParcelableArrayList(KEY_FILES_PARCELABLE);
@@ -85,29 +76,26 @@ public class RestoreFragment extends Fragment {
 
             mSpinner.setAdapter(new RestoreFileArrayAdapter(getContext(), mSpinnerItems));
             mSpinner.setSelection(selectedIndex);
-
-            mSwitch.setChecked(savedInstanceState.getBoolean(KEY_SWITCH_FORCED_BOOLEAN, false));
         }
 
         if (null == mSpinnerItems) {
             loadSpinnerItems();
         }
 
-        if (null != mAsyncTask) {
-            // To start progress dialog again.
-            mAsyncTask.onPreExecute();
+        if (null != mRestoreDialog) {
+            // Show dialog again. Probably switched orientation
+            mRestoreDialog.show();
         }
 
         return mLinearLayout;
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
         outState.putParcelableArrayList(KEY_FILES_PARCELABLE, mSpinnerItems);
         outState.putInt(KEY_SELECTED_FILE_INDEX_INT, mSpinner.getSelectedItemPosition());
-        outState.putBoolean(KEY_SWITCH_FORCED_BOOLEAN, mSwitch.isChecked());
     }
 
     @Override
@@ -139,15 +127,11 @@ public class RestoreFragment extends Fragment {
 
                 try {
                     File f = (File) mSpinnerItems.get(mSpinner.getSelectedItemPosition()).getTag();
-                    if (f.getName().toLowerCase().endsWith(".json")) {
-                        mAsyncTask = (RestoreAsyncTask) new RestoreFromJSON(this, f).execute();
-                    } else if (f.getName().toLowerCase().endsWith(".csv")) {
-                        mAsyncTask = (RestoreAsyncTask) new RestoreFromCSV(this, f).execute();
-                    } else {
-                        throw new UnsupportedOperationException(getString(R.string.backup_unimplemented_destination));
-                    }
+                    mRestoreDialog = new RestoreDialog(getContext(), f, this);
                 } catch (RestoreException e) {
-                    Crashlytics.logException(e);
+                    if (BuildConfig.CRASHLYTICS_ENABLED) {
+                        Crashlytics.logException(e);
+                    }
                     Log.e(TAG, "Import from external storage unsuccessful.", e);
                 }
 
@@ -227,12 +211,30 @@ public class RestoreFragment extends Fragment {
         }
     }
 
-    public interface OnFragmentInteractionListener {
-        void onImportComplete(Uri uri, LocalDate startDate, LocalDate endDate);
+    @Override
+    public void onRestoreComplete(String path, LocalDate startDate, LocalDate endDate, long recordsInserted) {
+        if (mRestoreDialog.isShowing()) {
+            mRestoreDialog.dismiss();
+        }
+
+        final File f = new File(path);
+        Snackbar.make(mLinearLayout, getString(R.string.restore_successful, f.getName()), Snackbar.LENGTH_SHORT).show();
+
+        mListener.onRestoreComplete(path, startDate, endDate);
     }
 
-    boolean isForceEnabled() {
-        return mSwitch.isChecked();
+    @Override
+    public void onRestoreFailed(String path, String message) {
+        if (mRestoreDialog.isShowing()) {
+            mRestoreDialog.dismiss();
+        }
+
+        Snackbar.make(mLinearLayout, message, Snackbar.LENGTH_INDEFINITE)
+                .setAction(R.string.snack_bar_dismiss, null).show();
+    }
+
+    public interface OnFragmentInteractionListener {
+        void onRestoreComplete(String path, LocalDate startDate, LocalDate endDate);
     }
 
 }
