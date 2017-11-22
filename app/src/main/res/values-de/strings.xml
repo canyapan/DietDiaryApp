@@ -51,10 +51,10 @@
     <string name="import_csv_exception">Beim Import der CSV-Datei ist ein nicht identifizierter Fehler aufgetreten.</string>
     <string name="import_csv_corrupted">CSV-Datei beschädigt.</string>
     <string name="import_csv_already_existing_records">CSV-Datei enthält bereits vorhandene Datensätze.</string>
-    <string name="import_file_not_exists">Ausgewählte Datei ist nicht vorhanden!</string>
-    <string name="import_file_not_readable">Ausgewählte Datei ist nicht lesbar!</string>
-    <string name="import_file_empty">Ausgewählte Datei ist leer!</string>
-    <string name="import_file_not_csv">Ausgewählte Datei ist keine CSV-Datei!</string>
+    <string name="import_file_not_exists">Ausgewählte Datei ist nicht vorhanden.</string>
+    <string name="import_file_not_readable">Ausgewählte Datei ist nicht lesbar.</string>
+    <string name="import_file_empty">Ausgewählte Datei ist leer.</string>
+    <string name="import_file_not_csv">Ausgewählte Datei ist keine CSV-Datei.</string>
     <string name="import_successful">CSV-Datei „%1$s” wurde importiert.</string>
     <string name="import_spinner_hint">Importdatei auswählen</string>
     <string name="snack_bar_dismiss">Ablehnen</string>
