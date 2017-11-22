@@ -30,7 +30,7 @@
     <string name="export_from">Fra</string>
     <string name="export_to">Til</string>
     <string name="export_type">Type</string>
-    <string name="export_progress_title">Eksporterer…</string>
+    <string name="export_progress_title">Eksporterer&#8230;</string>
     <string name="export_sd_card_unavailable">SD-kort utilgjengelig.</string>
     <string name="export_temp_file_creation_error">Kan ikke opprette midlertidig fil.</string>
     <string name="export_file_creation_error">Kan ikke opprette eksportfil.</string>
@@ -39,7 +39,7 @@
     <string name="export_external_successful">%1$s opprettet</string>
     <string name="export_share_successful">CSV-fil delt.</string>
     <string name="export_no_permission">Gi skrivetilgang.</string>
-    <string name="import_progress_title">Importerer…</string>
+    <string name="import_progress_title">Importerer&#8230;</string>
     <string name="import_file_selector">Filer</string>
     <string name="import_file_not_exists">Valgt fil finnes ikke.</string>
     <string name="import_file_not_readable">Valgt fil er ikke lesbar.</string>

@@ -42,15 +42,6 @@ import org.joda.time.format.DateTimeFormatterBuilder;
 
 import java.util.ArrayList;
 
-/**
- * --- LIST NEXT VERSION
- * - add take picture button to create/edit view.
- * - user should be able to share photo to social networks.
- * - add XML export, validate XML by the help of XSD and generate HTML by the help of XSLT
- * - add reminders for water, snacks, medication, entering events.
- * - add timed notifications
- * - add saving data to cloud option
- */
 public class MainActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
         CalendarFragment.OnEventFragmentInteractionListener {

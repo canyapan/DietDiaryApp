@@ -24,13 +24,13 @@
     <string name="nav_backup_restore">Sichern/Wiederherstellen</string>
     <string name="nav_settings">Einstellungen</string>
     <string name="nav_donate">Spenden</string>
-    <string name="nav_about">Über …</string>
+    <string name="nav_about">Über</string>
     <string name="backup">Sicherung</string>
     <string name="restore">Wiederherstellen</string>
     <string name="export_from">Von</string>
     <string name="export_to">Bis</string>
     <string name="export_type">Typ</string>
-    <string name="export_progress_title">Wird exportiert …</string>
+    <string name="export_progress_title">Wird exportiert&#8230;</string>
     <string name="export_sd_card_unavailable">SD-Karte nicht verfügbar.</string>
     <string name="export_temp_file_creation_error">Temporäre Datei konnte nicht erstellt werden.</string>
     <string name="export_file_creation_error">Exportdatei konnte nicht erstellt werden.</string>
@@ -41,7 +41,7 @@
     <string name="export_external_successful">„%1$s” wurde erstellt</string>
     <string name="export_share_successful">CSV-Datei freigegeben.</string>
     <string name="export_no_permission">Bitte lassen Sie zu, dass Dateien geschrieben werden dürfen.</string>
-    <string name="import_progress_title">Wird importiert …</string>
+    <string name="import_progress_title">Wird importiert&#8230;</string>
     <string name="import_file_selector">Dateien</string>
     <string name="import_note"><b>Hinweis:</b>Suchen Sie Ihre Sicherungsdateien in <i>/sdcard/</i>\noder <i>/sdcard/DietDiaryApp/</i></string>
     <string name="import_no_permission">Bitte lassen Sie zu, dass Dateien gelesen werden dürfen.</string>
