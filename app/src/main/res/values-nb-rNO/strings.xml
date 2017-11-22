@@ -1,5 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<resources><string name="app_name">Diettdagbok</string>
+<resources>
+    <string name="app_name">Diettdagbok</string>
 
     <string name="content_description_icon">Ikon</string>
 
