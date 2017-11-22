@@ -46,8 +46,8 @@
     <string name="import_csv_sql_exception">CSV içe aktarılırken DB hatası oluştu.</string>
     <string name="import_file_empty">Seçili dosya boş!</string>
     <string name="import_file_not_csv">Seçili dosya bir CSV dosyası değil!</string>
-    <string name="import_file_not_exists">Seçili dosya dizinde bulunamadı!</string>
-    <string name="import_file_not_readable">Seçili dosya okunabilir değil!</string>
+    <string name="import_file_not_exists">Seçili dosya dizinde bulunamadı.</string>
+    <string name="import_file_not_readable">Seçili dosya okunabilir değil.</string>
     <string name="import_file_selector">Dosyalar</string>
     <string name="import_no_external_storage">Lütfen harici depolama birimini bağlayın.</string>
     <string name="import_no_permission">Lütfen dosya okuma için izin verin.</string>
@@ -59,7 +59,7 @@
     <string name="snack_bar_dismiss">Kapat</string>
     <string name="snack_bar_deleted">Silindi</string>
     <string name="daily_notification_title">Diet Diary Günlük Hatırlatıcı</string>
-    <string name="daily_notification_message">Bugün hiçbir kayıt girmediniz.</string>
+    <string name="daily_notification_message">Bugün yediklerinizi yazmak ister misiniz?</string>
 
     <string name="spinner_event_types_food">Yemek</string>
     <string name="spinner_event_types_drink">İçecek</string>
