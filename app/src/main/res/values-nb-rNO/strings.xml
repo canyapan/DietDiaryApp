@@ -53,8 +53,7 @@
 
     <string name="export_csv_io_exception">Inn/ut-datafeil under eksport til CSV.</string>
     <string name="export_csv_sql_exception">Databasefeil under eksport til CSV.</string>
-    <string name="import_note"><b>Merk:</b> Finn dine sikkerhetskopifiler i <i>/sdcard/</i>
-\neller <i>/sdcard/DietDiaryApp/</i></string>
+    <string name="import_note"><b>Merk:</b> Finn dine sikkerhetskopifiler i <i>/sdcard/</i>\neller <i>/sdcard/DietDiaryApp/</i></string>
     <string name="import_no_permission">Gi lesetilgang.</string>
     <string name="import_no_external_storage">Plugg inn eksternt lagringsmedium.</string>
     <string name="import_csv_io_exception">Inn/ut-datafeil under import fra CSV.</string>

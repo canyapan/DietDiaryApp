@@ -43,8 +43,7 @@
     <string name="export_no_permission">Bitte lassen Sie zu, dass Dateien geschrieben werden dürfen.</string>
     <string name="import_progress_title">Wird importiert …</string>
     <string name="import_file_selector">Dateien</string>
-    <string name="import_note"><b>Hinweis:</b>Suchen Sie Ihre Sicherungsdateien in <i>/sdcard/</i>
-\noder <i>/sdcard/DietDiaryApp/</i></string>
+    <string name="import_note"><b>Hinweis:</b>Suchen Sie Ihre Sicherungsdateien in <i>/sdcard/</i>\noder <i>/sdcard/DietDiaryApp/</i></string>
     <string name="import_no_permission">Bitte lassen Sie zu, dass Dateien gelesen werden dürfen.</string>
     <string name="import_no_external_storage">Bitte schließen Sie Ihren externen Speicher an.</string>
     <string name="import_csv_io_exception">Beim Import der CSV-Datei ist ein E/A-Fehler aufgetreten.</string>
