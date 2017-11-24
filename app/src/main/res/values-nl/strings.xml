@@ -95,8 +95,8 @@
     <!-- Settings for Notifications -->
     <string name="pref_header_notifications">Meldingen</string>
     <string name="pref_title_notifications_active">Actief</string>
-    <string name="pref_title_daily_remainder">Herinner me dagelijks als ik niks heb ingevoerd</string>
     <string name="pref_title_daily_remainder_time">Herinner me op</string>
+    <string name="pref_title_daily_remainder_summary">Herinner me dagelijks als ik niks heb ingevoerd</string>
 
     <!-- Strings for App Rate Dialog -->
     <string name="rate_dialog_title">Beoordeel de app</string>

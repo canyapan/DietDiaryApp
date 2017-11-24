@@ -97,6 +97,7 @@
     <string name="pref_title_notifications_active">Aktif</string>
     <string name="pref_title_daily_remainder">Günlük hatırlatıcı</string>
     <string name="pref_title_daily_remainder_time">Şu saatte hatırlat</string>
+    <string name="pref_title_daily_remainder_summary">Eğer hiçbirşey yazmadıysam her gün hatırlat.</string>
 
     <!-- Strings for App Rate Dialog -->
     <string name="rate_dialog_title">Bu uygulamaya puan verin</string>

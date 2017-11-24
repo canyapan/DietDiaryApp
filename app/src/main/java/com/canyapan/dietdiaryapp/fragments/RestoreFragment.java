@@ -64,7 +64,7 @@ public class RestoreFragment extends Fragment implements RestoreDialog.OnRestore
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mLinearLayout = (LinearLayout) inflater.inflate(R.layout.fragment_restore_linearlayout, container, false);
 
@@ -204,6 +204,7 @@ public class RestoreFragment extends Fragment implements RestoreDialog.OnRestore
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == REQUEST_EXTERNAL_STORAGE
+                && grantResults.length > 0
                 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             loadSpinnerItems();
         } else {

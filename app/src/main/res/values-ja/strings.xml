@@ -95,8 +95,8 @@
     <!-- Settings for Notifications -->
     <string name="pref_header_notifications">通知</string>
     <string name="pref_title_notifications_active">有効</string>
-    <string name="pref_title_daily_remainder">エントリーを追加しない場合に、毎日リマインドする</string>
     <string name="pref_title_daily_remainder_time">リマインド</string>
+    <string name="pref_title_daily_remainder_summary">エントリーを追加しない場合に、毎日リマインドする</string>
 
     <!-- Strings for App Rate Dialog -->
     <string name="rate_dialog_title">アプリをレビューしませんか？</string>

@@ -1,16 +1,11 @@
 package com.canyapan.dietdiaryapp.fragments;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentSender;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.preference.ListPreference;
@@ -20,7 +15,6 @@ import android.support.v7.preference.SwitchPreferenceCompat;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.canyapan.dietdiaryapp.R;
 import com.canyapan.dietdiaryapp.adapters.DriveFileArrayAdapter;
@@ -30,12 +24,14 @@ import com.canyapan.dietdiaryapp.helpers.DateTimeHelper;
 import com.canyapan.dietdiaryapp.helpers.DriveBackupServiceHelper;
 import com.canyapan.dietdiaryapp.preference.TimePreferenceCompat;
 import com.canyapan.dietdiaryapp.preference.TimePreferenceDialogFragmentCompat;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.drive.Drive;
-import com.google.android.gms.drive.DriveApi;
+import com.google.android.gms.drive.DriveClient;
+import com.google.android.gms.drive.DriveResourceClient;
 import com.google.android.gms.drive.Metadata;
 import com.google.android.gms.drive.MetadataBuffer;
 import com.google.android.gms.drive.query.Filters;
@@ -43,13 +39,18 @@ import com.google.android.gms.drive.query.Query;
 import com.google.android.gms.drive.query.SearchableField;
 import com.google.android.gms.drive.query.SortOrder;
 import com.google.android.gms.drive.query.SortableField;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 import static android.app.Activity.RESULT_OK;
 import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_BACKUP_ACTIVE_BOOL;
@@ -64,7 +65,7 @@ import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_NOTIFICATI
 
 
 public class SettingsSupportFragment extends PreferenceFragmentCompat
-        implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, Preference.OnPreferenceChangeListener, SharedPreferences.OnSharedPreferenceChangeListener, RestoreDialog.OnRestoreListener {
+        implements Preference.OnPreferenceChangeListener, SharedPreferences.OnSharedPreferenceChangeListener, RestoreDialog.OnRestoreListener {
 
     private static final String TAG = "Settings";
     private static final String DIALOG_FRAGMENT_TAG =
@@ -73,11 +74,12 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
     public static final int FLAG_ACTIVATE_BACKUP = 1;
     private static final String KEY_ACTIVATE_BACKUP_BOOLEAN = "ACTIVATE BACKUP";
 
-    private static final int REQUEST_ACCOUNTS = 1000;
+    //private static final int REQUEST_ACCOUNTS = 1000;
     private static final int REQUEST_RESOLVE_ERROR = 1001;
 
-    private GoogleApiClient mGoogleApiClient = null;
     private RestoreDialog mRestoreDialog = null;
+    private DriveClient mDriveClient = null;
+    private DriveResourceClient mDriveResourceClient = null;
 
     public static SettingsSupportFragment newInstance(int flags) {
         Log.d(TAG, "newInstance");
@@ -94,10 +96,6 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        if (null == mGoogleApiClient) {
-            mGoogleApiClient = getGoogleApiClient();
-        }
-
         boolean activateBackup = false;
         if (null != savedInstanceState) {
             activateBackup = savedInstanceState.getBoolean(KEY_ACTIVATE_BACKUP_BOOLEAN);
@@ -118,7 +116,7 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 if ((Boolean) newValue) { // changing to active
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         if (getActivity().checkSelfPermission(Manifest.permission.GET_ACCOUNTS)
                                 != PackageManager.PERMISSION_GRANTED) {
                             requestPermissions( // request permission
@@ -126,23 +124,20 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
 
                             return false;
                         }
-                    }
+                    }*/
 
                     // have the permission or version is lower
-                    connectGoogleApiClient();
+                    loadDriveApiClients();
 
                     return false; // will be handled if drive connection successful.
                 }
-
-                // changing to passive
-                disconnectGoogleApiClient();
 
                 return true; // let it
             }
         });
 
         if (backupActivePref.isChecked()) {
-            connectGoogleApiClient();
+            loadDriveApiClients();
         } else if (activateBackup) {
             backupActivePref.callChangeListener(true); // This will fire the preference changed event, above.
             // But, it won't let to change it. It will control the change itself.
@@ -206,7 +201,14 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_RESOLVE_ERROR) {
             if (resultCode == RESULT_OK) {
-                connectGoogleApiClient();
+                Task<GoogleSignInAccount> getAccountTask =
+                        GoogleSignIn.getSignedInAccountFromIntent(data);
+                if (getAccountTask.isSuccessful()) {
+                    initializeDriveClient(getAccountTask.getResult());
+                } else {
+                    Log.e(TAG, "Sign-in failed.");
+                    // TODO show this
+                }
             }
         }
     }
@@ -226,65 +228,6 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
             }
         } else {
             super.onDisplayPreferenceDialog(preference);
-        }
-    }
-
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
-        Log.d(TAG, "Drive API connected.");
-
-        SharedPreferences preferences = getPreferenceManager().getSharedPreferences();
-        String driveFileID = preferences.getString(KEY_BACKUP_FILE_DRIVE_ID_STRING, null);
-
-        if (null == driveFileID) { // This is the first time connecting to drive
-            // 1- Check drive contents
-            // 2- Ask user to choose a backup to restore if found any
-
-            // Get backup files from drive.
-            SortOrder sortOrder = new SortOrder.Builder()
-                    .addSortDescending(SortableField.CREATED_DATE)
-                    .build();
-
-            Query query = new Query.Builder()
-                    .addFilter(
-                            Filters.and(
-                                    Filters.eq(SearchableField.MIME_TYPE, "application/zip"),
-                                    Filters.eq(SearchableField.TITLE, "backup.zip")
-                            )
-                    )
-                    .setSortOrder(sortOrder)
-                    .build();
-
-            Drive.DriveApi.getAppFolder(mGoogleApiClient)
-                    .queryChildren(mGoogleApiClient, query)
-                    .setResultCallback(new ResultCallback<DriveApi.MetadataBufferResult>() {
-                        @Override
-                        public void onResult(@NonNull DriveApi.MetadataBufferResult metadataBufferResult) {
-                            if (!metadataBufferResult.getStatus().isSuccess()) {
-                                Log.e(TAG, "Cannot query current backups. " + metadataBufferResult.getStatus().getStatusMessage());
-                                return;
-                            }
-                            MetadataBuffer metadatas = metadataBufferResult.getMetadataBuffer();
-                            if (metadatas.getCount() != 0) {
-                                // Found some backup files saved in the drive.
-                                // show user if they want to restore from any of these backups
-
-                                List<DriveFileItem> files = new ArrayList<>(metadatas.getCount());
-                                for (Metadata m : metadatas) {
-                                    files.add(new DriveFileItem(m));
-                                    Log.d(TAG, String.format(Locale.getDefault(), "%s %,.2fKB", m.getDriveId().getResourceId(), (m.getFileSize() / 1024f)));
-                                }
-
-                                showSelectDriveBackupDialog(files);
-                            } else {
-                                // No backup found.. Activate the drive backup.
-                                setDriveFileId("");
-                                activateBackup();
-                            }
-                        }
-                    });
-        } else {
-            activateBackup();
         }
     }
 
@@ -325,70 +268,39 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
                         dialog.dismiss();
                     }
                 }).setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        final DriveFileItem file = arrayAdapter.getItem(which);
-                        if (null != file) {
-                            Log.d(TAG, file.getId() + " selected.");
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                final DriveFileItem file = arrayAdapter.getItem(which);
+                if (null != file) {
+                    Log.d(TAG, file.getId() + " selected.");
 
-                            // import data @file in background
-                            try {
-                                mRestoreDialog = new RestoreDialog(getContext(), mGoogleApiClient, file.getId(), SettingsSupportFragment.this);
-                                mRestoreDialog.show();
-                            } catch (RestoreException e) {
-                                e.printStackTrace();
-                                mRestoreDialog = null;
-                            }
-                        }
+                    // import data @file in background
+                    try {
+                        mRestoreDialog = new RestoreDialog(getContext(), mDriveClient, mDriveResourceClient, file.getId(), SettingsSupportFragment.this);
+                        mRestoreDialog.show();
+                    } catch (RestoreException e) {
+                        e.printStackTrace();
+                        mRestoreDialog = null;
                     }
+                }
+            }
         }).setOnCancelListener(new DialogInterface.OnCancelListener() {
-                    @Override
-                    public void onCancel(DialogInterface dialog) {
-                        changeProgressBarVisibility(false);
-                    }
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                changeProgressBarVisibility(false);
+            }
         }).show();
     }
 
     @Override
-    public void onConnectionSuspended(int i) {
-        Log.d(TAG, "Drive API connection suspended.");
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        if (!connectionResult.hasResolution()) {
-            // show the localized error dialog.
-            GoogleApiAvailability.getInstance().getErrorDialog(this.getActivity(),
-                    connectionResult.getErrorCode(), 0).show();
-            return;
-        }
-
-        changeProgressBarVisibility(false);
-
-        try {
-            connectionResult.startResolutionForResult(this.getActivity(), REQUEST_RESOLVE_ERROR);
-        } catch (IntentSender.SendIntentException e) {
-            Log.e(TAG, "Exception while starting resolution activity", e);
-        }
-        Log.e(TAG, "Drive API connection failed. " + connectionResult.toString());
-    }
-
-    @Override
-    public void onStop() {
-        disconnectGoogleApiClient();
-
-        super.onStop();
-    }
-
-    @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == REQUEST_ACCOUNTS
+        /*if (requestCode == REQUEST_ACCOUNTS
                 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             connectGoogleApiClient(); // Permission granted, lets try to connect now.
         } else {
             changeProgressBarVisibility(false);
             Toast.makeText(getContext(), R.string.pref_backup_no_permission, Toast.LENGTH_LONG).show();
-        }
+        }*/
     }
 
     /**
@@ -453,35 +365,88 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
                 .get(preference.getKey()));
     }
 
-    @NonNull
-    private GoogleApiClient getGoogleApiClient() {
-        return new GoogleApiClient.Builder(this.getActivity())
-                .addApi(Drive.API)
-                .addScope(Drive.SCOPE_APPFOLDER)
-                .addScope(Drive.SCOPE_FILE)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .build();
-    }
+    private void loadDriveApiClients() {
+        Set<Scope> requiredScopes = new HashSet<>(2);
+        requiredScopes.add(Drive.SCOPE_FILE);
+        requiredScopes.add(Drive.SCOPE_APPFOLDER);
 
-    private void connectGoogleApiClient() {
-        changeProgressBarVisibility(true);
-
-        if (null != mGoogleApiClient) {
-            if (mGoogleApiClient.isConnecting()) {
-                Log.d(TAG, "Google API is connecting");
-            } else if (mGoogleApiClient.isConnected()) {
-                onConnected(null);
-            } else {
-                mGoogleApiClient.connect();
-            }
+        GoogleSignInAccount signInAccount = GoogleSignIn.getLastSignedInAccount(getContext());
+        if (signInAccount != null && signInAccount.getGrantedScopes().containsAll(requiredScopes)) {
+            initializeDriveClient(signInAccount);
+        } else {
+            GoogleSignInOptions signInOptions =
+                    new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                            .requestScopes(Drive.SCOPE_FILE)
+                            .requestScopes(Drive.SCOPE_APPFOLDER)
+                            .build();
+            GoogleSignInClient googleSignInClient = GoogleSignIn.getClient(getActivity(), signInOptions);
+            startActivityForResult(googleSignInClient.getSignInIntent(), REQUEST_RESOLVE_ERROR);
         }
     }
 
-    private void disconnectGoogleApiClient() {
-        if (null != mGoogleApiClient) {
-            mGoogleApiClient.disconnect();
+    private void initializeDriveClient(GoogleSignInAccount signInAccount) {
+        mDriveClient = Drive.getDriveClient(getContext(), signInAccount);
+        mDriveResourceClient = Drive.getDriveResourceClient(getContext(), signInAccount);
+        onDriveClientReady();
+    }
+
+    private void onDriveClientReady() {
+        Log.d(TAG, "Drive API is ready!");
+
+        SharedPreferences preferences = getPreferenceManager().getSharedPreferences();
+        String driveFileID = preferences.getString(KEY_BACKUP_FILE_DRIVE_ID_STRING, null);
+
+        if (null == driveFileID) { // This is the first time connecting to drive
+            // 1- Check drive contents
+            // 2- Ask user to choose a backup to restore if found any
+
+            // Get backup files from drive.
+            SortOrder sortOrder = new SortOrder.Builder()
+                    .addSortDescending(SortableField.CREATED_DATE)
+                    .build();
+
+            Query query = new Query.Builder()
+                    .addFilter(
+                            Filters.and(
+                                    Filters.eq(SearchableField.MIME_TYPE, "application/zip"),
+                                    Filters.eq(SearchableField.TITLE, "backup.zip")
+                            )
+                    )
+                    .setSortOrder(sortOrder)
+                    .build();
+
+            mDriveResourceClient.queryChildren(mDriveResourceClient.getAppFolder().getResult(), query)
+                    .addOnSuccessListener(new OnSuccessListener<MetadataBuffer>() {
+                        @Override
+                        public void onSuccess(MetadataBuffer metadata) {
+                            if (metadata.getCount() != 0) {
+                                // Found some backup files saved in the drive.
+                                // show user if they want to restore from any of these backups
+
+                                List<DriveFileItem> files = new ArrayList<>(metadata.getCount());
+                                for (Metadata m : metadata) {
+                                    files.add(new DriveFileItem(m));
+                                    Log.d(TAG, String.format(Locale.getDefault(), "%s %,.2fKB", m.getDriveId().getResourceId(), (m.getFileSize() / 1024f)));
+                                }
+
+                                showSelectDriveBackupDialog(files);
+                            } else {
+                                // No backup found.. Activate the drive backup.
+                                setDriveFileId("");
+                                activateBackup();
+                            }
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.e(TAG, "Cannot query current backups.", e);
+                        }
+                    });
+        } else {
+            activateBackup();
         }
+
     }
 
     @Override

@@ -99,8 +99,6 @@
     <string name="restore_sql_exception">DB error during import.</string>
     <!--Will be shown under the progress bar while importing data. Text shown when an unknown error happens while importing.-->
     <string name="restore_exception">Unknown error during import.</string>
-    <!--Will be shown under the progress bar while importing data. Text shown when the selected CSV file is changed in a way that cannot be read.-->
-    <string name="restore_csv_corrupted">CSV corrupted.</string>
     <!--Will be shown under the progress bar while importing data. Text shown the selected file contains data those conflicts with already existing data.-->
     <string name="restore_already_existing_records">File includes already existing history.</string>
     <!--Will be shown under the progress bar while importing data. Text shown the selected file cannot be accessible anymore.-->
@@ -109,6 +107,8 @@
     <string name="restore_file_not_readable">Selected file is not readable.</string>
     <!--Will be shown under the progress bar while importing data. Text shown the selected file does not contain any data.-->
     <string name="restore_file_empty">Selected file is empty.</string>
+    <!--Will be shown under the progress bar while importing data. Text shown when the selected CSV file is changed in a way that cannot be read.-->
+    <string name="restore_csv_corrupted">CSV corrupted.</string>
     <!--Will be shown under the progress bar while importing data. Text shown the selected file is not in CSV file format.-->
     <string name="restore_file_not_csv">Selected file is not a CSV file.</string>
     <!--Will be shown under the progress bar while importing data. Text shown when the selected JSON file is changed in a way that cannot be read.-->
@@ -165,6 +165,7 @@
     <string name="pref_title_notifications_active">Active</string>
     <string name="pref_title_daily_remainder">Daily reminder</string>
     <string name="pref_title_daily_remainder_time">Remind me at</string>
+    <string name="pref_title_daily_remainder_summary">Daily remind me, if I don\'t add any entries.</string>
 
     <!-- Settings for Backup -->
     <string name="pref_header_backup">Cloud Backup</string>

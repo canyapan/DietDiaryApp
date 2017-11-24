@@ -5,9 +5,7 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.preference.PreferenceManager;
 import android.util.JsonWriter;
 import android.util.Log;
@@ -20,19 +18,24 @@ import com.canyapan.dietdiaryapp.helpers.ResourcesHelper;
 import com.canyapan.dietdiaryapp.models.Event;
 import com.firebase.jobdispatcher.JobParameters;
 import com.firebase.jobdispatcher.JobService;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.drive.Drive;
-import com.google.android.gms.drive.DriveApi;
+import com.google.android.gms.drive.DriveClient;
 import com.google.android.gms.drive.DriveContents;
 import com.google.android.gms.drive.DriveFile;
-import com.google.android.gms.drive.DriveFolder;
+import com.google.android.gms.drive.DriveId;
+import com.google.android.gms.drive.DriveResourceClient;
 import com.google.android.gms.drive.MetadataChangeSet;
 import com.google.android.gms.drive.metadata.CustomPropertyKey;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.jaredrummler.android.device.DeviceName;
 
+import org.apache.commons.io.IOUtils;
 import org.joda.time.DateTime;
 
 import java.io.File;
@@ -42,7 +45,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.security.NoSuchAlgorithmException;
 import java.text.MessageFormat;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.zip.CRC32;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -55,7 +61,7 @@ import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_NOTIFICATI
 import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_NOTIFICATIONS_DAILY_REMAINDER_BOOL;
 import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_NOTIFICATIONS_DAILY_REMAINDER_TIME_STRING;
 
-public class DriveBackupService extends JobService implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, ResultCallback<DriveApi.DriveContentsResult> {
+public class DriveBackupService extends JobService {
     public static final String TAG = "DriveBackupService";
 
     private static final String KEY_ID = "ID";
@@ -68,9 +74,14 @@ public class DriveBackupService extends JobService implements GoogleApiClient.Co
     public static final CustomPropertyKey DRIVE_KEY_APP_ID = new CustomPropertyKey("AppID", CustomPropertyKey.PRIVATE);
     public static final CustomPropertyKey DRIVE_KEY_DEVICE_NAME = new CustomPropertyKey("DeviceName", CustomPropertyKey.PRIVATE);
 
+    private static final String BACKUP_FILE_NAME = "backup.json";
+    private static final String BACKUP_FILE_NAME_COMPRESSED = "backup.zip";
+
     private JobParameters mJobParameters = null;
     private SharedPreferences mSharedPreferences = null;
-    private GoogleApiClient mGoogleApiClient = null;
+    private DriveClient mDriveClient = null;
+    private DriveResourceClient mDriveResourceClient = null;
+
     private File mBackupFile = null;
     private String mAppId = null;
     private String mDriveId = null;
@@ -92,21 +103,142 @@ public class DriveBackupService extends JobService implements GoogleApiClient.Co
             return false;
         }
 
+
         try {
             // Write file in the app cache dir.
-            mBackupFile = new File(getCacheDir(), "backup.json");
-            writeBackupData();
+            File f = new File(getCacheDir(), BACKUP_FILE_NAME);
+            File cf = new File(getCacheDir(), BACKUP_FILE_NAME_COMPRESSED);
+            writeBackupFile(f);
+            compressBackupFile(cf, f);
 
-            mGoogleApiClient = getGoogleApiClient();
-            connectGoogleApiClient();
+            mBackupFile = cf;
 
-            return true;
-        } catch (IOException e) {
+            if (loadDriveApiClients()) {
+                // -> Check if driveID exists
+                // false - Create new file if not
+                // true  - Write over the current file if the drive ID exists
+                if (null != mDriveId && !mDriveId.isEmpty()) {
+                    modifyExistingDriveBackup();
+                } else {
+                    createNewDriveBackup();
+                }
+
+                return true;
+            }
+        } catch (IOException | NoSuchAlgorithmException e) {
             Log.e(TAG, "EXCEPTION", e);
             deleteBackupFile();
         }
 
         return false;
+    }
+
+    private void createNewDriveBackup() {
+        mDriveResourceClient.createContents()
+                .continueWithTask(new Continuation<DriveContents, Task<DriveFile>>() {
+                    @Override
+                    public Task<DriveFile> then(@NonNull Task<DriveContents> task) throws Exception {
+                        DriveContents driveContents = task.getResult();
+
+                        writeBackupToOutputStream(driveContents.getOutputStream());
+
+                        MetadataChangeSet metadataChangeSet = new MetadataChangeSet.Builder()
+                                .setTitle(BACKUP_FILE_NAME_COMPRESSED)
+                                .setMimeType("application/zip")
+                                .setCustomProperty(DRIVE_KEY_APP_ID, mAppId)
+                                .setCustomProperty(DRIVE_KEY_DEVICE_NAME, DeviceName.getDeviceName())
+                                .build();
+
+                        return mDriveResourceClient.createFile(mDriveResourceClient.getAppFolder().getResult(), metadataChangeSet, driveContents);
+                    }
+                })
+                .addOnSuccessListener(new OnSuccessListener<DriveFile>() {
+                    @Override
+                    public void onSuccess(DriveFile driveFile) {
+                        mDriveId = driveFile.getDriveId().getResourceId();
+                        Log.d(TAG, "Drive file created " + mDriveId);
+
+                        finishJob(true);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e(TAG, "Error while trying to create file. ", e);
+                        finishJob();
+                    }
+                });
+    }
+
+    private void modifyExistingDriveBackup() {
+        mDriveClient.getDriveId(mDriveId)
+                .continueWithTask(new Continuation<DriveId, Task<DriveContents>>() {
+                    @Override
+                    public Task<DriveContents> then(@NonNull Task<DriveId> task) throws Exception {
+                        return mDriveResourceClient.openFile(task.getResult().asDriveFile(), DriveFile.MODE_WRITE_ONLY);
+                    }
+                })
+                .continueWithTask(new Continuation<DriveContents, Task<Void>>() {
+                    @Override
+                    public Task<Void> then(@NonNull Task<DriveContents> task) throws Exception {
+                        DriveContents driveContents = task.getResult();
+
+                        writeBackupToOutputStream(driveContents.getOutputStream());
+
+                        MetadataChangeSet metadataChangeSet = new MetadataChangeSet.Builder()
+                                .setTitle(BACKUP_FILE_NAME_COMPRESSED)
+                                .setMimeType("application/zip")
+                                .setCustomProperty(DRIVE_KEY_APP_ID, mAppId)
+                                .setCustomProperty(DRIVE_KEY_DEVICE_NAME, DeviceName.getDeviceName())
+                                .build();
+
+                        return mDriveResourceClient.commitContents(driveContents, metadataChangeSet);
+                    }
+                })
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        finishJob(true);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Couldn't get drive id. Maybe deleted by user.");
+                        mDriveId = null; // Create a new file
+
+                        createNewDriveBackup();
+                    }
+                });
+    }
+
+    private void writeBackupToOutputStream(final OutputStream outputStream) {
+        // Write backup into Drive AppFolder
+        FileInputStream inputStream = null;
+        try {
+            inputStream = new FileInputStream(mBackupFile);
+            IOUtils.copy(inputStream, outputStream);
+        } catch (IOException e) {
+            Log.e(TAG, "Failed to write backup data to drive", e);
+            finishJob();
+        } finally {
+            if (null != outputStream) {
+                try {
+                    outputStream.flush();
+                    outputStream.close();
+                } catch (IOException e) {
+                    Log.w(TAG, "Unable to closer drive OutputStream.", e);
+                }
+            }
+
+            if (null != inputStream) {
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    Log.w(TAG, "Input stream cannot be closed.", e);
+                }
+            }
+        }
     }
 
     private void deleteBackupFile() {
@@ -131,11 +263,11 @@ public class DriveBackupService extends JobService implements GoogleApiClient.Co
         jobFinished(mJobParameters, false);
     }
 
-    private void writeBackupData() throws IOException {
+    private void writeBackupFile(@NonNull File outputFile) throws IOException {
         OutputStreamWriter os = null;
         JsonWriter writer = null;
         try {
-            os = new OutputStreamWriter(new FileOutputStream(mBackupFile, false), "UTF-8");
+            os = new OutputStreamWriter(new FileOutputStream(outputFile, false), "UTF-8");
             os.write('\uFEFF'); // Unicode character, U+FEFF BYTE ORDER MARK (BOM) | https://en.wikipedia.org/wiki/Byte_order_mark
 
             writer = new JsonWriter(os);
@@ -174,6 +306,65 @@ public class DriveBackupService extends JobService implements GoogleApiClient.Co
 
                 } catch (IOException e) {
                     Log.w(TAG, "Output stream cannot be closed.", e);
+                }
+            }
+        }
+    }
+
+    private void compressBackupFile(@NonNull final File outputFile, @NonNull final File inputFile) throws IOException, NoSuchAlgorithmException {
+        if (!inputFile.exists()) {
+            throw new IOException("Backup file is gone."); // :S
+        }
+
+        InputStream inputStream = null;
+        ZipOutputStream zipOutputStream = null;
+
+        try {
+            inputStream = new FileInputStream(inputFile);
+            zipOutputStream = new ZipOutputStream(new FileOutputStream(outputFile, false));
+
+            zipOutputStream.setLevel(6);
+
+            final ZipEntry zipEntry = new ZipEntry(BACKUP_FILE_NAME);
+            zipEntry.setSize(inputFile.length());
+
+            zipOutputStream.putNextEntry(zipEntry);
+
+            CRC32 crc32 = new CRC32();
+            crc32.reset();
+
+            final byte[] buffer = new byte[1024];
+
+            int len;
+            while ((len = inputStream.read(buffer)) > 0) {
+                zipOutputStream.write(buffer, 0, len);
+                crc32.update(buffer);
+            }
+
+            zipEntry.setCrc(crc32.getValue());
+
+            zipOutputStream.closeEntry();
+            zipOutputStream.finish();
+
+            Log.d(TAG, "Compressed.");
+        } catch (Exception e) {
+            Log.e(TAG, "Compression failed.");
+            throw e;
+        } finally {
+            if (null != zipOutputStream) {
+                try {
+                    zipOutputStream.flush();
+                    zipOutputStream.close();
+                } catch (IOException e) {
+                    Log.w(TAG, "Compressed file stream cannot be closed.", e);
+                }
+            }
+
+            if (null != inputStream) {
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    Log.w(TAG, "Input stream cannot be closed.", e);
                 }
             }
         }
@@ -280,155 +471,27 @@ public class DriveBackupService extends JobService implements GoogleApiClient.Co
         writer.endObject();
     }
 
-    private GoogleApiClient getGoogleApiClient() {
-        return new GoogleApiClient.Builder(getApplicationContext())
-                .useDefaultAccount()
-                .addApi(Drive.API)
-                .addScope(Drive.SCOPE_APPFOLDER)
-                .addScope(Drive.SCOPE_FILE)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .build();
-    }
+    private boolean loadDriveApiClients() {
+        Set<Scope> requiredScopes = new HashSet<>(2);
+        requiredScopes.add(Drive.SCOPE_FILE);
+        requiredScopes.add(Drive.SCOPE_APPFOLDER);
 
-    private void connectGoogleApiClient() {
-        if (null != mGoogleApiClient) {
-            if (!mGoogleApiClient.isConnecting() && !mGoogleApiClient.isConnected()) {
-                mGoogleApiClient.connect();
-            }
-        }
-    }
+        GoogleSignInAccount signInAccount = GoogleSignIn.getLastSignedInAccount(this);
+        if (signInAccount != null && signInAccount.getGrantedScopes().containsAll(requiredScopes)) {
+            mDriveClient = Drive.getDriveClient(getApplicationContext(), signInAccount);
+            mDriveResourceClient = Drive.getDriveResourceClient(getApplicationContext(), signInAccount);
 
-    @Override
-    public boolean onStopJob(JobParameters jobParameters) {
-        Log.d(TAG, "Job stopped.");
-
-        if (null != mGoogleApiClient) {
-            if (mGoogleApiClient.isConnecting() || mGoogleApiClient.isConnected()) {
-                mGoogleApiClient.disconnect();
-            }
+            return true;
         }
 
         return false;
     }
 
     @Override
-    public void onConnected(@Nullable final Bundle bundle) {
-        Log.d(TAG, "Drive API connected.");
+    public boolean onStopJob(JobParameters jobParameters) {
+        Log.d(TAG, "Job stopped.");
 
-        // -> Check if driveID exists
-        // false - Create new file if not
-        // true  - Write over the current file if the drive ID exists
-        if (null != mGoogleApiClient) {
-            if (null != mDriveId && !mDriveId.isEmpty()) {
-                Drive.DriveApi.fetchDriveId(mGoogleApiClient, mDriveId)
-                        .setResultCallback(new ResultCallback<DriveApi.DriveIdResult>() {
-                            @Override
-                            public void onResult(@NonNull DriveApi.DriveIdResult driveIdResult) {
-                                if (!driveIdResult.getStatus().isSuccess()) {
-                                    Log.w(TAG, "Couldn't get drive id. Maybe deleted by user. ");
-
-                                    mDriveId = null; // Create a new file
-                                    onConnected(bundle); // Let's try this again
-
-                                    return;
-                                }
-
-                                driveIdResult.getDriveId().asDriveFile()
-                                        .open(mGoogleApiClient, DriveFile.MODE_WRITE_ONLY, null)
-                                        .setResultCallback(DriveBackupService.this);
-
-                            }
-                        });
-            } else {
-                Drive.DriveApi.newDriveContents(mGoogleApiClient) // Create a new file
-                        .setResultCallback(this);
-            }
-        }
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-        Log.d(TAG, "Drive API connection suspended.");
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Log.e(TAG, "Unable to connect drive. Message : " + connectionResult.getErrorMessage());
-
-        finishJob();
-    }
-
-    public void onResult(@NonNull final DriveApi.DriveContentsResult driveContentsResult) {
-        if (!driveContentsResult.getStatus().isSuccess()) {
-            Log.e(TAG, "Error while trying to create new file contents. " + driveContentsResult.getStatus().getStatusMessage());
-
-            finishJob();
-            return;
-        }
-
-        final DriveContents driveContents = driveContentsResult.getDriveContents();
-
-        // Compress and write backup into Drive AppFolder
-        OutputStream outputStream = driveContents.getOutputStream();
-        try {
-            compressBackupDataIntoStream(outputStream);
-        } catch (IOException e) {
-            Log.e(TAG, "Failed to write backup data to drive", e);
-
-            finishJob();
-        } finally {
-            if (null != outputStream) {
-                try {
-                    outputStream.flush();
-                    outputStream.close();
-                } catch (IOException e) {
-                    Log.w(TAG, "Unable to closer drive OutputStream.", e);
-                }
-            }
-        }
-
-        MetadataChangeSet metadataChangeSet = new MetadataChangeSet.Builder()
-                .setTitle(MessageFormat.format("backup.zip", mAppId))
-                .setMimeType("application/zip")
-                .setCustomProperty(DRIVE_KEY_APP_ID, mAppId)
-                .setCustomProperty(DRIVE_KEY_DEVICE_NAME, DeviceName.getDeviceName())
-                .build();
-
-        if (null != driveContents.getDriveId()) { // Modifying a file
-            driveContents.commit(mGoogleApiClient, metadataChangeSet)
-                    .setResultCallback(new ResultCallback<Status>() {
-                        @Override
-                        public void onResult(@NonNull Status status) {
-                            if (status.getStatus().isSuccess()) {
-                                Log.d(TAG, "Drive file modified " + mDriveId);
-                            } else {
-                                Log.e(TAG, "Error while trying to modify file. " + status.getStatus().getStatusMessage());
-                            }
-
-                            mDriveId = driveContents.getDriveId().encodeToString();
-
-                            finishJob(status.getStatus().isSuccess());
-                        }
-                    });
-        } else { // Creating a new file
-            Drive.DriveApi.getAppFolder(mGoogleApiClient)
-                    .createFile(mGoogleApiClient, metadataChangeSet, driveContents)
-                    .setResultCallback(new ResultCallback<DriveFolder.DriveFileResult>() {
-                        @Override
-                        public void onResult(@NonNull DriveFolder.DriveFileResult driveFileResult) {
-                            if (driveFileResult.getStatus().isSuccess()) {
-                                Log.d(TAG, "Drive file created " + driveFileResult.getDriveFile().getDriveId());
-                            } else {
-                                Log.e(TAG, "Error while trying to create file. " + driveFileResult.getStatus().getStatusMessage());
-                            }
-
-                            mDriveId = driveFileResult.getDriveFile().getDriveId().toString();
-
-                            finishJob(driveFileResult.getStatus().isSuccess());
-                        }
-                    });
-        }
+        return false;
     }
 
     private void setLastBackupTime() {
@@ -436,63 +499,5 @@ public class DriveBackupService extends JobService implements GoogleApiClient.Co
         editor.putLong(KEY_BACKUP_LAST_BACKUP_TIMESTAMP_LONG, DateTime.now().getMillis());
         editor.putString(KEY_BACKUP_FILE_DRIVE_ID_STRING, mDriveId);
         editor.apply();
-    }
-
-    private void compressBackupDataIntoStream(final OutputStream outputStream) throws IOException {
-        if (null == mBackupFile || !mBackupFile.exists()) {
-            throw new IOException("Backup file is gone."); // :S
-        }
-
-        InputStream inputStream = null;
-        ZipOutputStream zipOutputStream = null;
-
-        try {
-            inputStream = new FileInputStream(mBackupFile);
-            zipOutputStream = new ZipOutputStream(outputStream);
-
-            zipOutputStream.setLevel(6);
-
-            final byte[] buffer = new byte[1024];
-
-            final ZipEntry zipEntry = new ZipEntry(mBackupFile.getName());
-            zipEntry.setSize((long) buffer.length);
-
-            zipOutputStream.putNextEntry(zipEntry);
-
-            CRC32 crc32 = new CRC32();
-            crc32.reset();
-
-            int len;
-            while ((len = inputStream.read(buffer)) > 0) {
-                zipOutputStream.write(buffer, 0, len);
-                crc32.update(buffer, 0, len);
-            }
-
-            zipEntry.setCrc(crc32.getValue());
-
-            zipOutputStream.finish();
-
-            Log.d(TAG, "Compressed.");
-        } catch (Exception e) {
-            Log.e(TAG, "Compression failed.");
-            throw e;
-        } finally {
-            if (null != zipOutputStream) {
-                try {
-                    zipOutputStream.flush();
-                    zipOutputStream.close();
-                } catch (IOException e) {
-                    Log.w(TAG, "Compressed file stream cannot be closed.", e);
-                }
-            }
-
-            if (null != inputStream) {
-                try {
-                    inputStream.close();
-                } catch (IOException e) {
-                    Log.w(TAG, "Input stream cannot be closed.", e);
-                }
-            }
-        }
     }
 }

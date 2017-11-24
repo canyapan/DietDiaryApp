@@ -22,11 +22,12 @@ import com.canyapan.dietdiaryapp.R;
 import com.canyapan.dietdiaryapp.db.DatabaseHelper;
 import com.canyapan.dietdiaryapp.helpers.ResourcesHelper;
 import com.crashlytics.android.Crashlytics;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.drive.Drive;
-import com.google.android.gms.drive.DriveApi;
+import com.google.android.gms.drive.DriveClient;
 import com.google.android.gms.drive.DriveContents;
 import com.google.android.gms.drive.DriveFile;
+import com.google.android.gms.drive.DriveId;
+import com.google.android.gms.drive.DriveResourceClient;
+import com.google.android.gms.tasks.Task;
 import com.opencsv.CSVReader;
 
 import org.apache.commons.io.FileUtils;
@@ -82,10 +83,10 @@ class RestoreDialog extends AlertDialog {
         }
     }
 
-    RestoreDialog(@NonNull final Context context, @NonNull final GoogleApiClient googleApiClient, @NonNull final String driveId, @NonNull final OnRestoreListener listener) throws RestoreException {
+    RestoreDialog(@NonNull final Context context, @NonNull final DriveClient driveClient, @NonNull final DriveResourceClient driveResourceClient, @NonNull final String driveId, @NonNull final OnRestoreListener listener) throws RestoreException {
         this(context);
 
-        mAsyncTask = (RestoreAsyncTask) new RestoreFromJsonAsyncTask(context, googleApiClient, driveId, listener).execute();
+        mAsyncTask = (RestoreAsyncTask) new RestoreFromJsonAsyncTask(context, driveClient, driveResourceClient, driveId, listener).execute();
     }
 
     boolean isEnded() {
@@ -95,7 +96,8 @@ class RestoreDialog extends AlertDialog {
     private static abstract class RestoreAsyncTask extends AsyncTask<Void, Integer, Long> {
         private final File mFile;
         private final OnRestoreListener mListener;
-        private final GoogleApiClient mGoogleApiClient;
+        private final DriveClient mDriveClient;
+        private final DriveResourceClient mDriveResourceClient;
         private final String mDriveId;
 
         private final WeakReference<Context> mContextRef;
@@ -127,7 +129,8 @@ class RestoreDialog extends AlertDialog {
                 mListener = listener;
                 mCancelled = new AtomicBoolean();
                 mEnded = new AtomicBoolean();
-                mGoogleApiClient = null;
+                mDriveClient = null;
+                mDriveResourceClient = null;
                 mDriveId = null;
 
                 try {
@@ -141,14 +144,16 @@ class RestoreDialog extends AlertDialog {
             }
         }
 
-        RestoreAsyncTask(final Context context, final GoogleApiClient googleApiClient, final String driveId, final OnRestoreListener listener) throws RestoreException {
+        RestoreAsyncTask(final Context context, final DriveClient driveClient, final DriveResourceClient driveResourceClient,
+                         final String driveId, final OnRestoreListener listener) throws RestoreException {
             // Create a temporary file in app cache dir.
             mFile = new File(context.getCacheDir(), "gdrive_cache.json");
             mContextRef = new WeakReference<>(context);
             mListener = listener;
             mCancelled = new AtomicBoolean();
             mEnded = new AtomicBoolean();
-            mGoogleApiClient = googleApiClient;
+            mDriveClient = driveClient;
+            mDriveResourceClient = driveResourceClient;
             mDriveId = driveId;
 
             /*if (!mFile.canWrite()) {
@@ -159,28 +164,37 @@ class RestoreDialog extends AlertDialog {
 
         @Override
         protected Long doInBackground(Void... params) {
-            if (null != mGoogleApiClient && mGoogleApiClient.isConnected()) {
-                DriveApi.DriveIdResult driveIdResult = Drive.DriveApi
-                        .fetchDriveId(mGoogleApiClient, mDriveId)
-                        .await();
+            if (null != mDriveClient && null != mDriveResourceClient) {
+                Task<DriveId> driveIdTask = mDriveClient.getDriveId(mDriveId);
+                try {
+                    driveIdTask.wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
 
-                if (!driveIdResult.getStatus().isSuccess()) {
-                    Log.e(TAG, "Couldn't get drive id. Maybe deleted by user. " + driveIdResult.getStatus().getStatusMessage());
-                    mErrorString = "Couldn't get drive id. Maybe deleted by user. " + driveIdResult.getStatus().getStatusMessage();
+                if (!driveIdTask.isComplete() || !driveIdTask.isSuccessful()) {
+                    Log.e(TAG, "Couldn't get drive id. Maybe deleted by user.", driveIdTask.getException());
+                    mErrorString = "Couldn't get drive id. Maybe deleted by user. " + driveIdTask.getException().getMessage();
                     return -1L;
                 }
 
-                DriveApi.DriveContentsResult driveContentsResult = driveIdResult.getDriveId().asDriveFile()
-                        .open(mGoogleApiClient, DriveFile.MODE_READ_ONLY, null)
-                        .await();
+                final DriveId driveId = driveIdTask.getResult();
 
-                if (!driveContentsResult.getStatus().isSuccess()) {
-                    Log.e(TAG, "Error while trying to fetch file contents. " + driveContentsResult.getStatus().getStatusMessage());
-                    mErrorString = "Error while trying to fetch file contents. " + driveContentsResult.getStatus().getStatusMessage();
+                Task<DriveContents> driveContentsTask = mDriveResourceClient.openFile(driveId.asDriveFile(), DriveFile.MODE_READ_ONLY);
+
+                try {
+                    driveContentsTask.wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                if (!driveContentsTask.isComplete() || !driveContentsTask.isSuccessful()) {
+                    Log.e(TAG, "Error while trying to fetch file contents.", driveContentsTask.getException());
+                    mErrorString = "Error while trying to fetch file contents. " + driveContentsTask.getException().getMessage();
                     return -1L;
                 }
 
-                final DriveContents driveContents = driveContentsResult.getDriveContents();
+                final DriveContents driveContents = driveContentsTask.getResult();
 
                 InputStream is = null;
                 try {
@@ -204,6 +218,8 @@ class RestoreDialog extends AlertDialog {
                         }
                     }
                 }
+
+                // TODO UNZIP FILE IT
             }
 
             DatabaseHelper databaseHelper = new DatabaseHelper(mContextRef.get());
@@ -277,7 +293,7 @@ class RestoreDialog extends AlertDialog {
                 } catch (IOException ignore) {
                 }
 
-                if (null != mGoogleApiClient) {
+                if (null != mDriveClient) {
                     // This is a restore from drive and @mFile is a temp file. So, I should delete it.
                     mFile.delete();
                 }
@@ -358,8 +374,9 @@ class RestoreDialog extends AlertDialog {
             super(context, file, listener);
         }
 
-        RestoreFromJsonAsyncTask(@NonNull final Context context, @NonNull final GoogleApiClient googleApiClient, @NonNull final String driveId, @NonNull final OnRestoreListener listener) throws RestoreException {
-            super(context, googleApiClient, driveId, listener);
+        RestoreFromJsonAsyncTask(@NonNull final Context context, @NonNull final DriveClient driveClient, @NonNull final DriveResourceClient driveResourceClient,
+                                 @NonNull final String driveId, @NonNull final OnRestoreListener listener) throws RestoreException {
+            super(context, driveClient, driveResourceClient, driveId, listener);
         }
 
         @Override

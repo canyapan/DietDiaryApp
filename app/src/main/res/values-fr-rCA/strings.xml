@@ -97,8 +97,8 @@
     <!-- Settings for Notifications -->
     <string name="pref_header_notifications">Notifications</string>
     <string name="pref_title_notifications_active">Activées</string>
-    <string name="pref_title_daily_remainder">Rappelle moi quotidiennement d\ajouter des entrées</string>
     <string name="pref_title_daily_remainder_time">Rappelle moi à</string>
+    <string name="pref_title_daily_remainder_summary">Rappelle moi quotidiennement d\ajouter des entrées</string>
 
     <!-- Strings for App Rate Dialog -->
     <string name="rate_dialog_title">Noter cette application</string>

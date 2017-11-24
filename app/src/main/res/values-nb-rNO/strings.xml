@@ -93,8 +93,8 @@
 
     <string name="pref_header_notifications">Merknader</string>
     <string name="pref_title_notifications_active">Aktiv</string>
-    <string name="pref_title_daily_remainder">Påminn meg daglig om jeg ikke legger til noen oppføringer</string>
     <string name="pref_title_daily_remainder_time">Påminn meg klokka</string>
+    <string name="pref_title_daily_remainder_summary">Påminn meg daglig om jeg ikke legger til noen oppføringer</string>
 
     <string name="rate_dialog_title">Vurder dette programmet</string>
     <string name="rate_dialog_text">Fortell verden om dette programmet for å hjelpe andre å forme sine beslutninger. Takk for din støtte!</string>

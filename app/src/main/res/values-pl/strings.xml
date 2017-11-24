@@ -96,8 +96,8 @@
 
     <string name="pref_header_notifications">Powiadomienia</string>
     <string name="pref_title_notifications_active">Aktywne</string>
-    <string name="pref_title_daily_remainder">Codzienne przypomnienie, jeśli nie dodano żadnego wpisu</string>
     <string name="pref_title_daily_remainder_time">Przypomnij mi o</string>
+    <string name="pref_title_daily_remainder_summary">Codzienne przypomnienie, jeśli nie dodano żadnego wpisu</string>
 
     <string name="rate_dialog_title">Oceń tę aplikację</string>
     <string name="rate_dialog_text">Jeśli korzystanie z tej aplikacji Ci pomaga i ją lubisz, czy możesz ją ocenić? To nie potrwa dłużej niż chwilę. Dziękuję za wsparcie!</string>

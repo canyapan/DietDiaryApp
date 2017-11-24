@@ -82,8 +82,8 @@
     <!-- Settings for Notifications -->
     <string name="pref_header_notifications">Уведомления</string>
     <string name="pref_title_notifications_active">Aктивный</string>
-    <string name="pref_title_daily_remainder">Включить ежедневное напоминание в случае отсутствия записей</string>
     <string name="pref_title_daily_remainder_time">Напомнить мне в</string>
+    <string name="pref_title_daily_remainder_summary">Включить ежедневное напоминание в случае отсутствия записей</string>
 
     <!-- Strings for App Rate Dialog -->
     <string name="rate_dialog_title">Оцени это приложение</string>

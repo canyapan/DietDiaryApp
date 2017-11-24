@@ -274,6 +274,7 @@ public class BackupFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == REQUEST_EXTERNAL_STORAGE
+                && grantResults.length > 0
                 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             try {
                 switch (spFormats.getSelectedItemPosition()) {
