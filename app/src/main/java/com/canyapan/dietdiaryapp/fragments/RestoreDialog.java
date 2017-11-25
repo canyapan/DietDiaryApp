@@ -28,15 +28,16 @@ import com.google.android.gms.drive.DriveFile;
 import com.google.android.gms.drive.DriveId;
 import com.google.android.gms.drive.DriveResourceClient;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.opencsv.CSVReader;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.input.BOMInputStream;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -44,8 +45,13 @@ import java.lang.ref.WeakReference;
 import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.zip.CRC32;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
+//noinspection ResultOfMethodCallIgnored
 class RestoreDialog extends AlertDialog {
     public static final String TAG = "RestoreDialog";
 
@@ -93,6 +99,7 @@ class RestoreDialog extends AlertDialog {
         return null == mAsyncTask || mAsyncTask.mEnded.get();
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     private static abstract class RestoreAsyncTask extends AsyncTask<Void, Integer, Long> {
         private final File mFile;
         private final OnRestoreListener mListener;
@@ -165,61 +172,17 @@ class RestoreDialog extends AlertDialog {
         @Override
         protected Long doInBackground(Void... params) {
             if (null != mDriveClient && null != mDriveResourceClient) {
-                Task<DriveId> driveIdTask = mDriveClient.getDriveId(mDriveId);
                 try {
-                    driveIdTask.wait();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-                if (!driveIdTask.isComplete() || !driveIdTask.isSuccessful()) {
-                    Log.e(TAG, "Couldn't get drive id. Maybe deleted by user.", driveIdTask.getException());
-                    mErrorString = "Couldn't get drive id. Maybe deleted by user. " + driveIdTask.getException().getMessage();
-                    return -1L;
-                }
-
-                final DriveId driveId = driveIdTask.getResult();
-
-                Task<DriveContents> driveContentsTask = mDriveResourceClient.openFile(driveId.asDriveFile(), DriveFile.MODE_READ_ONLY);
-
-                try {
-                    driveContentsTask.wait();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-                if (!driveContentsTask.isComplete() || !driveContentsTask.isSuccessful()) {
-                    Log.e(TAG, "Error while trying to fetch file contents.", driveContentsTask.getException());
-                    mErrorString = "Error while trying to fetch file contents. " + driveContentsTask.getException().getMessage();
-                    return -1L;
-                }
-
-                final DriveContents driveContents = driveContentsTask.getResult();
-
-                InputStream is = null;
-                try {
-                    is = driveContents.getInputStream();
-                    FileUtils.copyInputStreamToFile(is, mFile);
-                } catch (IOException e) {
-                    if (BuildConfig.CRASHLYTICS_ENABLED) {
-                        Crashlytics.logException(e);
-                    }
-                    Log.e(TAG, "Unable to download backup file.", e);
-                    mErrorString = mContextRef.get().getString(R.string.restore_io_exception);
-
+                    getFileFromDrive();
+                } catch (RestoreException e) {
                     mFile.delete();
-
-                    return -1L;
-                } finally {
-                    if (null != is) {
-                        try {
-                            is.close();
-                        } catch (IOException ignore) {
-                        }
-                    }
+                    Log.e(TAG, "Couldn't file from drive.", e);
+                    mErrorString = e.getMessage();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
                 }
-
-                // TODO UNZIP FILE IT
             }
 
             DatabaseHelper databaseHelper = new DatabaseHelper(mContextRef.get());
@@ -329,6 +292,84 @@ class RestoreDialog extends AlertDialog {
             } // -2 cancelled
         }
 
+        private void getFileFromDrive() throws RestoreException, ExecutionException, InterruptedException {
+            Task<DriveId> driveIdTask = mDriveClient.getDriveId(mDriveId);
+            Tasks.await(driveIdTask);
+
+            if (!driveIdTask.isSuccessful()) {
+                throw new RestoreException("Couldn't get drive id. Maybe deleted by user.", driveIdTask.getException());
+            }
+
+            final DriveId driveId = driveIdTask.getResult();
+
+            Task<DriveContents> driveContentsTask = mDriveResourceClient.openFile(driveId.asDriveFile(), DriveFile.MODE_READ_ONLY);
+
+            Tasks.await(driveContentsTask);
+
+            if (!driveContentsTask.isSuccessful()) {
+                throw new RestoreException("Error while trying to fetch file contents.", driveContentsTask.getException());
+            }
+
+            final DriveContents driveContents = driveContentsTask.getResult();
+
+            InputStream is = null;
+            ZipInputStream zis = null;
+            FileOutputStream fos = null;
+            try {
+                fos = new FileOutputStream(mFile, false);
+                is = driveContents.getInputStream();
+                zis = new ZipInputStream(is);
+                ZipEntry ze = zis.getNextEntry();
+
+                if (null == ze) {
+                    throw new RestoreException("Compressed backup doesn't include any file.");
+                }
+
+                CRC32 crc32 = new CRC32();
+                crc32.reset();
+
+                final byte[] buffer = new byte[1024];
+
+                int len;
+                while ((len = zis.read(buffer)) > 0) {
+                    fos.write(buffer, 0, len);
+                    crc32.update(buffer, 0, len);
+                }
+
+                if (crc32.getValue() != ze.getCrc()) {
+                    throw new RestoreException("Checksum is wrong. File corrupted");
+                }
+            } catch (IOException e) {
+                if (BuildConfig.CRASHLYTICS_ENABLED) {
+                    Crashlytics.logException(e);
+                }
+
+                throw new RestoreException("Unable to download backup file.", e);
+            } finally {
+                if (null != zis) {
+                    try {
+                        zis.close();
+                    } catch (IOException ignore) {
+                    }
+                }
+
+                if (null != is) {
+                    try {
+                        is.close();
+                    } catch (IOException ignore) {
+                    }
+                }
+
+                if (null != fos) {
+                    try {
+                        fos.flush();
+                        fos.close();
+                    } catch (IOException ignore) {
+                    }
+                }
+            }
+        }
+
         String getExceptionText(@StringRes int resId) {
             return mContextRef.get().getString(resId);
         }
@@ -413,8 +454,16 @@ class RestoreDialog extends AlertDialog {
             while (reader.hasNext()) {
                 switch (reader.nextName()) {
                     case "App":
+                        reader.skipValue();
                         break;
                     case "Ver":
+                        reader.skipValue();
+                        break;
+                    case "Device":
+                        reader.skipValue();
+                        break;
+                    case "Settings":
+                        reader.skipValue();
                         break;
                     case "Events":
                         reader.beginArray();

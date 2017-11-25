@@ -25,6 +25,7 @@ import com.google.android.gms.drive.Drive;
 import com.google.android.gms.drive.DriveClient;
 import com.google.android.gms.drive.DriveContents;
 import com.google.android.gms.drive.DriveFile;
+import com.google.android.gms.drive.DriveFolder;
 import com.google.android.gms.drive.DriveId;
 import com.google.android.gms.drive.DriveResourceClient;
 import com.google.android.gms.drive.MetadataChangeSet;
@@ -33,6 +34,7 @@ import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.jaredrummler.android.device.DeviceName;
 
 import org.apache.commons.io.IOUtils;
@@ -134,11 +136,13 @@ public class DriveBackupService extends JobService {
     }
 
     private void createNewDriveBackup() {
-        mDriveResourceClient.createContents()
-                .continueWithTask(new Continuation<DriveContents, Task<DriveFile>>() {
+        final Task<DriveFolder> appFolderTask = mDriveResourceClient.getAppFolder();
+        final Task<DriveContents> createContentsTask = mDriveResourceClient.createContents();
+        Tasks.whenAll(appFolderTask, createContentsTask)
+                .continueWithTask(new Continuation<Void, Task<DriveFile>>() {
                     @Override
-                    public Task<DriveFile> then(@NonNull Task<DriveContents> task) throws Exception {
-                        DriveContents driveContents = task.getResult();
+                    public Task<DriveFile> then(@NonNull Task<Void> task) throws Exception {
+                        DriveContents driveContents = createContentsTask.getResult();
 
                         writeBackupToOutputStream(driveContents.getOutputStream());
 
@@ -149,7 +153,7 @@ public class DriveBackupService extends JobService {
                                 .setCustomProperty(DRIVE_KEY_DEVICE_NAME, DeviceName.getDeviceName())
                                 .build();
 
-                        return mDriveResourceClient.createFile(mDriveResourceClient.getAppFolder().getResult(), metadataChangeSet, driveContents);
+                        return mDriveResourceClient.createFile(appFolderTask.getResult(), metadataChangeSet, driveContents);
                     }
                 })
                 .addOnSuccessListener(new OnSuccessListener<DriveFile>() {
@@ -338,7 +342,7 @@ public class DriveBackupService extends JobService {
             int len;
             while ((len = inputStream.read(buffer)) > 0) {
                 zipOutputStream.write(buffer, 0, len);
-                crc32.update(buffer);
+                crc32.update(buffer, 0, len);
             }
 
             zipEntry.setCrc(crc32.getValue());

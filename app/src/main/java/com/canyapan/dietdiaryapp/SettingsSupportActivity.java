@@ -1,7 +1,6 @@
 package com.canyapan.dietdiaryapp;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,8 +11,6 @@ import android.support.v7.widget.Toolbar;
 import com.canyapan.dietdiaryapp.fragments.SettingsSupportFragment;
 import com.canyapan.dietdiaryapp.helpers.DailyReminderServiceHelper;
 import com.canyapan.dietdiaryapp.helpers.DriveBackupServiceHelper;
-
-import java.util.List;
 
 import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_BACKUP_ACTIVE_BOOL;
 import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_NOTIFICATIONS_ACTIVE_BOOL;
@@ -76,20 +73,5 @@ public class SettingsSupportActivity extends AppCompatActivity
                 break;
         }
 
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        //super.onActivityResult(requestCode, resultCode, data);
-        // Unfortunately Drive API for Android only accepts an Activity for resolutions.
-        // I might check requestCode, but there is no point doing that. Since the activity doesn't wait for any result.
-        List<Fragment> fragments = getSupportFragmentManager().getFragments();
-        if (fragments != null) {
-            for (Fragment fragment : fragments) {
-                if (fragment != null) {
-                    fragment.onActivityResult(requestCode, resultCode, data);
-                }
-            }
-        }
     }
 }

@@ -31,6 +31,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.drive.Drive;
 import com.google.android.gms.drive.DriveClient;
+import com.google.android.gms.drive.DriveFolder;
 import com.google.android.gms.drive.DriveResourceClient;
 import com.google.android.gms.drive.Metadata;
 import com.google.android.gms.drive.MetadataBuffer;
@@ -39,6 +40,7 @@ import com.google.android.gms.drive.query.Query;
 import com.google.android.gms.drive.query.SearchableField;
 import com.google.android.gms.drive.query.SortOrder;
 import com.google.android.gms.drive.query.SortableField;
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -63,7 +65,6 @@ import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_NOTIFICATI
 import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_NOTIFICATIONS_DAILY_REMAINDER_BOOL;
 import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_NOTIFICATIONS_DAILY_REMAINDER_TIME_STRING;
 
-
 public class SettingsSupportFragment extends PreferenceFragmentCompat
         implements Preference.OnPreferenceChangeListener, SharedPreferences.OnSharedPreferenceChangeListener, RestoreDialog.OnRestoreListener {
 
@@ -74,7 +75,6 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
     public static final int FLAG_ACTIVATE_BACKUP = 1;
     private static final String KEY_ACTIVATE_BACKUP_BOOLEAN = "ACTIVATE BACKUP";
 
-    //private static final int REQUEST_ACCOUNTS = 1000;
     private static final int REQUEST_RESOLVE_ERROR = 1001;
 
     private RestoreDialog mRestoreDialog = null;
@@ -116,16 +116,6 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 if ((Boolean) newValue) { // changing to active
-                    /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        if (getActivity().checkSelfPermission(Manifest.permission.GET_ACCOUNTS)
-                                != PackageManager.PERMISSION_GRANTED) {
-                            requestPermissions( // request permission
-                                    new String[]{Manifest.permission.GET_ACCOUNTS}, REQUEST_ACCOUNTS);
-
-                            return false;
-                        }
-                    }*/
-
                     // have the permission or version is lower
                     loadDriveApiClients();
 
@@ -136,12 +126,11 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
             }
         });
 
-        if (backupActivePref.isChecked()) {
-            loadDriveApiClients();
-        } else if (activateBackup) {
-            backupActivePref.callChangeListener(true); // This will fire the preference changed event, above.
+        if (!backupActivePref.isChecked() && activateBackup) {
+            // This will fire the preference changed event, above.
             // But, it won't let to change it. It will control the change itself.
             // Therefore we won't try this here.
+            backupActivePref.callChangeListener(true);
         }
 
         final Preference backupNowPref = findPreference(KEY_BACKUP_NOW_ACT);
@@ -154,12 +143,12 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
             }
         });
 
-        // Setup a listener to watch changes on last backup pref
-        getPreferenceManager().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
-
         if (null != mRestoreDialog && !mRestoreDialog.isEnded()) {
             mRestoreDialog.show();
         }
+
+        // Setup a listener to watch changes on last backup pref
+        getPreferenceManager().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
     }
 
     @Override
@@ -172,9 +161,9 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
 
     private void setPreferenceSummaryForBackupNowAction(final Preference preference) {
         final long timestamp = getPreferenceManager().getSharedPreferences().getLong(KEY_BACKUP_LAST_BACKUP_TIMESTAMP_LONG, -1);
-        if (timestamp < 0) {
+        if (timestamp < 0) { // Not backed up, yet.
             preference.setSummary(preference.getContext().getString(R.string.pref_title_backup_now_summary, preference.getContext().getString(R.string.pref_title_backup_now_summary_never)));
-        } else {
+        } else { // Backed up at timestamp
             preference.setSummary(preference.getContext().getString(R.string.pref_title_backup_now_summary, DateUtils.getRelativeTimeSpanString(timestamp)));
         }
     }
@@ -292,17 +281,6 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
         }).show();
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        /*if (requestCode == REQUEST_ACCOUNTS
-                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            connectGoogleApiClient(); // Permission granted, lets try to connect now.
-        } else {
-            changeProgressBarVisibility(false);
-            Toast.makeText(getContext(), R.string.pref_backup_no_permission, Toast.LENGTH_LONG).show();
-        }*/
-    }
-
     /**
      * A preference value change listener that updates the preference's summary
      * to reflect its new value.
@@ -387,6 +365,7 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
     private void initializeDriveClient(GoogleSignInAccount signInAccount) {
         mDriveClient = Drive.getDriveClient(getContext(), signInAccount);
         mDriveResourceClient = Drive.getDriveResourceClient(getContext(), signInAccount);
+
         onDriveClientReady();
     }
 
@@ -399,23 +378,28 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
         if (null == driveFileID) { // This is the first time connecting to drive
             // 1- Check drive contents
             // 2- Ask user to choose a backup to restore if found any
+            mDriveResourceClient.getAppFolder()
+                    .continueWithTask(new Continuation<DriveFolder, Task<MetadataBuffer>>() {
+                        @Override
+                        public Task<MetadataBuffer> then(@NonNull Task<DriveFolder> task) throws Exception {
+                            // Get backup files from drive.
+                            SortOrder sortOrder = new SortOrder.Builder()
+                                    .addSortDescending(SortableField.CREATED_DATE)
+                                    .build();
 
-            // Get backup files from drive.
-            SortOrder sortOrder = new SortOrder.Builder()
-                    .addSortDescending(SortableField.CREATED_DATE)
-                    .build();
+                            Query query = new Query.Builder()
+                                    .addFilter(
+                                            Filters.and(
+                                                    Filters.eq(SearchableField.MIME_TYPE, "application/zip"),
+                                                    Filters.eq(SearchableField.TITLE, "backup.zip")
+                                            )
+                                    )
+                                    .setSortOrder(sortOrder)
+                                    .build();
 
-            Query query = new Query.Builder()
-                    .addFilter(
-                            Filters.and(
-                                    Filters.eq(SearchableField.MIME_TYPE, "application/zip"),
-                                    Filters.eq(SearchableField.TITLE, "backup.zip")
-                            )
-                    )
-                    .setSortOrder(sortOrder)
-                    .build();
-
-            mDriveResourceClient.queryChildren(mDriveResourceClient.getAppFolder().getResult(), query)
+                            return mDriveResourceClient.queryChildren(task.getResult(), query);
+                        }
+                    })
                     .addOnSuccessListener(new OnSuccessListener<MetadataBuffer>() {
                         @Override
                         public void onSuccess(MetadataBuffer metadata) {
@@ -441,6 +425,7 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             Log.e(TAG, "Cannot query current backups.", e);
+                            //TODO: show a toast about failure
                         }
                     });
         } else {

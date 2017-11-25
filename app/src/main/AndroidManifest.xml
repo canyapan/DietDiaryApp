@@ -11,7 +11,7 @@
     <!-- To setup services -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <!-- Google Drive API for Android requires those permissions -->
-    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+    <!--<uses-permission android:name="android.permission.GET_ACCOUNTS"/>-->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
 
     <permission
