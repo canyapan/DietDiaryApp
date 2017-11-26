@@ -45,6 +45,8 @@
     <string name="nav_home">Home</string>
     <!--Will be shown on the side navigation panel. Text indicates to open the backup/restore screen of the application. Should be translated as short as possible.-->
     <string name="nav_backup_restore">Backup/Restore</string>
+    <!--Will be shown on the side navigation panel. Text indicates to open the export screen of the application. Should be translated as short as possible.-->
+    <string name="nav_export">Export</string>
     <!--Will be shown on the side navigation panel. Text indicates to open configurations of the application. Should be translated as short as possible.-->
     <string name="nav_settings">Settings</string>
     <!--Will be shown on the side navigation panel. Text indicates to open the donation screen of the application. Should be translated as short as possible.-->

@@ -280,6 +280,10 @@ public class MainActivity extends AppCompatActivity implements
                 Log.d(TAG, "Backup/Restore item selected.");
                 startActivityForResult(new Intent(MainActivity.this, BackupRestoreActivity.class), BackupRestoreActivity.REQUEST_BACKUP_RESTORE);
                 break;
+            case R.id.nav_export:
+                Log.d(TAG, "Export item selected.");
+                startActivityForResult(new Intent(MainActivity.this, ExportActivity.class), ExportActivity.REQUEST_EXPORT);
+                break;
             case R.id.nav_settings:
                 startActivity(new Intent(MainActivity.this, SettingsSupportActivity.class));
                 break;

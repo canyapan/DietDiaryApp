@@ -463,11 +463,11 @@ class RestoreDialog extends AlertDialog {
                         reader.skipValue();
                         break;
                     case "Settings":
-                        reader.skipValue();
+                        reader.skipValue(); // TODO: Read and apply previous settings.
                         break;
                     case "Events":
                         reader.beginArray();
-                        return;
+                        return; // This will be read @readNext()
                     default:
                         reader.skipValue();
                 }

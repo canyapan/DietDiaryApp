@@ -15,6 +15,7 @@ import android.support.v7.preference.SwitchPreferenceCompat;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.canyapan.dietdiaryapp.R;
 import com.canyapan.dietdiaryapp.adapters.DriveFileArrayAdapter;
@@ -194,9 +195,10 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
                         GoogleSignIn.getSignedInAccountFromIntent(data);
                 if (getAccountTask.isSuccessful()) {
                     initializeDriveClient(getAccountTask.getResult());
+                    Toast.makeText(getContext(), R.string.pref_title_backup_active_connected, Toast.LENGTH_SHORT).show();
                 } else {
                     Log.e(TAG, "Sign-in failed.");
-                    // TODO show this
+                    Toast.makeText(getContext(), R.string.pref_title_backup_active_failed, Toast.LENGTH_LONG).show();
                 }
             }
         }
@@ -425,7 +427,7 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             Log.e(TAG, "Cannot query current backups.", e);
-                            //TODO: show a toast about failure
+                            Toast.makeText(getContext(), R.string.pref_backup_unable_to_list_drive_backups, Toast.LENGTH_SHORT).show();
                         }
                     });
         } else {
