@@ -4,13 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     app:columnCount="2"
     app:columnOrderPreserved="false"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
     app:useDefaultMargins="true"
     tools:context="com.canyapan.dietdiaryapp.ExportActivity"
     tools:layout_editor_absoluteX="8dp"
-
     tools:layout_editor_absoluteY="8dp"
     tools:showIn="@layout/activity_export">
 

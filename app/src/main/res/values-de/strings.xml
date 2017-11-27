@@ -93,8 +93,8 @@
 
     <string name="pref_header_notifications">Benachrichtigungen</string>
     <string name="pref_title_notifications_active">Aktiv</string>
-    <string name="pref_title_daily_remainder">Mich täglich erinnern, wenn keine Einträge hinzufügt wurden</string>
     <string name="pref_title_daily_remainder_time">Erinnern um</string>
+    <string name="pref_title_daily_remainder_summary">Mich täglich erinnern, wenn keine Einträge hinzufügt wurden</string>
 
     <string name="rate_dialog_title">App bewerten</string>
     <string name="rate_dialog_text">Wenn Sie diese App gerne nutzen, würden Sie sich einen Moment Zeit nehmen, um sie zu bewerten? Es dauert nicht länger als eine Minute. Vielen Dank für Ihre Unterstützung!</string>

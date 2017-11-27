@@ -22,7 +22,7 @@ public class DriveFileItem implements Parcelable {
     private final String mDeviceName;
 
     public DriveFileItem(final Metadata m) {
-        mId = m.getDriveId().getResourceId();
+        mId = m.getDriveId().encodeToString();
         mTitle = m.getTitle();
         mCreationDate = new LocalDateTime(m.getCreatedDate());
         mModificationDate = new LocalDateTime(m.getModifiedDate());

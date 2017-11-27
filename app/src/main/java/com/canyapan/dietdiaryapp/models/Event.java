@@ -3,8 +3,12 @@ package com.canyapan.dietdiaryapp.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.canyapan.dietdiaryapp.db.DatabaseHelper;
+
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
+
+import java.text.MessageFormat;
 
 public class Event implements Parcelable {
     public static final int TYPE_FOOD = 0;
@@ -114,5 +118,32 @@ public class Event implements Parcelable {
         dest.writeInt(mType);
         dest.writeInt(mSubType);
         dest.writeString(mDescription);
+    }
+
+    @Override
+    public boolean equals(final Object obj) {
+        if (null != obj && obj instanceof Event) {
+            final Event event = (Event) obj;
+            if (getID() == event.getID()
+                    && getType() == event.getType()
+                    && getSubType() == event.getSubType()
+                    && getDate().equals(event.getDate())
+                    && getTime().equals(event.getTime())
+                    && getDescription().equals(event.getDescription()))
+                return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        return MessageFormat.format("[ID]={0}, [Date]={1}, [Time]={2}, [Type]={3}, [SubType]={4}, [Description]={5}",
+                String.valueOf(getID()),
+                getDate().toString(DatabaseHelper.DB_DATE_FORMATTER),
+                getTime().toString(DatabaseHelper.DB_TIME_FORMATTER),
+                String.valueOf(getType()),
+                String.valueOf(getSubType()),
+                getDescription());
     }
 }

@@ -66,7 +66,7 @@ public class SettingsSupportActivity extends AppCompatActivity
                 break;
             case KEY_BACKUP_ACTIVE_BOOL:
                 if (sharedPreferences.getBoolean(KEY_BACKUP_ACTIVE_BOOL, false)) {
-                    //TODO DriveBackupServiceHelper.setup(context);
+                    DriveBackupServiceHelper.setup(context);
                 } else {
                     DriveBackupServiceHelper.cancel(context);
                 }

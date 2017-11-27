@@ -139,9 +139,20 @@ public class DriveBackupService extends JobService {
         final Task<DriveFolder> appFolderTask = mDriveResourceClient.getAppFolder();
         final Task<DriveContents> createContentsTask = mDriveResourceClient.createContents();
         Tasks.whenAll(appFolderTask, createContentsTask)
+                /*.continueWithTask(new Continuation<Void, Task<DriveFolder>>() {
+                    @Override
+                    public Task<DriveFolder> then(@NonNull Task<Void> task) throws Exception {
+                        MetadataChangeSet metadataChangeSet = new MetadataChangeSet.Builder()
+                                .build();
+
+                        return mDriveResourceClient.createFolder(appFolderTask.getResult(), metadataChangeSet);
+                    }
+                })*/
                 .continueWithTask(new Continuation<Void, Task<DriveFile>>() {
                     @Override
                     public Task<DriveFile> then(@NonNull Task<Void> task) throws Exception {
+                        Log.d(TAG, "Creating drive file... ");
+
                         DriveContents driveContents = createContentsTask.getResult();
 
                         writeBackupToOutputStream(driveContents.getOutputStream());
@@ -159,7 +170,7 @@ public class DriveBackupService extends JobService {
                 .addOnSuccessListener(new OnSuccessListener<DriveFile>() {
                     @Override
                     public void onSuccess(DriveFile driveFile) {
-                        mDriveId = driveFile.getDriveId().getResourceId();
+                        mDriveId = driveFile.getDriveId().encodeToString();
                         Log.d(TAG, "Drive file created " + mDriveId);
 
                         finishJob(true);
@@ -168,20 +179,15 @@ public class DriveBackupService extends JobService {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.e(TAG, "Error while trying to create file. ", e);
+                        Log.e(TAG, "Error while trying to create file.", e);
                         finishJob();
                     }
                 });
     }
 
     private void modifyExistingDriveBackup() {
-        mDriveClient.getDriveId(mDriveId)
-                .continueWithTask(new Continuation<DriveId, Task<DriveContents>>() {
-                    @Override
-                    public Task<DriveContents> then(@NonNull Task<DriveId> task) throws Exception {
-                        return mDriveResourceClient.openFile(task.getResult().asDriveFile(), DriveFile.MODE_WRITE_ONLY);
-                    }
-                })
+        final DriveId driveId = DriveId.decodeFromString(mDriveId);
+        mDriveResourceClient.openFile(driveId.asDriveFile(), DriveFile.MODE_WRITE_ONLY)
                 .continueWithTask(new Continuation<DriveContents, Task<Void>>() {
                     @Override
                     public Task<Void> then(@NonNull Task<DriveContents> task) throws Exception {
@@ -202,13 +208,14 @@ public class DriveBackupService extends JobService {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "Drive file modified " + mDriveId);
                         finishJob(true);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Couldn't get drive id. Maybe deleted by user.");
+                        Log.w(TAG, "Couldn't open drive file. Maybe deleted by user.");
                         mDriveId = null; // Create a new file
 
                         createNewDriveBackup();
@@ -301,9 +308,7 @@ public class DriveBackupService extends JobService {
                 } catch (IOException e) {
                     Log.w(TAG, "JSON stream cannot be closed.", e);
                 }
-            }
-
-            if (null != os) {
+            } else if (null != os) { // Writer will close this normally.
                 try {
                     os.flush();
                     os.close();

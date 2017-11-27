@@ -412,7 +412,7 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
                                 List<DriveFileItem> files = new ArrayList<>(metadata.getCount());
                                 for (Metadata m : metadata) {
                                     files.add(new DriveFileItem(m));
-                                    Log.d(TAG, String.format(Locale.getDefault(), "%s %,.2fKB", m.getDriveId().getResourceId(), (m.getFileSize() / 1024f)));
+                                    Log.d(TAG, String.format(Locale.getDefault(), "%s %,.2fKB", m.getDriveId().encodeToString(), (m.getFileSize() / 1024f)));
                                 }
 
                                 showSelectDriveBackupDialog(files);
@@ -443,11 +443,14 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
 
         // set DriveFileId so next updates will overwrite that drive id.
         setDriveFileId(driveId);
+        activateBackup();
     }
 
     @Override
     public void onRestoreFailed(String tag, String message) {
         mRestoreDialog.dismiss();
         mRestoreDialog = null;
+
+        changeProgressBarVisibility(false);
     }
 }

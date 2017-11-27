@@ -1,6 +1,5 @@
 package com.canyapan.dietdiaryapp.fragments;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
@@ -12,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.v7.app.AlertDialog;
 import android.util.JsonReader;
+import android.util.JsonToken;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +20,9 @@ import android.view.ViewGroup;
 import com.canyapan.dietdiaryapp.BuildConfig;
 import com.canyapan.dietdiaryapp.R;
 import com.canyapan.dietdiaryapp.db.DatabaseHelper;
+import com.canyapan.dietdiaryapp.db.EventHelper;
 import com.canyapan.dietdiaryapp.helpers.ResourcesHelper;
+import com.canyapan.dietdiaryapp.models.Event;
 import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.drive.DriveClient;
 import com.google.android.gms.drive.DriveContents;
@@ -185,9 +187,8 @@ class RestoreDialog extends AlertDialog {
                 }
             }
 
-            DatabaseHelper databaseHelper = new DatabaseHelper(mContextRef.get());
+            final DatabaseHelper databaseHelper = new DatabaseHelper(mContextRef.get());
             SQLiteDatabase db = null;
-
             try {
                 Resources engResources = ResourcesHelper.getEngResources(mContextRef.get());
 
@@ -208,17 +209,27 @@ class RestoreDialog extends AlertDialog {
                 db.beginTransaction();
 
                 long inserted = 0;
-                ContentValues values;
-                while ((values = readNext()) != null) {
+
+                Event event;
+                while ((event = readNext()) != null) {
                     if (mCancelled.get()) {
                         return -2L;
                     }
 
-                    Log.d(TAG, values.toString());
-                    long rowID = db.insert(DatabaseHelper.DBT_EVENT, DatabaseHelper.DBC_EVENT_DESC, values);
-                    if (rowID < 0) {
-                        Log.e(TAG, "Record cannot be inserted. index: " + inserted);
-                        throw new RestoreException(mContextRef.get(), R.string.restore_already_existing_records);
+                    if (!EventHelper.insert(db, event)) {
+                        // Bring event from database.
+                        final Event e = EventHelper.getEventByID(db, event.getID());
+                        // Check if they are equal
+                        if (event.equals(e)) {
+                            Log.d(TAG, "Record already exists. " + event.toString());
+                            continue; // There is the same record, so pass it.
+                        } else {
+                            event.setID(-1); // Clear ID, because this is a different event.
+                            if (!EventHelper.insert(db, event)) {
+                                Log.w(TAG, "Failed to insert a record. " + event.toString());
+                                continue; // Failed to insert.
+                            }
+                        }
                     }
 
                     inserted++;
@@ -227,11 +238,6 @@ class RestoreDialog extends AlertDialog {
                 Log.d(TAG, "Records inserted " + inserted);
                 db.setTransactionSuccessful();
                 return inserted;
-            } catch (RestoreException e) {
-                if (BuildConfig.CRASHLYTICS_ENABLED) {
-                    Crashlytics.logException(e);
-                }
-                mErrorString = e.getMessage();
             } catch (IOException e) {
                 if (BuildConfig.CRASHLYTICS_ENABLED) {
                     Crashlytics.logException(e);
@@ -293,14 +299,7 @@ class RestoreDialog extends AlertDialog {
         }
 
         private void getFileFromDrive() throws RestoreException, ExecutionException, InterruptedException {
-            Task<DriveId> driveIdTask = mDriveClient.getDriveId(mDriveId);
-            Tasks.await(driveIdTask);
-
-            if (!driveIdTask.isSuccessful()) {
-                throw new RestoreException("Couldn't get drive id. Maybe deleted by user.", driveIdTask.getException());
-            }
-
-            final DriveId driveId = driveIdTask.getResult();
+            final DriveId driveId = DriveId.decodeFromString(mDriveId);
 
             Task<DriveContents> driveContentsTask = mDriveResourceClient.openFile(driveId.asDriveFile(), DriveFile.MODE_READ_ONLY);
 
@@ -398,7 +397,7 @@ class RestoreDialog extends AlertDialog {
 
         protected abstract void start(InputStreamReader inputStream, Resources resources) throws IOException;
 
-        protected abstract ContentValues readNext() throws IOException;
+        protected abstract Event readNext() throws IOException;
 
         protected abstract void end() throws IOException;
     }
@@ -463,105 +462,169 @@ class RestoreDialog extends AlertDialog {
                         reader.skipValue();
                         break;
                     case "Settings":
-                        reader.skipValue(); // TODO: Read and apply previous settings.
+                        reader.skipValue();
+                        // TODO: Read and apply previous settings.
                         break;
                     case "Events":
                         reader.beginArray();
                         return; // This will be read @readNext()
-                    default:
-                        reader.skipValue();
                 }
             }
         }
 
         @Override
-        protected ContentValues readNext() throws IOException {
+        protected Event readNext() throws IOException {
             if (!reader.hasNext()) {
                 return null;
             }
 
-            reader.beginObject();
+            if (reader.peek() == JsonToken.END_ARRAY) {
+                return null;
+            }
+
             try {
                 return parseRecord();
             } catch (IOException e) {
                 throw new IOException(getExceptionText(R.string.restore_json_corrupted), e);
-            } finally {
-                reader.endObject();
-                index++;
             }
         }
 
-        private ContentValues parseRecord() throws IOException {
-            Long id;
-            LocalDate date;
-            LocalTime time;
-            Integer type, subType;
-            String temp = null;
+        private Event parseRecord() throws IOException {
+            Long id = null;
+            LocalDate date = null;
+            LocalTime time = null;
+            Integer type = null, subType = null;
+            String desc = null;
 
+            reader.beginObject();
+
+            while (reader.hasNext()) {
+                if (reader.peek() == JsonToken.END_OBJECT) {
+                    break;
+                }
+
+                switch (reader.nextName()) {
+                    case "ID":
+                        id = readID();
+                        break;
+                    case "Date":
+                        date = readDate();
+                        updateDateRange(date); // sorry for this, but I didn't want to parse date on super, again. :(
+                        break;
+                    case "Time":
+                        time = readTime();
+                        break;
+                    case "Type":
+                        type = readType();
+                        break;
+                    case "Title":
+                        subType = readSubType(type);
+                        break;
+                    case "Description":
+                        desc = readDescription();
+                        break;
+                }
+
+            }
+
+            reader.endObject();
+            index++;
+
+            if (null == id) {
+                throw new IllegalArgumentException("ID cannot be null");
+            } else if (null == date) {
+                throw new IllegalArgumentException("Date cannot be null");
+            } else if (null == time) {
+                throw new IllegalArgumentException("Time cannot be null");
+            } else if (null == type) {
+                throw new IllegalArgumentException("Type cannot be null");
+            } else if (null == subType) {
+                throw new IllegalArgumentException("SubType cannot be null");
+            } else if (null == desc) {
+                throw new IllegalArgumentException("Description cannot be null");
+            }
+
+            return new Event(id, date, time, type, subType, desc);
+        }
+
+        @NonNull
+        private Long readID() throws IOException {
             try {
-                id = reader.nextLong();
+                return reader.nextLong();
             } catch (IOException e) {
-                Log.e(RestoreFragment.TAG, MessageFormat.format("JSON id cannot be parsed. record: {0}",
-                        index));
+                Log.e(RestoreFragment.TAG, MessageFormat.format("JSON id cannot be parsed. record: {0}", index));
                 throw e;
             }
+        }
 
+        @NonNull
+        private LocalDate readDate() throws IOException {
+            String temp = null;
             try {
                 temp = reader.nextString();
-                date = LocalDate.parse(temp, DatabaseHelper.DB_DATE_FORMATTER);
-
-                updateDateRange(date); // sorry for this, but I didn't want to parse date on super, again. :(
+                return LocalDate.parse(temp, DatabaseHelper.DB_DATE_FORMATTER);
             } catch (IllegalArgumentException e) {
-                Log.e(RestoreFragment.TAG, MessageFormat.format("JSON date cannot be parsed. record: {0} date: {1}",
-                        index, temp));
+                Log.e(RestoreFragment.TAG, MessageFormat.format("JSON date cannot be parsed. record: {0} date: {1}", index, temp));
                 throw e;
             }
+        }
 
+        @NonNull
+        private LocalTime readTime() throws IOException {
+            String temp = null;
             try {
                 temp = reader.nextString();
-                time = LocalTime.parse(temp, DatabaseHelper.DB_TIME_FORMATTER);
+                return LocalTime.parse(temp, DatabaseHelper.DB_TIME_FORMATTER);
             } catch (IllegalArgumentException e) {
-                Log.e(RestoreFragment.TAG, MessageFormat.format("JSON time cannot be parsed. record: {0} time: {1}",
-                        index, temp));
+                Log.e(RestoreFragment.TAG, MessageFormat.format("JSON time cannot be parsed. record: {0} time: {1}", index, temp));
                 throw e;
             }
+        }
 
-            temp = reader.nextString();
-            type = typesMap.get(temp);
-            if (null == type) {
-                Log.e(RestoreFragment.TAG, MessageFormat.format("JSON type cannot be identified. record: {0} type: {1}",
-                        index, temp));
+        @NonNull
+        private Integer readType() throws IOException {
+            String temp = null;
+            try {
+                temp = reader.nextString();
+                return typesMap.get(temp);
+            } catch (IllegalArgumentException e) {
+                Log.e(RestoreFragment.TAG, MessageFormat.format("JSON type cannot be identified. record: {0} type: {1}", index, temp));
                 throw new IOException("Type cannot be identified. " + temp);
-            } else {
+            }
+        }
+
+        @NonNull
+        private Integer readSubType(Integer type) throws IOException {
+            if (null == type) {
+                Log.e(RestoreFragment.TAG, MessageFormat.format("JSON type required to identify subType. record: {0}", index));
+                throw new IOException("Type required to identify subType.");
+            }
+
+            String temp = null;
+            try {
                 temp = reader.nextString();
                 switch (type) {
                     case 0:
-                        subType = foodTypesMap.get(temp);
-                        break;
+                        return foodTypesMap.get(temp);
                     case 1:
-                        subType = drinkTypesMap.get(temp);
-                        break;
+                        return drinkTypesMap.get(temp);
                     default:
-                        subType = 0;
+                        return 0;
                 }
-
-                if (null == subType) {
-                    Log.e(RestoreFragment.TAG, MessageFormat.format("JSON subtype cannot be identified. record: {0} type: {1} subtype: {2}",
-                            index, type, temp));
-                    throw new IOException("SubType cannot be identified. " + temp);
-                }
+            } catch (IllegalArgumentException e) {
+                Log.e(RestoreFragment.TAG, MessageFormat.format("JSON subtype cannot be identified. record: {0} type: {1} subtype: {2}", index, type, temp));
+                throw new IOException("SubType cannot be identified. " + temp);
             }
+        }
 
-            ContentValues values = new ContentValues();
-
-            values.put(DatabaseHelper.DBC_EVENT_ROW_ID, id);
-            values.put(DatabaseHelper.DBC_EVENT_DATE, date.toString(DatabaseHelper.DB_DATE_FORMATTER));
-            values.put(DatabaseHelper.DBC_EVENT_TIME, time.toString(DatabaseHelper.DB_TIME_FORMATTER));
-            values.put(DatabaseHelper.DBC_EVENT_TYPE, type);
-            values.put(DatabaseHelper.DBC_EVENT_SUBTYPE, subType);
-            values.put(DatabaseHelper.DBC_EVENT_DESC, reader.nextString());
-
-            return values;
+        @NonNull
+        private String readDescription() throws IOException {
+            try {
+                return reader.nextString();
+            } catch (IOException e) {
+                Log.e(RestoreFragment.TAG, MessageFormat.format("JSON description cannot be parsed. record: {0}", index));
+                throw e;
+            }
         }
 
         @Override
@@ -632,7 +695,7 @@ class RestoreDialog extends AlertDialog {
         }
 
         @Override
-        protected ContentValues readNext() throws IOException {
+        protected Event readNext() throws IOException {
             String[] record;
             if ((record = reader.readNext()) == null) {
                 return null;
@@ -645,7 +708,7 @@ class RestoreDialog extends AlertDialog {
             }
         }
 
-        private ContentValues parseRecord(final String[] record, final long index) throws IOException {
+        private Event parseRecord(final String[] record, final long index) throws IOException {
             Long id;
             LocalDate date;
             LocalTime time;
@@ -701,16 +764,7 @@ class RestoreDialog extends AlertDialog {
                 }
             }
 
-            ContentValues values = new ContentValues();
-
-            values.put(DatabaseHelper.DBC_EVENT_ROW_ID, id);
-            values.put(DatabaseHelper.DBC_EVENT_DATE, date.toString(DatabaseHelper.DB_DATE_FORMATTER));
-            values.put(DatabaseHelper.DBC_EVENT_TIME, time.toString(DatabaseHelper.DB_TIME_FORMATTER));
-            values.put(DatabaseHelper.DBC_EVENT_TYPE, type);
-            values.put(DatabaseHelper.DBC_EVENT_SUBTYPE, subType);
-            values.put(DatabaseHelper.DBC_EVENT_DESC, record[5]);
-
-            return values;
+            return new Event(id, date, time, type, subType, record[5]);
         }
 
         @Override

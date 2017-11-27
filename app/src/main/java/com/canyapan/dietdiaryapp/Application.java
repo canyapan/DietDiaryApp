@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.support.v7.preference.PreferenceManager;
 
 import com.canyapan.dietdiaryapp.helpers.DailyReminderServiceHelper;
+import com.canyapan.dietdiaryapp.helpers.DriveBackupServiceHelper;
 import com.canyapan.dietdiaryapp.preference.PreferenceKeys;
 import com.canyapan.dietdiaryapp.utils.Base62;
 import com.canyapan.dietdiaryapp.utils.TimeBasedRandomGenerator;
@@ -36,6 +37,6 @@ public class Application extends android.app.Application {
         }
 
         DailyReminderServiceHelper.setup(this, preferences);
-        // TODO DriveBackupServiceHelper.setup(this);
+        DriveBackupServiceHelper.setup(this);
     }
 }
