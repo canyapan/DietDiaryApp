@@ -9,7 +9,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.support.annotation.ArrayRes;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -63,7 +62,6 @@ public class CreateEditEventActivity extends AppCompatActivity {
     private Event mEvent;
     private LocalDate mOrgDate;
 
-    private ActionBar mActionBar;
     private TextView tvDatePicker, tvTimePicker;
     private Spinner spTypes;
     private AutoCompleteTextView actvDescription;
@@ -76,13 +74,10 @@ public class CreateEditEventActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_edit_event);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-        if (null != toolbar) {
-            setSupportActionBar(toolbar);
-        }
-        mActionBar = getSupportActionBar();
-        if (null != mActionBar) {
-            mActionBar.setDisplayHomeAsUpEnabled(true);
-        }
+        setSupportActionBar(toolbar);
+
+        //noinspection ConstantConditions
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         if (savedInstanceState != null) {
             mEvent = savedInstanceState.getParcelable(KEY_EVENT_PARCELABLE);
@@ -144,9 +139,7 @@ public class CreateEditEventActivity extends AppCompatActivity {
                 mEvent.setTime(new LocalTime());
             }
         } else { // EDIT
-            if (null != mActionBar) {
-                mActionBar.setTitle(getString(R.string.activity_edit_event_title));
-            }
+            getSupportActionBar().setTitle(getString(R.string.activity_edit_event_title));
             actvDescription.setText(mEvent.getDescription());
             if (null == mOrgDate) {
                 mOrgDate = mEvent.getDate();
@@ -325,9 +318,8 @@ public class CreateEditEventActivity extends AppCompatActivity {
                     miCopy.setVisible(false);
                     miDelete.setVisible(false);
 
-                    if (null != mActionBar) {
-                        mActionBar.setTitle(getString(R.string.activity_create_event_title));
-                    }
+                    //noinspection ConstantConditions
+                    getSupportActionBar().setTitle(getString(R.string.activity_create_event_title));
 
                     return true;
             }

@@ -12,6 +12,7 @@
     <string name="action_copy">Kopyala</string>
     <string name="nav_home">Ana Sayfa</string>
     <string name="nav_backup_restore">Yedekle/Geri Yükle</string>
+    <string name="nav_export">Dışa Aktar</string>
     <string name="nav_settings">Ayarlar</string>
     <string name="nav_donate">Bağış</string>
     <string name="nav_about">Hakkında</string>
@@ -22,6 +23,7 @@
     <string name="activity_create_event_title">Olay Ekle</string>
     <string name="activity_edit_event_title">Olay Düzenle</string>
     <string name="activity_backup_restore_title">Yedekle/Geri Yükle</string>
+    <string name="activity_export_title">Dışa Aktar</string>
     <string name="activity_settings_title">Ayarlar</string>
     <string name="day_fragment_nothing_to_share">Paylaşılacak kayıt yok.</string>
     <string name="content_description_icon">İkon</string>
@@ -130,5 +132,4 @@
     <string name="pref_title_backup_wifi_only">Sadece kablosuz bağlantı üzerinden veri gönder</string>
     <string name="pref_title_backup_wifi_only_summary">Dosya yükleme ve güncelleme işlemleri kablosuz bağlantı olmadığında bekletilecek</string>
     <string name="pref_title_backup_now_summary">Son yedek: %1$s</string>
-    <string name="activity_export_title">Dışa aktar</string>
 </resources>

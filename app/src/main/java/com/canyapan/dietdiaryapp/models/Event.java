@@ -138,12 +138,12 @@ public class Event implements Parcelable {
 
     @Override
     public String toString() {
-        return MessageFormat.format("[ID]={0}, [Date]={1}, [Time]={2}, [Type]={3}, [SubType]={4}, [Description]={5}",
-                String.valueOf(getID()),
+        return MessageFormat.format("[ID]={0,number}, [Date]={1}, [Time]={2}, [Type]={3,number}, [SubType]={4,number}, [Description]={5}",
+                getID(),
                 getDate().toString(DatabaseHelper.DB_DATE_FORMATTER),
                 getTime().toString(DatabaseHelper.DB_TIME_FORMATTER),
-                String.valueOf(getType()),
-                String.valueOf(getSubType()),
+                getType(),
+                getSubType(),
                 getDescription());
     }
 }

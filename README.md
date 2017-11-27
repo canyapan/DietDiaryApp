@@ -47,6 +47,7 @@ but will be thoroughly reviewed and discussed.
 - [ ] user defined sub-types.
 - [ ] better support for tablets.
 - [ ] let user delete drive backups from app.
+- [ ] ask users to help translate. (min 30 days and 50 entries)
 
 
 ### License

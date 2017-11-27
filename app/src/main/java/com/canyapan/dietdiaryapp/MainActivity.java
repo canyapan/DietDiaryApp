@@ -15,7 +15,6 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -53,8 +52,8 @@ public class MainActivity extends AppCompatActivity implements
     private static final String KEY_FAB_SHOWN_BOOLEAN = "FAB";
     private static final String KEY_APP_RATE_DATE_STRING = "APP RATE DATE";
     private static final String KEY_APP_RATE_STATUS_INT = "APP RATE STATUS CODE";
-    private static final String KEY_DRIVE_CONN_DATE_STRING = "DRIVE CONNNECTION DATE";
-    private static final String KEY_DRIVE_CONN_STATUS_INT = "DRIVE CONNNECTION CODE";
+    private static final String KEY_DRIVE_CONN_DATE_STRING = "DRIVE CONNECTION DATE";
+    private static final String KEY_DRIVE_CONN_STATUS_INT = "DRIVE CONNECTION CODE";
 
     private static final int FLAG_STATUS_WAITING = 1;
     private static final int FLAG_STATUS_DONE = 2;
@@ -71,7 +70,6 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private FloatingActionButton mFab, mFabFood, mFabDrink, mFabMore;
-    private ActionBar mActionBar;
     private WeakReference<CalendarFragment> mCalendarFragmentRef = null;
 
     private Animation mFab2AnimationShow, mFab2AnimationHide;
@@ -107,7 +105,6 @@ public class MainActivity extends AppCompatActivity implements
             });
             setSupportActionBar(toolbar);
         }
-        mActionBar = getSupportActionBar();
 
         mFabAnimationRotateFw = AnimationUtils.loadAnimation(MainActivity.this, R.anim.fab_rotate_fw);
         mFabAnimationRotateBw = AnimationUtils.loadAnimation(MainActivity.this, R.anim.fab_rotate_bw);
@@ -282,7 +279,7 @@ public class MainActivity extends AppCompatActivity implements
                 break;
             case R.id.nav_export:
                 Log.d(TAG, "Export item selected.");
-                startActivityForResult(new Intent(MainActivity.this, ExportActivity.class), ExportActivity.REQUEST_EXPORT);
+                startActivity(new Intent(MainActivity.this, ExportActivity.class));
                 break;
             case R.id.nav_settings:
                 startActivity(new Intent(MainActivity.this, SettingsSupportActivity.class));
@@ -306,7 +303,9 @@ public class MainActivity extends AppCompatActivity implements
     public void onDateChanged(LocalDate newDate) {
         Log.d(TAG, "Move from " + mSelectedDate + " to date " + newDate);
         mSelectedDate = newDate;
-        mActionBar.setTitle(newDate.toString(DATE_FORMATTER));
+
+        //noinspection ConstantConditions
+        getSupportActionBar().setTitle(newDate.toString(DATE_FORMATTER));
     }
     //endregion
 
