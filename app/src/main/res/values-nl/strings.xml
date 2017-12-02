@@ -27,7 +27,7 @@
     <string name="backup_from">Van</string>
     <string name="backup_to">Naar</string>
     <string name="backup_type">Type</string>
-    <string name="backup_progress_title">Bezig met exporteren&#8230;</string>
+    <string name="backup_progress_title">Bezig met exporteren…</string>
     <string name="backup_sd_card_unavailable">De SD-kaart is niet beschikbaar.</string>
     <string name="backup_temp_file_creation_error">Het creëren van een tijdelijk bestand is mislukt.</string>
     <string name="backup_file_creation_error">Het creëren van het exportbestand is mislukt.</string>
@@ -38,7 +38,7 @@
     <string name="backup_external_successful">%1$s is gecreëerd</string>
     <string name="backup_share_successful">Het bestand is gedeeld</string>
     <string name="backup_no_permission">Geef toestemming om bestanden te kunnen schrijven.</string>
-    <string name="restore_progress_title">Bezig met importeren&#8230;</string>
+    <string name="restore_progress_title">Bezig met importeren…</string>
     <string name="restore_file_selector">Bestanden</string>
     <string name="restore_note"><b>Let op:</b> Uw back-upbestanden staan in <i>/sdcard/</i>\nof <i>/sdcard/DietDiaryApp/</i></string>
     <string name="restore_no_permission">Geef toestemming om bestanden te mogen lezen.</string>
@@ -100,10 +100,37 @@
 
     <!-- Strings for App Rate Dialog -->
     <string name="rate_dialog_title">Beoordeel de app</string>
-    <string name="rate_dialog_text">Vertel iedereen over deze app en help anderen beslissen of ze deze app wel of niet moeten installeren. Bedankt voor uw ondersteuning!</string>
+    <string name="rate_dialog_text">Als u deze app goed vindt, wilt u deze dan waarderen? Het neemt een kleine minuutje van uw tijd in beslag. Bedankt voor uw ondersteuning!</string>
     <string name="rate_dialog_yes">Nu beoordelen</string>
     <string name="rate_dialog_later">Remind Me Later</string>
     <string name="rate_dialog_never">Nee, Bedankt</string>
     <string name="drive_dialog_later">Remind Me Later</string>
     <string name="drive_dialog_never">Nee, Bedankt</string>
-</resources>
+<string name="activity_export_title">Exporteren</string>
+    <string name="nav_export">Exporteren</string>
+    <string name="pref_title_daily_remainder">Dagelijkse herinnering</string>
+    <string name="pref_header_backup">Cloud-back-up</string>
+    <string name="pref_title_backup_active">Actief</string>
+    <string name="pref_backup_no_permission">Geef toestemming om toegang te verkrijgen tot Google-accounts voor de Google Drive API.</string>
+    <string name="pref_title_backup_active_connected">Drive is verbonden</string>
+    <string name="pref_title_backup_active_not_connected">Drive is niet verbonden!</string>
+    <string name="pref_title_backup_active_failed">Drive-verbinding is mislukt!</string>
+    <string name="pref_title_backup_active_connecting">Bezig met verbinden met Drive…</string>
+    <string name="pref_title_backup_wifi_only">Bestandsoverdracht alleen via Wi-Fi</string>
+    <string name="pref_title_backup_wifi_only_summary">Het uploaden en bijwerken van bestanden zal worden gepauzeerd wanneer er geen Wi-Fi-verbinding is.</string>
+    <string name="pref_title_backup_now">Nu back-uppen!</string>
+    <string name="pref_title_backup_now_summary">Laatste back-up: %1$s</string>
+    <string name="pref_title_backup_now_summary_never">Nooit</string>
+    <string name="pref_title_backup_frequency">Frequentie</string>
+    <string name="pref_list_backup_frequency_none">Alleen wanneer ik druk op Nu back-uppen!</string>
+    <string name="pref_list_backup_frequency_daily">Dagelijks</string>
+    <string name="pref_list_backup_frequency_weekly">Wekelijks</string>
+    <string name="pref_list_backup_frequency_monthly">Maandelijks</string>
+    <string name="pref_backup_unable_to_list_drive_backups">Google Drive-back-ups kunnen niet worden geladen.</string>
+    <string name="pref_backup_restore_title">Selecteer een te herstellen back-up:</string>
+    <string name="pref_backup_restore_not">Niet herstellen</string>
+
+    <string name="drive_dialog_title">Google Drive verbinden</string>
+    <string name="drive_dialog_text">Wilt u uw gegevens back-uppen naar uw Google Drive-account?</string>
+    <string name="drive_dialog_yes">Ja, nu</string>
+    </resources>
