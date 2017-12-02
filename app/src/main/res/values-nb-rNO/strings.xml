@@ -30,7 +30,7 @@
     <string name="backup_from">Fra</string>
     <string name="backup_to">Til</string>
     <string name="backup_type">Type</string>
-    <string name="backup_progress_title">Eksporterer&#8230;</string>
+    <string name="backup_progress_title">Eksporterer…</string>
     <string name="backup_sd_card_unavailable">SD-kort utilgjengelig.</string>
     <string name="backup_temp_file_creation_error">Kan ikke opprette midlertidig fil.</string>
     <string name="backup_file_creation_error">Kan ikke opprette eksportfil.</string>
@@ -39,7 +39,7 @@
     <string name="backup_external_successful">%1$s opprettet</string>
     <string name="backup_share_successful">Fil delt.</string>
     <string name="backup_no_permission">Gi skrivetilgang.</string>
-    <string name="restore_progress_title">Importerer&#8230;</string>
+    <string name="restore_progress_title">Importerer…</string>
     <string name="restore_file_selector">Filer</string>
     <string name="restore_file_not_exists">Valgt fil finnes ikke.</string>
     <string name="restore_file_not_readable">Valgt fil er ikke lesbar.</string>
@@ -103,4 +103,15 @@
     <string name="rate_dialog_never">Nei takk</string>
     <string name="drive_dialog_never">Nei takk</string>
     <string name="drive_dialog_later">Minn meg på dette senere</string>
-</resources>
+<string name="pref_title_daily_remainder">Daglig påminnelse</string>
+    <string name="pref_title_backup_now_summary">Siste sikkerhetskopi: %1$s</string>
+    <string name="pref_title_backup_now_summary_never">Aldri</string>
+    <string name="pref_title_backup_frequency">Frekvens</string>
+    <string name="pref_list_backup_frequency_daily">Daglig</string>
+    <string name="pref_list_backup_frequency_weekly">Ukentlig</string>
+    <string name="pref_list_backup_frequency_monthly">Månedlig</string>
+    <string name="pref_backup_restore_title">Velg en sikkerhetskopi å gjenopprettet:</string>
+    <string name="pref_backup_restore_not">Ikke gjenopprett</string>
+
+    <string name="drive_dialog_yes">Ja, gjør det nå</string>
+    </resources>
