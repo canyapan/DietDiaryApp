@@ -49,10 +49,10 @@
     <string name="restore_csv_corrupted">Het CSV-bestand is corrupt.</string>
     <string name="restore_json_corrupted">Het JSON-bestand is corrupt.</string>
     <string name="restore_already_existing_records">Het CSV-bestand bevat reeds bestaande invoeren.</string>
-    <string name="restore_file_not_exists">Het geselecteerde bestand bestaat niet!</string>
-    <string name="restore_file_not_readable">Het geselecteerde bestand is onleesbaar!</string>
-    <string name="restore_file_empty">Het geselecteerde bestand is leeg!</string>
-    <string name="restore_file_not_csv">Het geselecteerde bestand is geen CSV-bestand!</string>
+    <string name="restore_file_not_exists">Het geselecteerde bestand bestaat niet.</string>
+    <string name="restore_file_not_readable">Het geselecteerde bestand is onleesbaar.</string>
+    <string name="restore_file_empty">Het geselecteerde bestand is leeg.</string>
+    <string name="restore_file_not_csv">Het geselecteerde bestand is geen CSV-bestand.</string>
     <string name="restore_file_not_json">Het geselecteerde bestand is geen JSON-bestand!</string>
     <string name="restore_successful">Het bestand, %1$s, is geïmporteerd.</string>
     <string name="restore_spinner_hint">Selecteer het te importeren bestand</string>
@@ -96,7 +96,7 @@
     <string name="pref_header_notifications">Meldingen</string>
     <string name="pref_title_notifications_active">Actief</string>
     <string name="pref_title_daily_remainder_time">Herinner me op</string>
-    <string name="pref_title_daily_remainder_summary">Herinner me dagelijks als ik niks heb ingevoerd</string>
+    <string name="pref_title_daily_remainder_summary">Herinner me dagelijks als ik niks heb ingevoerd.</string>
 
     <!-- Strings for App Rate Dialog -->
     <string name="rate_dialog_title">Beoordeel de app</string>
