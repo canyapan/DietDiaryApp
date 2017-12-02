@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <resources>
     <string name="app_name">Dziennik Diety</string>
 
@@ -30,7 +30,7 @@
     <string name="backup_from">Od</string>
     <string name="backup_to">Do</string>
     <string name="backup_type">Rodzaj</string>
-    <string name="backup_progress_title">Eksportowanie&#8230;</string>
+    <string name="backup_progress_title">Eksportowanie…</string>
     <string name="backup_sd_card_unavailable">Karta SD jest niedostępna.</string>
     <string name="backup_temp_file_creation_error">Nie można utworzyć pliku tymczasowego.</string>
     <string name="backup_file_creation_error">Nie można utworzyć pliku eksportu.</string>
@@ -38,10 +38,10 @@
     <string name="backup_io_exception">Wystąpił błąd we/wy podczas eksportowania.</string>
     <string name="backup_sql_exception">Wystąpił błąd DB podczas eksportowania.</string>
     <string name="backup_exception">Niezidentyfikowany błąd podczas eksportowania.</string>
-    <string name="backup_share_successful">Plik został udostpniony.</string>
+    <string name="backup_share_successful">Plik został udostpniony</string>
     <string name="backup_no_permission">Proszę dać uprawnienia do zapisu plików.</string>
     <string name="backup_external_successful">%1$s utworzony</string>
-    <string name="restore_progress_title">Importowanie&#8230;</string>
+    <string name="restore_progress_title">Importowanie…</string>
     <string name="restore_file_selector">Pliki</string>
     <string name="restore_no_permission">Proszę udzielić uprawnienia do odczytu plików.</string>
     <string name="restore_no_external_storage">Proszę podłączyć zewnętrzną pamięć masową.</string>
@@ -51,10 +51,10 @@
     <string name="restore_csv_corrupted">CSV uszkodzony.</string>
     <string name="restore_json_corrupted">JSON uszkodzony.</string>
     <string name="restore_already_existing_records">CSV zawiera już istniejące dane.</string>
-    <string name="restore_file_not_exists">Wybrany plik nie istnieje!</string>
-    <string name="restore_file_not_readable">Wybrany plik nie jest czytelny!</string>
-    <string name="restore_file_empty">Wybrany plik jest pusty!</string>
-    <string name="restore_file_not_csv">Wybrany plik nie jest plikiem CSV!</string>
+    <string name="restore_file_not_exists">Wybrany plik nie istnieje.</string>
+    <string name="restore_file_not_readable">Wybrany plik nie jest czytelny.</string>
+    <string name="restore_file_empty">Wybrany plik jest pusty.</string>
+    <string name="restore_file_not_csv">Wybrany plik nie jest plikiem CSV.</string>
     <string name="restore_file_not_json">Wybrany plik nie jest plikiem JSON!</string>
     <string name="restore_spinner_hint">Wybierz plik do zaimportowania</string>
     <string name="restore_successful">Plik %1$s został zaimportowany.</string>
@@ -97,7 +97,7 @@
     <string name="pref_header_notifications">Powiadomienia</string>
     <string name="pref_title_notifications_active">Aktywne</string>
     <string name="pref_title_daily_remainder_time">Przypomnij mi o</string>
-    <string name="pref_title_daily_remainder_summary">Codzienne przypomnienie, jeśli nie dodano żadnego wpisu</string>
+    <string name="pref_title_daily_remainder_summary">Codzienne przypomnienie, jeśli nie dodano żadnego wpisu.</string>
 
     <string name="rate_dialog_title">Oceń tę aplikację</string>
     <string name="rate_dialog_text">Jeśli korzystanie z tej aplikacji Ci pomaga i ją lubisz, czy możesz ją ocenić? To nie potrwa dłużej niż chwilę. Dziękuję za wsparcie!</string>
