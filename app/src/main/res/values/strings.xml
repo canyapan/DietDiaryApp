@@ -205,4 +205,11 @@
     <string name="drive_dialog_later">Remind Me Later</string>
     <string name="drive_dialog_never">No, Thanks</string>
 
+    <!-- Strings for Translate -->
+    <string name="translate_dialog_title">Translate Diet Diary</string>
+    <string name="translate_dialog_text">Would you like to help us translate diet diary into your language?</string>
+    <string name="translate_dialog_yes">Yes, I Do</string>
+    <string name="translate_dialog_later">Remind Me Later</string>
+    <string name="translate_dialog_never">No, Thanks</string>
+
 </resources>

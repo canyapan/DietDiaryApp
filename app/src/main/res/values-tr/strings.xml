@@ -87,31 +87,16 @@
     <string name="spinner_event_drink_types_milk">Süt</string>
 
     <!-- Strings related to Settings -->
-    <!-- Example General settings -->
     <string name="pref_header_general">Genel</string>
     <string name="pref_title_clock_mode">Saat Modu</string>
     <string name="pref_list_clock_mode_messages_default">Sistem Varsayılanı</string>
     <string name="pref_list_clock_mode_messages_24h">24 Saat</string>
     <string name="pref_list_clock_mode_messages_ampm">AM/PM</string>
-
-    <!-- Settings for Notifications -->
     <string name="pref_header_notifications">Bildirimler</string>
     <string name="pref_title_notifications_active">Aktif</string>
     <string name="pref_title_daily_remainder">Günlük hatırlatıcı</string>
     <string name="pref_title_daily_remainder_time">Şu saatte hatırlat</string>
     <string name="pref_title_daily_remainder_summary">Eğer hiçbirşey yazmadıysam her gün hatırlat.</string>
-
-    <!-- Strings for App Rate Dialog -->
-    <string name="rate_dialog_title">Bu uygulamaya puan verin</string>
-    <string name="rate_dialog_text">Eğer bu uygulamayı beğendiyseniz, lütfen birkaç dakikanızı ayırarak puan verir miydiniz? Bir dakikadan fazla sürmeyecek. Desteğiniz için teşekkür ederiz!</string>
-    <string name="rate_dialog_yes">Şimdi Puanla</string>
-    <string name="rate_dialog_later">Daha Sonra Hatırlat</string>
-    <string name="rate_dialog_never">Hayır, Teşekkürler</string>
-    <string name="drive_dialog_title">Google Drive\'a Bağlan</string>
-    <string name="drive_dialog_later">Daha Sonra Hatırlat</string>
-    <string name="drive_dialog_never">Hayır, Teşekkürler</string>
-    <string name="drive_dialog_yes">Şimdi Bağlan</string>
-    <string name="drive_dialog_text">Bilgilerinizi google drive hesabınıza yedeklemek ister misiniz?</string>
     <string name="pref_list_backup_frequency_daily">Günlük</string>
     <string name="pref_list_backup_frequency_weekly">Haftalık</string>
     <string name="pref_list_backup_frequency_monthly">Aylık</string>
@@ -132,4 +117,24 @@
     <string name="pref_title_backup_wifi_only">Sadece kablosuz bağlantı üzerinden veri gönder</string>
     <string name="pref_title_backup_wifi_only_summary">Dosya yükleme ve güncelleme işlemleri kablosuz bağlantı olmadığında bekletilecek</string>
     <string name="pref_title_backup_now_summary">Son yedek: %1$s</string>
+
+    <!-- Strings for App Rate Dialog -->
+    <string name="rate_dialog_title">Bu uygulamaya puan verin</string>
+    <string name="rate_dialog_text">Eğer bu uygulamayı beğendiyseniz, lütfen birkaç dakikanızı ayırarak puan verir miydiniz? Bir dakikadan fazla sürmeyecek. Desteğiniz için teşekkür ederiz!</string>
+    <string name="rate_dialog_yes">Şimdi Puanla</string>
+    <string name="rate_dialog_later">Daha Sonra Hatırlat</string>
+    <string name="rate_dialog_never">Hayır, Teşekkürler</string>
+
+    <string name="drive_dialog_title">Google Drive\'a Bağlan</string>
+    <string name="drive_dialog_later">Daha Sonra Hatırlat</string>
+    <string name="drive_dialog_never">Hayır, Teşekkürler</string>
+    <string name="drive_dialog_yes">Şimdi Bağlan</string>
+    <string name="drive_dialog_text">Bilgilerinizi google drive hesabınıza yedeklemek ister misiniz?</string>
+
+    <string name="translate_dialog_title">Diyet Günlüğünü Çevir</string>
+    <string name="translate_dialog_text">Diyet günlüğünü diline çevirmemize yardımcı olmak ister misiniz?</string>
+    <string name="translate_dialog_yes">Evet İsterim</string>
+    <string name="translate_dialog_later">Daha Sonra Hatırlat</string>
+    <string name="translate_dialog_never">Hayır, Teşekkürler</string>
+
 </resources>

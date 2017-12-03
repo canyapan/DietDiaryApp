@@ -33,6 +33,7 @@ import com.canyapan.dietdiaryapp.fragments.CalendarFragment;
 import com.canyapan.dietdiaryapp.helpers.FixedDatePickerDialog;
 import com.canyapan.dietdiaryapp.models.Event;
 import com.canyapan.dietdiaryapp.preference.PreferenceKeys;
+import com.canyapan.dietdiaryapp.services.DriveBackupService;
 
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
@@ -41,7 +42,10 @@ import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.DateTimeFormatterBuilder;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Set;
 
 public class MainActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
@@ -54,6 +58,8 @@ public class MainActivity extends AppCompatActivity implements
     private static final String KEY_APP_RATE_STATUS_INT = "APP RATE STATUS CODE";
     private static final String KEY_DRIVE_CONN_DATE_STRING = "DRIVE CONNECTION DATE";
     private static final String KEY_DRIVE_CONN_STATUS_INT = "DRIVE CONNECTION CODE";
+    private static final String KEY_USER_TRANSLATE_DATE_STRING = "USER TRANSLATE DATE";
+    private static final String KEY_USER_TRANSLATE_STATUS_INT = "USER TRANSLATE CODE";
 
     private static final int FLAG_STATUS_WAITING = 1;
     private static final int FLAG_STATUS_DONE = 2;
@@ -177,12 +183,18 @@ public class MainActivity extends AppCompatActivity implements
                 // Don't show too many dialogs at once.
                 if (!checkDriveConnectionStatus()) { // check if a dialog is shown for drive connection.
                     checkAppRateStatus(); // Ask user to rate the app.
+                    // TODO checkUserTranslateStatus()
+                }
+
+                if (resultCode > 0) { // INSERTED OR DELETED OR UPDATED
+                    setDataChangedStatus();
                 }
                 break;
             case BackupRestoreActivity.REQUEST_BACKUP_RESTORE:
                 if (resultCode == Activity.RESULT_FIRST_USER) {
                     if (null != mCalendarFragmentRef && null != mCalendarFragmentRef.get()) {
                         mCalendarFragmentRef.get().goToDateForced(mSelectedDate);
+                        setDataChangedStatus();
                     }
                 }
                 break;
@@ -310,6 +322,17 @@ public class MainActivity extends AppCompatActivity implements
     //endregion
 
     //region Drive Backup
+    private void setDataChangedStatus() {
+        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        if (preferences.getBoolean(DriveBackupService.KEY_DATA_CHANGED_BOOLEAN, false)) {
+            return; // Not required
+        }
+
+        final SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean(DriveBackupService.KEY_DATA_CHANGED_BOOLEAN, true);
+        editor.apply();
+    }
+
     private boolean checkDriveConnectionStatus() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         boolean backupStatus = preferences.getBoolean(PreferenceKeys.KEY_BACKUP_ACTIVE_BOOL, false);
@@ -341,9 +364,9 @@ public class MainActivity extends AppCompatActivity implements
         LocalDate startDate = DatabaseHelper.DB_DATE_FORMATTER.parseLocalDate(date);
         int days = Days.daysBetween(startDate, LocalDate.now()).getDays();
         if (days >= 3) { // It has been more than 3 days since last dialog
-            ArrayList<Event> events = EventHelper.getEventByDateRange(this, startDate, LocalDate.now());
+            int count = EventHelper.getEventCountByDateRange(this, startDate, LocalDate.now());
 
-            if (null != events && events.size() >= 15) { // There are more than 15 recorded events.
+            if (count >= 10) { // There are more than 10 recorded events.
                 showDriveConnectDialog(); // They may want to activate now.
                 return true;
             }
@@ -424,9 +447,9 @@ public class MainActivity extends AppCompatActivity implements
         LocalDate startDate = DatabaseHelper.DB_DATE_FORMATTER.parseLocalDate(date);
         int days = Days.daysBetween(startDate, LocalDate.now()).getDays();
         if (days >= 3) {
-            ArrayList<Event> events = EventHelper.getEventByDateRange(this, startDate, LocalDate.now());
+            int count = EventHelper.getEventCountByDateRange(this, startDate, LocalDate.now());
 
-            if (null != events && events.size() >= 15) {
+            if (count >= 15) {
                 showAppRateDialog();
             }
         }
@@ -468,7 +491,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void setAppRateStatus(final SharedPreferences preferences, int status) {
-        SharedPreferences.Editor editor = preferences.edit();
+        final SharedPreferences.Editor editor = preferences.edit();
         editor.putString(KEY_APP_RATE_DATE_STRING, LocalDate.now().toString(DatabaseHelper.DB_DATE_FORMATTER));
 
         if (status > 1) {
@@ -479,8 +502,8 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void openPlayStore() {
-        Uri uri = Uri.parse("market://details?id=" + getPackageName());
-        Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
+        final Uri uri = Uri.parse("market://details?id=" + getPackageName());
+        final Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
         // To count with Play market backstack, After pressing back button,
         // to taken back to our application, we need to add following flags to intent.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -500,6 +523,94 @@ public class MainActivity extends AppCompatActivity implements
             startActivity(new Intent(Intent.ACTION_VIEW,
                     Uri.parse("http://play.google.com/store/apps/details?id=" + getPackageName())));
         }
+    }
+    //endregion
+
+    //region User Translate
+    private void checkUserTranslateStatus() {
+        // Check user device language and show this if only required.
+        // ISO 639-2 language codes of already translated languages
+        // https://www.loc.gov/standards/iso639-2/php/code_list.php
+        Set<String> alreadyTranslated = new HashSet<>(Arrays.asList("eng", "tur", "jpn", "fra", "ger", "dut", "nob", "pol"));
+        String languageCode = Locale.getDefault().getISO3Language();
+        if (alreadyTranslated.contains(languageCode)) {
+            return;
+        }
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        int surveyStatus = preferences.getInt(KEY_USER_TRANSLATE_STATUS_INT, FLAG_STATUS_WAITING);
+
+        switch (surveyStatus) {
+            case FLAG_STATUS_DONE:
+            case FLAG_STATUS_NEVER_SHOW:
+                return;
+        }
+
+        // case FLAG_APP_RATE_STATUS_WAITING:
+        // Check if user has been using the application for 7 days and entered at least 50 events.
+        String date = preferences.getString(KEY_USER_TRANSLATE_DATE_STRING, null);
+        if (null == date) {
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString(KEY_USER_TRANSLATE_DATE_STRING, LocalDate.now().toString(DatabaseHelper.DB_DATE_FORMATTER));
+            editor.apply();
+            return;
+        }
+
+        LocalDate startDate = DatabaseHelper.DB_DATE_FORMATTER.parseLocalDate(date);
+        int days = Days.daysBetween(startDate, LocalDate.now()).getDays();
+        if (days >= 7) {
+            int count = EventHelper.getEventCountByDateRange(this, startDate, LocalDate.now());
+
+            if (count >= 50) {
+                showUserTranslateDialog();
+            }
+        }
+    }
+
+    private void showUserTranslateDialog() {
+        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.translate_dialog_title)
+                .setMessage(R.string.translate_dialog_text)
+                .setCancelable(true)
+                .setPositiveButton(R.string.translate_dialog_yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        setUserTranslateStatus(preferences, FLAG_STATUS_DONE);
+
+                        // TODO open weblate translate page
+                    }
+                })
+                .setNeutralButton(R.string.translate_dialog_later, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        setUserTranslateStatus(preferences, FLAG_STATUS_WAITING);
+                    }
+                })
+                .setNegativeButton(R.string.translate_dialog_never, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        setUserTranslateStatus(preferences, FLAG_STATUS_NEVER_SHOW);
+                    }
+                })
+                .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialog) {
+                        setUserTranslateStatus(preferences, FLAG_STATUS_WAITING);
+                    }
+                }).show();
+    }
+
+    private void setUserTranslateStatus(final SharedPreferences preferences, int status) {
+        final SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(KEY_USER_TRANSLATE_DATE_STRING, LocalDate.now().toString(DatabaseHelper.DB_DATE_FORMATTER));
+
+        if (status > 1) {
+            editor.putInt(KEY_USER_TRANSLATE_STATUS_INT, status);
+        }
+
+        editor.apply();
     }
     //endregion
 }

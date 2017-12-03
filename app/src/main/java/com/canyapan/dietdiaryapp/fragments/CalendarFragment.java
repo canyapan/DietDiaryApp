@@ -62,7 +62,7 @@ public class CalendarFragment extends Fragment implements ViewPager.OnPageChange
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         Log.d(TAG, "onSaveInstanceState " + mZeroDate);
 
@@ -70,7 +70,7 @@ public class CalendarFragment extends Fragment implements ViewPager.OnPageChange
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView " + mZeroDate);
 
         mViewPager = (ViewPager) inflater.inflate(R.layout.fragment_calendar_viewpager, container, false);
