@@ -133,4 +133,10 @@
     <string name="drive_dialog_title">Google Drive verbinden</string>
     <string name="drive_dialog_text">Wilt u uw gegevens back-uppen naar uw Google Drive-account?</string>
     <string name="drive_dialog_yes">Ja, nu</string>
-    </resources>
+    <string name="translate_dialog_title">Dieetdagboek vertalen</string>
+    <string name="translate_dialog_text">Wilt u ons helpen om Dieetdagboek te vertalen naar uw taal?</string>
+    <string name="translate_dialog_yes">Ja, graag</string>
+    <string name="translate_dialog_later">Herinner me later</string>
+    <string name="translate_dialog_never">Nee, bedankt</string>
+
+</resources>
