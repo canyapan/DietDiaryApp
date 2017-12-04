@@ -182,8 +182,9 @@ public class MainActivity extends AppCompatActivity implements
 
                 // Don't show too many dialogs at once.
                 if (!checkDriveConnectionStatus()) { // check if a dialog is shown for drive connection.
-                    checkAppRateStatus(); // Ask user to rate the app.
-                    // TODO checkUserTranslateStatus()
+                    if (!checkAppRateStatus()) { // Ask user to rate the app.
+                        checkUserTranslateStatus(); // If already rated, ask user to help translations.
+                    }
                 }
 
                 if (resultCode > 0) { // INSERTED OR DELETED OR UPDATED
@@ -424,14 +425,14 @@ public class MainActivity extends AppCompatActivity implements
     //endregion
 
     //region Rate App
-    private void checkAppRateStatus() {
+    private boolean checkAppRateStatus() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         int surveyStatus = preferences.getInt(KEY_APP_RATE_STATUS_INT, FLAG_STATUS_WAITING);
 
         switch (surveyStatus) {
             case FLAG_STATUS_DONE:
             case FLAG_STATUS_NEVER_SHOW:
-                return;
+                return false;
         }
 
         // case FLAG_APP_RATE_STATUS_WAITING:
@@ -441,7 +442,7 @@ public class MainActivity extends AppCompatActivity implements
             SharedPreferences.Editor editor = preferences.edit();
             editor.putString(KEY_APP_RATE_DATE_STRING, LocalDate.now().toString(DatabaseHelper.DB_DATE_FORMATTER));
             editor.apply();
-            return;
+            return false;
         }
 
         LocalDate startDate = DatabaseHelper.DB_DATE_FORMATTER.parseLocalDate(date);
@@ -451,8 +452,12 @@ public class MainActivity extends AppCompatActivity implements
 
             if (count >= 15) {
                 showAppRateDialog();
+
+                return true;
             }
         }
+
+        return false;
     }
 
     private void showAppRateDialog() {
@@ -527,14 +532,14 @@ public class MainActivity extends AppCompatActivity implements
     //endregion
 
     //region User Translate
-    private void checkUserTranslateStatus() {
+    private boolean checkUserTranslateStatus() {
         // Check user device language and show this if only required.
         // ISO 639-2 language codes of already translated languages
         // https://www.loc.gov/standards/iso639-2/php/code_list.php
         Set<String> alreadyTranslated = new HashSet<>(Arrays.asList("eng", "tur", "jpn", "fra", "ger", "dut", "nob", "pol"));
         String languageCode = Locale.getDefault().getISO3Language();
         if (alreadyTranslated.contains(languageCode)) {
-            return;
+            return false;
         }
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -543,7 +548,7 @@ public class MainActivity extends AppCompatActivity implements
         switch (surveyStatus) {
             case FLAG_STATUS_DONE:
             case FLAG_STATUS_NEVER_SHOW:
-                return;
+                return false;
         }
 
         // case FLAG_APP_RATE_STATUS_WAITING:
@@ -553,7 +558,7 @@ public class MainActivity extends AppCompatActivity implements
             SharedPreferences.Editor editor = preferences.edit();
             editor.putString(KEY_USER_TRANSLATE_DATE_STRING, LocalDate.now().toString(DatabaseHelper.DB_DATE_FORMATTER));
             editor.apply();
-            return;
+            return false;
         }
 
         LocalDate startDate = DatabaseHelper.DB_DATE_FORMATTER.parseLocalDate(date);
@@ -563,8 +568,11 @@ public class MainActivity extends AppCompatActivity implements
 
             if (count >= 50) {
                 showUserTranslateDialog();
+                return true;
             }
         }
+
+        return false;
     }
 
     private void showUserTranslateDialog() {
@@ -579,7 +587,7 @@ public class MainActivity extends AppCompatActivity implements
                     public void onClick(DialogInterface dialog, int which) {
                         setUserTranslateStatus(preferences, FLAG_STATUS_DONE);
 
-                        // TODO open weblate translate page
+                        openWeblate();
                     }
                 })
                 .setNeutralButton(R.string.translate_dialog_later, new DialogInterface.OnClickListener() {
@@ -611,6 +619,12 @@ public class MainActivity extends AppCompatActivity implements
         }
 
         editor.apply();
+    }
+
+    private void openWeblate() {
+        final Uri uri = Uri.parse("https://hosted.weblate.org/projects/diet-diary/strings/");
+        final Intent goToWeblate = new Intent(Intent.ACTION_VIEW, uri);
+        startActivity(goToWeblate);
     }
     //endregion
 }
