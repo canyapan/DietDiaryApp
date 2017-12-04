@@ -104,7 +104,7 @@
     <string name="pref_backup_restore_title">Bir yedek seçin:</string>
     <string name="pref_backup_unable_to_list_drive_backups">Google Drive yedekleri yüklenemedi.</string>
     <string name="pref_title_backup_frequency">Sıklık</string>
-    <string name="pref_list_backup_frequency_none">Sadece ben Şimdi Yedekle!\'ye bastığımda</string>
+    <string name="pref_list_backup_frequency_none">Sadece ben Şimdi Yedekle\'ye bastığımda</string>
     <string name="pref_title_backup_now">Şimdi Yedekle!</string>
     <string name="pref_title_backup_now_summary_never">Hiçbir zaman</string>
     <string name="pref_header_backup">Bulut\'a Yedekle</string>
