@@ -94,7 +94,7 @@
     <string name="pref_header_notifications">Merknader</string>
     <string name="pref_title_notifications_active">Aktiv</string>
     <string name="pref_title_daily_remainder_time">Påminn meg klokka</string>
-    <string name="pref_title_daily_remainder_summary">Påminn meg daglig om jeg ikke legger til noen oppføringer</string>
+    <string name="pref_title_daily_remainder_summary">Påminn meg daglig om jeg ikke legger til noen oppføringer.</string>
 
     <string name="rate_dialog_title">Vurder dette programmet</string>
     <string name="rate_dialog_text">Fortell verden om dette programmet for å hjelpe andre å forme sine beslutninger. Takk for din støtte!</string>
@@ -123,12 +123,12 @@
     <string name="pref_backup_no_permission">Gi tilgang til til Google-konto for Google Drive-API.</string>
     <string name="pref_title_backup_active_connected">Tilkoblet Google Drive</string>
     <string name="pref_title_backup_active_not_connected">Ikke tilkoblet Google Drive.</string>
-    <string name="pref_title_backup_active_failed">Tilkobling til Google Drive mislyktes.</string>
+    <string name="pref_title_backup_active_failed">Tilkobling til Google Drive mislyktes</string>
     <string name="pref_title_backup_active_connecting">Kobler til Google Drive…</string>
     <string name="pref_title_backup_wifi_only">Kun overfør filer over Wi-Fi</string>
     <string name="pref_title_backup_wifi_only_summary">Opplasting og oppdatering av filer vil bli satt på pause nå Wi-Fi-tilkobling ikke er tilgjengelig.</string>
-    <string name="pref_title_backup_now">Sikkerhetskopier nå.</string>
-    <string name="pref_list_backup_frequency_none">Kun når jeg trykker \"Sikkerhetskopier nå.\"</string>
+    <string name="pref_title_backup_now">Sikkerhetskopier nå</string>
+    <string name="pref_list_backup_frequency_none">Kun når jeg trykker \"Sikkerhetskopier nå\"</string>
     <string name="pref_backup_unable_to_list_drive_backups">Kunne ikke laste sikkerhetskopier fra Google Drive.</string>
     <string name="drive_dialog_title">Koble til Google Drive</string>
     <string name="drive_dialog_text">Ønsker du å sikkerhetskopiere din data inn i din Google Drive-konto?</string>
