@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <resources>
     <string name="app_name">Diyet Günlüğü</string>
     <string name="navigation_drawer_close">Navigasyon panelini kapat</string>
@@ -34,7 +34,7 @@
     <string name="backup_file_creation_error">Dışa aktarım dosyası oluşturulamadı.</string>
     <string name="backup_from">Başlangıç</string>
     <string name="backup_no_permission">Lütfen dosya yazma için izin verin.</string>
-    <string name="backup_progress_title">Dışa aktarılıyor&#8230;</string>
+    <string name="backup_progress_title">Dışa aktarılıyor…</string>
     <string name="backup_sd_card_unavailable">SD Kart hazır değil.</string>
     <string name="backup_share_successful">Dosya paylaşıldı</string>
     <string name="backup_temp_file_creation_error">Geçici dosya oluşturulamadı.</string>
@@ -56,7 +56,7 @@
     <string name="restore_no_external_storage">Lütfen harici depolama birimini bağlayın.</string>
     <string name="restore_no_permission">Lütfen dosya okuma için izin verin.</string>
     <string name="restore_note"><b>Not:</b> Yedek dosyalarınızı <i>/sdcard/</i>\nveya <i>/sdcard/DietDiaryApp/</i> dizinine ekleyin</string>
-    <string name="restore_progress_title">İçe aktarılıyor&#8230;</string>
+    <string name="restore_progress_title">İçe aktarılıyor…</string>
     <string name="restore_spinner_hint">Dosya seçin</string>
     <string name="restore_successful">%1$s dosyası içe aktarıldı.</string>
     <string name="snack_bar_undo">Geri</string>
@@ -110,17 +110,17 @@
     <string name="pref_backup_unable_to_list_drive_backups">Google Drive yedekleri yüklenemedi.</string>
     <string name="pref_title_backup_frequency">Sıklık</string>
     <string name="pref_list_backup_frequency_none">Sadece ben Şimdi Yedekle\'ye bastığımda</string>
-    <string name="pref_title_backup_now">Şimdi Yedekle!</string>
+    <string name="pref_title_backup_now">Şimdi Yedekle</string>
     <string name="pref_title_backup_now_summary_never">Hiçbir zaman</string>
     <string name="pref_header_backup">Bulut\'a Yedekle</string>
     <string name="pref_title_backup_active">Aktif</string>
     <string name="pref_backup_no_permission">Lütfen, Google Drive\'a erişmek için Google hesaplarınıza erişim izni verin.</string>
     <string name="pref_title_backup_active_connected">Drive\'a bağlandı</string>
-    <string name="pref_title_backup_active_not_connected">Drive\'a bağlanamadı!</string>
-    <string name="pref_title_backup_active_failed">Drive bağlantısı başarısız!</string>
-    <string name="pref_title_backup_active_connecting">Drive\'a bağlanıyor&#8230;</string>
+    <string name="pref_title_backup_active_not_connected">Drive\'a bağlanamadı</string>
+    <string name="pref_title_backup_active_failed">Drive bağlantısı başarısız</string>
+    <string name="pref_title_backup_active_connecting">Drive\'a bağlanıyor…</string>
     <string name="pref_title_backup_wifi_only">Sadece kablosuz bağlantı üzerinden veri gönder</string>
-    <string name="pref_title_backup_wifi_only_summary">Dosya yükleme ve güncelleme işlemleri kablosuz bağlantı olmadığında bekletilecek.</string>
+    <string name="pref_title_backup_wifi_only_summary">Dosya yükleme ve güncelleme işlemleri kablosuz bağlantı olmadığında duraklat.</string>
     <string name="pref_title_backup_now_summary">Son yedek: %1$s</string>
 
     <!-- Strings for App Rate Dialog -->
