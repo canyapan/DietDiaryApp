@@ -66,6 +66,8 @@ import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_NOTIFICATI
 public class DriveBackupService extends JobService {
     public static final String TAG = "DriveBackupService";
 
+    public static final String KEY_DATA_CHANGED_BOOLEAN = "DATA CHANGED";
+
     private static final String KEY_ID = "ID";
     private static final String KEY_DATE = "Date";
     private static final String KEY_TIME = "Time";
@@ -81,6 +83,7 @@ public class DriveBackupService extends JobService {
 
     private JobParameters mJobParameters = null;
     private SharedPreferences mSharedPreferences = null;
+
     private DriveClient mDriveClient = null;
     private DriveResourceClient mDriveResourceClient = null;
 
@@ -95,16 +98,25 @@ public class DriveBackupService extends JobService {
 
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
-        if (null != mSharedPreferences) {
-            mAppId = mSharedPreferences.getString(KEY_APP_ID, null);
-            mDriveId = mSharedPreferences.getString(KEY_BACKUP_FILE_DRIVE_ID_STRING, null);
+        if (null == mSharedPreferences) {
+            Log.e(TAG, "SharedPreferences is null");
+            return false;
         }
+
+        mAppId = mSharedPreferences.getString(KEY_APP_ID, null);
+        mDriveId = mSharedPreferences.getString(KEY_BACKUP_FILE_DRIVE_ID_STRING, null);
 
         if (null == mAppId) {
             Log.e(TAG, "AppId is null");
             return false;
         }
 
+        // Check if user has added any new data since last backup.
+        // So won't run a backup if there isn't anything new to backup.
+        if (mSharedPreferences.getBoolean(KEY_DATA_CHANGED_BOOLEAN, false)) {
+            Log.d(TAG, "Nothing new to backup.");
+            return false;
+        }
 
         try {
             // Write file in the app cache dir.
@@ -136,18 +148,9 @@ public class DriveBackupService extends JobService {
     }
 
     private void createNewDriveBackup() {
-        final Task<DriveFolder> appFolderTask = mDriveResourceClient.getAppFolder();
-        final Task<DriveContents> createContentsTask = mDriveResourceClient.createContents();
+        final Task<DriveFolder> appFolderTask = getmDriveResourceClient().getAppFolder();
+        final Task<DriveContents> createContentsTask = getmDriveResourceClient().createContents();
         Tasks.whenAll(appFolderTask, createContentsTask)
-                /*.continueWithTask(new Continuation<Void, Task<DriveFolder>>() {
-                    @Override
-                    public Task<DriveFolder> then(@NonNull Task<Void> task) throws Exception {
-                        MetadataChangeSet metadataChangeSet = new MetadataChangeSet.Builder()
-                                .build();
-
-                        return mDriveResourceClient.createFolder(appFolderTask.getResult(), metadataChangeSet);
-                    }
-                })*/
                 .continueWithTask(new Continuation<Void, Task<DriveFile>>() {
                     @Override
                     public Task<DriveFile> then(@NonNull Task<Void> task) throws Exception {
@@ -164,7 +167,7 @@ public class DriveBackupService extends JobService {
                                 .setCustomProperty(DRIVE_KEY_DEVICE_NAME, DeviceName.getDeviceName())
                                 .build();
 
-                        return mDriveResourceClient.createFile(appFolderTask.getResult(), metadataChangeSet, driveContents);
+                        return getmDriveResourceClient().createFile(appFolderTask.getResult(), metadataChangeSet, driveContents);
                     }
                 })
                 .addOnSuccessListener(new OnSuccessListener<DriveFile>() {
@@ -187,7 +190,7 @@ public class DriveBackupService extends JobService {
 
     private void modifyExistingDriveBackup() {
         final DriveId driveId = DriveId.decodeFromString(mDriveId);
-        mDriveResourceClient.openFile(driveId.asDriveFile(), DriveFile.MODE_WRITE_ONLY)
+        getmDriveResourceClient().openFile(driveId.asDriveFile(), DriveFile.MODE_WRITE_ONLY)
                 .continueWithTask(new Continuation<DriveContents, Task<Void>>() {
                     @Override
                     public Task<Void> then(@NonNull Task<DriveContents> task) throws Exception {
@@ -202,7 +205,7 @@ public class DriveBackupService extends JobService {
                                 .setCustomProperty(DRIVE_KEY_DEVICE_NAME, DeviceName.getDeviceName())
                                 .build();
 
-                        return mDriveResourceClient.commitContents(driveContents, metadataChangeSet);
+                        return getmDriveResourceClient().commitContents(driveContents, metadataChangeSet);
                     }
                 })
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -508,5 +511,14 @@ public class DriveBackupService extends JobService {
         editor.putLong(KEY_BACKUP_LAST_BACKUP_TIMESTAMP_LONG, DateTime.now().getMillis());
         editor.putString(KEY_BACKUP_FILE_DRIVE_ID_STRING, mDriveId);
         editor.apply();
+    }
+
+    @SuppressWarnings("unused")
+    private DriveClient getmDriveClient() {
+        return mDriveClient;
+    }
+
+    private DriveResourceClient getmDriveResourceClient() {
+        return mDriveResourceClient;
     }
 }

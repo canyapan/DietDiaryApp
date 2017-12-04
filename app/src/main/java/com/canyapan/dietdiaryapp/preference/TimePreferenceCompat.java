@@ -12,6 +12,7 @@ import com.canyapan.dietdiaryapp.helpers.DateTimeHelper;
 
 import org.joda.time.LocalTime;
 
+// TODO fix horizontal
 public class TimePreferenceCompat extends android.support.v7.preference.DialogPreference {
     private static final String DEFAULT_VALUE = "00:00";
     private int mHour, mMinute;

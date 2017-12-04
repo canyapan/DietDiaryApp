@@ -167,23 +167,23 @@
     <string name="pref_title_notifications_active">Active</string>
     <string name="pref_title_daily_remainder">Daily reminder</string>
     <string name="pref_title_daily_remainder_time">Remind me at</string>
-    <string name="pref_title_daily_remainder_summary">Daily remind me, if I don\'t add any entries.</string>
+    <string name="pref_title_daily_remainder_summary">Remind me daily if I don\'t add any entries.</string>
 
     <!-- Settings for Backup -->
     <string name="pref_header_backup">Cloud Backup</string>
     <string name="pref_title_backup_active">Active</string>
-    <string name="pref_backup_no_permission">Please grant permission to access Google accounts for Google Drive API.</string>
-    <string name="pref_title_backup_active_connected">Drive connected</string>
-    <string name="pref_title_backup_active_not_connected">Drive not connected!</string>
-    <string name="pref_title_backup_active_failed">Drive connection failed!</string>
+    <string name="pref_backup_no_permission">Please grant permission to you Google account for Google Drive API.</string>
+    <string name="pref_title_backup_active_connected">Connected to Google Drive</string>
+    <string name="pref_title_backup_active_not_connected">Not connected to Google Drive</string>
+    <string name="pref_title_backup_active_failed">Could not connect to Google Drive</string>
     <string name="pref_title_backup_active_connecting">Drive connecting&#8230;</string>
-    <string name="pref_title_backup_wifi_only">Transfer files only over WI-FI</string>
-    <string name="pref_title_backup_wifi_only_summary">Uploading and updating of files will pause when WI-FI connection isn\'t available.</string>
-    <string name="pref_title_backup_now">Backup Now!</string>
+    <string name="pref_title_backup_wifi_only">Only transfer files on Wi-Fi</string>
+    <string name="pref_title_backup_wifi_only_summary">File transfers will pause when no Wi-Fi connection is available.</string>
+    <string name="pref_title_backup_now">Backup Now.</string>
     <string name="pref_title_backup_now_summary">Last backup: %1$s</string>
     <string name="pref_title_backup_now_summary_never">Never</string>
     <string name="pref_title_backup_frequency">Frequency</string>
-    <string name="pref_list_backup_frequency_none">Only when I tap "Backup Now!"</string>
+    <string name="pref_list_backup_frequency_none">Only when I tap "Backup Now"</string>
     <string name="pref_list_backup_frequency_daily">Daily</string>
     <string name="pref_list_backup_frequency_weekly">Weekly</string>
     <string name="pref_list_backup_frequency_monthly">Monthly</string>
@@ -193,16 +193,23 @@
 
     <!-- Strings for App Rate Dialog -->
     <string name="rate_dialog_title">Rate this app</string>
-    <string name="rate_dialog_text">If you enjoy using this app, would you mind taking a moment to rate it? It won\'t take more than a minute. Thank you for your support!</string>
+    <string name="rate_dialog_text">If you enjoy using this app, rate it. Thank you for your support!</string>
     <string name="rate_dialog_yes">Rate Now</string>
     <string name="rate_dialog_later">Remind Me Later</string>
     <string name="rate_dialog_never">No, Thanks</string>
 
     <!-- Strings for Drive Dialog -->
     <string name="drive_dialog_title">Connect Google Drive</string>
-    <string name="drive_dialog_text">Would you like to backup your data into your google drive account?</string>
+    <string name="drive_dialog_text">Would you like to backup your data to your Google Drive account?</string>
     <string name="drive_dialog_yes">Yes, Do It Now</string>
     <string name="drive_dialog_later">Remind Me Later</string>
     <string name="drive_dialog_never">No, Thanks</string>
+
+    <!-- Strings for Translate -->
+    <string name="translate_dialog_title">Translate Diet Diary</string>
+    <string name="translate_dialog_text">Would you like to help us translate diet diary into your language?</string>
+    <string name="translate_dialog_yes">Yes, I Do</string>
+    <string name="translate_dialog_later">Remind Me Later</string>
+    <string name="translate_dialog_never">No, Thanks</string>
 
 </resources>
