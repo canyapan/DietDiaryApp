@@ -114,4 +114,22 @@
     <string name="pref_backup_restore_not">Ikke gjenopprett</string>
 
     <string name="drive_dialog_yes">Ja, gjør det nå</string>
+    <string name="activity_export_title">Eksporter</string>
+    <string name="nav_export">Eksporter</string>
+    <string name="restore_json_corrupted">Skadet JSON-data.</string>
+    <string name="restore_file_not_json">Valgt fil er ikke ei JSON.fil.</string>
+    <string name="pref_header_backup">Sky-sikkerhetskopi</string>
+    <string name="pref_title_backup_active">AKtiv</string>
+    <string name="pref_backup_no_permission">Gi tilgang til til Google-konto for Google Drive-API.</string>
+    <string name="pref_title_backup_active_connected">Tilkoblet Google Drive.</string>
+    <string name="pref_title_backup_active_not_connected">Ikke tilkoblet Google Drive.</string>
+    <string name="pref_title_backup_active_failed">Tilkobling til Google Drive mislyktes.</string>
+    <string name="pref_title_backup_active_connecting">Kobler til Google Drive…</string>
+    <string name="pref_title_backup_wifi_only">Kun overfør filer over Wi-Fi</string>
+    <string name="pref_title_backup_wifi_only_summary">Opplasting og oppdatering av filer vil bli satt på pause nå Wi-Fi-tilkobling ikke er tilgjengelig.</string>
+    <string name="pref_title_backup_now">Sikkerhetskopier nå.</string>
+    <string name="pref_list_backup_frequency_none">Kun når jeg trykker \"Sikkerhetskopier nå.\"</string>
+    <string name="pref_backup_unable_to_list_drive_backups">Kunne ikke laste sikkerhetskopier fra Google Drive.</string>
+    <string name="drive_dialog_title">Koble til Google Drive</string>
+    <string name="drive_dialog_text">Ønsker du å sikkerhetskopiere din data inn i din Google Drive-konto?</string>
     </resources>
