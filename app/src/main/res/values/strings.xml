@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <resources>
     <!--This is how application will be shown on the app launcher.-->
     <string name="app_name">Diet Diary</string>
@@ -64,7 +64,7 @@
     <!--Will be shown on the backup/restore screen's backup tab. Text indicates to select a file format of exporting data.-->
     <string name="backup_type">Type</string>
     <!--Will be shown under the progress bar while exporting data. Text indicates to export operation is currently working.-->
-    <string name="backup_progress_title">Exporting&#8230;</string>
+    <string name="backup_progress_title">Exporting…</string>
     <!--Will be shown under the progress bar while exporting data. Text indicates an exportable SD card is not plugged into user's device.-->
     <string name="backup_sd_card_unavailable">SD Card unavailable.</string>
     <!--Will be shown under the progress bar while exporting data. Text indicates a temporary file was not be able to created.-->
@@ -86,7 +86,7 @@
     <!--Will be shown while exporting data. Text indicates a data cannot be written because of required write permission has not been given. So, application asks user to give required permission for the write operation.-->
     <string name="backup_no_permission">Please give permission to write files.</string>
     <!--Will be shown under the progress bar while importing data.-->
-    <string name="restore_progress_title">Importing&#8230;</string>
+    <string name="restore_progress_title">Importing…</string>
     <!--Will be shown on the backup/restore screen's restore tab. Text indicates to a file format to import.-->
     <string name="restore_file_selector">Files</string>
     <!--Will be shown on the backup/restore screen's restore tab. A note to show users where they should put their backup data. <i>/sdcard/</i> and <i>/sdcard/DietDiaryApp/</i> must be copied without any modification.-->
@@ -176,10 +176,10 @@
     <string name="pref_title_backup_active_connected">Connected to Google Drive</string>
     <string name="pref_title_backup_active_not_connected">Not connected to Google Drive</string>
     <string name="pref_title_backup_active_failed">Could not connect to Google Drive</string>
-    <string name="pref_title_backup_active_connecting">Drive connecting&#8230;</string>
+    <string name="pref_title_backup_active_connecting">Drive connecting…</string>
     <string name="pref_title_backup_wifi_only">Only transfer files on Wi-Fi</string>
     <string name="pref_title_backup_wifi_only_summary">File transfers will pause when no Wi-Fi connection is available.</string>
-    <string name="pref_title_backup_now">Backup Now.</string>
+    <string name="pref_title_backup_now">Backup Now</string>
     <string name="pref_title_backup_now_summary">Last backup: %1$s</string>
     <string name="pref_title_backup_now_summary_never">Never</string>
     <string name="pref_title_backup_frequency">Frequency</string>
