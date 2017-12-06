@@ -134,7 +134,7 @@
     <string name="drive_dialog_text">Ønsker du å sikkerhetskopiere din data inn i din Google Drive-konto?</string>
     <string name="translate_dialog_title">Oversett Diettdagboka</string>
     <string name="translate_dialog_text">Ønsker du å hjelpe til med oversettelsen av Diettdagboka?</string>
-    <string name="translate_dialog_yes">Ja, deg gjør jeg</string>
+    <string name="translate_dialog_yes">Ja</string>
     <string name="translate_dialog_later">Minn meg på dette senere</string>
     <string name="translate_dialog_never">Nei</string>
 
