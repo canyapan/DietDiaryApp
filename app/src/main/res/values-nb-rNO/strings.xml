@@ -122,7 +122,7 @@
     <string name="pref_title_backup_active">AKtiv</string>
     <string name="pref_backup_no_permission">Gi tilgang til til Google-konto for Google Drive-API.</string>
     <string name="pref_title_backup_active_connected">Tilkoblet Google Drive</string>
-    <string name="pref_title_backup_active_not_connected">Ikke tilkoblet Google Drive.</string>
+    <string name="pref_title_backup_active_not_connected">Ikke tilkoblet Google Drive</string>
     <string name="pref_title_backup_active_failed">Tilkobling til Google Drive mislyktes</string>
     <string name="pref_title_backup_active_connecting">Kobler til Google Drive…</string>
     <string name="pref_title_backup_wifi_only">Kun overfør filer over Wi-Fi</string>
