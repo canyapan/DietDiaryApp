@@ -36,7 +36,7 @@
     <string name="backup_sql_exception">にエクスポート中 DB エラーが発生しました。</string>
     <string name="backup_exception">にエクスポート中、原因不明のエラーが発生しました。</string>
     <string name="backup_external_successful">%1$s を作成しました</string>
-    <string name="backup_share_successful">ファイルを共有しました。</string>
+    <string name="backup_share_successful">ファイルを共有しました</string>
     <string name="backup_no_permission">ファイルの書き込みアクセス許可を付与してください。</string>
     <string name="restore_progress_title">インポートしています…</string>
     <string name="restore_file_selector">ファイル</string>
