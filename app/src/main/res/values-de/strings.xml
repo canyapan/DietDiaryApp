@@ -30,7 +30,7 @@
     <string name="backup_from">Von</string>
     <string name="backup_to">Bis</string>
     <string name="backup_type">Typ</string>
-    <string name="backup_progress_title">Wird exportiert&#8230;</string>
+    <string name="backup_progress_title">Wird exportiert…</string>
     <string name="backup_sd_card_unavailable">SD-Karte nicht verfügbar.</string>
     <string name="backup_temp_file_creation_error">Temporäre Datei konnte nicht erstellt werden.</string>
     <string name="backup_file_creation_error">Exportdatei konnte nicht erstellt werden.</string>
@@ -41,7 +41,7 @@
     <string name="backup_external_successful">„%1$s” wurde erstellt</string>
     <string name="backup_share_successful">Datei freigegeben</string>
     <string name="backup_no_permission">Bitte lassen Sie zu, dass Dateien geschrieben werden dürfen.</string>
-    <string name="restore_progress_title">Wird importiert&#8230;</string>
+    <string name="restore_progress_title">Wird importiert…</string>
     <string name="restore_file_selector">Dateien</string>
     <string name="restore_note"><b>Hinweis:</b>Suchen Sie Ihre Sicherungsdateien in <i>/sdcard/</i>\noder <i>/sdcard/DietDiaryApp/</i></string>
     <string name="restore_no_permission">Bitte lassen Sie zu, dass Dateien gelesen werden dürfen.</string>
@@ -94,14 +94,48 @@
     <string name="pref_header_notifications">Benachrichtigungen</string>
     <string name="pref_title_notifications_active">Aktiv</string>
     <string name="pref_title_daily_remainder_time">Erinnern um</string>
-    <string name="pref_title_daily_remainder_summary">Mich täglich erinnern, wenn keine Einträge hinzufügt wurden</string>
+    <string name="pref_title_daily_remainder_summary">Mich täglich daran erinnern, wenn ich keine Einträge hinzugefügt habe.</string>
 
     <string name="rate_dialog_title">App bewerten</string>
-    <string name="rate_dialog_text">Wenn Sie diese App gerne nutzen, würden Sie sich einen Moment Zeit nehmen, um sie zu bewerten? Es dauert nicht länger als eine Minute. Vielen Dank für Ihre Unterstützung!</string>
+    <string name="rate_dialog_text">Wenn Ihnen diese App gefällt, bewerten Sie sie. Vielen Dank für Ihre Unterstützung!</string>
     <string name="rate_dialog_yes">Jetzt Bewerten</string>
     <string name="rate_dialog_later">Später Bewerten</string>
     <string name="rate_dialog_never">Nein, Danke</string>
     <string name="drive_dialog_never">Nein, Danke</string>
     <string name="drive_dialog_later">Später Bewerten</string>
     <string name="drive_dialog_yes">Jetzt Anschließen</string>
+<string name="activity_export_title">Exportieren</string>
+    <string name="nav_export">Exportieren</string>
+    <string name="restore_json_corrupted">JSON beschädigt</string>
+    <string name="restore_file_not_json">Ausgewählte Datei ist keine JSON-Datei!</string>
+    <string name="pref_title_daily_remainder">Tägliche Erinnerung</string>
+    <string name="pref_header_backup">Sicherung in der Cloud</string>
+    <string name="pref_title_backup_active">Aktiv</string>
+    <string name="pref_backup_no_permission">Bitte gestatten Sie Ihrem Google-Konto die Erlaubnis für die Google Drive API.</string>
+    <string name="pref_title_backup_active_connected">Mit Google Drive verbunden</string>
+    <string name="pref_title_backup_active_not_connected">Nicht mit Google Drive verbunden</string>
+    <string name="pref_title_backup_active_failed">Verbindung zu Google Drive konnte nicht hergestellt werden</string>
+    <string name="pref_title_backup_active_connecting">Laufwerk wird verbunden …</string>
+    <string name="pref_title_backup_wifi_only">Dateien nur über Wlan übertragen</string>
+    <string name="pref_title_backup_wifi_only_summary">Dateiübertragungen werden angehalten, wenn keine WLAN-Verbindung verfügbar ist.</string>
+    <string name="pref_title_backup_now">Jetzt sichern</string>
+    <string name="pref_title_backup_now_summary">Letzte Sicherung: %1$s</string>
+    <string name="pref_title_backup_now_summary_never">Nie</string>
+    <string name="pref_title_backup_frequency">Häufigkeit</string>
+    <string name="pref_list_backup_frequency_none">Nur wenn ich auf „Jetzt sichern” tippe</string>
+    <string name="pref_list_backup_frequency_daily">Täglich</string>
+    <string name="pref_list_backup_frequency_weekly">Wöchentlich</string>
+    <string name="pref_list_backup_frequency_monthly">Monatlich</string>
+    <string name="pref_backup_unable_to_list_drive_backups">Google Drive-Sicherungen konnten nicht geladen werden.</string>
+    <string name="pref_backup_restore_title">Sicherungskopie auswählen, die wiederhergestellt werden soll:</string>
+    <string name="pref_backup_restore_not">Nicht wiederherstellen</string>
+
+    <string name="drive_dialog_title">Mit Google Drive verbinden</string>
+    <string name="drive_dialog_text">Möchten Sie Ihre Daten in Ihr Google Drive-Konto sichern?</string>
+    <string name="translate_dialog_title">Diet Diary übersetzen</string>
+    <string name="translate_dialog_text">Möchten Sie uns helfen, „Diet Diary” in Ihre Sprache zu übersetzen?</string>
+    <string name="translate_dialog_yes">Ja, ich will</string>
+    <string name="translate_dialog_later">Erinnere mich später daran</string>
+    <string name="translate_dialog_never">Nein, Danke</string>
+
 </resources>
