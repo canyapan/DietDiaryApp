@@ -57,7 +57,7 @@ public class BackupFragment extends Fragment implements View.OnClickListener {
     protected LocalDate mFromDate, mToDate;
 
     protected DatabaseHelper mDatabaseHelper;
-    protected ProgressDialog mProgressDialog;
+    protected ProgressDialog mProgressDialog; // TODO: this is deprecated :( will be replaced.
     protected BackupAsyncTask mAsyncTask = null;
 
     public static BackupFragment newInstance() {

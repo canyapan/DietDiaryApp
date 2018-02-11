@@ -63,10 +63,10 @@ public class CalendarFragment extends Fragment implements ViewPager.OnPageChange
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
         Log.d(TAG, "onSaveInstanceState " + mZeroDate);
-
         outState.putSerializable(KEY_DATE_SERIALIZABLE, mZeroDate);
+
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -83,6 +83,7 @@ public class CalendarFragment extends Fragment implements ViewPager.OnPageChange
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_calendar_fragment, menu);
+
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -110,8 +111,9 @@ public class CalendarFragment extends Fragment implements ViewPager.OnPageChange
 
     @Override
     public void onDetach() {
-        super.onDetach();
         mListener = null;
+
+        super.onDetach();
     }
 
     @Override

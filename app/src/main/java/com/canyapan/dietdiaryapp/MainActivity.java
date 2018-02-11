@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements
     private static final DateTimeFormatter DATE_FORMATTER;
 
     static {
+        // This formatter will be used to show selected date {@link mSelectedDate} on the top toolbar.
         DateTimeFormatterBuilder builder = new DateTimeFormatterBuilder();
         builder.appendDayOfWeekShortText();
         builder.appendLiteral(", ");
@@ -164,12 +165,12 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
+    protected void onSaveInstanceState(Bundle outState) {
         outState.putSerializable(KEY_DATE_SERIALIZABLE, mSelectedDate);
         outState.putBoolean(KEY_FAB_SHOWN_BOOLEAN, mFab2Shown);
 
         Log.d(TAG, "Main activity instance variables saved.");
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -525,8 +526,10 @@ public class MainActivity extends AppCompatActivity implements
         try {
             startActivity(goToMarket);
         } catch (ActivityNotFoundException e) {
-            startActivity(new Intent(Intent.ACTION_VIEW,
-                    Uri.parse("http://play.google.com/store/apps/details?id=" + getPackageName())));
+            final Intent intent = new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("http://play.google.com/store/apps/details?id=" + getPackageName()));
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            startActivity(intent);
         }
     }
     //endregion

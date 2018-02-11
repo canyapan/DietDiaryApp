@@ -84,8 +84,7 @@ public class DayFragment extends Fragment {
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         Log.d(TAG, "onSaveInstanceState " + mDate);
 
         outState.putSerializable(KEY_DATE_SERIALIZABLE, mDate);
@@ -95,6 +94,8 @@ public class DayFragment extends Fragment {
         } else if (null != mSavedList) {
             outState.putParcelableArrayList(KEY_DATA_SET_PARCELABLE, mSavedList);
         }
+
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -159,7 +160,7 @@ public class DayFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView " + mDate);
 
         mAdapter = new EventModelAdapter(DateTimeHelper.is24HourMode(getContext()));

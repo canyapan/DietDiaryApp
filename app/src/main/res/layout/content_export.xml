@@ -4,6 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
     app:columnCount="2"
     app:columnOrderPreserved="false"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
@@ -14,9 +18,11 @@
     tools:showIn="@layout/activity_export">
 
     <TextView
-        android:id="@+id/tvFrom"
+        android:id="@+id/tvFromDatePickerLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/calendar_today"
+        android:drawableStart="@drawable/calendar_today"
         android:drawablePadding="4dp"
         android:gravity="center_vertical"
         android:padding="4dp"
@@ -32,9 +38,11 @@
         app:layout_gravity="fill_horizontal" />
 
     <TextView
-        android:id="@+id/tvTo"
+        android:id="@+id/tvToDatePickerLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/calendar"
+        android:drawableStart="@drawable/calendar"
         android:drawablePadding="4dp"
         android:gravity="center_vertical"
         android:padding="4dp"
@@ -50,8 +58,10 @@
         app:layout_gravity="fill_horizontal" />
 
     <TextView
-        android:id="@+id/tvType"
+        android:id="@+id/tvFormatsLabel"
         android:layout_width="wrap_content"
+        android:drawableLeft="@drawable/file"
+        android:drawableStart="@drawable/file"
         android:layout_height="wrap_content"
         android:drawablePadding="4dp"
         android:gravity="center_vertical"
@@ -67,5 +77,14 @@
         android:entries="@array/spinner_export_file_types"
         app:layout_columnWeight="1"
         app:layout_gravity="fill_horizontal" />
+
+    <TextView
+        android:id="@+id/progressBarLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Please wait. Exporting..."
+        app:layout_columnSpan="2"
+        app:layout_gravity="center_horizontal" />
+
 
 </android.support.v7.widget.GridLayout>

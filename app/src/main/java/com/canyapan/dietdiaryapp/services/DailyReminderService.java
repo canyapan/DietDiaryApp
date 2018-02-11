@@ -19,33 +19,36 @@ public class DailyReminderService extends JobService {
 
     private static final int REQUEST_CODE = 1100;
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     public boolean onStartJob(JobParameters jobParameters) {
         Log.d(TAG, "Job started");
 
-        final Context context = getApplicationContext();
+        //Drawable drawable = ContextCompat.getDrawable(this, R.drawable.app_icon_notify_large);
+        //Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
 
-        if (EventHelper.hasEventToday(context) == 0) {
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NotificationCompat.CATEGORY_REMINDER)
-                    .setTicker(context.getString(R.string.daily_notification_title))
+        if (EventHelper.hasEventToday(this) == 0) {
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(this, NotificationCompat.CATEGORY_REMINDER)
+                    .setTicker(getString(R.string.daily_notification_title))
                     .setSmallIcon(R.drawable.app_icon_notify)
-                    .setContentTitle(context.getString(R.string.daily_notification_title))
-                    .setContentText(context.getString(R.string.daily_notification_message))
+                    //.setLargeIcon(bitmap)
+                    .setContentTitle(getString(R.string.daily_notification_title))
+                    .setContentText(getString(R.string.daily_notification_message))
                     .setAutoCancel(true)
                     //.setLights(Color.GREEN, 1, 1)
                     //.setSound()
                     //.setVibrate()
                     .setVisibility(NotificationCompat.VISIBILITY_PRIVATE)
-                    .setContentIntent(TaskStackBuilder.create(context)
+                    .setContentIntent(TaskStackBuilder.create(this)
                             .addParentStack(MainActivity.class)
-                            .addNextIntent(new Intent(context, MainActivity.class))
+                            .addNextIntent(new Intent(this, MainActivity.class))
                             .getPendingIntent(REQUEST_CODE, 0));
-            NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             nm.notify(TAG, R.id.daily_notification, builder.build());
         }
 
         // Setup next reminder.
-        DailyReminderServiceHelper.setup(context);
+        DailyReminderServiceHelper.setup(this);
 
         return false;
     }

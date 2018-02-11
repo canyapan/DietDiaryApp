@@ -93,7 +93,7 @@ abstract class BackupAsyncTask extends AsyncTask<Void, Integer, Boolean> {
         Cursor cursor = null;
 
         try {
-            Resources engResources = ResourcesHelper.getEngResources(backupFragment.getContext());
+            Resources engResources = ResourcesHelper.getResourcesForEnglish(backupFragment.getContext());
 
             final OutputStreamWriter os = new OutputStreamWriter(new FileOutputStream(mFile, false), "UTF-8");
             os.write('\uFEFF'); // Unicode character, U+FEFF BYTE ORDER MARK (BOM) | https://en.wikipedia.org/wiki/Byte_order_mark

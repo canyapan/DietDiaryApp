@@ -17,6 +17,8 @@ import java.io.FileNotFoundException;
 public class SharingSupportProvider extends ContentProvider {
     public static final String CONTENT_URI_PREFIX = "content://com.canyapan.dietdiaryapp.provider/";
     public static final String MIME_TYPE_CSV = "text/csv";
+    public static final String MIME_TYPE_HTML = "text/html";
+    public static final String MIME_TYPE_JSON = "application/json";
     private static final String TAG = "SharingSupportProvider";
 
     @Override
@@ -35,6 +37,10 @@ public class SharingSupportProvider extends ContentProvider {
     public String getType(@NonNull Uri uri) {
         if (uri.getPath().endsWith(".csv")) {
             return MIME_TYPE_CSV;
+        } else if (uri.getPath().endsWith(".html")) {
+            return MIME_TYPE_HTML;
+        } else if (uri.getPath().endsWith(".json")) {
+            return MIME_TYPE_JSON;
         }
 
         return null;
@@ -61,7 +67,7 @@ public class SharingSupportProvider extends ContentProvider {
     public ParcelFileDescriptor openFile(@NonNull Uri uri, @NonNull String mode) throws FileNotFoundException {
         //noinspection ConstantConditions
         File f = new File(getContext().getCacheDir(), uri.getPath());
-        if (mode.equals("r") && (f.exists() && f.getName().endsWith(".csv"))) {
+        if (mode.equals("r") && (f.exists() && (f.getName().endsWith(".json") || f.getName().endsWith(".csv") || f.getName().endsWith(".html")))) {
             try {
                 //noinspection ConstantConditions
                 return ParcelFileDescriptor.open(f, ParcelFileDescriptor.MODE_READ_ONLY);

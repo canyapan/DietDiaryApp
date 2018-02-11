@@ -18,17 +18,22 @@ import java.util.Locale;
 
 public class ResourcesHelper {
     @NonNull
-    public static Resources getEngResources(@NonNull final Context context) {
+    public static Resources getResourcesForEnglish(@NonNull final Context context) {
         return getResources(context, Locale.ENGLISH);
     }
 
     @NonNull
-    public static Resources getResources(@NonNull final Context context, @NonNull final Locale locale) {
-        Resources standardResources = context.getResources();
+    public static Resources getResources(@NonNull final Context context) {
+        return context.getResources();
+    }
 
-        AssetManager assets = standardResources.getAssets();
-        DisplayMetrics metrics = standardResources.getDisplayMetrics();
-        Configuration config = new Configuration(standardResources.getConfiguration());
+    @NonNull
+    public static Resources getResources(@NonNull final Context context, @NonNull final Locale locale) {
+        Resources defaultResources = context.getResources();
+
+        AssetManager assets = defaultResources.getAssets();
+        DisplayMetrics metrics = defaultResources.getDisplayMetrics();
+        Configuration config = new Configuration(defaultResources.getConfiguration());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             config.setLocales(LocaleList.forLanguageTags(Locale.ENGLISH.toLanguageTag()));
         } else {
