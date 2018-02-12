@@ -14,6 +14,7 @@ import android.util.Log;
 
 import com.canyapan.dietdiaryapp.db.DatabaseHelper;
 import com.canyapan.dietdiaryapp.db.EventHelper;
+import com.canyapan.dietdiaryapp.helpers.SharedFileHelper;
 import com.canyapan.dietdiaryapp.models.Event;
 import com.crashlytics.android.Crashlytics;
 
@@ -35,8 +36,8 @@ abstract class ExportAsyncTask extends AsyncTask<Void, Integer, Long> {
     private static final String TAG = "ExportAsyncTask";
 
     static final int TO_EMAIL = 0;
-    //static final int TO_PDF = 1;
-    //static final int TO_SHARE = 2;
+    static final int TO_EXTERNAL = 1;
+    static final int TO_SHARE = 2;
 
     private final WeakReference<ExportActivity> mExportActivityRef;
     private final OnExportListener mListener;
@@ -62,7 +63,7 @@ abstract class ExportAsyncTask extends AsyncTask<Void, Integer, Long> {
         final String fileName = getFileName(activity.getString(R.string.app_name), fromDate, toDate);
 
         switch (destination) {
-            case TO_EMAIL:
+            case TO_EXTERNAL:
                 if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
                     File dir = new File(
                             Environment.getExternalStorageDirectory(),
@@ -78,9 +79,14 @@ abstract class ExportAsyncTask extends AsyncTask<Void, Integer, Long> {
                     throw new ExportException(activity, R.string.backup_sd_card_unavailable);
                 }
                 break;
-            /*case TO_SHARE:
-                mFile = new File(activity.getCacheDir(), fileName);
-                break;*/
+            case TO_EMAIL:
+            case TO_SHARE:
+                try {
+                    mFile = SharedFileHelper.getSharedFile(activity, fileName);
+                } catch (IOException e) {
+                    throw new ExportException(activity, R.string.cannot_create_file_path, e);
+                }
+                break;
             default:
                 throw new ExportException(activity, R.string.backup_unimplemented_destination);
         }
@@ -193,7 +199,6 @@ abstract class ExportAsyncTask extends AsyncTask<Void, Integer, Long> {
 
     @Override
     protected void onPostExecute(Long count) {
-
         if (null == count || count.compareTo(0L) < 0) {
             mListener.onExportFailed(mErrorString);
         } else {
@@ -215,12 +220,16 @@ abstract class ExportAsyncTask extends AsyncTask<Void, Integer, Long> {
             super(message);
         }
 
+        ExportException(String message, Throwable cause) {
+            super(message, cause);
+        }
+
         ExportException(@NonNull Context context, @StringRes int message) {
             this(context.getString(message));
         }
 
-        ExportException(String message, Throwable cause) {
-            super(message, cause);
+        ExportException(@NonNull Context context, @StringRes int message, Throwable cause) {
+            this(context.getString(message), cause);
         }
     }
 

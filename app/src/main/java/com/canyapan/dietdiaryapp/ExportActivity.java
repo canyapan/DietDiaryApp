@@ -2,16 +2,24 @@ package com.canyapan.dietdiaryapp;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ShareCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.ProgressBar;
@@ -31,7 +39,11 @@ import java.io.File;
 import java.io.IOException;
 import java.text.MessageFormat;
 
+import static com.canyapan.dietdiaryapp.Application.FILE_PROVIDER;
 import static com.canyapan.dietdiaryapp.ExportAsyncTask.TO_EMAIL;
+import static com.canyapan.dietdiaryapp.ExportAsyncTask.TO_EXTERNAL;
+import static com.canyapan.dietdiaryapp.ExportAsyncTask.TO_SHARE;
+import static com.canyapan.dietdiaryapp.helpers.MimeTypes.MIME_TYPE_HTML;
 
 /**
  * Exports application data as email or html file to better visualize by user.
@@ -43,6 +55,7 @@ public class ExportActivity extends AppCompatActivity implements View.OnClickLis
     private static final String KEY_FROM_DATE_SERIALIZABLE = "FROM DATE";
     private static final String KEY_TO_DATE_SERIALIZABLE = "TO DATE";
     private static final String KEY_SELECTED_FORMAT_INT = "FORMAT";
+    private static final int REQUEST_EXTERNAL_STORAGE = 30;
 
     private TextView tvFromDatePicker, tvToDatePicker;
     private Spinner spFormats;
@@ -107,6 +120,63 @@ public class ExportActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_export_fragment, menu);
+
+        if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+            menu.findItem(R.id.action_save).setEnabled(false);
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_save:
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                            != PackageManager.PERMISSION_GRANTED) {
+                        requestPermissions(
+                                new String[]{
+                                        android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+                                }, REQUEST_EXTERNAL_STORAGE);
+
+                        return true;
+                    }
+                }
+
+                try {
+                    mAsyncTask = (ExportAsyncTask) new ExportToHTML(this, ExportAsyncTask.TO_EXTERNAL, mFromDate, mToDate, this).execute();
+                } catch (ExportAsyncTask.ExportException e) {
+                    if (BuildConfig.CRASHLYTICS_ENABLED) {
+                        Crashlytics.logException(e);
+                    }
+                    Log.e(TAG, "Save to external storage unsuccessful.", e);
+                }
+
+                return true;
+            case R.id.action_share:
+                try {
+                    mAsyncTask = (ExportAsyncTask) new ExportToHTML(this, ExportAsyncTask.TO_SHARE, mFromDate, mToDate, this).execute();
+                } catch (ExportAsyncTask.ExportException e) {
+                    if (BuildConfig.CRASHLYTICS_ENABLED) {
+                        Crashlytics.logException(e);
+                    }
+                    Log.e(TAG, "Share unsuccessful.", e);
+                }
+
+                return true;
+            case R.id.action_email:
+                // TODO
+                return true;
+
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void onBackPressed() {
         if (null != mAsyncTask) {
             Toast.makeText(this, R.string.export_ongoing_progress, Toast.LENGTH_LONG).show();
@@ -114,6 +184,34 @@ public class ExportActivity extends AppCompatActivity implements View.OnClickLis
         }
 
         super.onBackPressed();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == REQUEST_EXTERNAL_STORAGE
+                && grantResults.length > 0
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            try {
+                switch (spFormats.getSelectedItemPosition()) {
+                    case 0: // HTML
+                        mAsyncTask = (ExportAsyncTask) new ExportToHTML(this, ExportAsyncTask.TO_EXTERNAL, mFromDate, mToDate, this).execute();
+                        break;
+                    default:
+                        // TODO show some unimplemented error about it
+
+                }
+
+            } catch (ExportAsyncTask.ExportException e) {
+                if (BuildConfig.CRASHLYTICS_ENABLED) {
+                    Crashlytics.logException(e);
+                }
+                Log.e(TAG, "Save to external storage unsuccessful.", e);
+                // TODO show some error message about it.
+            }
+        } else {
+            // TODO convert this to snackbar
+            Toast.makeText(this, R.string.backup_no_permission, Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
@@ -217,32 +315,55 @@ public class ExportActivity extends AppCompatActivity implements View.OnClickLis
     public void onExportComplete(final LocalDate startDate, final LocalDate endDate, final int destination, final File file, final long recordsExported) {
         mAsyncTask = null;
 
-        Snackbar.make(findViewById(android.R.id.content), getString(R.string.backup_external_successful, file.getName()), Snackbar.LENGTH_SHORT).show();
+        switch (destination) {
+            case TO_EMAIL:
+                Intent intent = new Intent(Intent.ACTION_SENDTO)
+                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                        .setType(MIME_TYPE_HTML)
+                        .putExtra(Intent.EXTRA_SUBJECT,
+                                MessageFormat.format("Diet Diary, {0} – {1}",
+                                        startDate.toString(DatabaseHelper.DB_DATE_FORMATTER),
+                                        endDate.toString(DatabaseHelper.DB_DATE_FORMATTER)));
 
-        if (destination == TO_EMAIL) {
+                try {
+                    if (file.length() < 1000000) { // Add html data directly into email body
+                        intent.putExtra(Intent.EXTRA_TEXT, FileUtils.readFileToString(file, "UTF-8"));
+                    } else { // Add html data as attachment
+                        Uri uri = FileProvider.getUriForFile(this, FILE_PROVIDER, file);
 
-            Intent intent = new Intent(Intent.ACTION_SENDTO);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.setType(SharingSupportProvider.MIME_TYPE_HTML);
-            intent.putExtra(Intent.EXTRA_SUBJECT,
-                    MessageFormat.format("Diet Diary, {0} – {1}",
-                            startDate.toString(DatabaseHelper.DB_DATE_FORMATTER),
-                            endDate.toString(DatabaseHelper.DB_DATE_FORMATTER)));
+                        intent.putExtra(Intent.EXTRA_STREAM, uri);
+                        intent.putExtra(Intent.EXTRA_TEXT, "todo work on this too"); // TODO empty email needs some HTML too
+                    }
 
-            try {
-                if (file.length() < 1024 * 1024) { // Add html data directly into email body
-                    intent.putExtra(Intent.EXTRA_TEXT, FileUtils.readFileToString(file, "UTF-8"));
-                } else { // Add html data as attachment
-                    intent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + file));
-                    intent.putExtra(Intent.EXTRA_TEXT, "todo work on this too"); // TODO empty email needs some HTML too
+                    startActivity(Intent.createChooser(intent, getText(R.string.export_to_email_chooser)));
+                } catch (IOException e) {
+                    Log.e(TAG, "Cannot start email intent.", e);
+                    // TODO show snackbar and let user know about it :(
+                    // TODO send a fabric exception about it
                 }
+                break;
+            case TO_SHARE:
+                Uri uri = FileProvider.getUriForFile(this, FILE_PROVIDER, file);
 
-                //startActivity(Intent.createChooser(intent, context.getText(R.string.sh
-            } catch (IOException e) {
-                Log.e(TAG, "Cannot start email intent.", e);
-                // TODO show snackbar and let user know about it :(
-                // TODO send a fabric exception about it
-            }
+                ShareCompat.IntentBuilder builder = ShareCompat.IntentBuilder.from(this)
+                        .setType(MIME_TYPE_HTML)
+                        .setStream(uri);
+
+                builder.getIntent().addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+                builder.startChooser();
+                break;
+            case TO_EXTERNAL:
+                Snackbar.make(findViewById(android.R.id.content), getString(R.string.backup_external_successful, file.getName()), Snackbar.LENGTH_SHORT).show();
+
+                // initiate media scan and put the new things into the path array to
+                // make the scanner aware of the location and the files
+                MediaScannerConnection.scanFile(this, new String[]{file.getPath()}, null, null);
+
+                // Broadcast the new created file. So, it will be available on usb data connection.
+                sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)));
+                break;
         }
     }
 

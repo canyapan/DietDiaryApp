@@ -185,9 +185,13 @@ class ExportToHTML extends ExportAsyncTask {
                 .startTag(NS_XHTML, "tr")
                 .startTag(NS_XHTML, "th").attribute(NS_XHTML, "class", "small-12 large-3 columns first")
                 .startTag(NS_XHTML, "table").startTag(NS_XHTML, "tr").startTag(NS_XHTML, "th").startTag(NS_XHTML, "center")
-                .startTag(NS_XHTML, "img").attribute(NS_XHTML, "src", "icon.jpg").attribute(NS_XHTML, "align", "center").attribute(NS_XHTML, "class", "float-center")
-                .endTag(NS_XHTML, "center").endTag(NS_XHTML, "th").endTag(NS_XHTML, "tr").endTag(NS_XHTML, "table")
-                .endTag(NS_XHTML, "th").attribute(NS_XHTML, "class", "small-12 large-9 columns last")
+                .startTag(NS_XHTML, "img")
+                .attribute(NS_XHTML, "src", "icon.jpg")
+                .attribute(NS_XHTML, "align", "center")
+                .attribute(NS_XHTML, "class", "float-center")
+                .endTag(NS_XHTML, "img")
+                .endTag(NS_XHTML, "center").endTag(NS_XHTML, "th").endTag(NS_XHTML, "tr").endTag(NS_XHTML, "table").endTag(NS_XHTML, "th")
+                .startTag(NS_XHTML, "th").attribute(NS_XHTML, "class", "small-12 large-9 columns last")
                 .startTag(NS_XHTML, "table").startTag(NS_XHTML, "tr").startTag(NS_XHTML, "th")
                 .startTag(NS_XHTML, "h1").attribute(NS_XHTML, "class", "text-center").text("Diet Diary").endTag(NS_XHTML, "h1")
                 .startTag(NS_XHTML, "h3").attribute(NS_XHTML, "class", "text-center")
@@ -196,8 +200,8 @@ class ExportToHTML extends ExportAsyncTask {
                                 fromDate.toString(DatabaseHelper.DB_DATE_FORMATTER),
                                 toDate.toString(DatabaseHelper.DB_DATE_FORMATTER)))
                 .endTag(NS_XHTML, "h3")
-                .endTag(NS_XHTML, "th").endTag(NS_XHTML, "tr").endTag(NS_XHTML, "table")
-                .endTag(NS_XHTML, "th").attribute(NS_XHTML, "class", "expander").endTag(NS_XHTML, "th")
+                .endTag(NS_XHTML, "th").endTag(NS_XHTML, "tr").endTag(NS_XHTML, "table").endTag(NS_XHTML, "th")
+                .startTag(NS_XHTML, "th").attribute(NS_XHTML, "class", "expander").endTag(NS_XHTML, "th")
                 .endTag(NS_XHTML, "tr")
                 .endTag(NS_XHTML, "tbody")
                 .endTag(NS_XHTML, "table")
@@ -569,11 +573,12 @@ class ExportToHTML extends ExportAsyncTask {
          */
 
         serializer.startTag(NS_XHTML, "tr")
-                .startTag(NS_XHTML, "td").text(event.getTime().toString(DatabaseHelper.DB_TIME_FORMATTER))
-                .startTag(NS_XHTML, "td").text(subType)
-                .startTag(NS_XHTML, "td").text(event.getDescription());
+                .startTag(NS_XHTML, "td").text(event.getTime().toString(DatabaseHelper.DB_TIME_FORMATTER)).endTag(NS_XHTML, "td")
+                .startTag(NS_XHTML, "td").text(subType).endTag(NS_XHTML, "td")
+                .startTag(NS_XHTML, "td").text(event.getDescription()).endTag(NS_XHTML, "td")
+                .endTag(NS_XHTML, "tr");
 
-        if (index == count) {
+        if (index + 1 == count) {
 /*                                </table>
                                 </th>
                               </tr>
@@ -610,12 +615,12 @@ class ExportToHTML extends ExportAsyncTask {
                 .startTag(NS_XHTML, "table")
                 .startTag(NS_XHTML, "tr")
                 .startTag(NS_XHTML, "th")
-                .startTag(NS_XHTML, "h4").text(date.toString("EEE, d MMM, yyyy"))
+                .startTag(NS_XHTML, "h4").text(date.toString("EEE, d MMM, yyyy")).endTag(NS_XHTML, "h4")
                 .startTag(NS_XHTML, "table")
                 .startTag(NS_XHTML, "tr")
-                .startTag(NS_XHTML, "th").attribute(NS_XHTML, "class", "hour").text("Hour")
-                .startTag(NS_XHTML, "th").attribute(NS_XHTML, "class", "title").text("Title")
-                .startTag(NS_XHTML, "th").attribute(NS_XHTML, "class", "desc").text("Description")
+                .startTag(NS_XHTML, "th").attribute(NS_XHTML, "class", "hour").text("Hour").endTag(NS_XHTML, "th")
+                .startTag(NS_XHTML, "th").attribute(NS_XHTML, "class", "title").text("Title").endTag(NS_XHTML, "th")
+                .startTag(NS_XHTML, "th").attribute(NS_XHTML, "class", "desc").text("Description").endTag(NS_XHTML, "th")
                 .endTag(NS_XHTML, "tr");
     }
 
@@ -670,7 +675,7 @@ class ExportToHTML extends ExportAsyncTask {
         serializer.endTag(NS_XHTML, "tbody")
                 .endTag(NS_XHTML, "table")
 
-                .startTag(NS_XHTML, "hr")
+                .startTag(NS_XHTML, "hr").endTag(NS_XHTML, "hr")
                 .startTag(NS_XHTML, "table").attribute(NS_XHTML, "class", "row")
                 .startTag(NS_XHTML, "tbody")
                 .startTag(NS_XHTML, "tr")
@@ -693,7 +698,7 @@ class ExportToHTML extends ExportAsyncTask {
                 .startTag(NS_XHTML, "table")
                 .startTag(NS_XHTML, "tr")
                 .startTag(NS_XHTML, "th")
-                .startTag(NS_XHTML, "img").attribute(NS_XHTML, "src", "qrcode.jpg").attribute(NS_XHTML, "class", "float-right")
+                .startTag(NS_XHTML, "img").attribute(NS_XHTML, "src", "qrcode.jpg").attribute(NS_XHTML, "class", "float-right").endTag(NS_XHTML, "img")
                 .endTag(NS_XHTML, "th")
                 .endTag(NS_XHTML, "tr")
                 .endTag(NS_XHTML, "table")

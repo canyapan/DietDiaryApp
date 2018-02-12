@@ -17,6 +17,8 @@ import io.fabric.sdk.android.Fabric;
 public class Application extends android.app.Application {
     public static final String APP_DIR = "DietDiaryApp";
 
+    public static final String FILE_PROVIDER = BuildConfig.APPLICATION_ID;
+
     @Override
     public void onCreate() {
         super.onCreate();
