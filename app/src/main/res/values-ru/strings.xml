@@ -44,7 +44,7 @@
     <string name="restore_no_external_storage">Вставьте внешний носитель.</string>
     <string name="restore_file_not_csv">Выбранный файл не является файлом CSV.</string>
     <string name="restore_file_not_json">Выбранный файл не является файлом JSON!</string>
-    <string name="restore_spinner_hint">Выберите файл</string>
+    <string name="restore_spinner_hint">Выберите файл для восстановления</string>
     <string name="content_description_icon">Иконка</string>
     <string name="snack_bar_dismiss">Разойдись</string>
     <string name="snack_bar_undo">Отмена</string>
@@ -86,7 +86,7 @@
     <string name="pref_title_daily_remainder_summary">Напоминать мне ежедневно, если я не добавляю записей.</string>
 
     <!-- Strings for App Rate Dialog -->
-    <string name="rate_dialog_title">Оцени это приложение</string>
+    <string name="rate_dialog_title">Оцените это приложение</string>
     <string name="rate_dialog_text">Если вам понравилось это приложение, оцените его. Спасибо за вашу поддержку!</string>
     <string name="rate_dialog_yes">Оценить сейчас</string>
     <string name="rate_dialog_later">Напомнить позже</string>
@@ -100,7 +100,7 @@
     <string name="backup_external_successful">%1$s создан</string>
     <string name="backup_no_permission">Дайте разрешение писать файлы.</string>
     <string name="restore_note"><b>Note:</b> Разместить ваши резервные копии файлов в <i>/sdcard/</i>
-\nили <i>/sdcard/DietDiaryApp/</i></string>
+\nили приложение <i>/sdcard/DietDiaryApp/</i>должно быть скопировано без изменений</string>
     <string name="restore_io_exception">Во время импорта произошла ошибка ввода-вывода.</string>
     <string name="restore_sql_exception">Во время импорта произошла ошибка базы данных.</string>
     <string name="restore_exception">Во время импорта произошла неизвестная ошибка.</string>
@@ -113,7 +113,7 @@
     <string name="pref_title_backup_active">Активный</string>
     <string name="pref_backup_no_permission">Пожалуйста разрешите доступ к Вашей учетной записи в Гугл для ключа API Гугл Диска.</string>
     <string name="pref_title_backup_active_connected">Подключен к Гугл Диску</string>
-    <string name="pref_title_backup_active_not_connected">Не подключепн к Гугл Диску</string>
+    <string name="pref_title_backup_active_not_connected">Не подключен к Гугл Диску</string>
     <string name="pref_title_backup_active_failed">Невозможно подключиться к Гугл Диску</string>
     <string name="pref_title_backup_active_connecting">Подключение к Диску…</string>
     <string name="pref_title_backup_wifi_only">Передавать файлы только по Wi-Fi</string>
