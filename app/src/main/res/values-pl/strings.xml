@@ -1,9 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources>
     <string name="app_name">Dziennik Diety</string>
-
     <string name="content_description_icon">Ikona</string>
-
     <string name="navigation_drawer_open">Otwórz pasek nawigacji</string>
     <string name="navigation_drawer_close">Zamknij pasek nawigacji</string>
 

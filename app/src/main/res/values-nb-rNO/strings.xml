@@ -1,9 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources>
     <string name="app_name">Diettdagbok</string>
-
     <string name="content_description_icon">Ikon</string>
-
     <string name="navigation_drawer_open">Åpne navigasjonsskuff</string>
     <string name="navigation_drawer_close">Lukk navigasjonsskuff</string>
 
@@ -103,7 +101,7 @@
     <string name="rate_dialog_never">Nei takk</string>
     <string name="drive_dialog_never">Nei takk</string>
     <string name="drive_dialog_later">Minn meg på dette senere</string>
-<string name="pref_title_daily_remainder">Daglig påminnelse</string>
+    <string name="pref_title_daily_remainder">Daglig påminnelse</string>
     <string name="pref_title_backup_now_summary">Siste sikkerhetskopi: %1$s</string>
     <string name="pref_title_backup_now_summary_never">Aldri</string>
     <string name="pref_title_backup_frequency">Frekvens</string>

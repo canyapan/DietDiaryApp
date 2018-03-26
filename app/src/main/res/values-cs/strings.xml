@@ -1,5 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<resources><string name="app_name">Diet Diary</string>
+<resources>
+    <string name="app_name">Diet Diary</string>
     <string name="content_description_icon">Ikona</string>
     <string name="action_save">Uložit</string>
     <string name="action_share">Sdílet</string>

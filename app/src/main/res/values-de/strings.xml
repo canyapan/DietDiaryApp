@@ -1,9 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources>
     <string name="app_name">Ernährungs-Tagebuch</string>
-
     <string name="content_description_icon">Symbol</string>
-
     <string name="navigation_drawer_open">Navigationsleiste öffnen</string>
     <string name="navigation_drawer_close">Navigationsleiste schließen</string>
 
@@ -104,7 +102,7 @@
     <string name="drive_dialog_never">Nein, Danke</string>
     <string name="drive_dialog_later">Später Bewerten</string>
     <string name="drive_dialog_yes">Jetzt Anschließen</string>
-<string name="activity_export_title">Exportieren</string>
+    <string name="activity_export_title">Exportieren</string>
     <string name="nav_export">Exportieren</string>
     <string name="restore_json_corrupted">JSON beschädigt</string>
     <string name="restore_file_not_json">Ausgewählte Datei ist keine JSON-Datei!</string>

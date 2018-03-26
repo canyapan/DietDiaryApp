@@ -106,7 +106,7 @@
     <string name="rate_dialog_never">Nee, Bedankt</string>
     <string name="drive_dialog_later">Remind Me Later</string>
     <string name="drive_dialog_never">Nee, Bedankt</string>
-<string name="activity_export_title">Exporteren</string>
+    <string name="activity_export_title">Exporteren</string>
     <string name="nav_export">Exporteren</string>
     <string name="pref_title_daily_remainder">Dagelijkse herinnering</string>
     <string name="pref_header_backup">Cloud-back-up</string>

@@ -92,7 +92,7 @@
     <string name="rate_dialog_later">Напомнить позже</string>
     <string name="rate_dialog_never">Нет, спасибо</string>
     <string name="drive_dialog_never">Нет, спасибо</string>
-<string name="activity_export_title">Экспортировать</string>
+    <string name="activity_export_title">Экспортировать</string>
     <string name="nav_export">Экспортировать</string>
     <string name="backup_unimplemented_destination">Выбранное направление пока не поддерживается.</string>
     <string name="backup_io_exception">Во время экспорта произошла ошибка ввода-вывода.</string>
