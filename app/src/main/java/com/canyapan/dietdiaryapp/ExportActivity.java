@@ -17,6 +17,7 @@ import android.support.v4.app.ShareCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,11 +33,9 @@ import com.canyapan.dietdiaryapp.helpers.DateTimeHelper;
 import com.canyapan.dietdiaryapp.helpers.FixedDatePickerDialog;
 import com.crashlytics.android.Crashlytics;
 
-import org.apache.commons.io.FileUtils;
 import org.joda.time.LocalDate;
 
 import java.io.File;
-import java.io.IOException;
 import java.text.MessageFormat;
 
 import static com.canyapan.dietdiaryapp.Application.FILE_PROVIDER;
@@ -168,7 +167,15 @@ public class ExportActivity extends AppCompatActivity implements View.OnClickLis
 
                 return true;
             case R.id.action_email:
-                // TODO
+                try {
+                    mAsyncTask = (ExportAsyncTask) new ExportToHTML(this, ExportAsyncTask.TO_EMAIL, mFromDate, mToDate, this).execute();
+                } catch (ExportAsyncTask.ExportException e) {
+                    if (BuildConfig.CRASHLYTICS_ENABLED) {
+                        Crashlytics.logException(e);
+                    }
+                    Log.e(TAG, "Share unsuccessful.", e);
+                }
+
                 return true;
 
         }
@@ -315,33 +322,48 @@ public class ExportActivity extends AppCompatActivity implements View.OnClickLis
     public void onExportComplete(final LocalDate startDate, final LocalDate endDate, final int destination, final File file, final long recordsExported) {
         mAsyncTask = null;
 
+        pbToolbarProgressBar.setVisibility(ProgressBar.GONE);
+
         switch (destination) {
             case TO_EMAIL:
-                Intent intent = new Intent(Intent.ACTION_SENDTO)
+                Intent intent = new Intent(Intent.ACTION_SEND)
+                        .setType(MIME_TYPE_HTML)
                         .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                         .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                        .setType(MIME_TYPE_HTML)
                         .putExtra(Intent.EXTRA_SUBJECT,
                                 MessageFormat.format("Diet Diary, {0} – {1}",
                                         startDate.toString(DatabaseHelper.DB_DATE_FORMATTER),
-                                        endDate.toString(DatabaseHelper.DB_DATE_FORMATTER)));
+                                        endDate.toString(DatabaseHelper.DB_DATE_FORMATTER)))
+                        .putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(this, FILE_PROVIDER, file));
 
-                try {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    intent.putExtra(Intent.EXTRA_TEXT, Html.fromHtml("todo work on this too", Html.FROM_HTML_MODE_LEGACY)); // TODO empty email needs some HTML too
+                } else {
+                    intent.putExtra(Intent.EXTRA_TEXT, Html.fromHtml("todo work on this too")); // TODO empty email needs some HTML too
+                }
+
+                /*try {
                     if (file.length() < 1000000) { // Add html data directly into email body
-                        intent.putExtra(Intent.EXTRA_TEXT, FileUtils.readFileToString(file, "UTF-8"));
+                        intent.setType(MIME_TYPE_HTML);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                            intent.putExtra(Intent.EXTRA_TEXT,
+                                    FileUtils.readFileToString(file, "UTF-8"));
+                        } else {
+                            intent.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(FileUtils.readFileToString(file, "UTF-8")));
+                        }
                     } else { // Add html data as attachment
                         Uri uri = FileProvider.getUriForFile(this, FILE_PROVIDER, file);
 
-                        intent.putExtra(Intent.EXTRA_STREAM, uri);
-                        intent.putExtra(Intent.EXTRA_TEXT, "todo work on this too"); // TODO empty email needs some HTML too
-                    }
+                        intent.putExtra(Intent.EXTRA_STREAM, uri)
+                                .putExtra(Intent.EXTRA_TEXT, "todo work on this too"); // TODO empty email needs some HTML too
+                    }*/
 
                     startActivity(Intent.createChooser(intent, getText(R.string.export_to_email_chooser)));
-                } catch (IOException e) {
+                /*} catch (IOException e) {
                     Log.e(TAG, "Cannot start email intent.", e);
                     // TODO show snackbar and let user know about it :(
                     // TODO send a fabric exception about it
-                }
+                }*/
                 break;
             case TO_SHARE:
                 Uri uri = FileProvider.getUriForFile(this, FILE_PROVIDER, file);
