@@ -1,0 +1,140 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+    <string name="app_name">Diet Diary</string>
+    <string name="content_description_icon">Ikona</string>
+    <string name="action_save">Uložit</string>
+    <string name="action_share">Sdílet</string>
+    <string name="action_delete">Smazat</string>
+    <string name="action_copy">Kopírovat</string>
+    <string name="action_calendar_today">Dnes</string>
+    <string name="action_done">Dokončeno</string>
+    <string name="action_cancel">Zrušit</string>
+    <string name="activity_settings_title">Nastavení</string>
+    <string name="activity_export_title">Exportovat</string>
+    <string name="activity_create_event_title">Nová položka</string>
+    <string name="activity_edit_event_title">Upravit položku</string>
+    <string name="activity_create_edit_description_hint">Popis</string>
+    <string name="activity_backup_restore_title">Záloha/Obnovení</string>
+    <string name="day_fragment_nothing_to_share">Nejsou žádné položky ke sdílení.</string>
+    <string name="nav_home">Domů</string>
+    <string name="nav_backup_restore">Záloha/Obnova</string>
+    <string name="nav_export">Export</string>
+    <string name="nav_settings">Nastavení</string>
+    <string name="nav_donate">Přispění</string>
+    <string name="nav_about">O aplikaci</string>
+    <string name="backup">Zálohovat</string>
+    <string name="restore">Obnovit</string>
+    <string name="backup_from">Od</string>
+    <string name="backup_to">Komu</string>
+    <string name="backup_type">Typ</string>
+    <string name="backup_progress_title">Exportuji…</string>
+    <string name="backup_sd_card_unavailable">SD karta není dostupná.</string>
+    <string name="backup_temp_file_creation_error">Nemohu vytvořit dočasný soubor.</string>
+    <string name="backup_file_creation_error">Nemohu vytvořit exportní soubor.</string>
+    <string name="backup_unimplemented_destination">Vybrané umístění není podporováno.</string>
+    <string name="backup_sql_exception">Během exportu došlo k chybě datatáze.</string>
+    <string name="backup_exception">Během exportu došlo k neznámé chybě.</string>
+    <string name="backup_external_successful">%1$s vytvořen</string>
+    <string name="backup_share_successful">Soubor byl nasdílen</string>
+    <string name="backup_no_permission">Prosím, nastavte oprávnění pro ukládání dat.</string>
+    <string name="restore_progress_title">Importuji…</string>
+    <string name="restore_file_selector">Soubory</string>
+    <string name="restore_note"><b>Poznámka</b> Umístěte soubor se zálohou do <i>/sdcard/</i>
+\nnebo <i>/sdcard/DietDiaryApp/</i></string>
+    <string name="restore_no_permission">Prosím, povolte přístup pro čtení.</string>
+    <string name="restore_io_exception">Během importu došlo k I/O chybě.</string>
+    <string name="restore_sql_exception">Během importu došlo k chybě databáze.</string>
+    <string name="restore_exception">Během importu došlo k neznámé chybě.</string>
+    <string name="restore_file_not_exists">Vybraný soubor neexistuje.</string>
+    <string name="restore_file_not_readable">Vybraný soubor nelze načíst.</string>
+    <string name="restore_file_empty">Vybraný soubor je prázdný.</string>
+    <string name="snack_bar_undo">Zpět</string>
+    <string name="snack_bar_deleted">Smazáno</string>
+
+    <string name="spinner_event_types_food">Jídlo</string>
+    <string name="spinner_event_types_drink">Nápoj</string>
+    <string name="spinner_event_types_medication">Lék</string>
+    <string name="spinner_event_types_supplements">Doplněk stravy</string>
+    <string name="spinner_event_types_exercise">Aktivita</string>
+    <string name="spinner_event_types_other">Ostatní</string>
+
+    <string name="spinner_event_food_types_breakfast">Snídaně</string>
+    <string name="spinner_event_food_types_lunch">Oběd</string>
+    <string name="spinner_event_food_types_dinner">Večeře</string>
+    <string name="spinner_event_food_types_snack">Svačina</string>
+    <string name="spinner_event_drink_types_coffee">Káva</string>
+    <string name="spinner_event_drink_types_tea">Čaj</string>
+    <string name="spinner_event_drink_types_alcohol">Alkohol</string>
+    <string name="spinner_event_drink_types_water">Voda</string>
+    <string name="spinner_event_drink_types_energy_drink">Energetický nápoj</string>
+    <string name="spinner_event_drink_types_fruit_juice">Ovocný džus</string>
+    <string name="spinner_event_drink_types_milk">Mléko</string>
+
+    <string name="pref_header_general">Obecné</string>
+    <string name="pref_title_clock_mode">Formát času</string>
+    <string name="pref_list_clock_mode_messages_default">Dle nastavení systému</string>
+    <string name="pref_list_clock_mode_messages_24h">24 hodin</string>
+    <string name="pref_list_clock_mode_messages_ampm">12 hodin</string>
+
+    <string name="pref_header_notifications">Upozornění</string>
+    <string name="pref_title_notifications_active">Aktivní</string>
+    <string name="pref_title_daily_remainder">Denní připomenutí</string>
+    <string name="pref_title_daily_remainder_time">Připomenout v</string>
+    <string name="pref_header_backup">Záloha do cloudu</string>
+    <string name="pref_title_backup_active">Aktivní</string>
+    <string name="pref_title_backup_active_connecting">Připojování jednotky…</string>
+    <string name="pref_title_backup_now_summary_never">Nikdy</string>
+    <string name="pref_title_backup_frequency">Čestnost</string>
+    <string name="pref_list_backup_frequency_daily">Denně</string>
+    <string name="pref_list_backup_frequency_weekly">Týdně</string>
+    <string name="pref_list_backup_frequency_monthly">Měsíčně</string>
+    <string name="drive_dialog_title">Připojit Google Disk</string>
+    <string name="navigation_drawer_open">Zobrazit nabídku</string>
+    <string name="navigation_drawer_close">Zavřít nabídku</string>
+
+    <string name="backup_io_exception">Během exportu nastala I/O chyba.</string>
+    <string name="restore_no_external_storage">Prosím, vložte SD kartu.</string>
+    <string name="restore_already_existing_records">Soubor obsahuje již existující data.</string>
+    <string name="restore_csv_corrupted">Soubor CSV je poškozen.</string>
+    <string name="restore_file_not_csv">Vybraný soubor není ve formátu CSV.</string>
+    <string name="restore_json_corrupted">Soubor JSON je poškozen.</string>
+    <string name="restore_file_not_json">Vybraný soubor není ve formátu JSON!</string>
+    <string name="restore_successful">Soubor %1$s je obnoven.</string>
+    <string name="restore_spinner_hint">Vyberte soubor k obnovení</string>
+    <string name="snack_bar_dismiss">Odmítnout</string>
+    <string name="daily_notification_title">Denní připomenutí od Diet Diary</string>
+    <string name="daily_notification_message">Zapište svůj denní jídelníček.</string>
+
+    <string name="pref_title_daily_remainder_summary">Připomenout denně, pokud nic nezadám.</string>
+
+    <string name="pref_backup_no_permission">Prosím povolte přístup k účtu Google pro Google Disk API.</string>
+    <string name="pref_title_backup_active_connected">Připojeno ke Google Disku</string>
+    <string name="pref_title_backup_active_not_connected">Nepřipojeno ke Google Disku</string>
+    <string name="pref_title_backup_active_failed">Nelze připojit ke Google Disku</string>
+    <string name="pref_title_backup_wifi_only">Soubory přenášet pouze přes Wi-Fi</string>
+    <string name="pref_title_backup_wifi_only_summary">Přenos souborů bude pozastaven, pokud nebude dostupné Wi-Fi připojení.</string>
+    <string name="pref_title_backup_now">Zálohuj nyní</string>
+    <string name="pref_title_backup_now_summary">Poslední záloha: %1$s</string>
+    <string name="pref_list_backup_frequency_none">Pouze pokud zvolím \"Zálohuj nyní\"</string>
+    <string name="pref_backup_unable_to_list_drive_backups">Nelze načíst zálohu z Google Disku.</string>
+    <string name="pref_backup_restore_title">Vyberte zálohu k obnově:</string>
+    <string name="pref_backup_restore_not">Neobnovuj</string>
+
+    <string name="rate_dialog_title">Ohodnoťte Diet Diary</string>
+    <string name="rate_dialog_text">Pokud se vám aplikace líbí, tak ji ohodnoťce. Děkujeme za podporu!</string>
+    <string name="rate_dialog_yes">Hodnotit nyní</string>
+    <string name="rate_dialog_later">Připomenout později</string>
+    <string name="rate_dialog_never">Ne, díky</string>
+
+    <string name="drive_dialog_text">Zálohovat data na Google Disk?</string>
+    <string name="drive_dialog_yes">Ano, nyní</string>
+    <string name="drive_dialog_later">Připomenout později</string>
+    <string name="drive_dialog_never">Ne, nikdy</string>
+
+    <string name="translate_dialog_title">Překlad Diet Diary</string>
+    <string name="translate_dialog_text">Chcete nám pomoc s překladem Diet Diary do vašeho jazyka?</string>
+    <string name="translate_dialog_yes">Ano, pomohu</string>
+    <string name="translate_dialog_later">Připomenout později</string>
+    <string name="translate_dialog_never">Ne, díky</string>
+
+</resources>

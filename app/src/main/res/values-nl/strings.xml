@@ -106,23 +106,23 @@
     <string name="rate_dialog_never">Nee, Bedankt</string>
     <string name="drive_dialog_later">Remind Me Later</string>
     <string name="drive_dialog_never">Nee, Bedankt</string>
-<string name="activity_export_title">Exporteren</string>
+    <string name="activity_export_title">Exporteren</string>
     <string name="nav_export">Exporteren</string>
     <string name="pref_title_daily_remainder">Dagelijkse herinnering</string>
     <string name="pref_header_backup">Cloud-back-up</string>
     <string name="pref_title_backup_active">Actief</string>
     <string name="pref_backup_no_permission">Geef toestemming om toegang te verkrijgen tot Google-accounts voor de Google Drive API.</string>
     <string name="pref_title_backup_active_connected">Drive is verbonden</string>
-    <string name="pref_title_backup_active_not_connected">Drive is niet verbonden!</string>
-    <string name="pref_title_backup_active_failed">Drive-verbinding is mislukt!</string>
+    <string name="pref_title_backup_active_not_connected">Drive is niet verbonden</string>
+    <string name="pref_title_backup_active_failed">Drive-verbinding is mislukt</string>
     <string name="pref_title_backup_active_connecting">Bezig met verbinden met Drive…</string>
     <string name="pref_title_backup_wifi_only">Bestandsoverdracht alleen via Wi-Fi</string>
     <string name="pref_title_backup_wifi_only_summary">Het uploaden en bijwerken van bestanden zal worden gepauzeerd wanneer er geen Wi-Fi-verbinding is.</string>
-    <string name="pref_title_backup_now">Nu back-uppen!</string>
+    <string name="pref_title_backup_now">Nu back-uppen</string>
     <string name="pref_title_backup_now_summary">Laatste back-up: %1$s</string>
     <string name="pref_title_backup_now_summary_never">Nooit</string>
     <string name="pref_title_backup_frequency">Frequentie</string>
-    <string name="pref_list_backup_frequency_none">Alleen wanneer ik druk op Nu back-uppen!</string>
+    <string name="pref_list_backup_frequency_none">Alleen wanneer ik druk op Nu back-uppen</string>
     <string name="pref_list_backup_frequency_daily">Dagelijks</string>
     <string name="pref_list_backup_frequency_weekly">Wekelijks</string>
     <string name="pref_list_backup_frequency_monthly">Maandelijks</string>
@@ -133,4 +133,10 @@
     <string name="drive_dialog_title">Google Drive verbinden</string>
     <string name="drive_dialog_text">Wilt u uw gegevens back-uppen naar uw Google Drive-account?</string>
     <string name="drive_dialog_yes">Ja, nu</string>
-    </resources>
+    <string name="translate_dialog_title">Dieetdagboek vertalen</string>
+    <string name="translate_dialog_text">Wilt u ons helpen om Dieetdagboek te vertalen naar uw taal?</string>
+    <string name="translate_dialog_yes">Ja, graag</string>
+    <string name="translate_dialog_later">Herinner me later</string>
+    <string name="translate_dialog_never">Nee, bedankt</string>
+
+</resources>

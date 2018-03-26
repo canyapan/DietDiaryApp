@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <resources>
     <string name="app_name">ダイエット ダイアリー</string>
     <string name="navigation_drawer_open">ナビゲーションドロワーを開く</string>
@@ -27,7 +27,7 @@
     <string name="backup_from">元</string>
     <string name="backup_to">先</string>
     <string name="backup_type">種類</string>
-    <string name="backup_progress_title">エクスポートしています&#8230;</string>
+    <string name="backup_progress_title">エクスポートしています…</string>
     <string name="backup_sd_card_unavailable">SD カードが使用できません。</string>
     <string name="backup_temp_file_creation_error">一時ファイルを作成できません。</string>
     <string name="backup_file_creation_error">エクスポート ファイルを作成できません。</string>
@@ -36,9 +36,9 @@
     <string name="backup_sql_exception">にエクスポート中 DB エラーが発生しました。</string>
     <string name="backup_exception">にエクスポート中、原因不明のエラーが発生しました。</string>
     <string name="backup_external_successful">%1$s を作成しました</string>
-    <string name="backup_share_successful">ファイルを共有しました。</string>
+    <string name="backup_share_successful">ファイルを共有しました</string>
     <string name="backup_no_permission">ファイルの書き込みアクセス許可を付与してください。</string>
-    <string name="restore_progress_title">インポートしています&#8230;</string>
+    <string name="restore_progress_title">インポートしています…</string>
     <string name="restore_file_selector">ファイル</string>
     <string name="restore_note"><b>注意:</b> バックアップファイルの保存場所は <i>/sdcard/</i>\nまたは <i>/sdcard/DietDiaryApp/</i></string>
     <string name="restore_no_permission">読み取りアクセス許可を付与してください。</string>
@@ -96,15 +96,48 @@
     <string name="pref_header_notifications">通知</string>
     <string name="pref_title_notifications_active">有効</string>
     <string name="pref_title_daily_remainder_time">リマインド</string>
-    <string name="pref_title_daily_remainder_summary">エントリーを追加しない場合に、毎日リマインドする</string>
+    <string name="pref_title_daily_remainder_summary">エントリーを追加しない場合に、毎日リマインドします。</string>
 
     <!-- Strings for App Rate Dialog -->
     <string name="rate_dialog_title">アプリをレビューしませんか？</string>
-    <string name="rate_dialog_text">このアプリを広めるために評価をお願いします。ご協力感謝いたします！</string>
+    <string name="rate_dialog_text">このアプリを楽しんでいただけた場合は、評価してください。サポートありがとうございます!</string>
     <string name="rate_dialog_yes">今すぐ評価する</string>
     <string name="rate_dialog_later">後でする</string>
     <string name="rate_dialog_never">いえ、結構です</string>
 
     <string name="drive_dialog_never">いえ、結構です</string>
     <string name="drive_dialog_later">後でする</string>
+    <string name="activity_export_title">エクスポート</string>
+    <string name="nav_export">エクスポート</string>
+    <string name="pref_title_daily_remainder">毎日のリマインダー</string>
+    <string name="pref_header_backup">クラウドバックアップ</string>
+    <string name="pref_title_backup_active">有効</string>
+    <string name="pref_backup_no_permission">Google ドライブ API の Google アカウントへのアクセス許可を付与してください。</string>
+    <string name="pref_title_backup_active_connected">Google ドライブに接続しました</string>
+    <string name="pref_title_backup_active_not_connected">Google ドライブに接続されていません</string>
+    <string name="pref_title_backup_active_failed">Google ドライブに接続できませんでした</string>
+    <string name="pref_title_backup_active_connecting">ドライブ接続中…</string>
+    <string name="pref_title_backup_wifi_only">Wi-Fi 接続時のみファイルを転送</string>
+    <string name="pref_title_backup_wifi_only_summary">Wi-Fi 接続を使用できない場合は、ファイル転送を一時停止します。</string>
+    <string name="pref_title_backup_now">今すぐバックアップ</string>
+    <string name="pref_title_backup_now_summary">最後のバックアップ: %1$s</string>
+    <string name="pref_title_backup_now_summary_never">しない</string>
+    <string name="pref_title_backup_frequency">頻度</string>
+    <string name="pref_list_backup_frequency_none">今すぐバックアップをタップしたときのみ</string>
+    <string name="pref_list_backup_frequency_daily">毎日</string>
+    <string name="pref_list_backup_frequency_weekly">毎週</string>
+    <string name="pref_list_backup_frequency_monthly">毎月</string>
+    <string name="pref_backup_unable_to_list_drive_backups">Google ドライブ バックアップをロードできませんでした。</string>
+    <string name="pref_backup_restore_title">復元するバックアップを選択:</string>
+    <string name="pref_backup_restore_not">復元しない</string>
+
+    <string name="drive_dialog_title">Google ドライブに接続</string>
+    <string name="drive_dialog_text">Google ドライブ アカウントにデータをバックアップしますか?</string>
+    <string name="drive_dialog_yes">はい、今実行します</string>
+    <string name="translate_dialog_title">ダイエット日記を翻訳する</string>
+    <string name="translate_dialog_text">ダイエット日記をご利用の言語に翻訳するのを手伝っていただけますか?</string>
+    <string name="translate_dialog_yes">はい、します</string>
+    <string name="translate_dialog_later">後で通知する</string>
+    <string name="translate_dialog_never">いえ、結構です</string>
+
 </resources>
