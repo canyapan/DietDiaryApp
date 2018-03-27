@@ -18,14 +18,13 @@ repositories {
 }
 
 dependencies {
-    compile('com.crashlytics.sdk.android:crashlytics:2.7.0@aar') {
+    implementation('com.crashlytics.sdk.android:crashlytics:2.7.0@aar') {
         transitive = true
     }
 }
 
 android {
     compileSdkVersion 27
-    buildToolsVersion "27.0.3"
 
     defaultConfig {
         applicationId "com.canyapan.dietdiaryapp"
@@ -34,6 +33,7 @@ android {
         versionCode 50
         versionName "0.5.0"
         vectorDrawables.useSupportLibrary true
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -51,31 +51,33 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 
     //noinspection GradleDynamicVersion
-    compile 'com.android.support.constraint:constraint-layout:+'
-    compile 'com.android.support:design:27.1.0'
-    compile 'com.android.support:support-annotations:27.1.0'
-    compile 'com.android.support:support-compat:27.1.0'
-    compile 'com.android.support:support-core-utils:27.1.0'
-    compile 'com.android.support:support-core-ui:27.1.0'
-    compile 'com.android.support:support-fragment:27.1.0'
-    compile 'com.android.support:appcompat-v7:27.1.0'
-    compile 'com.android.support:preference-v7:27.1.0'
-    compile 'com.android.support:gridlayout-v7:27.1.0'
-    compile 'com.android.support:recyclerview-v7:27.1.0'
-    compile 'com.android.support:support-v13:27.1.0'
-    compile 'com.android.support:preference-v14:27.1.0'
-    compile 'com.google.android.gms:play-services-auth:12.0.0'
-    compile 'com.google.android.gms:play-services-drive:12.0.0'
-    compile 'com.google.firebase:firebase-messaging:12.0.0'
-    compile 'com.firebase:firebase-jobdispatcher:0.8.2'
-    compile 'net.danlew:android.joda:2.9.9'
-    compile 'com.opencsv:opencsv:3.7'
-    compile 'commons-io:commons-io:2.5'
-    compile 'com.jaredrummler:android-device-names:1.1.5'
+    implementation 'com.android.support.constraint:constraint-layout:+'
+    implementation 'com.android.support:design:27.1.0'
+    implementation 'com.android.support:support-annotations:27.1.0'
+    implementation 'com.android.support:support-compat:27.1.0'
+    implementation 'com.android.support:support-core-utils:27.1.0'
+    implementation 'com.android.support:support-core-ui:27.1.0'
+    implementation 'com.android.support:support-fragment:27.1.0'
+    implementation 'com.android.support:appcompat-v7:27.1.0'
+    implementation 'com.android.support:preference-v7:27.1.0'
+    implementation 'com.android.support:gridlayout-v7:27.1.0'
+    implementation 'com.android.support:recyclerview-v7:27.1.0'
+    implementation 'com.android.support:support-v13:27.1.0'
+    implementation 'com.android.support:preference-v14:27.1.0'
+    implementation 'com.google.android.gms:play-services-auth:12.0.0'
+    implementation 'com.google.android.gms:play-services-drive:12.0.0'
+    implementation 'com.google.firebase:firebase-messaging:12.0.0'
+    implementation 'com.firebase:firebase-jobdispatcher:0.8.2'
+    implementation 'net.danlew:android.joda:2.9.9'
+    implementation 'com.opencsv:opencsv:3.7'
+    implementation 'commons-io:commons-io:2.5'
+    implementation 'com.jaredrummler:android-device-names:1.1.5'
 }
 
 apply plugin: 'com.google.gms.google-services'
