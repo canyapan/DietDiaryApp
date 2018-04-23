@@ -115,7 +115,7 @@
     <string name="activity_export_title">Eksporter</string>
     <string name="nav_export">Eksporter</string>
     <string name="restore_json_corrupted">Skadet JSON-data.</string>
-    <string name="restore_file_not_json">Valgt fil er ikke ei JSON.fil.</string>
+    <string name="restore_file_not_json">Valgt fil er ikke ei JSON-fil.</string>
     <string name="pref_header_backup">Sky-sikkerhetskopi</string>
     <string name="pref_title_backup_active">AKtiv</string>
     <string name="pref_backup_no_permission">Gi tilgang til til Google-konto for Google Drive-API.</string>
