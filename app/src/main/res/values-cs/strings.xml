@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources>
-    <string name="app_name">Diet Diary</string>
+    <string name="app_name">Jídelníček</string>
     <string name="content_description_icon">Ikona</string>
     <string name="action_save">Uložit</string>
     <string name="action_share">Sdílet</string>
@@ -89,7 +89,7 @@
     <string name="pref_list_backup_frequency_weekly">Týdně</string>
     <string name="pref_list_backup_frequency_monthly">Měsíčně</string>
     <string name="drive_dialog_title">Připojit Google Disk</string>
-    <string name="navigation_drawer_open">Zobrazit nabídku</string>
+    <string name="navigation_drawer_open">Otevřít nabídku</string>
     <string name="navigation_drawer_close">Zavřít nabídku</string>
 
     <string name="backup_io_exception">Během exportu nastala I/O chyba.</string>
@@ -137,4 +137,6 @@
     <string name="translate_dialog_later">Připomenout později</string>
     <string name="translate_dialog_never">Ne, díky</string>
 
-</resources>
+<string name="spinner_event_food_types_junk">Nezdravé pochoutky</string>
+
+    </resources>
