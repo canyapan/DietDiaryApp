@@ -92,7 +92,7 @@
     <string name="navigation_drawer_open">Otevřít nabídku</string>
     <string name="navigation_drawer_close">Zavřít nabídku</string>
 
-    <string name="backup_io_exception">Během exportu nastala I/O chyba.</string>
+    <string name="backup_io_exception">Během exportu došlo k I/O chybě.</string>
     <string name="restore_no_external_storage">Prosím, vložte SD kartu.</string>
     <string name="restore_already_existing_records">Soubor obsahuje již existující data.</string>
     <string name="restore_csv_corrupted">Soubor CSV je poškozen.</string>
@@ -137,6 +137,6 @@
     <string name="translate_dialog_later">Připomenout později</string>
     <string name="translate_dialog_never">Ne, díky</string>
 
-<string name="spinner_event_food_types_junk">Nezdravé pochoutky</string>
+<string name="spinner_event_food_types_junk">Nezdravá pochoutka</string>
 
     </resources>
