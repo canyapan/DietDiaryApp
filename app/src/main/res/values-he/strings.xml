@@ -1,2 +1,141 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<?xml version='1.0' encoding='UTF-8'?>
+<resources><string name="app_name">יומן תזונה</string>
+    <string name="content_description_icon">סמל</string>
+    <string name="navigation_drawer_open">פתיחת מגירת ניווט</string>
+    <string name="navigation_drawer_close">סגירת מגירת ניווט</string>
+
+    <string name="action_save">שמירה</string>
+    <string name="action_share">שיתוף</string>
+    <string name="action_delete">מחיקה</string>
+    <string name="action_copy">העתקה</string>
+    <string name="action_calendar_today">היום</string>
+    <string name="action_done">סיום</string>
+    <string name="action_cancel">ביטול</string>
+    <string name="activity_settings_title">הגדרות</string>
+    <string name="activity_export_title">ייצוא</string>
+    <string name="activity_create_event_title">אירוע חדש</string>
+    <string name="activity_edit_event_title">עריכת אירוע</string>
+    <string name="activity_create_edit_description_hint">תיאור</string>
+    <string name="activity_backup_restore_title">גיבוי/שחזור</string>
+    <string name="day_fragment_nothing_to_share">אין היסטוריה לשיתוף.</string>
+    <string name="nav_home">בית</string>
+    <string name="nav_backup_restore">גיבוי/שחזור</string>
+    <string name="nav_export">ייצוא</string>
+    <string name="nav_settings">הגדרות</string>
+    <string name="nav_donate">תרומה</string>
+    <string name="nav_about">על אודות</string>
+    <string name="backup">גיבוי</string>
+    <string name="restore">שחזור</string>
+    <string name="backup_from">מהמיקום</string>
+    <string name="backup_to">אל</string>
+    <string name="backup_type">סוג</string>
+    <string name="backup_progress_title">מתבצע ייצוא…</string>
+    <string name="backup_sd_card_unavailable">כרטיס SD אינו זמין.</string>
+    <string name="backup_temp_file_creation_error">לא ניתן ליצור קובץ זמני.</string>
+    <string name="backup_file_creation_error">לא ניתן ליצור קובץ ייצוא.</string>
+    <string name="backup_unimplemented_destination">היעד הנבחר אינו נתמך, עדיין.</string>
+    <string name="backup_io_exception">אירעה שגיאת קלט/פלט במהלך הייצוא.</string>
+    <string name="backup_sql_exception">אירעה שגיאת מסד נתונים בעת הייצוא.</string>
+    <string name="backup_exception">שגיאה בלתי מזוהה בזמן הייצוא.</string>
+    <string name="backup_external_successful">%1$s נוצר</string>
+    <string name="backup_share_successful">שותף קובץ</string>
+    <string name="backup_no_permission">נא להעניק גישה לכתוב לקבצים.</string>
+    <string name="restore_progress_title">מתבצע ייבוא…</string>
+    <string name="restore_file_selector">קבצים</string>
+    <string name="restore_note"><b>לתשומת לבך:</b> ניתן למצוא את קובצי הגיבוי שלך תחת <i>/sdcard/</i>
+\nאו תחת <i>/sdcard/DietDiaryApp/</i></string>
+    <string name="restore_no_permission">נא להעניק גישה לקריאה.</string>
+    <string name="restore_no_external_storage">נא לחבר את האחסון החיצוני שלך.</string>
+    <string name="restore_io_exception">שגיאת קלט/פלט במהלך הייבוא.</string>
+    <string name="restore_sql_exception">שגיאת מסד נתונים בזמן הייבוא.</string>
+    <string name="restore_exception">שגיאה בלתי ידועה במהלך הייבוא.</string>
+    <string name="restore_already_existing_records">הקובץ כולל היסטורייה שכבר קיימת.</string>
+    <string name="restore_file_not_exists">הקובץ הנבחר לא קיים.</string>
+    <string name="restore_file_not_readable">הקובץ הנבחר אינו קריא.</string>
+    <string name="restore_file_empty">הקובץ הנבחר ריק.</string>
+    <string name="restore_csv_corrupted">ה־CSV פגום.</string>
+    <string name="restore_file_not_csv">הקובץ שנבחר אינו קובץ CSV.</string>
+    <string name="restore_json_corrupted">ה־JSON פגום.</string>
+    <string name="restore_file_not_json">הקובץ שנבחר אינו קובץ JSON!</string>
+    <string name="restore_successful">הקובץ %1$s שוחזר.</string>
+    <string name="restore_spinner_hint">נא לבחור קובץ לשחזור</string>
+    <string name="snack_bar_dismiss">התעלמות</string>
+    <string name="snack_bar_undo">ביטול</string>
+    <string name="snack_bar_deleted">נמחק</string>
+
+    <string name="daily_notification_title">תזכורת יומן תזונה יומית</string>
+    <string name="daily_notification_message">נא לתאר את התזונה היומית שלך.</string>
+
+    <string name="spinner_event_types_food">מזון</string>
+    <string name="spinner_event_types_drink">שתייה</string>
+    <string name="spinner_event_types_medication">תרופות</string>
+    <string name="spinner_event_types_supplements">תוספים</string>
+    <string name="spinner_event_types_exercise">התעמלות</string>
+    <string name="spinner_event_types_other">אחר</string>
+
+    <string name="spinner_event_food_types_breakfast">ארוחת בוקר</string>
+    <string name="spinner_event_food_types_lunch">ארוחת צהריים</string>
+    <string name="spinner_event_food_types_dinner">ארוחת ערב</string>
+    <string name="spinner_event_food_types_snack">חטיף</string>
+    <string name="spinner_event_food_types_junk">ג׳אנק</string>
+
+    <string name="spinner_event_drink_types_coffee">קפה</string>
+    <string name="spinner_event_drink_types_tea">תה</string>
+    <string name="spinner_event_drink_types_alcohol">אלכוהול</string>
+    <string name="spinner_event_drink_types_water">מים</string>
+    <string name="spinner_event_drink_types_energy_drink">משקה אנרגיה</string>
+    <string name="spinner_event_drink_types_fruit_juice">מיץ פרות</string>
+    <string name="spinner_event_drink_types_milk">חלב</string>
+
+    <string name="pref_header_general">כללי</string>
+    <string name="pref_title_clock_mode">מצב שעון</string>
+    <string name="pref_list_clock_mode_messages_default">בררת המחדל של המערכת</string>
+    <string name="pref_list_clock_mode_messages_24h">24 שעות</string>
+    <string name="pref_list_clock_mode_messages_ampm">AM/PM</string>
+
+    <string name="pref_header_notifications">התרעות</string>
+    <string name="pref_title_notifications_active">פעילות</string>
+    <string name="pref_title_daily_remainder">תזכורת יומית</string>
+    <string name="pref_title_daily_remainder_time">להזכיר לי ב־</string>
+    <string name="pref_title_daily_remainder_summary">להזכיר לי כל יום אם לא הוספתי רשומות.</string>
+
+    <string name="pref_header_backup">גיבוי בענן</string>
+    <string name="pref_title_backup_active">פעיל</string>
+    <string name="pref_backup_no_permission">נא להעניק הרשאות לחשבון ה־Google שלך לטובת גישה ל־API של Google Drive.</string>
+    <string name="pref_title_backup_active_connected">קישור ל־Google Drive</string>
+    <string name="pref_title_backup_active_not_connected">אין קישור ל־Google Drive</string>
+    <string name="pref_title_backup_active_failed">לא ניתן להתחבר ל־Google Drive</string>
+    <string name="pref_title_backup_active_connecting">הכונן מתחבר…</string>
+    <string name="pref_title_backup_wifi_only">להעביר קבצים דרך רשת אלחוטית בלבד</string>
+    <string name="pref_title_backup_wifi_only_summary">העברות הקבצים יושהו כאשר אין חיבור אלחטי זמין.</string>
+    <string name="pref_title_backup_now">גיבוי כעת</string>
+    <string name="pref_title_backup_now_summary">גיבוי אחרון: %1$s</string>
+    <string name="pref_title_backup_now_summary_never">לעולם לא</string>
+    <string name="pref_title_backup_frequency">תדירות</string>
+    <string name="pref_list_backup_frequency_none">רק בעת לחיצה על „גיבוי כעת”</string>
+    <string name="pref_list_backup_frequency_daily">יומי</string>
+    <string name="pref_list_backup_frequency_weekly">שבועי</string>
+    <string name="pref_list_backup_frequency_monthly">חודשי</string>
+    <string name="pref_backup_unable_to_list_drive_backups">לא ניתן לטעון את הגיבויים מה־Google Drive.</string>
+    <string name="pref_backup_restore_title">נא לבחור גיבוי לשחזור:</string>
+    <string name="pref_backup_restore_not">לא לשחזר</string>
+
+    <string name="rate_dialog_title">דירוג היישומון הזה</string>
+    <string name="rate_dialog_text">אם נהנית מהשימוש ביישומון הזה, נא לדרג אותו. תודה לך על התמיכה!</string>
+    <string name="rate_dialog_yes">לדרג כעת</string>
+    <string name="rate_dialog_later">להזכיר לי מאוחר יותר</string>
+    <string name="rate_dialog_never">לא, תודה</string>
+
+    <string name="drive_dialog_title">חיבור Google Drive</string>
+    <string name="drive_dialog_text">לגבות את הנתונים שלך לחשבון ה־Google Drive שלך?</string>
+    <string name="drive_dialog_yes">כן, לעשות זאת כעת</string>
+    <string name="drive_dialog_later">להזכיר לי מאוחר יותר</string>
+    <string name="drive_dialog_never">לא, תודה</string>
+
+    <string name="translate_dialog_title">תרגום יומן תזונה</string>
+    <string name="translate_dialog_text">מעניין אותך לסייע לנו לתרגם את יומן התזונה לשפה שלך?</string>
+    <string name="translate_dialog_yes">כן, מעניין אותי</string>
+    <string name="translate_dialog_later">להזכיר לי מאוחר יותר</string>
+    <string name="translate_dialog_never">לא, תודה</string>
+
+</resources>
