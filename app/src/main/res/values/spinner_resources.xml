@@ -49,6 +49,5 @@
 
     <string-array name="spinner_export_file_types" translatable="false">
         <item>E-Mail</item>
-        <item>PDF</item>
     </string-array>
 </resources>

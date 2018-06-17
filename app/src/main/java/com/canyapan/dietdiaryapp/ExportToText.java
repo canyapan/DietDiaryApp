@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.text.MessageFormat;
 
-class ExportToXML extends ExportAsyncTask {
+class ExportToText extends ExportAsyncTask {
     private static final String TAG = "ExportToXML";
 
     private XmlSerializer serializer;
@@ -20,7 +20,7 @@ class ExportToXML extends ExportAsyncTask {
             foodTypes = null,
             drinkTypes = null;
 
-    ExportToXML(ExportActivity exportActivity, int destination, LocalDate fromDate, LocalDate toDate, OnExportListener listener) throws ExportException {
+    ExportToText(ExportActivity exportActivity, int destination, LocalDate fromDate, LocalDate toDate, OnExportListener listener) throws ExportException {
         super(exportActivity, destination, fromDate, toDate, listener);
     }
 
