@@ -13,7 +13,8 @@ import java.io.OutputStream;
 import java.text.MessageFormat;
 
 class ExportToText extends ExportAsyncTask {
-    private static final String TAG = "ExportToXML";
+    private static final String TAG = "ExportToText";
+    private static final String YYYY_MM_DD = "yyyy-MM-dd";
 
     private XmlSerializer serializer;
     private String[] types = null,
@@ -27,8 +28,8 @@ class ExportToText extends ExportAsyncTask {
     @Override
     protected String getFileName(String prepend, LocalDate startDate, LocalDate endDate) {
         return MessageFormat.format("{0} {1} {2}.xml", prepend,
-                startDate.toString("yyyy-MM-dd"),
-                endDate.toString("yyyy-MM-dd"));
+                startDate.toString(YYYY_MM_DD),
+                endDate.toString(YYYY_MM_DD));
     }
 
     @Override
@@ -40,8 +41,8 @@ class ExportToText extends ExportAsyncTask {
         serializer.processingInstruction("xml-stylesheet type=\"text/xsl\" href=\"events.xsl\"");
 
         serializer.startTag(null, "events")
-                .attribute(null, "startDate", fromDate.toString("yyyy-MM-dd"))
-                .attribute(null, "endDate", toDate.toString("yyyy-MM-dd"));
+                .attribute(null, "startDate", fromDate.toString(YYYY_MM_DD))
+                .attribute(null, "endDate", toDate.toString(YYYY_MM_DD));
 
         final Resources resources = getResources();
         types = resources.getStringArray(R.array.spinner_event_types);
@@ -86,7 +87,7 @@ class ExportToText extends ExportAsyncTask {
 
     private void startDay(final LocalDate date) throws IOException {
         serializer.startTag(null, "day")
-                .attribute(null, "date", date.toString("yyyy-MM-dd"));
+                .attribute(null, "date", date.toString(YYYY_MM_DD));
     }
 
     private void endDay() throws IOException {

@@ -41,7 +41,7 @@
             android:ellipsize="marquee"
             android:gravity="center_vertical"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="?android:attr/textColorAlertDialogListItem" />
+            android:textColor="?attr/textColorAlertDialogListItem" />
 
         <LinearLayout
             android:layout_width="match_parent"

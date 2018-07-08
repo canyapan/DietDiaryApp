@@ -72,7 +72,7 @@ dependencies {
     implementation 'com.android.support:preference-v14:27.1.1'
     implementation 'com.google.android.gms:play-services-auth:15.0.1'
     implementation 'com.google.android.gms:play-services-drive:15.0.1'
-    implementation 'com.google.firebase:firebase-messaging:17.0.0'
+    implementation 'com.google.firebase:firebase-messaging:17.1.0'
     implementation 'com.firebase:firebase-jobdispatcher:0.8.2'
     implementation 'net.danlew:android.joda:2.9.9'
     implementation 'com.opencsv:opencsv:3.7'

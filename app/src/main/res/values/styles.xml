@@ -2,7 +2,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="@style/Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/primaryColor</item>
         <item name="colorPrimaryDark">@color/primaryDarkColor</item>
@@ -19,7 +19,7 @@
 
     <!-- Style for a custom Preference Entry -->
     <style name="AppPreference">
-        <item name="android:layout">@layout/preference_material</item>
+        <item name="layout">@style/Preference.Material</item>
     </style>
 
     <!-- Style for a DialogPreference Entry -->
@@ -29,12 +29,12 @@
     </style>
 
     <!-- To tint the buttons -->
-    <style name="AppAlertDialog" parent="Theme.AppCompat.DayNight.Dialog.Alert">
+    <style name="AppAlertDialog" parent="@style/Theme.AppCompat.DayNight.Dialog.Alert">
         <item name="colorAccent">@color/secondaryColor</item>
     </style>
 
     <!-- To tint EditText and TimePicker -->
-    <style name="AppAlertDialogContent" parent="Theme.AppCompat.DayNight">
+    <style name="AppAlertDialogContent" parent="@style/Theme.AppCompat.DayNight">
         <item name="colorAccent">@color/secondaryColor</item>
     </style>
 
@@ -47,8 +47,8 @@
         <item name="android:windowBackground">@drawable/background_splash</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+    <style name="AppTheme.AppBarOverlay" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+    <style name="AppTheme.PopupOverlay" parent="@style/ThemeOverlay.AppCompat.Light" />
 
 </resources>
