@@ -55,7 +55,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
-import static android.app.Activity.RESULT_OK;
+import static android.support.v7.app.AppCompatActivity.RESULT_OK;
 import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_BACKUP_ACTIVE_BOOL;
 import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_BACKUP_FILE_DRIVE_ID_STRING;
 import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_BACKUP_FREQUENCY_STRING;

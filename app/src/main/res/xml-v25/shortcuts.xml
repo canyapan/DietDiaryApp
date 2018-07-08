@@ -1,45 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
     <shortcut
-        android:shortcutId="other"
         android:enabled="true"
         android:icon="@drawable/shortcut_other"
-        android:shortcutShortLabel="@string/spinner_event_types_other"
+        android:shortcutId="other"
         android:shortcutLongLabel="@string/spinner_event_types_other"
-        >
+        android:shortcutShortLabel="@string/spinner_event_types_other">
         <intent
             android:action="com.canyapan.dietdiaryapp.shortcut.other"
-            android:targetPackage="com.canyapan.dietdiaryapp"
             android:targetClass="com.canyapan.dietdiaryapp.CreateEditEventActivity"
-            />
-        <categories android:name="android.shortcut.conversation"/>
+            android:targetPackage="com.canyapan.dietdiaryapp" />
+        <categories android:name="android.shortcut.conversation" />
     </shortcut>
     <shortcut
-        android:shortcutId="drink"
         android:enabled="true"
         android:icon="@drawable/shortcut_drink"
-        android:shortcutShortLabel="@string/spinner_event_types_drink"
+        android:shortcutId="drink"
         android:shortcutLongLabel="@string/spinner_event_types_drink"
-        >
+        android:shortcutShortLabel="@string/spinner_event_types_drink">
         <intent
             android:action="com.canyapan.dietdiaryapp.shortcut.drink"
-            android:targetPackage="com.canyapan.dietdiaryapp"
             android:targetClass="com.canyapan.dietdiaryapp.CreateEditEventActivity"
-            />
-        <categories android:name="android.shortcut.conversation"/>
+            android:targetPackage="com.canyapan.dietdiaryapp" />
+        <categories android:name="android.shortcut.conversation" />
     </shortcut>
     <shortcut
-        android:shortcutId="food"
         android:enabled="true"
         android:icon="@drawable/shortcut_food"
-        android:shortcutShortLabel="@string/spinner_event_types_food"
+        android:shortcutId="food"
         android:shortcutLongLabel="@string/spinner_event_types_food"
-        >
+        android:shortcutShortLabel="@string/spinner_event_types_food">
         <intent
             android:action="com.canyapan.dietdiaryapp.shortcut.food"
-            android:targetPackage="com.canyapan.dietdiaryapp"
             android:targetClass="com.canyapan.dietdiaryapp.CreateEditEventActivity"
-            />
-        <categories android:name="android.shortcut.conversation"/>
+            android:targetPackage="com.canyapan.dietdiaryapp" />
+        <categories android:name="android.shortcut.conversation" />
     </shortcut>
 </shortcuts>

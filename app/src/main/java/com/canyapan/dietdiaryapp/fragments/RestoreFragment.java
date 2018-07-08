@@ -100,7 +100,7 @@ public class RestoreFragment extends Fragment implements RestoreDialog.OnRestore
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_import_fragment, menu);
+        inflater.inflate(R.menu.menu_restore_fragment, menu);
 
         Log.d(TAG, "External storage state: " + Environment.getExternalStorageState());
         if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)

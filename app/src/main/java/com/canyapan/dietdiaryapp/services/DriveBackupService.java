@@ -425,7 +425,7 @@ public class DriveBackupService extends JobService {
         SQLiteDatabase db = null;
         Cursor cursor = null;
         try {
-            Resources resources = ResourcesHelper.getEngResources(getApplicationContext());
+            Resources resources = ResourcesHelper.getResourcesForEnglish(getApplicationContext());
             final String[] types = resources.getStringArray(R.array.spinner_event_types);
             final String[] foodTypes = resources.getStringArray(R.array.spinner_event_food_types);
             final String[] drinkTypes = resources.getStringArray(R.array.spinner_event_drink_types);

@@ -33,6 +33,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.opencsv.CSVReader;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.input.BOMInputStream;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
@@ -101,7 +102,6 @@ class RestoreDialog extends AlertDialog {
         return null == mAsyncTask || mAsyncTask.mEnded.get();
     }
 
-    @SuppressWarnings("ResultOfMethodCallIgnored")
     private static abstract class RestoreAsyncTask extends AsyncTask<Void, Integer, Long> {
         private final File mFile;
         private final OnRestoreListener mListener;
@@ -177,7 +177,7 @@ class RestoreDialog extends AlertDialog {
                 try {
                     getFileFromDrive();
                 } catch (RestoreException e) {
-                    mFile.delete();
+                    FileUtils.deleteQuietly(mFile);
                     Log.e(TAG, "Couldn't file from drive.", e);
                     mErrorString = e.getMessage();
                 } catch (InterruptedException e) {
@@ -190,7 +190,7 @@ class RestoreDialog extends AlertDialog {
             final DatabaseHelper databaseHelper = new DatabaseHelper(mContextRef.get());
             SQLiteDatabase db = null;
             try {
-                Resources engResources = ResourcesHelper.getEngResources(mContextRef.get());
+                Resources engResources = ResourcesHelper.getResourcesForEnglish(mContextRef.get());
 
                 BOMInputStream is = new BOMInputStream(new FileInputStream(mFile));
                 String charset;
@@ -264,7 +264,7 @@ class RestoreDialog extends AlertDialog {
 
                 if (null != mDriveClient) {
                     // This is a restore from drive and @mFile is a temp file. So, I should delete it.
-                    mFile.delete();
+                    FileUtils.deleteQuietly(mFile);
                 }
 
                 if (null != db) {

@@ -57,7 +57,7 @@ public class BackupFragment extends Fragment implements View.OnClickListener {
     protected LocalDate mFromDate, mToDate;
 
     protected DatabaseHelper mDatabaseHelper;
-    protected ProgressDialog mProgressDialog;
+    protected ProgressDialog mProgressDialog; // TODO: this is deprecated :( will be replaced in the next versions.
     protected BackupAsyncTask mAsyncTask = null;
 
     public static BackupFragment newInstance() {
@@ -122,7 +122,7 @@ public class BackupFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_export_fragment, menu);
+        inflater.inflate(R.menu.menu_backup_fragment, menu);
 
         if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             menu.findItem(R.id.action_save).setEnabled(false);

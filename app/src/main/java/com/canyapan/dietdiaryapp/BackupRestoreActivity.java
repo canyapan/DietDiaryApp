@@ -68,6 +68,7 @@ public class BackupRestoreActivity extends AppCompatActivity
             BackupRestoreActivity.this.finish();
             return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
 

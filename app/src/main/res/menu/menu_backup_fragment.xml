@@ -13,10 +13,4 @@
         android:orderInCategory="101"
         android:title="@string/action_share"
         app:showAsAction="ifRoom" />
-    <item
-        android:id="@+id/action_email"
-        android:icon="@drawable/action_send"
-        android:orderInCategory="102"
-        android:title="@string/action_share"
-        app:showAsAction="always" />
 </menu>

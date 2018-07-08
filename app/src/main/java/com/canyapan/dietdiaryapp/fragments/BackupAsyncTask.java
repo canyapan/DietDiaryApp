@@ -12,15 +12,16 @@ import android.os.AsyncTask;
 import android.os.Environment;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ShareCompat;
+import android.support.v4.content.FileProvider;
 import android.util.Log;
 
 import com.canyapan.dietdiaryapp.Application;
 import com.canyapan.dietdiaryapp.BuildConfig;
 import com.canyapan.dietdiaryapp.R;
-import com.canyapan.dietdiaryapp.SharingSupportProvider;
 import com.canyapan.dietdiaryapp.db.DatabaseHelper;
 import com.canyapan.dietdiaryapp.db.EventHelper;
 import com.canyapan.dietdiaryapp.helpers.ResourcesHelper;
+import com.canyapan.dietdiaryapp.helpers.SharedFileHelper;
 import com.canyapan.dietdiaryapp.models.Event;
 import com.crashlytics.android.Crashlytics;
 
@@ -32,6 +33,9 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.text.MessageFormat;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import static com.canyapan.dietdiaryapp.Application.FILE_PROVIDER;
+import static com.canyapan.dietdiaryapp.helpers.MimeTypes.MIME_TYPE_CSV;
 
 abstract class BackupAsyncTask extends AsyncTask<Void, Integer, Boolean> {
     static final int TO_EXTERNAL = 0;
@@ -55,7 +59,6 @@ abstract class BackupAsyncTask extends AsyncTask<Void, Integer, Boolean> {
                     File dir = new File(
                             Environment.getExternalStorageDirectory(),
                             Application.APP_DIR);
-                    //noinspection ResultOfMethodCallIgnored
 
                     if (dir.mkdirs()) {
                         MediaScannerConnection.scanFile(backupFragment.getContext(), new String[]{dir.getPath()}, null, null);
@@ -68,7 +71,11 @@ abstract class BackupAsyncTask extends AsyncTask<Void, Integer, Boolean> {
                 }
                 break;
             case TO_SHARE:
-                mFile = new File(backupFragment.getContext().getCacheDir(), fileName);
+                try {
+                    mFile = SharedFileHelper.getSharedFile(backupFragment.getContext(), fileName);
+                } catch (IOException e) {
+                    throw new BackupException(backupFragment.getContext(), R.string.cannot_create_file_path);
+                }
                 break;
             default:
                 throw new BackupException(backupFragment.getContext(), R.string.backup_unimplemented_destination);
@@ -93,7 +100,7 @@ abstract class BackupAsyncTask extends AsyncTask<Void, Integer, Boolean> {
         Cursor cursor = null;
 
         try {
-            Resources engResources = ResourcesHelper.getEngResources(backupFragment.getContext());
+            Resources engResources = ResourcesHelper.getResourcesForEnglish(backupFragment.getContext());
 
             final OutputStreamWriter os = new OutputStreamWriter(new FileOutputStream(mFile, false), "UTF-8");
             os.write('\uFEFF'); // Unicode character, U+FEFF BYTE ORDER MARK (BOM) | https://en.wikipedia.org/wiki/Byte_order_mark
@@ -189,9 +196,11 @@ abstract class BackupAsyncTask extends AsyncTask<Void, Integer, Boolean> {
             Snackbar.make(backupFragment.mGridLayout, backupFragment.getString(R.string.backup_external_successful, mFile.getName()), Snackbar.LENGTH_SHORT).show();
 
             if (mDestination == TO_SHARE) {
+                Uri uri = FileProvider.getUriForFile(backupFragment.getContext(), FILE_PROVIDER, mFile);
+
                 ShareCompat.IntentBuilder builder = ShareCompat.IntentBuilder.from(backupFragment.getActivity())
-                        .setType(SharingSupportProvider.MIME_TYPE_CSV)
-                        .setStream(Uri.parse(SharingSupportProvider.CONTENT_URI_PREFIX + mFile.getName()));
+                        .setType(MIME_TYPE_CSV)
+                        .setStream(uri);
 
                 builder.getIntent().addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 

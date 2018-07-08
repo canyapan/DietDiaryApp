@@ -127,6 +127,10 @@
     <string name="snack_bar_undo">Undo</string>
     <!--Removed/Erased-->
     <string name="snack_bar_deleted">Deleted</string>
+    <!--Will be shown on export screen when user tap on back button but there is a ongoing exporting operation.-->
+    <string name="export_ongoing_progress">Exporting… Please Wait.</string>
+    <string name="export_to_email_chooser">Choose your email client.</string>
+    <string name="cannot_create_file_path">Cannot create file path. Probably a permission issue.</string>
 
     <!--Daily remainder notification title.-->
     <string name="daily_notification_title">Daily Diet Diary Reminder</string>

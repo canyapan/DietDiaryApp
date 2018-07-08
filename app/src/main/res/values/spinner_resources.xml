@@ -48,7 +48,6 @@
     </string-array>
 
     <string-array name="spinner_export_file_types" translatable="false">
-        <item>Email</item>
-        <item>HTML</item>
+        <item>E-Mail</item>
     </string-array>
 </resources>
