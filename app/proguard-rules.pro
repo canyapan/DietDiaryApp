@@ -27,3 +27,10 @@
 -dontwarn com.crashlytics.**
 -dontwarn java.beans.**
 -dontwarn com.opencsv.**
+
+# proguard configuration for iText
+
+-keep class org.spongycastle.** { *; }
+-dontwarn org.spongycastle.**
+
+-keep class com.itextpdf.** { *; }
