@@ -76,7 +76,7 @@ dependencies {
     implementation 'com.firebase:firebase-jobdispatcher:0.8.2'
     implementation 'net.danlew:android.joda:2.9.9'
     implementation 'com.opencsv:opencsv:3.7'
-    implementation 'com.itextpdf:itextpdf:5.5.13'
+    implementation 'com.itextpdf:itextg:5.5.10'
     implementation 'commons-io:commons-io:2.5'
     implementation 'com.jaredrummler:android-device-names:1.1.5'
 }
