@@ -30,7 +30,5 @@
 
 # proguard configuration for iText
 
--keep class org.spongycastle.** { *; }
--dontwarn org.spongycastle.**
-
 -keep class com.itextpdf.** { *; }
+-dontwarn com.itextpdf.**
