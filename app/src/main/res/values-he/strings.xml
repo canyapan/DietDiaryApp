@@ -1,5 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<resources><string name="app_name">יומן תזונה</string>
+<resources>
+    <string name="app_name">יומן תזונה</string>
     <string name="content_description_icon">סמל</string>
     <string name="navigation_drawer_open">פתיחת מגירת ניווט</string>
     <string name="navigation_drawer_close">סגירת מגירת ניווט</string>
@@ -42,8 +43,7 @@
     <string name="backup_no_permission">נא להעניק גישה לכתוב לקבצים.</string>
     <string name="restore_progress_title">מתבצע ייבוא…</string>
     <string name="restore_file_selector">קבצים</string>
-    <string name="restore_note"><b>לתשומת לבך:</b> ניתן למצוא את קובצי הגיבוי שלך תחת <i>/sdcard/</i>
-\nאו תחת <i>/sdcard/DietDiaryApp/</i></string>
+    <string name="restore_note"><b>לתשומת לבך:</b> ניתן למצוא את קובצי הגיבוי שלך תחת <i>/sdcard/</i>\nאו תחת <i>/sdcard/DietDiaryApp/</i></string>
     <string name="restore_no_permission">נא להעניק גישה לקריאה.</string>
     <string name="restore_no_external_storage">נא לחבר את האחסון החיצוני שלך.</string>
     <string name="restore_io_exception">שגיאת קלט/פלט במהלך הייבוא.</string>

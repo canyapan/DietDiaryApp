@@ -39,8 +39,7 @@
     <string name="backup_no_permission">Prosím, nastavte oprávnění pro ukládání dat.</string>
     <string name="restore_progress_title">Importuji…</string>
     <string name="restore_file_selector">Soubory</string>
-    <string name="restore_note"><b>Poznámka</b> Umístěte soubor se zálohou do <i>/sdcard/</i>
-\nnebo <i>/sdcard/DietDiaryApp/</i></string>
+    <string name="restore_note"><b>Poznámka</b> Umístěte soubor se zálohou do <i>/sdcard/</i>\nnebo <i>/sdcard/DietDiaryApp/</i></string>
     <string name="restore_no_permission">Prosím, povolte přístup pro čtení.</string>
     <string name="restore_io_exception">Během importu došlo k I/O chybě.</string>
     <string name="restore_sql_exception">Během importu došlo k chybě databáze.</string>
@@ -137,6 +136,6 @@
     <string name="translate_dialog_later">Připomenout později</string>
     <string name="translate_dialog_never">Ne, díky</string>
 
-<string name="spinner_event_food_types_junk">Nezdravá pochoutka</string>
+    <string name="spinner_event_food_types_junk">Nezdravá pochoutka</string>
 
-    </resources>
+</resources>
