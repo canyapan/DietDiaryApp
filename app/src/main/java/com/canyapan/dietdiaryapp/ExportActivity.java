@@ -149,7 +149,7 @@ public class ExportActivity extends AppCompatActivity implements View.OnClickLis
                 }
 
                 try {
-                    mAsyncTask = (ExportAsyncTask) new ExportToHTML(this, ExportAsyncTask.TO_EXTERNAL, mFromDate, mToDate, this).execute();
+                    mAsyncTask = (ExportAsyncTask) new ExportToText(this, ExportAsyncTask.TO_EXTERNAL, mFromDate, mToDate, this).execute();
                 } catch (ExportAsyncTask.ExportException e) {
                     if (BuildConfig.CRASHLYTICS_ENABLED) {
                         Crashlytics.logException(e);
@@ -235,11 +235,11 @@ public class ExportActivity extends AppCompatActivity implements View.OnClickLis
             return;
         }
 
-        DatePickerDialog datePicker = new FixedDatePickerDialog(this,
+        final DatePickerDialog datePicker = new FixedDatePickerDialog(this,
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        LocalDate newDate = new LocalDate(year, monthOfYear + 1, dayOfMonth);
+                        final LocalDate newDate = new LocalDate(year, monthOfYear + 1, dayOfMonth);
                         Log.d(TAG, MessageFormat.format("date selected {0}", newDate));
 
                         if (v.getId() == R.id.tvFromDatePicker) {

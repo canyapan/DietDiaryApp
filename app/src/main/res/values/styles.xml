@@ -14,8 +14,7 @@
     </style>
 
     <!-- Custom Preference Theme inherits from the v14 support library Material Theme -->
-    <style name="AppPreferenceTheme" parent="@style/PreferenceThemeOverlay.v14.Material">
-    </style>
+    <style name="AppPreferenceTheme" parent="@style/PreferenceThemeOverlay.v14.Material" />
 
     <!-- Style for a custom Preference Entry -->
     <style name="AppPreference">

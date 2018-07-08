@@ -22,8 +22,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:drawableLeft="@drawable/calendar_today"
-        android:drawableStart="@drawable/calendar_today"
         android:drawablePadding="4dp"
+        android:drawableStart="@drawable/calendar_today"
         android:gravity="center_vertical"
         android:padding="4dp"
         android:text="@string/backup_from"
@@ -42,8 +42,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:drawableLeft="@drawable/calendar"
-        android:drawableStart="@drawable/calendar"
         android:drawablePadding="4dp"
+        android:drawableStart="@drawable/calendar"
         android:gravity="center_vertical"
         android:padding="4dp"
         android:text="@string/backup_to"
@@ -60,10 +60,10 @@
     <TextView
         android:id="@+id/tvFormatsLabel"
         android:layout_width="wrap_content"
-        android:drawableLeft="@drawable/file"
-        android:drawableStart="@drawable/file"
         android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/file"
         android:drawablePadding="4dp"
+        android:drawableStart="@drawable/file"
         android:gravity="center_vertical"
         android:padding="4dp"
         android:text="@string/backup_type"
@@ -85,6 +85,5 @@
         android:text="Please wait. Exporting..."
         app:layout_columnSpan="2"
         app:layout_gravity="center_horizontal" />
-
 
 </android.support.v7.widget.GridLayout>

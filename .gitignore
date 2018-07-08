@@ -37,5 +37,9 @@ captures/
 # Android Studio .idea/workspace.xml file
 .idea/workspace.xml
 
+# Android Studio .idea/caches folder
+.idea/caches/
+
 # Android Studio .iml Files
 *.iml
+
