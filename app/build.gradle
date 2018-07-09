@@ -73,12 +73,12 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth:15.0.1'
     implementation 'com.google.android.gms:play-services-drive:15.0.1'
     implementation 'com.google.firebase:firebase-messaging:17.1.0'
-    implementation 'com.firebase:firebase-jobdispatcher:0.8.2'
-    implementation 'net.danlew:android.joda:2.9.9'
-    implementation 'com.opencsv:opencsv:3.7'
+    implementation 'com.firebase:firebase-jobdispatcher:0.8.5'
+    implementation 'net.danlew:android.joda:2.9.9.4'
+    implementation 'com.opencsv:opencsv:4.2'
     implementation 'com.itextpdf:itextg:5.5.10'
-    implementation 'commons-io:commons-io:2.5'
-    implementation 'com.jaredrummler:android-device-names:1.1.5'
+    implementation 'commons-io:commons-io:2.6'
+    implementation 'com.jaredrummler:android-device-names:1.1.7'
 }
 
 apply plugin: 'com.google.gms.google-services'

@@ -21,14 +21,10 @@
 
 -keep public class * extends java.lang.Exception
 
--keep class com.crashlytics.** { *; }
--keep class org.joda.time.** { *; }
-
 -dontwarn com.crashlytics.**
--dontwarn java.beans.**
+-keep class com.crashlytics.** { *; }
+
+#-keep class org.joda.time.** { *; }
 -dontwarn com.opencsv.**
-
-# proguard configuration for iText
-
--keep class com.itextpdf.** { *; }
 -dontwarn com.itextpdf.**
+-dontwarn org.apache.commons.**
