@@ -1,0 +1,141 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources><string name="app_name">Diario Alimentare</string>
+    <string name="content_description_icon">Icona</string>
+    <string name="navigation_drawer_open">Apri menù principale</string>
+    <string name="navigation_drawer_close">Chiudi menù principale</string>
+
+    <string name="action_save">Salva</string>
+    <string name="action_share">Condividi</string>
+    <string name="action_delete">Elimina</string>
+    <string name="action_copy">Copia</string>
+    <string name="action_calendar_today">Oggi</string>
+    <string name="action_done">Fatto</string>
+    <string name="action_cancel">Cancella</string>
+    <string name="activity_settings_title">Impostazioni</string>
+    <string name="activity_export_title">Esporta</string>
+    <string name="activity_create_event_title">Nuovo</string>
+    <string name="activity_edit_event_title">Modifica evento</string>
+    <string name="activity_create_edit_description_hint">Descrizione</string>
+    <string name="activity_backup_restore_title">Backup/Ripristina</string>
+    <string name="day_fragment_nothing_to_share">Non c\'è nessun evento da condividere.</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_backup_restore">Backup/Ripristina</string>
+    <string name="nav_export">Esporta</string>
+    <string name="nav_settings">Impostazioni</string>
+    <string name="nav_donate">Dona</string>
+    <string name="nav_about">Informazioni sull\'applicazione</string>
+    <string name="backup">Backup</string>
+    <string name="restore">Ripristina</string>
+    <string name="backup_from">Da</string>
+    <string name="backup_to">A</string>
+    <string name="backup_type">Formato</string>
+    <string name="backup_progress_title">Esportazione…</string>
+    <string name="backup_sd_card_unavailable">Scheda SD non disponibile.</string>
+    <string name="backup_temp_file_creation_error">Impossible creare file temporaneo</string>
+    <string name="backup_file_creation_error">Impossible creare file da esportare.</string>
+    <string name="backup_unimplemented_destination">La destinazione selezionata non è disponibile, al momento.</string>
+    <string name="backup_io_exception">Errore di I/O durante l\'esportazione.</string>
+    <string name="backup_sql_exception">Errore del database durante l\'esportazione.</string>
+    <string name="backup_exception">Errore non identificato durante l\'esportazione.</string>
+    <string name="backup_external_successful">%1$s creato</string>
+    <string name="backup_share_successful">File condiviso</string>
+    <string name="backup_no_permission">Abilita la scrittura dei files, per favore.</string>
+    <string name="restore_progress_title">Importazione in corso…</string>
+    <string name="restore_file_selector">Files</string>
+    <string name="restore_note"><b>Nota:</b> Posiziona i tuoi files di backup in <i>/sdcard/</i>
+\no in <i>/sdcard/DietDiaryApp/</i></string>
+    <string name="restore_no_permission">Fornisci permessi di lettura per favore.</string>
+    <string name="restore_no_external_storage">Inserisci il tuo supporto esterno per favore.</string>
+    <string name="restore_io_exception">Errore di I/O durante l\'importazione.</string>
+    <string name="restore_sql_exception">Errore del database durante l\'importazione</string>
+    <string name="restore_exception">Errore sconosciuto durante l\'importazione.</string>
+    <string name="restore_already_existing_records">Il file include la storia esistente.</string>
+    <string name="restore_file_not_exists">I files selezionati non esistono.</string>
+    <string name="restore_file_not_readable">Il file selezionato non è leggibile.</string>
+    <string name="restore_file_empty">Il file selezionato è vuoto.</string>
+    <string name="restore_csv_corrupted">File CSV corrotto</string>
+    <string name="restore_file_not_csv">Il file selezionato non è in formato CSV.</string>
+    <string name="restore_json_corrupted">JSON corrotto.</string>
+    <string name="restore_file_not_json">Il file selezionato non è in formato JSON!</string>
+    <string name="restore_successful">Il file %1$s è stato ripristinato.</string>
+    <string name="restore_spinner_hint">Seleziona il file da ripristinare.</string>
+    <string name="snack_bar_dismiss">Rimuovi</string>
+    <string name="snack_bar_undo">Annulla</string>
+    <string name="snack_bar_deleted">Eliminato</string>
+
+    <string name="daily_notification_title">Promemoria giornaliero Diario Alimentare</string>
+    <string name="daily_notification_message">Elenca ciò che hai mangiato oggi.</string>
+
+    <string name="spinner_event_types_food">Cibo</string>
+    <string name="spinner_event_types_drink">Bevanda</string>
+    <string name="spinner_event_types_medication">Medicinale</string>
+    <string name="spinner_event_types_supplements">Integratori</string>
+    <string name="spinner_event_types_exercise">Esercizio fisico</string>
+    <string name="spinner_event_types_other">Altro</string>
+
+    <string name="spinner_event_food_types_breakfast">Colazione</string>
+    <string name="spinner_event_food_types_lunch">Pranzo</string>
+    <string name="spinner_event_food_types_dinner">Cena</string>
+    <string name="spinner_event_food_types_snack">Spuntino</string>
+    <string name="spinner_event_food_types_junk">Cibo spazzatura</string>
+
+    <string name="spinner_event_drink_types_coffee">Caffè</string>
+    <string name="spinner_event_drink_types_tea">Thè</string>
+    <string name="spinner_event_drink_types_alcohol">Alcoolici</string>
+    <string name="spinner_event_drink_types_water">Acqua</string>
+    <string name="spinner_event_drink_types_energy_drink">Bevanda energetica</string>
+    <string name="spinner_event_drink_types_fruit_juice">Succo di frutta</string>
+    <string name="spinner_event_drink_types_milk">Latte</string>
+
+    <string name="pref_header_general">Generale</string>
+    <string name="pref_title_clock_mode">Modo orologio</string>
+    <string name="pref_list_clock_mode_messages_default">Predefinito di sistema</string>
+    <string name="pref_list_clock_mode_messages_24h">24 ore</string>
+    <string name="pref_list_clock_mode_messages_ampm">Mattina/Pomeriggio</string>
+
+    <string name="pref_header_notifications">Notifiche</string>
+    <string name="pref_title_notifications_active">Attive</string>
+    <string name="pref_title_daily_remainder">Promemoria giornaliero</string>
+    <string name="pref_title_daily_remainder_time">Ricordamelo alle</string>
+    <string name="pref_title_daily_remainder_summary">Avvertimi se non aggiungo qualcosa durante il giorno.</string>
+
+    <string name="pref_header_backup">Backup nel Cloud</string>
+    <string name="pref_title_backup_active">Attivo</string>
+    <string name="pref_backup_no_permission">Concedi i permessi per il tuo account Google per le Google Drive API</string>
+    <string name="pref_title_backup_active_connected">Connesso a Google Drive</string>
+    <string name="pref_title_backup_active_not_connected">Non connesso a Google Drive</string>
+    <string name="pref_title_backup_active_failed">Impossibile connettersi a Google Drive</string>
+    <string name="pref_title_backup_active_connecting">Connessione a Drive…</string>
+    <string name="pref_title_backup_wifi_only">Trasferisci solo su Wi-Fi</string>
+    <string name="pref_title_backup_wifi_only_summary">Il trasferimento dei file sarà sospeso in caso di assenza di segnale Wi-Fi.</string>
+    <string name="pref_title_backup_now">Backup adesso</string>
+    <string name="pref_title_backup_now_summary">Ultimo backup: %1$s</string>
+    <string name="pref_title_backup_now_summary_never">Mai</string>
+    <string name="pref_title_backup_frequency">Frequenza</string>
+    <string name="pref_list_backup_frequency_none">Effettuare il backup solo al mio tocco</string>
+    <string name="pref_list_backup_frequency_daily">Quotidiano</string>
+    <string name="pref_list_backup_frequency_weekly">Settimanale</string>
+    <string name="pref_list_backup_frequency_monthly">Mensile</string>
+    <string name="pref_backup_unable_to_list_drive_backups">Impossible caricare i backup da Google Drive.</string>
+    <string name="pref_backup_restore_title">Seleziona un backup da ripristinare:</string>
+    <string name="pref_backup_restore_not">Non ripristinare</string>
+
+    <string name="rate_dialog_title">Valuta l\'applicazione</string>
+    <string name="rate_dialog_text">Se ti piace questa applicazione lascia un voto. Grazie per il tuo supporto!</string>
+    <string name="rate_dialog_yes">Vota ora</string>
+    <string name="rate_dialog_later">Ricordamelo più avanti</string>
+    <string name="rate_dialog_never">No, grazie</string>
+
+    <string name="drive_dialog_title">Connetti a Google Drive</string>
+    <string name="drive_dialog_text">Vuoi salvare i tuoi dati su Google Drive\?</string>
+    <string name="drive_dialog_yes">Sì, fallo adesso</string>
+    <string name="drive_dialog_later">Ricordamelo più avanti</string>
+    <string name="drive_dialog_never">No, grazie</string>
+
+    <string name="translate_dialog_title">Traduci Diario Alimentare</string>
+    <string name="translate_dialog_text">Vuoi aiutarci a tradurre diario alimentare nella tua lingua\?</string>
+    <string name="translate_dialog_yes">Sì, lo voglio</string>
+    <string name="translate_dialog_later">Ricordamelo più avanti</string>
+    <string name="translate_dialog_never">No, grazie</string>
+
+</resources>
