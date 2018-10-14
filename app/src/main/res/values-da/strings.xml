@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources><string name="content_description_icon">Ikon</string>
+    <string name="action_save">Gem</string>
+    <string name="action_share">Del</string>
+    <string name="action_delete">Slet</string>
+    <string name="action_copy">Kopier</string>
+    <string name="action_calendar_today">I dag</string>
+    <string name="action_done">Færdig</string>
+    <string name="action_cancel">Annuller</string>
+    <string name="activity_settings_title">Indstillinger</string>
+    <string name="activity_export_title">Eksporter</string>
+    <string name="activity_create_edit_description_hint">Beskrivelse</string>
+    <string name="nav_home">Hjem</string>
+    <string name="nav_export">Eksporter</string>
+    <string name="nav_settings">Indstillinger</string>
+    <string name="nav_donate">Doner</string>
+    <string name="nav_about">Om</string>
+    <string name="backup_from">Fra</string>
+    <string name="backup_to">Til</string>
+    <string name="backup_type">Type</string>
+    <string name="backup_progress_title">Eksporterer…</string>
+    <string name="backup_temp_file_creation_error">Kan ikke oprette midlertidig fil.</string>
+    <string name="backup_file_creation_error">Kan ikke oprette eksportfilen.</string>
+    <string name="backup_external_successful">%1$s oprettet</string>
+    <string name="restore_progress_title">Importerer…</string>
+    <string name="restore_file_selector">Filer</string>
+    <string name="snack_bar_undo">Fortryd</string>
+    <string name="snack_bar_deleted">Slettet</string>
+
+    <string name="spinner_event_types_food">Mad</string>
+    <string name="spinner_event_types_drink">Drik</string>
+    <string name="spinner_event_types_medication">Medicin</string>
+    <string name="spinner_event_types_supplements">Kosttilskud</string>
+    <string name="spinner_event_types_exercise">Motion</string>
+    <string name="spinner_event_types_other">Andet</string>
+
+    <string name="spinner_event_food_types_breakfast">Morgenmad</string>
+    <string name="spinner_event_food_types_lunch">Frokost</string>
+    <string name="spinner_event_food_types_dinner">Middag</string>
+    <string name="spinner_event_food_types_snack">Snack</string>
+    <string name="spinner_event_drink_types_coffee">Kaffe</string>
+    <string name="spinner_event_drink_types_tea">Te</string>
+    <string name="spinner_event_drink_types_alcohol">Alkohol</string>
+    <string name="spinner_event_drink_types_water">Vand</string>
+    <string name="spinner_event_drink_types_energy_drink">Energidrik</string>
+    <string name="spinner_event_drink_types_fruit_juice">Frugtsaft</string>
+    <string name="spinner_event_drink_types_milk">Mælk</string>
+
+    <string name="pref_header_general">Generelt</string>
+    <string name="pref_list_clock_mode_messages_default">Systemstandard</string>
+    <string name="pref_list_clock_mode_messages_24h">24 timers</string>
+    <string name="pref_list_clock_mode_messages_ampm">AM/PM</string>
+
+    <string name="pref_title_notifications_active">Aktiv</string>
+    <string name="pref_title_daily_remainder">Daglig påmindelse</string>
+    <string name="pref_title_backup_active">Aktiv</string>
+    <string name="pref_title_backup_now_summary_never">Aldrig</string>
+    <string name="pref_title_backup_frequency">Frekvens</string>
+    <string name="pref_list_backup_frequency_daily">Daglig</string>
+    <string name="pref_list_backup_frequency_weekly">Ugentlig</string>
+    <string name="pref_list_backup_frequency_monthly">Månedlig</string>
+    <string name="rate_dialog_never">Nej tak</string>
+
+    <string name="drive_dialog_never">Nej tak</string>
+
+    <string name="translate_dialog_never">Nej tak</string>
+
+</resources>
