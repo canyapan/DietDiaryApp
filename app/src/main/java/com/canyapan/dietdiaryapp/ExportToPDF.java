@@ -86,7 +86,6 @@ class ExportToPDF extends ExportAsyncTask {
             }
 
             Paragraph eventParagraph = new Paragraph();
-            eventParagraph.add(event.getType());
             eventParagraph.add(event.getTime().toString("HH:mm"));
             eventParagraph.add(subType);
             eventParagraph.add(event.getDescription());
