@@ -40,6 +40,5 @@ public class Application extends android.app.Application {
 
         DailyReminderServiceHelper.setup(this, preferences);
         DriveBackupServiceHelper.setup(this);
-        //TODO setup notification
     }
 }

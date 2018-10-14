@@ -42,7 +42,7 @@ import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.DateTimeFormatterBuilder;
 
 import java.lang.ref.WeakReference;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
@@ -182,10 +182,9 @@ public class MainActivity extends AppCompatActivity implements
                 }
 
                 // Don't show too many dialogs at once.
-                if (!checkDriveConnectionStatus()) { // check if a dialog is shown for drive connection.
-                    if (!checkAppRateStatus()) { // Ask user to rate the app.
-                        checkUserTranslateStatus(); // If already rated, ask user to help translations.
-                    }
+                if (checkDriveConnectionStatus() ||     // check if a dialog is shown for drive connection.
+                        checkUserTranslateStatus() ||   // Ask user to rate the app.
+                        checkAppRateStatus()) {         // If already rated, ask user to help translations.
                 }
 
                 if (resultCode > 0) { // INSERTED OR DELETED OR UPDATED
@@ -539,13 +538,25 @@ public class MainActivity extends AppCompatActivity implements
         // Check user device language and show this if only required.
         // ISO 639-2 language codes of already translated languages
         // https://www.loc.gov/standards/iso639-2/php/code_list.php
-        Set<String> alreadyTranslated = new HashSet<>(Arrays.asList("eng", "tur", "jpn", "fra", "ger", "dut", "nob", "pol"));
-        String languageCode = Locale.getDefault().getISO3Language();
+        final Set<String> alreadyTranslated = Collections.unmodifiableSet(
+                new HashSet<String>() {{
+                    add("eng");
+                    add("tur");
+                    add("jpn");
+                    add("fra");
+                    add("ger");
+                    add("dut");
+                    add("nob");
+                    add("pol");
+                }}
+        );
+
+        final String languageCode = Locale.getDefault().getISO3Language();
         if (alreadyTranslated.contains(languageCode)) {
             return false;
         }
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         int surveyStatus = preferences.getInt(KEY_USER_TRANSLATE_STATUS_INT, FLAG_STATUS_WAITING);
 
         switch (surveyStatus) {
@@ -556,7 +567,7 @@ public class MainActivity extends AppCompatActivity implements
 
         // case FLAG_APP_RATE_STATUS_WAITING:
         // Check if user has been using the application for 7 days and entered at least 50 events.
-        String date = preferences.getString(KEY_USER_TRANSLATE_DATE_STRING, null);
+        final String date = preferences.getString(KEY_USER_TRANSLATE_DATE_STRING, null);
         if (null == date) {
             SharedPreferences.Editor editor = preferences.edit();
             editor.putString(KEY_USER_TRANSLATE_DATE_STRING, LocalDate.now().toString(DatabaseHelper.DB_DATE_FORMATTER));

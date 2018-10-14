@@ -5,13 +5,12 @@ import android.content.res.Resources;
 import com.canyapan.dietdiaryapp.models.Event;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
 
-import java.io.IOException;
 import java.io.OutputStream;
 import java.text.MessageFormat;
 
@@ -36,7 +35,7 @@ class ExportToPDF extends ExportAsyncTask {
     }
 
     @Override
-    protected void start(final OutputStream outputStream, final LocalDate fromDate, final LocalDate toDate) throws IOException, ExportException {
+    protected void start(final OutputStream outputStream, final LocalDate fromDate, final LocalDate toDate) throws ExportException {
         document = new Document();
 
         try {
@@ -45,7 +44,6 @@ class ExportToPDF extends ExportAsyncTask {
             document.open();
 
             // Document Settings
-            document.setPageSize(PageSize.A4);
             document.addCreationDate();
             document.addAuthor("DietDiaryApp");
             document.addCreator("DietDiaryApp");
@@ -53,10 +51,10 @@ class ExportToPDF extends ExportAsyncTask {
             document.add(
                     new Paragraph(
                             MessageFormat.format("Diet Diary, {0} – {1}",
-                                    fromDate.toString("dd/MM/yyyy"),
-                                    toDate.toString("dd/MM/yyyy"))));
+                                    fromDate.toString(DateTimeFormat.shortDate()),
+                                    toDate.toString(DateTimeFormat.shortDate()))));
         } catch (DocumentException e) {
-            throw new ExportException("Cannot open output stream.", e);
+            throw new ExportException("Cannot open a PDF output stream.", e);
         }
 
         final Resources resources = getResources();
@@ -66,7 +64,7 @@ class ExportToPDF extends ExportAsyncTask {
     }
 
     @Override
-    protected void write(final Event event, boolean newDay, final long index, final long count) throws IOException {
+    protected void write(final Event event, boolean newDay, final long index, final long count) throws ExportException {
         String subType;
         switch (event.getType()) {
             case Event.TYPE_FOOD:
@@ -82,28 +80,26 @@ class ExportToPDF extends ExportAsyncTask {
         try {
             if (newDay) {
                 final Paragraph day = new Paragraph(
-                        event.getDate().toString());
+                        event.getDate().toString(DateTimeFormat.shortDate()));
                 day.setSpacingBefore(2);
                 document.add(day);
             }
 
-            document.add(new Paragraph(event.getDescription()));
+            Paragraph eventParagraph = new Paragraph();
+            eventParagraph.add(event.getType());
+            eventParagraph.add(event.getTime().toString("HH:mm"));
+            eventParagraph.add(subType);
+            eventParagraph.add(event.getDescription());
+
+            document.add(eventParagraph);
 
         } catch (DocumentException e) {
-
+            throw new ExportException("Cannot write event to PDF.", e);
         }
-
-        /*serializer.startTag(null, "event")
-                .attribute(null, "id", String.valueOf(event.getID()))
-                .attribute(null, "type", types[event.getType()])
-                .attribute(null, "time", event.getTime().toString("HH:mm"))
-                .startTag(null, "title").text(subType).endTag(null, "title")
-                .startTag(null, "desc").text(event.getDescription()).endTag(null, "desc")
-                .endTag(null, "event");*/
     }
 
     @Override
-    protected void end() throws IOException, ExportException {
+    protected void end() {
         document.close();
     }
 

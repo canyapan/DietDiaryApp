@@ -136,7 +136,7 @@ abstract class ExportAsyncTask extends AsyncTask<Void, Integer, Long> {
                 int percent = 0, percent_;
                 do {
                     event = EventHelper.parse(cursor);
-                    write(event, null == prev || !event.getDate().equals(prev), current, count);
+                    write(event, !event.getDate().equals(prev), current, count);
                     prev = event.getDate();
 
                     percent_ = (int) Math.floor(++current * 85 / count);
@@ -210,7 +210,7 @@ abstract class ExportAsyncTask extends AsyncTask<Void, Integer, Long> {
 
     protected abstract void start(OutputStream outputStream, LocalDate fromDate, LocalDate toDate) throws IOException, ExportException;
 
-    protected abstract void write(Event event, boolean newDay, long index, long count) throws IOException;
+    protected abstract void write(Event event, boolean newDay, long index, long count) throws IOException, ExportException;
 
     protected abstract void end() throws IOException, ExportException;
 

@@ -37,7 +37,7 @@ but will be thoroughly reviewed and discussed.
 - [X] add export to e-mail.
 - [ ] add export to PDF.
 - [ ] add take picture functionality to create/edit view.
-- [ ] user should be able to share photo to social networks.
+- [ ] add share photo to social networks.
 - [ ] add reminders for water, snacks, medication, entering events.
 - [ ] add widget support.
 - [ ] add wear notifications.
@@ -46,16 +46,6 @@ but will be thoroughly reviewed and discussed.
 - [ ] user defined sub-types.
 - [ ] better support for tablets.
 - [ ] let user delete drive backups from app.
-
-
-### WORKING ON
-
-- [ ] Firebase Messaging Service (Notifications)
-- [ ] Notification id receiver nodejs service and db tables
-- [ ] PM2 setup (create a nodejs user for it on www-data group)
-- [ ] Export activity
-- [ ] Export to PDF
-- [ ] Donation dialog
 
 
 ### License

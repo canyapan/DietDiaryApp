@@ -2,6 +2,7 @@ package com.canyapan.dietdiaryapp.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import com.canyapan.dietdiaryapp.db.DatabaseHelper;
 
@@ -122,20 +123,20 @@ public class Event implements Parcelable {
 
     @Override
     public boolean equals(final Object obj) {
-        if (null != obj && obj instanceof Event) {
+        if (obj instanceof Event) {
             final Event event = (Event) obj;
-            if (getID() == event.getID()
+            return getID() == event.getID()
                     && getType() == event.getType()
                     && getSubType() == event.getSubType()
                     && getDate().equals(event.getDate())
                     && getTime().equals(event.getTime())
-                    && getDescription().equals(event.getDescription()))
-                return true;
+                    && getDescription().equals(event.getDescription());
         }
 
         return false;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return MessageFormat.format("[ID]={0,number}, [Date]={1}, [Time]={2}, [Type]={3,number}, [SubType]={4,number}, [Description]={5}",

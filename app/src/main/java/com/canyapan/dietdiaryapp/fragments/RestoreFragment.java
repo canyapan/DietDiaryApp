@@ -115,7 +115,7 @@ public class RestoreFragment extends Fragment implements RestoreDialog.OnRestore
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_save:
-                if (null == mSpinnerItems || mSpinnerItems.size() == 1) {
+                if (null == getContext() || null == mSpinnerItems || mSpinnerItems.size() == 1) {
                     // Fail safety.
                     return true;
                 }
@@ -126,8 +126,10 @@ public class RestoreFragment extends Fragment implements RestoreDialog.OnRestore
                 }
 
                 try {
-                    File f = (File) mSpinnerItems.get(mSpinner.getSelectedItemPosition()).getTag();
-                    mRestoreDialog = new RestoreDialog(getContext(), f, this);
+                    final File f = (File) mSpinnerItems.get(mSpinner.getSelectedItemPosition()).getTag();
+                    if (null != f) {
+                        mRestoreDialog = new RestoreDialog(getContext(), f, this);
+                    }
                 } catch (RestoreException e) {
                     if (BuildConfig.CRASHLYTICS_ENABLED) {
                         Crashlytics.logException(e);
@@ -142,6 +144,10 @@ public class RestoreFragment extends Fragment implements RestoreDialog.OnRestore
     }
 
     private void loadSpinnerItems() {
+        if (null == getActivity()) {
+            return;
+        }
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (getActivity().checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
                     != PackageManager.PERMISSION_GRANTED) {
@@ -157,10 +163,14 @@ public class RestoreFragment extends Fragment implements RestoreDialog.OnRestore
         Log.d(TAG, "Loading items...");
         File[] files = getSupportedFiles();
 
-        mSpinnerItems = new ArrayList<>(files.length);
-        mSpinnerItems.add(new RestoreFileItem(getString(R.string.restore_spinner_hint), null));
-        for (File f : files) {
-            mSpinnerItems.add(new RestoreFileItem(f.getName(), f));
+        if (null == files) {
+            mSpinnerItems = new ArrayList<>();
+        } else {
+            mSpinnerItems = new ArrayList<>(files.length);
+            mSpinnerItems.add(new RestoreFileItem(getString(R.string.restore_spinner_hint), null));
+            for (File f : files) {
+                mSpinnerItems.add(new RestoreFileItem(f.getName(), f));
+            }
         }
 
         mSpinner.setAdapter(new RestoreFileArrayAdapter(getContext(), mSpinnerItems));
