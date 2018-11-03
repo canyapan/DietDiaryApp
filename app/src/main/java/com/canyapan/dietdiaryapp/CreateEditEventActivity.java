@@ -1,5 +1,6 @@
 package com.canyapan.dietdiaryapp;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
@@ -41,8 +42,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CreateEditEventActivity extends AppCompatActivity {
-    private static final String TAG = "CreateEditEventActivity";
-
     public static final String SHORTCUT_KEY_FOOD = "com.canyapan.dietdiaryapp.shortcut.food";
     public static final String SHORTCUT_KEY_DRINK = "com.canyapan.dietdiaryapp.shortcut.drink";
     public static final String SHORTCUT_KEY_OTHER = "com.canyapan.dietdiaryapp.shortcut.other";
@@ -57,7 +56,7 @@ public class CreateEditEventActivity extends AppCompatActivity {
     public static final int RESULT_UPDATED = 2;
     public static final int RESULT_DELETED = 3;
     public static final int REQUEST_CREATE_EDIT = 1;
-
+    private static final String TAG = "CreateEditEventActivity";
     private int mPosition;
     private Event mEvent;
     private LocalDate mOrgDate;
@@ -184,6 +183,7 @@ public class CreateEditEventActivity extends AppCompatActivity {
                                     @ArrayRes int spinnerIcons) {
         List<EventTypeItem> items = new ArrayList<>();
         final String[] arrTexts = getResources().getStringArray(spinnerContents);
+        @SuppressLint("ResourceType")
         final TypedArray arrIcons = spinnerIcons > 0 ? getResources().obtainTypedArray(spinnerIcons) : null;
 
         if (offset >= arrTexts.length) {

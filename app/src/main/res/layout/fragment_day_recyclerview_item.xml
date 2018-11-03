@@ -3,15 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingBottom="10dp"
-    android:paddingTop="10dp">
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp">
 
     <ImageView
         android:id="@+id/ivIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:contentDescription="@string/content_description_icon"
         android:padding="@dimen/default_gap"
@@ -29,15 +29,15 @@
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="@dimen/list_text_left_margin"
         android:layout_marginStart="@dimen/list_text_left_margin"
-        android:layout_toLeftOf="@id/tvTime"
+        android:layout_marginLeft="@dimen/list_text_left_margin"
         android:layout_toStartOf="@id/tvTime"
+        android:layout_toLeftOf="@id/tvTime"
         android:ellipsize="marquee"
-        android:maxLines="1"
+        android:singleLine="true"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
     <TextView
@@ -45,8 +45,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/tvTitle"
-        android:layout_marginLeft="@dimen/list_text_left_margin"
         android:layout_marginStart="@dimen/list_text_left_margin"
+        android:layout_marginLeft="@dimen/list_text_left_margin"
         android:layout_marginTop="@dimen/list_text_margin"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 

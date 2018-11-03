@@ -32,7 +32,7 @@ class ExportToXML extends ExportAsyncTask {
     }
 
     @Override
-    protected void start(final OutputStream outputStream, final LocalDate fromDate, final LocalDate toDate) throws IOException, ExportException {
+    protected void start(final OutputStream outputStream, final LocalDate fromDate, final LocalDate toDate) throws IOException {
         serializer = Xml.newSerializer();
         serializer.setOutput(outputStream, "UTF-8");
 
@@ -94,7 +94,7 @@ class ExportToXML extends ExportAsyncTask {
     }
 
     @Override
-    protected void end() throws IOException, ExportException {
+    protected void end() throws IOException {
         serializer.endTag(null, "events")
                 .endDocument();
 

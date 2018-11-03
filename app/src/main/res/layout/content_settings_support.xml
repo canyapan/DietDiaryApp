@@ -4,6 +4,5 @@
     android:id="@android:id/list_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior">
-</FrameLayout>
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"></FrameLayout>
 

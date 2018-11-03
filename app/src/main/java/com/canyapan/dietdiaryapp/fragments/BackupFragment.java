@@ -51,14 +51,12 @@ public class BackupFragment extends Fragment implements View.OnClickListener {
     protected OnFragmentInteractionListener mListener;
 
     protected GridLayout mGridLayout;
-    private TextView tvFromDatePicker, tvToDatePicker;
-    private Spinner spFormats;
-
     protected LocalDate mFromDate, mToDate;
-
     protected DatabaseHelper mDatabaseHelper;
     protected ProgressDialog mProgressDialog; // TODO: this is deprecated :( will be replaced in the next versions.
     protected BackupAsyncTask mAsyncTask = null;
+    private TextView tvFromDatePicker, tvToDatePicker;
+    private Spinner spFormats;
 
     public static BackupFragment newInstance() {
         return new BackupFragment();

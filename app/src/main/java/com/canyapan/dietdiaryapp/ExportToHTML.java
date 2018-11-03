@@ -36,7 +36,7 @@ class ExportToHTML extends ExportAsyncTask {
     }
 
     @Override
-    protected void start(final OutputStream outputStream, final LocalDate fromDate, final LocalDate toDate) throws IOException, ExportException {
+    protected void start(final OutputStream outputStream, final LocalDate fromDate, final LocalDate toDate) throws IOException {
         serializer = Xml.newSerializer();
         serializer.setOutput(outputStream, "UTF-8");
         serializer.docdecl(" html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\"");
@@ -1707,7 +1707,7 @@ class ExportToHTML extends ExportAsyncTask {
     }
 
     @Override
-    protected void end() throws IOException, ExportException {
+    protected void end() throws IOException {
 /*                    </tbody>
                     </table>
 

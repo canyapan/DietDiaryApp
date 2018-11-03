@@ -43,11 +43,9 @@ public class RestoreFragment extends Fragment implements RestoreDialog.OnRestore
     protected OnFragmentInteractionListener mListener;
 
     protected LinearLayout mLinearLayout;
-    private Spinner mSpinner;
-
-    private ArrayList<RestoreFileItem> mSpinnerItems = null;
-
     protected RestoreDialog mRestoreDialog;
+    private Spinner mSpinner;
+    private ArrayList<RestoreFileItem> mSpinnerItems = null;
 
     public RestoreFragment() {
     }

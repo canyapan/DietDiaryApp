@@ -93,21 +93,21 @@ public class TimePreferenceDialogFragmentCompat extends PreferenceDialogFragment
         }
     }
 
-    private int getMinute() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            return mTimePicker.getMinute();
-        } else {
-            //noinspection deprecation
-            return mTimePicker.getCurrentMinute();
-        }
-    }
-
     private void setHour(int hour) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             mTimePicker.setHour(hour);
         } else {
             //noinspection deprecation
             mTimePicker.setCurrentHour(hour);
+        }
+    }
+
+    private int getMinute() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            return mTimePicker.getMinute();
+        } else {
+            //noinspection deprecation
+            return mTimePicker.getCurrentMinute();
         }
     }
 

@@ -8,32 +8,6 @@ import android.support.annotation.Nullable;
 import java.io.Serializable;
 
 public class RestoreFileItem implements Parcelable {
-    private final String mText;
-    private final Serializable mTag;
-
-    public RestoreFileItem(@NonNull final String text, final Serializable tag) {
-        mText = text;
-        mTag = tag;
-    }
-
-    //region Getters
-    @NonNull
-    public String getText() {
-        return mText;
-    }
-
-    @Nullable
-    public Serializable getTag() {
-        return mTag;
-    }
-    //endregion
-
-    //region Parcelable
-    private RestoreFileItem(Parcel in) {
-        mText = in.readString();
-        mTag = in.readSerializable();
-    }
-
     public static final Creator<RestoreFileItem> CREATOR = new Creator<RestoreFileItem>() {
         @Override
         public RestoreFileItem createFromParcel(Parcel in) {
@@ -45,6 +19,31 @@ public class RestoreFileItem implements Parcelable {
             return new RestoreFileItem[size];
         }
     };
+    private final String mText;
+    private final Serializable mTag;
+
+    public RestoreFileItem(@NonNull final String text, final Serializable tag) {
+        mText = text;
+        mTag = tag;
+    }
+
+    //region Parcelable
+    private RestoreFileItem(Parcel in) {
+        mText = in.readString();
+        mTag = in.readSerializable();
+    }
+    //endregion
+
+    //region Getters
+    @NonNull
+    public String getText() {
+        return mText;
+    }
+
+    @Nullable
+    public Serializable getTag() {
+        return mTag;
+    }
 
     @Override
     public int describeContents() {

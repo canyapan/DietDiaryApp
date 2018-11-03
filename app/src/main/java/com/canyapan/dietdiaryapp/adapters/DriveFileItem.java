@@ -13,6 +13,17 @@ import static com.canyapan.dietdiaryapp.services.DriveBackupService.DRIVE_KEY_AP
 import static com.canyapan.dietdiaryapp.services.DriveBackupService.DRIVE_KEY_DEVICE_NAME;
 
 public class DriveFileItem implements Parcelable {
+    public static final Creator<DriveFileItem> CREATOR = new Creator<DriveFileItem>() {
+        @Override
+        public DriveFileItem createFromParcel(Parcel in) {
+            return new DriveFileItem(in);
+        }
+
+        @Override
+        public DriveFileItem[] newArray(int size) {
+            return new DriveFileItem[size];
+        }
+    };
     private final String mId;
     private final String mTitle;
     private final LocalDateTime mCreationDate;
@@ -30,6 +41,17 @@ public class DriveFileItem implements Parcelable {
 
         mAppId = m.getCustomProperties().get(DRIVE_KEY_APP_ID);
         mDeviceName = m.getCustomProperties().get(DRIVE_KEY_DEVICE_NAME);
+    }
+
+    //region Parcelable
+    private DriveFileItem(Parcel in) {
+        mId = in.readString();
+        mTitle = in.readString();
+        mCreationDate = (LocalDateTime) in.readSerializable();
+        mModificationDate = (LocalDateTime) in.readSerializable();
+        mSize = in.readLong();
+        mAppId = in.readString();
+        mDeviceName = in.readString();
     }
 
     //region Getters
@@ -56,6 +78,7 @@ public class DriveFileItem implements Parcelable {
     String getDeviceName() {
         return mDeviceName;
     }
+    //endregion
 
     Long getSize() {
         return mSize;
@@ -68,30 +91,6 @@ public class DriveFileItem implements Parcelable {
             return String.format(Locale.getDefault(), "%,.2fKB", (getSize() / 1024f));
         }
     }
-    //endregion
-
-    //region Parcelable
-    private DriveFileItem(Parcel in) {
-        mId = in.readString();
-        mTitle = in.readString();
-        mCreationDate = (LocalDateTime) in.readSerializable();
-        mModificationDate = (LocalDateTime) in.readSerializable();
-        mSize = in.readLong();
-        mAppId = in.readString();
-        mDeviceName = in.readString();
-    }
-
-    public static final Creator<DriveFileItem> CREATOR = new Creator<DriveFileItem>() {
-        @Override
-        public DriveFileItem createFromParcel(Parcel in) {
-            return new DriveFileItem(in);
-        }
-
-        @Override
-        public DriveFileItem[] newArray(int size) {
-            return new DriveFileItem[size];
-        }
-    };
 
     @Override
     public int describeContents() {

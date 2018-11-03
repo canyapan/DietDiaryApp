@@ -14,7 +14,7 @@ class AboutDialog extends AlertDialog {
         super(context);
 
         final LayoutInflater inflater = LayoutInflater.from(context);
-        final View view = inflater.inflate(R.layout.dialog_about, (ViewGroup) null);
+        final View view = inflater.inflate(R.layout.dialog_about, null);
         setView(view);
 
         final TextView ver = view.findViewById(R.id.appVersion);

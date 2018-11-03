@@ -9,7 +9,7 @@ public class Base62 {
 
     public static String encode(BigInteger val) {
         StringBuilder sb = new StringBuilder();
-        while (val.compareTo(BigInteger.valueOf(0)) == 1) {
+        while (val.compareTo(BigInteger.valueOf(0)) > 0) {
             sb.append(alphabet[val.mod(BigInteger.valueOf(62)).intValue()]);
             val = val.divide(BigInteger.valueOf(62));
         }

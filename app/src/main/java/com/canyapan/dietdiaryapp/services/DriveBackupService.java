@@ -67,17 +67,14 @@ public class DriveBackupService extends JobService {
     public static final String TAG = "DriveBackupService";
 
     public static final String KEY_DATA_CHANGED_BOOLEAN = "DATA CHANGED";
-
+    public static final CustomPropertyKey DRIVE_KEY_APP_ID = new CustomPropertyKey("AppID", CustomPropertyKey.PRIVATE);
+    public static final CustomPropertyKey DRIVE_KEY_DEVICE_NAME = new CustomPropertyKey("DeviceName", CustomPropertyKey.PRIVATE);
     private static final String KEY_ID = "ID";
     private static final String KEY_DATE = "Date";
     private static final String KEY_TIME = "Time";
     private static final String KEY_TYPE = "Type";
     private static final String KEY_TITLE = "Title";
     private static final String KEY_DESC = "Description";
-
-    public static final CustomPropertyKey DRIVE_KEY_APP_ID = new CustomPropertyKey("AppID", CustomPropertyKey.PRIVATE);
-    public static final CustomPropertyKey DRIVE_KEY_DEVICE_NAME = new CustomPropertyKey("DeviceName", CustomPropertyKey.PRIVATE);
-
     private static final String BACKUP_FILE_NAME = "backup.json";
     private static final String BACKUP_FILE_NAME_COMPRESSED = "backup.zip";
 
@@ -139,8 +136,8 @@ public class DriveBackupService extends JobService {
 
                 return true;
             }
-        } catch (IOException | NoSuchAlgorithmException e) {
-            Log.e(TAG, "EXCEPTION", e);
+        } catch (IOException e) {
+            Log.e(TAG, "Error while writing file to drive.", e);
             deleteBackupFile();
         }
 
@@ -153,7 +150,7 @@ public class DriveBackupService extends JobService {
         Tasks.whenAll(appFolderTask, createContentsTask)
                 .continueWithTask(new Continuation<Void, Task<DriveFile>>() {
                     @Override
-                    public Task<DriveFile> then(@NonNull Task<Void> task) throws Exception {
+                    public Task<DriveFile> then(@NonNull Task<Void> task) {
                         Log.d(TAG, "Creating drive file... ");
 
                         DriveContents driveContents = createContentsTask.getResult();
@@ -193,7 +190,7 @@ public class DriveBackupService extends JobService {
         getmDriveResourceClient().openFile(driveId.asDriveFile(), DriveFile.MODE_WRITE_ONLY)
                 .continueWithTask(new Continuation<DriveContents, Task<Void>>() {
                     @Override
-                    public Task<Void> then(@NonNull Task<DriveContents> task) throws Exception {
+                    public Task<Void> then(@NonNull Task<DriveContents> task) {
                         DriveContents driveContents = task.getResult();
 
                         writeBackupToOutputStream(driveContents.getOutputStream());
@@ -323,7 +320,7 @@ public class DriveBackupService extends JobService {
         }
     }
 
-    private void compressBackupFile(@NonNull final File outputFile, @NonNull final File inputFile) throws IOException, NoSuchAlgorithmException {
+    private void compressBackupFile(@NonNull final File outputFile, @NonNull final File inputFile) throws IOException {
         if (!inputFile.exists()) {
             throw new IOException("Backup file is gone."); // :S
         }

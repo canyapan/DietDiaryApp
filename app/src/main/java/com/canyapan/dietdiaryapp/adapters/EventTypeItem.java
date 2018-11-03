@@ -6,40 +6,6 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 
 public class EventTypeItem implements Parcelable {
-    private final int mId;
-    private final String mText;
-    @DrawableRes
-    private final int mIcon;
-
-    public EventTypeItem(final int id, @NonNull final String text, @DrawableRes final int icon) {
-        mId = id;
-        mText = text;
-        mIcon = icon;
-    }
-
-    //region Getters
-    public int getId() {
-        return mId;
-    }
-
-    @NonNull
-    public String getText() {
-        return mText;
-    }
-
-    @DrawableRes
-    public int getIcon() {
-        return mIcon;
-    }
-    //endregion
-
-    //region Parcelable
-    private EventTypeItem(Parcel in) {
-        mId = in.readInt();
-        mText = in.readString();
-        mIcon = in.readInt();
-    }
-
     public static final Creator<EventTypeItem> CREATOR = new Creator<EventTypeItem>() {
         @Override
         public EventTypeItem createFromParcel(Parcel in) {
@@ -51,6 +17,39 @@ public class EventTypeItem implements Parcelable {
             return new EventTypeItem[size];
         }
     };
+    private final int mId;
+    private final String mText;
+    @DrawableRes
+    private final int mIcon;
+
+    public EventTypeItem(final int id, @NonNull final String text, @DrawableRes final int icon) {
+        mId = id;
+        mText = text;
+        mIcon = icon;
+    }
+
+    //region Parcelable
+    private EventTypeItem(Parcel in) {
+        mId = in.readInt();
+        mText = in.readString();
+        mIcon = in.readInt();
+    }
+
+    //region Getters
+    public int getId() {
+        return mId;
+    }
+    //endregion
+
+    @NonNull
+    public String getText() {
+        return mText;
+    }
+
+    @DrawableRes
+    public int getIcon() {
+        return mIcon;
+    }
 
     @Override
     public int describeContents() {

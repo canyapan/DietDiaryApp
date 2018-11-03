@@ -4,10 +4,10 @@
     android:layout_height="wrap_content"
     android:baselineAligned="false"
     android:orientation="horizontal"
-    android:paddingBottom="10dip"
-    android:paddingEnd="8dip"
     android:paddingStart="8dip"
-    android:paddingTop="10dip">
+    android:paddingTop="10dip"
+    android:paddingEnd="8dip"
+    android:paddingBottom="10dip">
 
     <ProgressBar
         android:id="@+id/progressBar"

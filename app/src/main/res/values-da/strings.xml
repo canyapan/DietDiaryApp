@@ -1,5 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<resources><string name="content_description_icon">Ikon</string>
+<resources>
+    <string name="content_description_icon">Ikon</string>
     <string name="action_save">Gem</string>
     <string name="action_share">Del</string>
     <string name="action_delete">Slet</string>

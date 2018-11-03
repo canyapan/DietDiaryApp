@@ -102,6 +102,12 @@ class RestoreDialog extends AlertDialog {
         return null == mAsyncTask || mAsyncTask.mEnded.get();
     }
 
+    interface OnRestoreListener {
+        void onRestoreComplete(String tag, LocalDate startDate, LocalDate endDate, long recordsInserted);
+
+        void onRestoreFailed(String tag, String message);
+    }
+
     private static abstract class RestoreAsyncTask extends AsyncTask<Void, Integer, Long> {
         private final File mFile;
         private final OnRestoreListener mListener;
@@ -154,7 +160,7 @@ class RestoreDialog extends AlertDialog {
         }
 
         RestoreAsyncTask(final Context context, final DriveClient driveClient, final DriveResourceClient driveResourceClient,
-                         final String driveId, final OnRestoreListener listener) throws RestoreException {
+                         final String driveId, final OnRestoreListener listener) {
             // Create a temporary file in app cache dir.
             mFile = new File(context.getCacheDir(), "gdrive_cache.json");
             mContextRef = new WeakReference<>(context);
@@ -776,11 +782,5 @@ class RestoreDialog extends AlertDialog {
                 }
             }
         }
-    }
-
-    interface OnRestoreListener {
-        void onRestoreComplete(String tag, LocalDate startDate, LocalDate endDate, long recordsInserted);
-
-        void onRestoreFailed(String tag, String message);
     }
 }

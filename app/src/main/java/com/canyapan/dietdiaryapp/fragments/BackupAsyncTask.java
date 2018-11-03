@@ -40,11 +40,10 @@ import static com.canyapan.dietdiaryapp.helpers.MimeTypes.MIME_TYPE_CSV;
 abstract class BackupAsyncTask extends AsyncTask<Void, Integer, Boolean> {
     static final int TO_EXTERNAL = 0;
     static final int TO_SHARE = 1;
-
-    private BackupFragment backupFragment;
     private final File mFile;
     private final int mDestination;
     private final AtomicInteger mProgress = new AtomicInteger(0);
+    private BackupFragment backupFragment;
     private String mErrorString = null;
 
     BackupAsyncTask(BackupFragment backupFragment, int destination) throws BackupException {

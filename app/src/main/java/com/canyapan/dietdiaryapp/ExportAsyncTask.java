@@ -33,20 +33,17 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Returns count of exported record.
  */
 abstract class ExportAsyncTask extends AsyncTask<Void, Integer, Long> {
-    private static final String TAG = "ExportAsyncTask";
-
     static final int TO_EMAIL = 0;
     static final int TO_EXTERNAL = 1;
     static final int TO_SHARE = 2;
-
+    private static final String TAG = "ExportAsyncTask";
+    protected final File mFile;
     private final WeakReference<ExportActivity> mExportActivityRef;
     private final OnExportListener mListener;
     private final LocalDate mFromDate, mToDate;
     private final int mDestination;
-
-    private DatabaseHelper mDatabaseHelper;
-    protected final File mFile;
     private final AtomicInteger mProgress = new AtomicInteger(0);
+    private DatabaseHelper mDatabaseHelper;
     private String mErrorString = null;
 
     ExportAsyncTask(final ExportActivity activity, final int destination,
@@ -214,6 +211,16 @@ abstract class ExportAsyncTask extends AsyncTask<Void, Integer, Long> {
 
     protected abstract void end() throws IOException, ExportException;
 
+    interface OnExportListener {
+        void onExportStarting();
+
+        void onExportProgress(int percentage);
+
+        void onExportComplete(LocalDate startDate, LocalDate endDate, int destination, File file, long recordsExported);
+
+        void onExportFailed(String message);
+    }
+
     class ExportException extends Exception {
 
         ExportException(String message) {
@@ -231,16 +238,6 @@ abstract class ExportAsyncTask extends AsyncTask<Void, Integer, Long> {
         ExportException(@NonNull Context context, @StringRes int message, Throwable cause) {
             this(context.getString(message), cause);
         }
-    }
-
-    interface OnExportListener {
-        void onExportStarting();
-
-        void onExportProgress(int percentage);
-
-        void onExportComplete(LocalDate startDate, LocalDate endDate, int destination, File file, long recordsExported);
-
-        void onExportFailed(String message);
     }
 
 }

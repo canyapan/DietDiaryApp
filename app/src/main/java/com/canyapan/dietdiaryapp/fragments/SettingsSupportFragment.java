@@ -69,11 +69,10 @@ import static com.canyapan.dietdiaryapp.preference.PreferenceKeys.KEY_NOTIFICATI
 public class SettingsSupportFragment extends PreferenceFragmentCompat
         implements Preference.OnPreferenceChangeListener, SharedPreferences.OnSharedPreferenceChangeListener, RestoreDialog.OnRestoreListener {
 
+    public static final int FLAG_ACTIVATE_BACKUP = 1;
     private static final String TAG = "Settings";
     private static final String DIALOG_FRAGMENT_TAG =
             "android.support.v7.preference.PreferenceFragment.DIALOG";
-
-    public static final int FLAG_ACTIVATE_BACKUP = 1;
     private static final String KEY_ACTIVATE_BACKUP_BOOLEAN = "ACTIVATE BACKUP";
 
     private static final int REQUEST_RESOLVE_ERROR = 1001;
@@ -383,7 +382,7 @@ public class SettingsSupportFragment extends PreferenceFragmentCompat
             mDriveResourceClient.getAppFolder()
                     .continueWithTask(new Continuation<DriveFolder, Task<MetadataBuffer>>() {
                         @Override
-                        public Task<MetadataBuffer> then(@NonNull Task<DriveFolder> task) throws Exception {
+                        public Task<MetadataBuffer> then(@NonNull Task<DriveFolder> task) {
                             // Get backup files from drive.
                             SortOrder sortOrder = new SortOrder.Builder()
                                     .addSortDescending(SortableField.CREATED_DATE)

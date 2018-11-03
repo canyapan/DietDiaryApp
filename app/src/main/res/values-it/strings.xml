@@ -1,5 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<resources><string name="app_name">Diario Alimentare</string>
+<resources>
+    <string name="app_name">Diario Alimentare</string>
     <string name="content_description_icon">Icona</string>
     <string name="navigation_drawer_open">Apri menù principale</string>
     <string name="navigation_drawer_close">Chiudi menù principale</string>
